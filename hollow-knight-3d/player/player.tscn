@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://d3xjiln4t2312"]
+
+[ext_resource type="PackedScene" uid="uid://de84rng12b6nx" path="res://player/model/knight.tscn" id="1_oul6g"]
+
+[node name="Node3D" type="Node3D" unique_id=1808779370]
+
+[node name="knight" parent="." unique_id=208012523 instance=ExtResource("1_oul6g")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.018112242, 0, 0.051834106)
+
+[node name="Camera3D" type="Camera3D" parent="knight" unique_id=724433338]
+transform = Transform3D(-0.118711405, 0.49061486, -0.8632524, 0.06683859, 0.8713766, 0.48604068, 0.99067664, -3.6905583e-09, -0.13623434, -1.0288568, 1.1116505, -0.009569168)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=162185161]
+transform = Transform3D(0.4710025, 0.63328457, 0.6140906, 0.5005703, 0.38133198, -0.77718425, -0.7263512, 0.67345107, -0.13739502, 0.6292666, -0.3552767, -0.24414033)
