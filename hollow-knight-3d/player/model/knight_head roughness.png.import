@@ -2,17 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://0753jjpcmnru"
-path.s3tc="res://.godot/imported/cloak roughness.png-3064c2a585cc90367ae7f636ec56bc06.s3tc.ctex"
+uid="uid://botywmfwvfpy6"
+path.s3tc="res://.godot/imported/knight_head roughness.png-755b12742e88147efa7f851bfc02d712.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
+generator_parameters={
+"md5": "44d27104db2c375d85bec181568c90ab"
+}
 
 [deps]
 
-source_file="res://player/model/baking/cloak roughness.png"
-dest_files=["res://.godot/imported/cloak roughness.png-3064c2a585cc90367ae7f636ec56bc06.s3tc.ctex"]
+source_file="res://player/model/knight_head roughness.png"
+dest_files=["res://.godot/imported/knight_head roughness.png-755b12742e88147efa7f851bfc02d712.s3tc.ctex"]
 
 [params]
 

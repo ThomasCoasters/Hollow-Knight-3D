@@ -2,17 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://df1isl2i18voc"
-path.s3tc="res://.godot/imported/cloak color.png-a7d204a8488c33e52c7157b90ae54cfa.s3tc.ctex"
+uid="uid://cv5oojuxnb4al"
+path.s3tc="res://.godot/imported/knight_weapon roughness.png.png-af252663db363a9cd3db5cd922d71903.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
+generator_parameters={
+"md5": "51700933bb113664d712adb6c131a36a"
+}
 
 [deps]
 
-source_file="res://player/model/baking/cloak color.png"
-dest_files=["res://.godot/imported/cloak color.png-a7d204a8488c33e52c7157b90ae54cfa.s3tc.ctex"]
+source_file="res://player/model/knight_weapon roughness.png.png"
+dest_files=["res://.godot/imported/knight_weapon roughness.png.png-af252663db363a9cd3db5cd922d71903.s3tc.ctex"]
 
 [params]
 
