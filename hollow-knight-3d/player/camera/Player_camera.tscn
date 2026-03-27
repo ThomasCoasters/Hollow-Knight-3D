@@ -1,5 +1,11 @@
 [gd_scene format=3 uid="uid://bq050tvb8e6of"]
 
-[node name="PlayerCamera" type="Camera3D" unique_id=1536589263]
+[ext_resource type="Script" uid="uid://cx5np0ov7ryl5" path="res://player/camera/player_camera.gd" id="1_b1fii"]
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=936993595]
+[node name="PlayerCamera" type="Camera3D" unique_id=376052904 node_paths=PackedStringArray("neck_node")]
+script = ExtResource("1_b1fii")
+neck_node = NodePath("Marker3D")
+
+[node name="Marker3D" type="Marker3D" parent="." unique_id=1847032062]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1399912597]
