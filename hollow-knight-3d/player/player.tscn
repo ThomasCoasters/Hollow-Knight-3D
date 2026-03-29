@@ -16,6 +16,4 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.27104545, 0)
 shape = SubResource("CapsuleShape3D_oul6g")
 
 [node name="PlayerCamera" parent="." unique_id=1536589263 instance=ExtResource("2_rkbax")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.31941992, 0)
-distance = Vector3(0, 0.5, 1)
-camera_rotation = Vector3(-20, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45235673, 0)

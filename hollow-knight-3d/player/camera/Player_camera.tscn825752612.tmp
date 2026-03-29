@@ -24,36 +24,6 @@ initial_state = NodePath("3rd_person")
 [node name="3rd_person" type="Node" parent="StateChart/Camera_mode" unique_id=467016044]
 script = ExtResource("4_yqmq6")
 
-[node name="to_3rd_person" type="Node" parent="StateChart/Camera_mode/3rd_person" unique_id=1699564699]
-script = ExtResource("5_2jts0")
-to = NodePath("..")
-event = &"3rd_person"
-delay_in_seconds = "0.0"
-
-[node name="to_1st_person" type="Node" parent="StateChart/Camera_mode/3rd_person" unique_id=1610472152]
-script = ExtResource("5_2jts0")
-to = NodePath("..")
-event = &"1st_person"
-delay_in_seconds = "0.0"
-
-[node name="to_side_view" type="Node" parent="StateChart/Camera_mode/3rd_person" unique_id=1156954442]
-script = ExtResource("5_2jts0")
-to = NodePath("..")
-event = &"side_view"
-delay_in_seconds = "0.0"
-
-[node name="to_free" type="Node" parent="StateChart/Camera_mode/3rd_person" unique_id=1512721915]
-script = ExtResource("5_2jts0")
-to = NodePath("..")
-event = &"free"
-delay_in_seconds = "0.0"
-
-[node name="to_locked" type="Node" parent="StateChart/Camera_mode/3rd_person" unique_id=1970204741]
-script = ExtResource("5_2jts0")
-to = NodePath("..")
-event = &"locked"
-delay_in_seconds = "0.0"
-
 [node name="1st_person" type="Node" parent="StateChart/Camera_mode" unique_id=961488293]
 script = ExtResource("4_yqmq6")
 
@@ -65,3 +35,33 @@ script = ExtResource("4_yqmq6")
 
 [node name="locked" type="Node" parent="StateChart/Camera_mode" unique_id=358332830]
 script = ExtResource("4_yqmq6")
+
+[node name="to_3rd_person" type="Node" parent="StateChart/Camera_mode" unique_id=1997642128]
+script = ExtResource("5_2jts0")
+to = NodePath("../3rd_person")
+event = &"3rd_person"
+delay_in_seconds = "0.0"
+
+[node name="to_1st_person" type="Node" parent="StateChart/Camera_mode" unique_id=801683529]
+script = ExtResource("5_2jts0")
+to = NodePath("../1st_person")
+event = &"3rd_person"
+delay_in_seconds = "0.0"
+
+[node name="to_side_view" type="Node" parent="StateChart/Camera_mode" unique_id=1603067876]
+script = ExtResource("5_2jts0")
+to = NodePath("../side_view")
+event = &"3rd_person"
+delay_in_seconds = "0.0"
+
+[node name="to_free" type="Node" parent="StateChart/Camera_mode" unique_id=1219421077]
+script = ExtResource("5_2jts0")
+to = NodePath("../free")
+event = &"3rd_person"
+delay_in_seconds = "0.0"
+
+[node name="to_locked" type="Node" parent="StateChart/Camera_mode" unique_id=726680339]
+script = ExtResource("5_2jts0")
+to = NodePath("../locked")
+event = &"3rd_person"
+delay_in_seconds = "0.0"
