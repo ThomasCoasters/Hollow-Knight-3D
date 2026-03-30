@@ -4,50 +4,38 @@
 [ext_resource type="Script" uid="uid://couw105c3bde4" path="res://addons/godot_state_charts/state_chart.gd" id="2_06wur"]
 [ext_resource type="Script" uid="uid://jk2jm1g6q853" path="res://addons/godot_state_charts/compound_state.gd" id="3_yqmq6"]
 [ext_resource type="Script" uid="uid://cytafq8i1y8qm" path="res://addons/godot_state_charts/atomic_state.gd" id="4_yqmq6"]
-[ext_resource type="Script" uid="uid://cf1nsco3w0mf6" path="res://addons/godot_state_charts/transition.gd" id="5_2jts0"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_yqmq6"]
+radius = 0.10204538
 
 [node name="PlayerCamera" type="SpringArm3D" unique_id=274948290]
-name = &"PlayerCamera"
-scene_file_path = "res://player/camera/Player_camera.tscn"
-owner = null
-multiplayer = Object(SceneMultiplayer,"root_path":NodePath("/root"),"auth_callback":Callable(),"auth_timeout":3.0,"allow_object_decoding":false,"refuse_new_connections":false,"server_relay":true,"max_sync_packet_size":1350,"max_delta_packet_size":65535,"script":null)
-
-Process = null
-"Thread Group" = null
-process_thread_group_order = 0
-process_thread_messages = 0
-"Physics Interpolation" = null
-"Auto Translate" = null
-"Editor Description" = null
-Transform = null
-global_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
-rotation_degrees = Vector3(0, 0, 0)
-quaternion = Quaternion(0, 0, 0, 1)
-basis = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
-global_position = Vector3(0, 0, 0)
-global_basis = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
-global_rotation = Vector3(0, 0, 0)
-global_rotation_degrees = Vector3(0, 0, 0)
-Visibility = null
+collision_mask = 2
 script = ExtResource("1_b1fii")
 state_chart = Object(Node,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","script":ExtResource("2_06wur"),"track_in_editor":false,"warn_on_sending_unknown_events":true,"initial_expression_properties":{},"_state":null,"_expression_properties":{},"_queued_events":Array[StringName]([]),"_property_change_pending":false,"_state_change_pending":false,"_locked_down":false,"_frozen":false,"_queued_transitions":Array[Dictionary]([]),"_transitions_processing_active":false,"_debugger_remote":null,"_valid_event_names":Array[StringName]([]),"metadata/_custom_type_script":"uid://couw105c3bde4")
 
-camera_mode_state_machine = Object(Node,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","script":ExtResource("3_yqmq6"),"initial_state":NodePath("3rd_person"),"_active_state":null,"_initial_state":Object(Node,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","script":ExtResource("4_yqmq6"),"_state_active":false,"active":false,"_pending_transition":null,"_pending_transition_remaining_delay":0.0,"_pending_transition_initial_delay":0.0,"_transitions":Array[ExtResource("5_2jts0")]([]),"_chart":null)
-,"_history_states":Array[Resource("res://addons/godot_state_charts/history_state.gd")]([]),"_needs_deep_history":false,"_state_active":false,"active":false,"_pending_transition":null,"_pending_transition_remaining_delay":0.0,"_pending_transition_initial_delay":0.0,"_transitions":Array[ExtResource("5_2jts0")]([]),"_chart":null)
+camera_mode_state_machine = Object(Node,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","script":ExtResource("3_yqmq6"),"initial_state":NodePath("3rd_person"),"_active_state":null,"_initial_state":Object(Node,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","script":ExtResource("4_yqmq6"),"_state_active":false,"active":false,"_pending_transition":null,"_pending_transition_remaining_delay":0.0,"_pending_transition_initial_delay":0.0,"_transitions":Array[Resource("res://addons/godot_state_charts/transition.gd")]([]),"_chart":null)
+,"_history_states":Array[Resource("res://addons/godot_state_charts/history_state.gd")]([]),"_needs_deep_history":false,"_state_active":false,"active":false,"_pending_transition":null,"_pending_transition_remaining_delay":0.0,"_pending_transition_initial_delay":0.0,"_transitions":Array[Resource("res://addons/godot_state_charts/transition.gd")]([]),"_chart":null)
 
-_3rd_person_state = Object(Node,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","script":ExtResource("4_yqmq6"),"_state_active":false,"active":false,"_pending_transition":null,"_pending_transition_remaining_delay":0.0,"_pending_transition_initial_delay":0.0,"_transitions":Array[ExtResource("5_2jts0")]([]),"_chart":null)
+_3rd_person_state = Object(Node,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","script":ExtResource("4_yqmq6"),"_state_active":false,"active":false,"_pending_transition":null,"_pending_transition_remaining_delay":0.0,"_pending_transition_initial_delay":0.0,"_transitions":Array[Resource("res://addons/godot_state_charts/transition.gd")]([]),"_chart":null)
 
-_1st_person_state = Object(Node,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","script":ExtResource("4_yqmq6"),"_state_active":false,"active":false,"_pending_transition":null,"_pending_transition_remaining_delay":0.0,"_pending_transition_initial_delay":0.0,"_transitions":Array[ExtResource("5_2jts0")]([]),"_chart":null)
+_1st_person_state = Object(Node,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","script":ExtResource("4_yqmq6"),"_state_active":false,"active":false,"_pending_transition":null,"_pending_transition_remaining_delay":0.0,"_pending_transition_initial_delay":0.0,"_transitions":Array[Resource("res://addons/godot_state_charts/transition.gd")]([]),"_chart":null)
 
-side_view_state = Object(Node,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","script":ExtResource("4_yqmq6"),"_state_active":false,"active":false,"_pending_transition":null,"_pending_transition_remaining_delay":0.0,"_pending_transition_initial_delay":0.0,"_transitions":Array[ExtResource("5_2jts0")]([]),"_chart":null)
+side_view_state = Object(Node,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","script":ExtResource("4_yqmq6"),"_state_active":false,"active":false,"_pending_transition":null,"_pending_transition_remaining_delay":0.0,"_pending_transition_initial_delay":0.0,"_transitions":Array[Resource("res://addons/godot_state_charts/transition.gd")]([]),"_chart":null)
 
-free_state = Object(Node,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","script":ExtResource("4_yqmq6"),"_state_active":false,"active":false,"_pending_transition":null,"_pending_transition_remaining_delay":0.0,"_pending_transition_initial_delay":0.0,"_transitions":Array[ExtResource("5_2jts0")]([]),"_chart":null)
+free_state = Object(Node,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","script":ExtResource("4_yqmq6"),"_state_active":false,"active":false,"_pending_transition":null,"_pending_transition_remaining_delay":0.0,"_pending_transition_initial_delay":0.0,"_transitions":Array[Resource("res://addons/godot_state_charts/transition.gd")]([]),"_chart":null)
 
-locked_state = Object(Node,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","script":ExtResource("4_yqmq6"),"_state_active":false,"active":false,"_pending_transition":null,"_pending_transition_remaining_delay":0.0,"_pending_transition_initial_delay":0.0,"_transitions":Array[ExtResource("5_2jts0")]([]),"_chart":null)
+locked_state = Object(Node,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","script":ExtResource("4_yqmq6"),"_state_active":false,"active":false,"_pending_transition":null,"_pending_transition_remaining_delay":0.0,"_pending_transition_initial_delay":0.0,"_transitions":Array[Resource("res://addons/godot_state_charts/transition.gd")]([]),"_chart":null)
 
 camera_states = Array[ExtResource("4_yqmq6")]([])
+state_to_mode = Dictionary[ExtResource("4_yqmq6"), String]({})
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=2001069196]
+
+[node name="camera_area" type="Area3D" parent="Camera3D" unique_id=204509697 groups=["camera_area"]]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Camera3D/camera_area" unique_id=760263736]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0027229488, 0)
+shape = SubResource("SphereShape3D_yqmq6")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Camera3D" unique_id=1524208937]
 
@@ -74,32 +62,7 @@ script = ExtResource("4_yqmq6")
 [node name="locked" type="Node" parent="StateChart/Camera_mode" unique_id=358332830]
 script = ExtResource("4_yqmq6")
 
-[node name="to_3rd_person" type="Node" parent="StateChart/Camera_mode" unique_id=485047731]
-script = ExtResource("5_2jts0")
-to = NodePath("../3rd_person")
-event = &"3rd_person"
-delay_in_seconds = "0.0"
-
-[node name="to_1st_person" type="Node" parent="StateChart/Camera_mode" unique_id=579510358]
-script = ExtResource("5_2jts0")
-to = NodePath("../1st_person")
-event = &"1st_person"
-delay_in_seconds = "0.0"
-
-[node name="to_side_view" type="Node" parent="StateChart/Camera_mode" unique_id=1788513531]
-script = ExtResource("5_2jts0")
-to = NodePath("../side_view")
-event = &"side_view"
-delay_in_seconds = "0.0"
-
-[node name="to_free" type="Node" parent="StateChart/Camera_mode" unique_id=775731782]
-script = ExtResource("5_2jts0")
-to = NodePath("../free")
-event = &"free"
-delay_in_seconds = "0.0"
-
-[node name="to_locked" type="Node" parent="StateChart/Camera_mode" unique_id=213577644]
-script = ExtResource("5_2jts0")
-to = NodePath("../locked")
-event = &"locked"
-delay_in_seconds = "0.0"
+[connection signal="state_input" from="StateChart/Camera_mode/3rd_person" to="." method="_on_rd_person_state_input"]
+[connection signal="state_unhandled_input" from="StateChart/Camera_mode/3rd_person" to="." method="_on_rd_person_state_unhandled_input"]
+[connection signal="state_entered" from="StateChart/Camera_mode/1st_person" to="." method="_on_st_person_state_entered"]
+[connection signal="state_input" from="StateChart/Camera_mode/1st_person" to="." method="_on_st_person_state_input"]

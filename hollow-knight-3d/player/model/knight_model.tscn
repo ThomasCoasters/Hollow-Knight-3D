@@ -1,8 +1,11 @@
 [gd_scene format=3 uid="uid://de84rng12b6nx"]
 
 [ext_resource type="PackedScene" uid="uid://6txikwufjlvx" path="res://player/model/knight.blend" id="1_tx3tu"]
+[ext_resource type="Script" uid="uid://bje2m4icvva5q" path="res://player/model/knight_model.gd" id="2_u5ohn"]
 
-[node name="knight" unique_id=360903724 instance=ExtResource("1_tx3tu")]
+[node name="knight_model" unique_id=360903724 node_paths=PackedStringArray("meshes") instance=ExtResource("1_tx3tu")]
+script = ExtResource("2_u5ohn")
+meshes = [NodePath("rig/Skeleton3D/Body"), NodePath("rig/Skeleton3D/Head"), NodePath("Armature/Skeleton3D/Bone_083/Weapon"), NodePath("Armature/Skeleton3D/Cloak")]
 
 [node name="Skeleton3D" parent="rig" parent_id_path=PackedInt32Array(412714114) index="0" unique_id=176604061]
 bones/1/position = Vector3(1.2212453e-15, 0.015906338, 0.13935986)
@@ -229,3 +232,6 @@ bones/82/rotation = Quaternion(-2.478961e-08, -8.3484125e-08, -0.07070949, 0.997
 
 [node name="Bone_083" parent="Armature/Skeleton3D" index="0" unique_id=825185730]
 transform = Transform3D(-9.62837e-08, 9.215492e-08, -0.99999994, 0.9861549, 0.16582683, -8.4756934e-08, 0.16582681, -0.9861549, -1.708974e-07, 7.4222832e-09, 0.2698452, -0.05814717)
+
+[node name="AnimationPlayer" parent="." index="81" unique_id=157297343]
+autoplay = &"walk"
