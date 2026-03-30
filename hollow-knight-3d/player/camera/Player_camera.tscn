@@ -7,7 +7,45 @@
 [ext_resource type="Script" uid="uid://cf1nsco3w0mf6" path="res://addons/godot_state_charts/transition.gd" id="5_2jts0"]
 
 [node name="PlayerCamera" type="SpringArm3D" unique_id=274948290]
+name = &"PlayerCamera"
+scene_file_path = "res://player/camera/Player_camera.tscn"
+owner = null
+multiplayer = Object(SceneMultiplayer,"root_path":NodePath("/root"),"auth_callback":Callable(),"auth_timeout":3.0,"allow_object_decoding":false,"refuse_new_connections":false,"server_relay":true,"max_sync_packet_size":1350,"max_delta_packet_size":65535,"script":null)
+
+Process = null
+"Thread Group" = null
+process_thread_group_order = 0
+process_thread_messages = 0
+"Physics Interpolation" = null
+"Auto Translate" = null
+"Editor Description" = null
+Transform = null
+global_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+rotation_degrees = Vector3(0, 0, 0)
+quaternion = Quaternion(0, 0, 0, 1)
+basis = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+global_position = Vector3(0, 0, 0)
+global_basis = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+global_rotation = Vector3(0, 0, 0)
+global_rotation_degrees = Vector3(0, 0, 0)
+Visibility = null
 script = ExtResource("1_b1fii")
+state_chart = Object(Node,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","script":ExtResource("2_06wur"),"track_in_editor":false,"warn_on_sending_unknown_events":true,"initial_expression_properties":{},"_state":null,"_expression_properties":{},"_queued_events":Array[StringName]([]),"_property_change_pending":false,"_state_change_pending":false,"_locked_down":false,"_frozen":false,"_queued_transitions":Array[Dictionary]([]),"_transitions_processing_active":false,"_debugger_remote":null,"_valid_event_names":Array[StringName]([]),"metadata/_custom_type_script":"uid://couw105c3bde4")
+
+camera_mode_state_machine = Object(Node,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","script":ExtResource("3_yqmq6"),"initial_state":NodePath("3rd_person"),"_active_state":null,"_initial_state":Object(Node,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","script":ExtResource("4_yqmq6"),"_state_active":false,"active":false,"_pending_transition":null,"_pending_transition_remaining_delay":0.0,"_pending_transition_initial_delay":0.0,"_transitions":Array[ExtResource("5_2jts0")]([]),"_chart":null)
+,"_history_states":Array[Resource("res://addons/godot_state_charts/history_state.gd")]([]),"_needs_deep_history":false,"_state_active":false,"active":false,"_pending_transition":null,"_pending_transition_remaining_delay":0.0,"_pending_transition_initial_delay":0.0,"_transitions":Array[ExtResource("5_2jts0")]([]),"_chart":null)
+
+_3rd_person_state = Object(Node,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","script":ExtResource("4_yqmq6"),"_state_active":false,"active":false,"_pending_transition":null,"_pending_transition_remaining_delay":0.0,"_pending_transition_initial_delay":0.0,"_transitions":Array[ExtResource("5_2jts0")]([]),"_chart":null)
+
+_1st_person_state = Object(Node,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","script":ExtResource("4_yqmq6"),"_state_active":false,"active":false,"_pending_transition":null,"_pending_transition_remaining_delay":0.0,"_pending_transition_initial_delay":0.0,"_transitions":Array[ExtResource("5_2jts0")]([]),"_chart":null)
+
+side_view_state = Object(Node,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","script":ExtResource("4_yqmq6"),"_state_active":false,"active":false,"_pending_transition":null,"_pending_transition_remaining_delay":0.0,"_pending_transition_initial_delay":0.0,"_transitions":Array[ExtResource("5_2jts0")]([]),"_chart":null)
+
+free_state = Object(Node,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","script":ExtResource("4_yqmq6"),"_state_active":false,"active":false,"_pending_transition":null,"_pending_transition_remaining_delay":0.0,"_pending_transition_initial_delay":0.0,"_transitions":Array[ExtResource("5_2jts0")]([]),"_chart":null)
+
+locked_state = Object(Node,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","script":ExtResource("4_yqmq6"),"_state_active":false,"active":false,"_pending_transition":null,"_pending_transition_remaining_delay":0.0,"_pending_transition_initial_delay":0.0,"_transitions":Array[ExtResource("5_2jts0")]([]),"_chart":null)
+
+camera_states = Array[ExtResource("4_yqmq6")]([])
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=2001069196]
 
@@ -24,36 +62,6 @@ initial_state = NodePath("3rd_person")
 [node name="3rd_person" type="Node" parent="StateChart/Camera_mode" unique_id=467016044]
 script = ExtResource("4_yqmq6")
 
-[node name="to_3rd_person" type="Node" parent="StateChart/Camera_mode/3rd_person" unique_id=1699564699]
-script = ExtResource("5_2jts0")
-to = NodePath("..")
-event = &"3rd_person"
-delay_in_seconds = "0.0"
-
-[node name="to_1st_person" type="Node" parent="StateChart/Camera_mode/3rd_person" unique_id=1610472152]
-script = ExtResource("5_2jts0")
-to = NodePath("..")
-event = &"1st_person"
-delay_in_seconds = "0.0"
-
-[node name="to_side_view" type="Node" parent="StateChart/Camera_mode/3rd_person" unique_id=1156954442]
-script = ExtResource("5_2jts0")
-to = NodePath("..")
-event = &"side_view"
-delay_in_seconds = "0.0"
-
-[node name="to_free" type="Node" parent="StateChart/Camera_mode/3rd_person" unique_id=1512721915]
-script = ExtResource("5_2jts0")
-to = NodePath("..")
-event = &"free"
-delay_in_seconds = "0.0"
-
-[node name="to_locked" type="Node" parent="StateChart/Camera_mode/3rd_person" unique_id=1970204741]
-script = ExtResource("5_2jts0")
-to = NodePath("..")
-event = &"locked"
-delay_in_seconds = "0.0"
-
 [node name="1st_person" type="Node" parent="StateChart/Camera_mode" unique_id=961488293]
 script = ExtResource("4_yqmq6")
 
@@ -65,3 +73,33 @@ script = ExtResource("4_yqmq6")
 
 [node name="locked" type="Node" parent="StateChart/Camera_mode" unique_id=358332830]
 script = ExtResource("4_yqmq6")
+
+[node name="to_3rd_person" type="Node" parent="StateChart/Camera_mode" unique_id=485047731]
+script = ExtResource("5_2jts0")
+to = NodePath("../3rd_person")
+event = &"3rd_person"
+delay_in_seconds = "0.0"
+
+[node name="to_1st_person" type="Node" parent="StateChart/Camera_mode" unique_id=579510358]
+script = ExtResource("5_2jts0")
+to = NodePath("../1st_person")
+event = &"1st_person"
+delay_in_seconds = "0.0"
+
+[node name="to_side_view" type="Node" parent="StateChart/Camera_mode" unique_id=1788513531]
+script = ExtResource("5_2jts0")
+to = NodePath("../side_view")
+event = &"side_view"
+delay_in_seconds = "0.0"
+
+[node name="to_free" type="Node" parent="StateChart/Camera_mode" unique_id=775731782]
+script = ExtResource("5_2jts0")
+to = NodePath("../free")
+event = &"free"
+delay_in_seconds = "0.0"
+
+[node name="to_locked" type="Node" parent="StateChart/Camera_mode" unique_id=213577644]
+script = ExtResource("5_2jts0")
+to = NodePath("../locked")
+event = &"locked"
+delay_in_seconds = "0.0"

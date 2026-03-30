@@ -13,21 +13,25 @@ extends SpringArm3D
 var camera_states: Array[AtomicState]
 
 
-#the current camera mode
+##the current camera mode (also used for what exported variables are shown)
 @export_enum("3rd_person", "1st_person", "side_view", "free", "locked") var camera_mode: String = "3rd_person":
 	set(value):
 		camera_mode = value
 		notify_property_list_changed()
 
 #settings for the camera
+##the speed the mouse turns the camera
 @export var mouse_sensibility: float = 0.005
+## the location the camera is locked or the offset depending on the mode
 @export var location: Vector3 = Vector3.ZERO
+##the speed the mouse moves around with the moving buttons
 @export var speed: float = 50
 
 
 
 
 func _ready() -> void:
+	#not make the editor play this 
 	if Engine.is_editor_hint():
 		return
 	
@@ -39,29 +43,35 @@ func _ready() -> void:
 
 
 #region state chart
+#setter for the camera mode state chart
 func set_camera_mode_state(mode_name: String):
-	print(mode_name)
+	#wait one frame else breaks
+	await get_tree().process_frame
 	
+	#send the event to the state chart
 	state_chart.send_event(mode_name)
-	for state: AtomicState in camera_states:
-		print(state.name , " " , state.active)
-
 #endregion
 
 #region editor experience enhancer
 #make the export vars only visible to the current selected mode
 func _validate_property(property: Dictionary) -> void:
-	#goes over every exported var
-	for current_property in property:
-		match property.name:
-			"mouse_sensibility":
-				#modes 
-				if camera_mode not in ["3rd_person", "1st_person", "free"]:
-					property.usage = PROPERTY_USAGE_NO_EDITOR
-			"location":
-				if camera_mode not in ["side_view", "locked"]:
-					property.usage = PROPERTY_USAGE_NO_EDITOR
-			"speed":
-				if camera_mode not in ["free"]:
-					property.usage = PROPERTY_USAGE_NO_EDITOR
+	# Always show camera_mode
+	if property.name == "camera_mode":
+		return
+	
+	#list of vars shown per mode
+	var allowed := {
+		"3rd_person": ["mouse_sensibility"],
+		"1st_person": ["mouse_sensibility"],
+		"free": ["mouse_sensibility", "speed"],
+		"side_view": ["location"],
+		"locked": ["location"]
+	}
+	
+	#not remove the correct vars
+	if camera_mode in allowed and property.name in allowed[camera_mode]:
+		return
+	
+	#not make the incorrect vars be shown
+	property.usage = PROPERTY_USAGE_NO_EDITOR
 #endregion
