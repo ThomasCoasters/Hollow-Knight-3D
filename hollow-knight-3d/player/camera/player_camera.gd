@@ -1,7 +1,10 @@
 #region vars
 @tool
-extends SpringArm3D
+extends Node3D
 class_name Player_Camera
+
+#springarm
+@onready var spring_arm_3d: SpringArm3D = $SpringArm3D
 
 #statechart
 @onready var state_chart: StateChart = $StateChart
@@ -26,12 +29,19 @@ var state_to_mode: Dictionary[AtomicState, String] = {}
 
 
 #settings for the camera
-##the speed the mouse turns the camera
-@export var mouse_sensibility: float = 0.005
 ## the location the camera is locked or the offset depending on the mode
 @export var location: Vector3 = Vector3.ZERO
 ##the speed the mouse moves around with the moving buttons
 @export var speed: float = 50
+
+##camera rotating
+@export_group("camera rotation")
+##the speed the mouse turns the camera
+@export var mouse_sensibility: float = 0.005
+##minimal vertical angle for the camera
+@export_range(-90, 0.0, 0.1, "radians_as_degrees") var min_vertical_angle: float = -PI/2.5
+##maximal vertical angle for the camera
+@export_range(0.0, 90.0, 0.1, "radians_as_degrees") var max_vertical_angle: float = PI/4
 
 
 ##zooming variables
@@ -70,13 +80,15 @@ func _ready() -> void:
 	
 	
 	#set the spring length to the starting distance
-	spring_length = starting_distance
+	spring_arm_3d.spring_length = starting_distance
 	
 	#wait one frame else the setter breaks
 	await get_tree().process_frame
 	
 	#sets the state of the correct current mode to true
 	set_camera_mode_state(camera_mode)
+	
+	await get_tree().process_frame
 #endregion
 
 
@@ -114,8 +126,8 @@ func _validate_property(property: Dictionary) -> void:
 	
 	#list of vars shown per mode
 	var allowed := {
-		"3rd_person": ["mouse_sensibility", "max_distance", "min_distance", "starting_distance", "zoom_speed"],
-		"1st_person": ["mouse_sensibility"],
+		"3rd_person": ["mouse_sensibility", "min_vertical_angle", "max_vertical_angle", "max_distance", "min_distance", "starting_distance", "zoom_speed"],
+		"1st_person": ["mouse_sensibility", "min_vertical_angle", "max_vertical_angle"],
 		"free": ["mouse_sensibility", "speed"],
 		"side_view": ["location"],
 		"locked": ["location"]
@@ -135,6 +147,7 @@ func _validate_property(property: Dictionary) -> void:
 #region 3rd person camera
 ##camera movement for 3rd person
 func _on_rd_person_state_input(event: InputEvent) -> void:
+	print("input")
 	#moving the camera
 	move_camera_by_mouse(event)
 	
@@ -146,7 +159,7 @@ func _on_rd_person_state_input(event: InputEvent) -> void:
 #region 1st person camera
 ##starting settings for 1st person camera
 func _on_st_person_state_entered() -> void:
-	spring_length = 0
+	spring_arm_3d.spring_length = 0
 
 ##camera movement for 1st person
 func _on_st_person_state_input(event: InputEvent) -> void:
@@ -157,22 +170,33 @@ func _on_st_person_state_input(event: InputEvent) -> void:
 
 
 
-#region camera functions
-##used for moving the camera by moving the mouse
+#region camera movement functions
+##used for rotating the camera by moving the mouse
 func move_camera_by_mouse(event: InputEvent) -> void:
 	#mouse movement
 	if event is InputEventMouseMotion:
+		#Y rotation
 		rotation.y -= event.relative.x * mouse_sensibility
+		#wrap the Y to circle infinitly
+		rotation.y = wrapf(rotation.y, 0.0, TAU)
+		
+		#X camera rotation
 		rotation.x -= event.relative.y * mouse_sensibility
+		#not make the camera be able to go too far
+		rotation.x = clamp(rotation.x, min_vertical_angle, max_vertical_angle)
 
 
 ##used for zooming the camera in/out by user inputs
 func zoom_camera_by_input(event: InputEvent) -> void:
 	#zooming in
 	if event.is_action_pressed("ZoomIn"):
-		spring_length = clamp(spring_length - zoom_speed, min_distance, max_distance)
+		spring_arm_3d.spring_length = clamp(spring_arm_3d.spring_length - zoom_speed, min_distance, max_distance)
 	
 	#zooming out
 	if event.is_action_pressed("ZoomOut"):
-		spring_length = clamp(spring_length + zoom_speed, min_distance, max_distance)
+		spring_arm_3d.spring_length = clamp(spring_arm_3d.spring_length + zoom_speed, min_distance, max_distance)
 #endregion
+
+
+func _on_rd_person_state_unhandled_input(event: InputEvent) -> void:
+	pass # Replace with function body.

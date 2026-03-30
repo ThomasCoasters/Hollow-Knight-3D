@@ -12,6 +12,7 @@ height = 0.5409584
 radius = 0.6562854
 
 [node name="Node3D" type="CharacterBody3D" unique_id=2083664876 node_paths=PackedStringArray("knight")]
+collision_mask = 3
 script = ExtResource("1_g1dw6")
 knight = NodePath("knight_model")
 
@@ -23,6 +24,8 @@ shape = SubResource("CapsuleShape3D_oul6g")
 
 [node name="PlayerCamera" parent="." unique_id=1536589263 instance=ExtResource("2_rkbax")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45235673, 0)
+spring_arm_3d = Object(SpringArm3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"collision_mask":1,"shape":null,"spring_length":1.0,"margin":0.01,"script":null)
+
 state_chart = Object(Node,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","script":Resource("res://addons/godot_state_charts/state_chart.gd"),"track_in_editor":false,"warn_on_sending_unknown_events":true,"initial_expression_properties":{},"_state":null,"_expression_properties":{},"_queued_events":Array[StringName]([]),"_property_change_pending":false,"_state_change_pending":false,"_locked_down":false,"_frozen":false,"_queued_transitions":Array[Dictionary]([]),"_transitions_processing_active":false,"_debugger_remote":null,"_valid_event_names":Array[StringName]([]),"metadata/_custom_type_script":"uid://couw105c3bde4")
 
 camera_mode_state_machine = Object(Node,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","script":Resource("res://addons/godot_state_charts/compound_state.gd"),"initial_state":NodePath("3rd_person"),"_active_state":null,"_initial_state":Object(Node,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","script":Resource("res://addons/godot_state_charts/atomic_state.gd"),"_state_active":false,"active":false,"_pending_transition":null,"_pending_transition_remaining_delay":0.0,"_pending_transition_initial_delay":0.0,"_transitions":Array[Resource("res://addons/godot_state_charts/transition.gd")]([]),"_chart":null)
@@ -40,6 +43,8 @@ locked_state = Object(Node,"unique_name_in_owner":false,"process_mode":0,"proces
 
 
 [node name="camera_detector" type="Area3D" parent="." unique_id=2043606115]
+collision_layer = 4
+collision_mask = 4
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="camera_detector" unique_id=1434908651]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.48429823, 0)

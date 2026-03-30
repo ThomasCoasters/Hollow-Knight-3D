@@ -40,6 +40,12 @@ ZoomOut={
 ]
 }
 
+[layer_names]
+
+3d_physics/layer_1="Player"
+3d_physics/layer_2="Ground"
+3d_physics/layer_3="Camera"
+
 [physics]
 
 3d/physics_engine="Jolt Physics"
