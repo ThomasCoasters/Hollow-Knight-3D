@@ -31,7 +31,7 @@ locked_state = Object(Node,"unique_name_in_owner":false,"process_mode":0,"proces
 camera_states = Array[ExtResource("4_yqmq6")]([])
 state_to_mode = Dictionary[ExtResource("4_yqmq6"), String]({})
 CAMERA_MODES = Array[String](["3rd_person", "1st_person", "side_view"])
-wanted_rotation = null
+wanted_rotation = Vector3(0, 0, 0)
 side_view_rotation_x = -0.3141592653589793
 side_view_rotation_y = -1.2566370614359172
 
@@ -77,6 +77,7 @@ script = ExtResource("4_yqmq6")
 [node name="locked" type="Node" parent="StateChart/Camera_mode" unique_id=1605306092]
 script = ExtResource("4_yqmq6")
 
+[connection signal="child_state_entered" from="StateChart/Camera_mode" to="." method="_on_camera_mode_child_state_entered"]
 [connection signal="state_entered" from="StateChart/Camera_mode/3rd_person" to="." method="_on_rd_person_state_entered"]
 [connection signal="state_input" from="StateChart/Camera_mode/3rd_person" to="." method="_on_rd_person_state_input"]
 [connection signal="state_input" from="StateChart/Camera_mode/3rd_person" to="SpringArm3D" method="_on_rd_person_state_input"]

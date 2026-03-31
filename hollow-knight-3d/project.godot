@@ -11,9 +11,8 @@ config_version=5
 [application]
 
 config/name="Hollow Knight 3D"
-run/main_scene="uid://d3xjiln4t2312"
+run/main_scene="uid://cb6bjlgn0xuvj"
 config/features=PackedStringArray("4.6", "Forward Plus")
-config/icon="res://icon.svg"
 
 [display]
 

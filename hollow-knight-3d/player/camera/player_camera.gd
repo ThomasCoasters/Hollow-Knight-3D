@@ -38,8 +38,18 @@ var state_to_mode: Dictionary[AtomicState, String] = {}
 
 ##camera rotating
 @export_group("camera rotation")
-#wanted rotation (for smoothly lerping)
+##wanted rotation (for smoothly lerping)
 var wanted_rotation: Vector3 = Vector3.ZERO
+
+##the correct lerp value per camera mode
+@export var camera_mode_to_lerp: Dictionary[String, int] = {
+	"3rd_person": 12,
+	"1st_person": 12,
+	"side_view": 2,
+	"free": 15,
+	"locked": 2
+}
+
 
 ##the power of the lerp (how fast the camera gets to that rotation)
 ##for the rotation only
@@ -73,6 +83,9 @@ var wanted_rotation: Vector3 = Vector3.ZERO
 
 
 
+
+#just the starting game stuff
+
 #region setup
 func _ready() -> void:
 	#not make the editor play this 
@@ -103,6 +116,11 @@ func _ready() -> void:
 	await get_tree().process_frame
 #endregion
 
+
+
+
+
+
 #region loops/checks
 ##runs when an input is made
 func _input(_event: InputEvent) -> void:
@@ -111,6 +129,11 @@ func _input(_event: InputEvent) -> void:
 
 ##runs every frame
 func _process(delta: float) -> void:
+	#not make the editor play this 
+	if Engine.is_editor_hint():
+		return
+	
+	
 	#lerp the camera rotation
 	rotation.x = lerp_angle(rotation.x, wanted_rotation.x, delta*rotation_lerp_power)
 	rotation.y = lerp_angle(rotation.y, wanted_rotation.y, delta*rotation_lerp_power)
@@ -131,6 +154,7 @@ func set_camera_mode_state(mode_name: String) -> void:
 			state._state_enter(null)
 
 ##getter for the current camera state
+##returns an string of the name
 ##returns "null" if no state is active
 func get_camera_mode_state() -> String:
 	for state: AtomicState in camera_states:
@@ -161,7 +185,7 @@ func _validate_property(property: Dictionary) -> void:
 		return
 	
 	# Always show camera_mode
-	if property.name == "camera_mode" || property.name == "CAMERA_MODES":
+	if property.name == "camera_mode" || property.name == "CAMERA_MODES" || property.name == "camera_mode_to_lerp":
 		return
 	
 	#list of vars shown per mode
@@ -184,6 +208,16 @@ func _validate_property(property: Dictionary) -> void:
 
 
 
+#function for the camera states
+
+#region all camera states
+##starting settings for all camera states
+func _on_camera_mode_child_state_entered() -> void:
+	#set the lerp power to the correct value per mode
+	rotation_lerp_power = camera_mode_to_lerp[get_camera_mode_state()]
+#endregion
+
+
 #region 3rd person camera
 ##starting settings for 3rd person camera
 func _on_rd_person_state_entered() -> void:
@@ -203,6 +237,7 @@ func _on_rd_person_state_input(event: InputEvent) -> void:
 #region 1st person camera
 ##starting settings for 1st person camera
 func _on_st_person_state_entered() -> void:
+	#make the camera start in the player
 	spring_arm_3d.spring_length = 0
 
 ##camera movement for 1st person
@@ -222,6 +257,10 @@ func _on_side_view_state_entered() -> void:
 	wanted_rotation.y = side_view_rotation_y
 #endregion
 
+
+
+
+#functions on the way the camera should move
 
 #region camera movement functions
 ##used for rotating the camera by moving the mouse
@@ -251,6 +290,11 @@ func zoom_camera_by_input(event: InputEvent) -> void:
 #endregion
 
 
+
+
+
+
+#functions for testing
 #region testing
 ##sets the new camera state to the next one in a loop
 func toggle_camera_in_loop() -> void:
