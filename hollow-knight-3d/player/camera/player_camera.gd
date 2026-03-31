@@ -133,11 +133,10 @@ func _process(delta: float) -> void:
 	if Engine.is_editor_hint():
 		return
 	
-	
 	#lerp the camera rotation
-	rotation.x = lerp_angle(rotation.x, wanted_rotation.x, delta*rotation_lerp_power)
-	rotation.y = lerp_angle(rotation.y, wanted_rotation.y, delta*rotation_lerp_power)
-	rotation.z = lerp_angle(rotation.z, wanted_rotation.z, delta*rotation_lerp_power)
+	global_rotation.x = lerp_angle(global_rotation.x, wanted_rotation.x, delta*rotation_lerp_power)
+	global_rotation.y = lerp_angle(global_rotation.y, wanted_rotation.y, delta*rotation_lerp_power)
+	global_rotation.z = lerp_angle(global_rotation.z, wanted_rotation.z, delta*rotation_lerp_power)
 #endregion
 
 

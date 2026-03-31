@@ -11,11 +11,11 @@ class_name Player
 ##settings for the movement
 @export_group("movement")
 ##maximum walking speed
-@export var max_speed: float = 5
+@export var max_speed: float = 2.5
 ##walking acceleration
 ##6× higher than max_speed is 10 frames until max speed
 ##12× higher is 5 frames etc.
-@export var acceleration: float = 60
+@export var acceleration: float = 30
 
 
 #state chart stuff
