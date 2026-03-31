@@ -20,6 +20,10 @@ var camera_states: Array[AtomicState]
 #all the camera states typed as strings
 var state_to_mode: Dictionary[AtomicState, String] = {}
 
+
+##all the camera modes in a array for easeier camera state cycles
+@export var CAMERA_MODES: Array[String] = ["3rd_person", "1st_person", "side_view", "free", "locked"]
+
 ##the current camera mode (also used for what exported variables are shown)
 @export_enum("3rd_person", "1st_person", "side_view", "free", "locked") var camera_mode: String = "3rd_person":
 	set(value):
@@ -29,13 +33,22 @@ var state_to_mode: Dictionary[AtomicState, String] = {}
 
 
 #settings for the camera
-## the location the camera is locked or the offset depending on the mode
-@export var location: Vector3 = Vector3.ZERO
 ##the speed the mouse moves around with the moving buttons
 @export var speed: float = 50
 
 ##camera rotating
 @export_group("camera rotation")
+#wanted rotation (for smoothly lerping)
+var wanted_rotation: Vector3 = Vector3.ZERO
+
+##the power of the lerp (how fast the camera gets to that rotation)
+##for the rotation only
+@export var rotation_lerp_power: float = 7.0
+
+## the rotation of the camera in side view (X)
+@export_range(-180.0, 180.0, 0.1, "radians_as_degrees") var side_view_rotation_x: float = -deg_to_rad(10)
+## the rotation of the camera in side view (Y)
+@export_range(-180.0, 180.0, 0.1, "radians_as_degrees") var side_view_rotation_y: float = -deg_to_rad(90)
 ##the speed the mouse turns the camera
 @export var mouse_sensibility: float = 0.005
 ##minimal vertical angle for the camera
@@ -46,6 +59,8 @@ var state_to_mode: Dictionary[AtomicState, String] = {}
 
 ##zooming variables
 @export_group("zoom")
+## the distance the camera is from the player
+@export var side_view_distance: float = 4.0
 ##max distance from player
 @export var max_distance: float = 4.0
 ##min distance from player
@@ -79,9 +94,6 @@ func _ready() -> void:
 	}
 	
 	
-	#set the spring length to the starting distance
-	spring_arm_3d.spring_length = starting_distance
-	
 	#wait one frame else the setter breaks
 	await get_tree().process_frame
 	
@@ -91,8 +103,22 @@ func _ready() -> void:
 	await get_tree().process_frame
 #endregion
 
+#region loops/checks
+##runs when an input is made
+func _input(_event: InputEvent) -> void:
+	#toggle the next camera state if that is the input
+	toggle_camera_in_loop()
 
-#region state chart
+##runs every frame
+func _process(delta: float) -> void:
+	#lerp the camera rotation
+	rotation.x = lerp_angle(rotation.x, wanted_rotation.x, delta*rotation_lerp_power)
+	rotation.y = lerp_angle(rotation.y, wanted_rotation.y, delta*rotation_lerp_power)
+	rotation.z = lerp_angle(rotation.z, wanted_rotation.z, delta*rotation_lerp_power)
+#endregion
+
+
+#region setting/getting
 ##setter for the camera mode state chart
 func set_camera_mode_state(mode_name: String) -> void:
 	for state: AtomicState in camera_states:
@@ -105,12 +131,26 @@ func set_camera_mode_state(mode_name: String) -> void:
 			state._state_enter(null)
 
 ##getter for the current camera state
+##returns "null" if no state is active
 func get_camera_mode_state() -> String:
 	for state: AtomicState in camera_states:
 		if state.active:
 			return state_to_mode[state]
 	
 	return "null"
+
+##getter for the next camera mode in the queue
+func get_next_camera_mode(current_mode: String) -> String:
+	#fail safe for no current mode
+	if current_mode == "null":
+		return "null"
+	
+	#finds the current index for the current mode
+	var index = CAMERA_MODES.find(current_mode)
+	#increases the index to find the next one
+	index = (index + 1) % CAMERA_MODES.size()
+	#returns the new mode
+	return CAMERA_MODES[index]
 #endregion
 
 #region editor experience enhancer
@@ -121,15 +161,15 @@ func _validate_property(property: Dictionary) -> void:
 		return
 	
 	# Always show camera_mode
-	if property.name == "camera_mode":
+	if property.name == "camera_mode" || property.name == "CAMERA_MODES":
 		return
 	
 	#list of vars shown per mode
 	var allowed := {
-		"3rd_person": ["mouse_sensibility", "min_vertical_angle", "max_vertical_angle", "max_distance", "min_distance", "starting_distance", "zoom_speed"],
-		"1st_person": ["mouse_sensibility", "min_vertical_angle", "max_vertical_angle"],
-		"free": ["mouse_sensibility", "speed"],
-		"side_view": ["location"],
+		"3rd_person": ["mouse_sensibility", "min_vertical_angle", "max_vertical_angle", "max_distance", "min_distance", "starting_distance", "zoom_speed", "rotation_lerp_power"],
+		"1st_person": ["mouse_sensibility", "min_vertical_angle", "max_vertical_angle", "rotation_lerp_power"],
+		"free": ["mouse_sensibility", "speed", "rotation_lerp_power"],
+		"side_view": ["side_view_distance", "side_view_rotation_x", "side_view_rotation_y", "rotation_lerp_power"],
 		"locked": ["location"]
 	}
 	
@@ -145,16 +185,20 @@ func _validate_property(property: Dictionary) -> void:
 
 
 #region 3rd person camera
+##starting settings for 3rd person camera
+func _on_rd_person_state_entered() -> void:
+	#set the spring length to the starting distance
+	spring_arm_3d.spring_length = starting_distance
+
+
 ##camera movement for 3rd person
 func _on_rd_person_state_input(event: InputEvent) -> void:
-	print("input")
 	#moving the camera
 	move_camera_by_mouse(event)
 	
 	#zooming
 	zoom_camera_by_input(event)
 #endregion
-
 
 #region 1st person camera
 ##starting settings for 1st person camera
@@ -167,7 +211,16 @@ func _on_st_person_state_input(event: InputEvent) -> void:
 	move_camera_by_mouse(event)
 #endregion
 
-
+#region side view camera
+##starting settings for 3rd person camera
+func _on_side_view_state_entered() -> void:
+	#set the spring length to the starting distance
+	spring_arm_3d.spring_length = side_view_distance
+	
+	#sets the correct rotation
+	wanted_rotation.x = side_view_rotation_x
+	wanted_rotation.y = side_view_rotation_y
+#endregion
 
 
 #region camera movement functions
@@ -176,14 +229,14 @@ func move_camera_by_mouse(event: InputEvent) -> void:
 	#mouse movement
 	if event is InputEventMouseMotion:
 		#Y rotation
-		rotation.y -= event.relative.x * mouse_sensibility
+		wanted_rotation.y -= event.relative.x * mouse_sensibility
 		#wrap the Y to circle infinitly
-		rotation.y = wrapf(rotation.y, 0.0, TAU)
+		wanted_rotation.y = wrapf(wanted_rotation.y, 0.0, TAU)
 		
 		#X camera rotation
-		rotation.x -= event.relative.y * mouse_sensibility
+		wanted_rotation.x -= event.relative.y * mouse_sensibility
 		#not make the camera be able to go too far
-		rotation.x = clamp(rotation.x, min_vertical_angle, max_vertical_angle)
+		wanted_rotation.x = clamp(wanted_rotation.x, min_vertical_angle, max_vertical_angle)
 
 
 ##used for zooming the camera in/out by user inputs
@@ -198,5 +251,17 @@ func zoom_camera_by_input(event: InputEvent) -> void:
 #endregion
 
 
-func _on_rd_person_state_unhandled_input(event: InputEvent) -> void:
-	pass # Replace with function body.
+#region testing
+##sets the new camera state to the next one in a loop
+func toggle_camera_in_loop() -> void:
+	if Input.is_action_just_pressed("ChangeCamera"):
+		#gets the next mode
+		var current_mode: String = get_next_camera_mode(get_camera_mode_state())
+		
+		#failsave for no next mode
+		if current_mode == "null":
+			return
+		
+		#sets the camera mode to the new mode
+		set_camera_mode_state(current_mode)
+#endregion
