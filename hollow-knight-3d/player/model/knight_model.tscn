@@ -2,6 +2,28 @@
 
 [ext_resource type="PackedScene" uid="uid://6txikwufjlvx" path="res://player/model/knight.blend" id="1_tx3tu"]
 [ext_resource type="Script" uid="uid://bje2m4icvva5q" path="res://player/model/knight_model.gd" id="2_u5ohn"]
+[ext_resource type="Texture2D" uid="uid://7ok7m56ws6eo" path="res://player/model/knight_head color.png.png" id="3_hrbeg"]
+[ext_resource type="Texture2D" uid="uid://botywmfwvfpy6" path="res://player/model/knight_head roughness.png" id="4_awyfk"]
+[ext_resource type="Texture2D" uid="uid://cs4qk63yncaf6" path="res://player/model/knight_weapon color.png.png" id="5_pjafr"]
+[ext_resource type="Texture2D" uid="uid://dbv51hjdawwbf" path="res://player/model/knight_weapon normal.png.png" id="6_6cebr"]
+[ext_resource type="Texture2D" uid="uid://cv5oojuxnb4al" path="res://player/model/knight_weapon roughness.png.png" id="7_62uqp"]
+[ext_resource type="Texture2D" uid="uid://dd1hl72gvm6yx" path="res://player/model/knight_cloak color.png" id="8_fr5qo"]
+[ext_resource type="Texture2D" uid="uid://doo6cg6hi1jq3" path="res://player/model/knight_cloak roughness.png" id="9_jrrs2"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jbdqp"]
+albedo_texture = ExtResource("3_hrbeg")
+roughness_texture = ExtResource("4_awyfk")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_flgo1"]
+albedo_texture = ExtResource("5_pjafr")
+metallic = 1.0
+roughness_texture = ExtResource("7_62uqp")
+normal_enabled = true
+normal_texture = ExtResource("6_6cebr")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_p3dbf"]
+albedo_texture = ExtResource("8_fr5qo")
+roughness_texture = ExtResource("9_jrrs2")
 
 [node name="knight_model" unique_id=360903724 node_paths=PackedStringArray("meshes") instance=ExtResource("1_tx3tu")]
 script = ExtResource("2_u5ohn")
@@ -172,6 +194,9 @@ bones/211/position = Vector3(2.7490592e-09, 1.5017578e-08, -5.163593e-10)
 bones/214/position = Vector3(-0.15197724, 0.051284775, 0.020704135)
 bones/214/rotation = Quaternion(-0.65020984, -7.559159e-15, -2.2677478e-14, 0.7597548)
 
+[node name="Head" parent="rig/Skeleton3D" index="1" unique_id=113519715]
+surface_material_override/0 = SubResource("StandardMaterial3D_jbdqp")
+
 [node name="Skeleton3D" parent="Armature" parent_id_path=PackedInt32Array(44993214) index="0" unique_id=1285969203]
 bones/0/position = Vector3(1.7763568e-15, 0.37536427, 0.037072334)
 bones/0/rotation = Quaternion(0.70498234, 0.054772463, -0.7049822, -0.05477248)
@@ -232,6 +257,12 @@ bones/82/rotation = Quaternion(-2.478961e-08, -8.3484125e-08, -0.07070949, 0.997
 
 [node name="Bone_083" parent="Armature/Skeleton3D" index="0" unique_id=825185730]
 transform = Transform3D(-9.62837e-08, 9.215492e-08, -0.99999994, 0.9861549, 0.16582683, -8.4756934e-08, 0.16582681, -0.9861549, -1.708974e-07, 7.4222832e-09, 0.2698452, -0.05814717)
+
+[node name="Weapon" parent="Armature/Skeleton3D/Bone_083" index="0" unique_id=1602156747]
+surface_material_override/0 = SubResource("StandardMaterial3D_flgo1")
+
+[node name="Cloak" parent="Armature/Skeleton3D" index="1" unique_id=988064784]
+surface_material_override/0 = SubResource("StandardMaterial3D_p3dbf")
 
 [node name="AnimationPlayer" parent="." index="81" unique_id=157297343]
 autoplay = &"walk"
