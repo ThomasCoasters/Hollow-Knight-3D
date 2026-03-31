@@ -5,6 +5,35 @@ class_name Player
 @export_group("nodes")
 ##player model
 @export var knight: Player_Model
+##player camera
+@export var camera: Player_Camera
+
+##settings for the movement
+@export_group("movement")
+##maximum walking speed
+@export var max_speed: float = 5
+##walking acceleration
+##6× higher than max_speed is 10 frames until max speed
+##12× higher is 5 frames etc.
+@export var acceleration: float = 60
+
+
+#state chart stuff
+
+#normal
+@onready var state_chart: StateChart = $StateChart
+@onready var parallel_state: ParallelState = $StateChart/ParallelState
+
+#moving
+@onready var moving: CompoundState = $StateChart/ParallelState/Moving
+@onready var idle_moving_state: AtomicState = $StateChart/ParallelState/Moving/Idle
+@onready var moving_state: AtomicState = $StateChart/ParallelState/Moving/Moving
+
+#jumping
+@onready var jumping_falling: CompoundState = $StateChart/ParallelState/Jumping_Falling
+@onready var idle_jumping_falling_state: AtomicState = $StateChart/ParallelState/Jumping_Falling/Idle
+@onready var jumping_state: AtomicState = $StateChart/ParallelState/Jumping_Falling/Jumping
+@onready var falling_state: AtomicState = $StateChart/ParallelState/Jumping_Falling/Falling
 
 
 
@@ -14,8 +43,51 @@ class_name Player
 
 
 
+#region moving
+##handles moving state every physics frame
+func _on_moving_state_physics_processing(delta: float) -> void:
+	#Get the movement input direction and handle the movement/deceleration
+	var input_dir: Vector2 = Input.get_vector(&"MoveLeft", &"MoveRight", &"MoveForward", &"MoveBackward")
+	var direction: Vector3 = Vector3(input_dir.x, 0, input_dir.y).normalized()
+	
+	#rotates movement towards the camera
+	direction = direction.rotated(Vector3.UP, camera.global_rotation.y)
+	
+	#if you held move in an direction
+	if direction:
+		#make direction usable for movement
+		direction *= max_speed
+		
+		#accelerate the player
+		velocity.x = move_toward(velocity.x, direction.x, delta * acceleration)
+		velocity.z = move_toward(velocity.z, direction.z, delta * acceleration)
+		
+		#look in the moving direction
+		var look_position: Vector3 = global_position + Vector3(-velocity.x, 0, -velocity.z)
+		var target_transform := knight.global_transform.looking_at(look_position, Vector3.UP)
+		
+		# convert to quaternions
+		var current_rot := knight.global_transform.basis.get_rotation_quaternion()
+		var target_rot := target_transform.basis.get_rotation_quaternion()
+		
+		# interpolate rotation
+		var new_rot := current_rot.slerp(target_rot, delta * 10.0) # tweak 10.0
+		
+		# apply back
+		knight.global_transform.basis = Basis(new_rot)
+	
+	else:
+		#decelerate the player
+		velocity.x = move_toward(velocity.x, 0, delta * acceleration)
+		velocity.z = move_toward(velocity.z, 0, delta * acceleration)
+	
+	move_and_slide()
 
 
+
+
+
+#endregion
 
 
 

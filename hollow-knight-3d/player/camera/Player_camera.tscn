@@ -6,12 +6,15 @@
 [ext_resource type="Script" uid="uid://cytafq8i1y8qm" path="res://addons/godot_state_charts/atomic_state.gd" id="4_yqmq6"]
 [ext_resource type="Script" uid="uid://bajrwgoencm3i" path="res://player/camera/cam.gd" id="5_2jts0"]
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_2jts0"]
+radius = 0.4
+
 [sub_resource type="SphereShape3D" id="SphereShape3D_yqmq6"]
 radius = 0.10204538
 
 [node name="Player_Camera" type="Node3D" unique_id=707306477]
 script = ExtResource("1_b1fii")
-spring_arm_3d = Object(SpringArm3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"collision_mask":1,"shape":null,"spring_length":1.0,"margin":0.01,"script":null)
+spring_arm_3d = Object(SpringArm3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"collision_mask":1,"shape":SubResource("SphereShape3D_2jts0"),"spring_length":1.0,"margin":0.01,"script":null)
 
 state_chart = Object(Node,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","script":ExtResource("2_06wur"),"track_in_editor":false,"warn_on_sending_unknown_events":true,"initial_expression_properties":{},"_state":null,"_expression_properties":{},"_queued_events":Array[StringName]([]),"_property_change_pending":false,"_state_change_pending":false,"_locked_down":false,"_frozen":false,"_queued_transitions":Array[Dictionary]([]),"_transitions_processing_active":false,"_debugger_remote":null,"_valid_event_names":Array[StringName]([]),"metadata/_custom_type_script":"uid://couw105c3bde4")
 
@@ -34,8 +37,10 @@ CAMERA_MODES = Array[String](["3rd_person", "1st_person", "side_view"])
 wanted_rotation = Vector3(0, 0, 0)
 side_view_rotation_x = -0.3141592653589793
 side_view_rotation_y = -1.2566370614359172
+zoom_speed = 0.3
 
 [node name="SpringArm3D" type="SpringArm3D" parent="." unique_id=1307545278]
+shape = SubResource("SphereShape3D_2jts0")
 
 [node name="spring_position" type="Marker3D" parent="SpringArm3D" unique_id=949136839]
 
@@ -51,8 +56,6 @@ collision_mask = 4
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Camera3D/camera_area" unique_id=380314298]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0027229488, 0)
 shape = SubResource("SphereShape3D_yqmq6")
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Camera3D" unique_id=738894797]
 
 [node name="StateChart" type="Node" parent="." unique_id=642433328]
 script = ExtResource("2_06wur")

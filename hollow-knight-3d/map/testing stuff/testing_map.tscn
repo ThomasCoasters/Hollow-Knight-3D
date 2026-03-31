@@ -1,3 +1,19 @@
 [gd_scene format=3 uid="uid://67die22qqpu7"]
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_bn70x"]
+size = Vector3(40, 0.5, 40)
+
 [node name="TestingMap" type="Node3D" unique_id=1518694753]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1627386197]
+transform = Transform3D(1, 0, 0, 0, 0.42261824, 0.9063078, 0, -0.9063078, 0.42261824, 0, 0, 0)
+
+[node name="Enviroment" type="Node3D" parent="." unique_id=1149370456]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Enviroment" unique_id=501668723]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Enviroment/StaticBody3D" unique_id=1654041843]
+size = Vector3(40, 0.5, 40)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Enviroment/StaticBody3D" unique_id=1010115504]
+shape = SubResource("BoxShape3D_bn70x")
