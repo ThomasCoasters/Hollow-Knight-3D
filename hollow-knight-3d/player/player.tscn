@@ -65,7 +65,7 @@ script = ExtResource("5_hg6s5")
 
 [node name="Moving" type="Node" parent="StateChart/ParallelState" unique_id=1695983360]
 script = ExtResource("6_8t03j")
-initial_state = NodePath("Moving")
+initial_state = NodePath("Idle")
 
 [node name="Idle" type="Node" parent="StateChart/ParallelState/Moving" unique_id=574984648]
 script = ExtResource("7_2ieo8")

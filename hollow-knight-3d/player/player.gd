@@ -1,3 +1,4 @@
+#region vars
 extends CharacterBody3D
 class_name Player
 
@@ -34,11 +35,28 @@ class_name Player
 @onready var idle_jumping_falling_state: AtomicState = $StateChart/ParallelState/Jumping_Falling/Idle
 @onready var jumping_state: AtomicState = $StateChart/ParallelState/Jumping_Falling/Jumping
 @onready var falling_state: AtomicState = $StateChart/ParallelState/Jumping_Falling/Falling
+#endregion
 
 
 
 
+#region loops
+func _input(_event: InputEvent) -> void:
+	#when not moving
+	if idle_moving_state.active:
+		#check if moving starts
+		if Input.is_action_pressed(&"MoveBackward") || Input.is_action_pressed(&"MoveForward") ||  Input.is_action_pressed(&"MoveLeft") || Input.is_action_pressed(&"MoveRight"):
+			#set the state chart to the moving state
+			state_chart.send_event("start_moving")
+	
+	#when you are moving
+	elif moving_state.active:
+		#check if you stop moving
+		if !(Input.is_action_pressed(&"MoveBackward") || Input.is_action_pressed(&"MoveForward") ||  Input.is_action_pressed(&"MoveLeft") || Input.is_action_pressed(&"MoveRight")):
+			#set the state chart to non moving state
+			state_chart.send_event("stop_moving")
 
+#endregion
 
 
 
