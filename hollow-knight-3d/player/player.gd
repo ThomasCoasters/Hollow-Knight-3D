@@ -52,8 +52,9 @@ func _input(_event: InputEvent) -> void:
 	#when you are moving
 	elif moving_state.active:
 		#check if you stop moving
-		if !(Input.is_action_pressed(&"MoveBackward") || Input.is_action_pressed(&"MoveForward") ||  Input.is_action_pressed(&"MoveLeft") || Input.is_action_pressed(&"MoveRight")):
+		if velocity == Vector3.ZERO:
 			#set the state chart to non moving state
+			print("no movin")
 			state_chart.send_event("stop_moving")
 
 #endregion
