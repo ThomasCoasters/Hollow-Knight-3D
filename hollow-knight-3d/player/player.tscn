@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://jk2jm1g6q853" path="res://addons/godot_state_charts/compound_state.gd" id="6_8t03j"]
 [ext_resource type="Script" uid="uid://cytafq8i1y8qm" path="res://addons/godot_state_charts/atomic_state.gd" id="7_2ieo8"]
 [ext_resource type="Script" uid="uid://cf1nsco3w0mf6" path="res://addons/godot_state_charts/transition.gd" id="8_ebec5"]
+[ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="9_hg6s5"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_oul6g"]
 radius = 0.076660156
@@ -17,16 +18,19 @@ height = 0.5409584
 radius = 0.6562854
 
 [node name="Node3D" type="CharacterBody3D" unique_id=2083664876 node_paths=PackedStringArray("knight", "camera")]
-collision_mask = 3
+collision_layer = 2
 script = ExtResource("1_g1dw6")
 knight = NodePath("knight_model")
 camera = NodePath("PlayerCamera")
+GRAVITY = 0.13
+max_fall_speed = -15.0
+jump_speed = 3.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2092652524]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.27104545, 0)
 shape = SubResource("CapsuleShape3D_oul6g")
 
-[node name="knight_model" parent="." unique_id=360903724 instance=ExtResource("1_rkbax")]
+[node name="knight_model" parent="." unique_id=966702749 instance=ExtResource("1_rkbax")]
 
 [node name="PlayerCamera" parent="." unique_id=1536589263 instance=ExtResource("2_rkbax")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45235673, 0)
@@ -125,7 +129,7 @@ script = ExtResource("7_2ieo8")
 [node name="Idle" type="Node" parent="StateChart/ParallelState/Jumping_Falling/Falling" unique_id=589945190]
 script = ExtResource("8_ebec5")
 to = NodePath("../../Idle")
-event = &"stiop_falling"
+event = &"stop_falling"
 delay_in_seconds = "0.0"
 
 [node name="Jumping" type="Node" parent="StateChart/ParallelState/Jumping_Falling/Falling" unique_id=1199673908]
@@ -134,6 +138,17 @@ to = NodePath("../../Jumping")
 event = &"start_jumping"
 delay_in_seconds = "0.0"
 
+[node name="StateChartDebugger" parent="." unique_id=438566491 instance=ExtResource("9_hg6s5")]
+offset_left = 1276.0
+offset_bottom = -630.0
+initial_node_to_watch = NodePath("../StateChart")
+
+[node name="max_jump_time" type="Timer" parent="." unique_id=1228798069]
+one_shot = true
+
 [connection signal="area_entered" from="camera_detector" to="." method="_on_camera_detector_area_entered"]
 [connection signal="area_exited" from="camera_detector" to="." method="_on_camera_detector_area_exited"]
-[connection signal="state_physics_processing" from="StateChart/ParallelState/Moving/Moving" to="." method="_on_moving_state_physics_processing"]
+[connection signal="state_entered" from="StateChart/ParallelState/Jumping_Falling/Idle" to="." method="_on_idle_state_entered"]
+[connection signal="state_entered" from="StateChart/ParallelState/Jumping_Falling/Jumping" to="." method="_on_jumping_state_entered"]
+[connection signal="state_entered" from="StateChart/ParallelState/Jumping_Falling/Falling" to="." method="_on_falling_state_entered"]
+[connection signal="timeout" from="max_jump_time" to="." method="_on_max_jump_time_timeout"]
