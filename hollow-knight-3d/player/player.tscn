@@ -36,6 +36,8 @@ shape = SubResource("CapsuleShape3D_oul6g")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45235673, 0)
 spring_arm_3d = Object(SpringArm3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"collision_mask":1,"shape":null,"spring_length":1.0,"margin":0.01,"script":null)
 
+spring_position = Object(Marker3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"gizmo_extents":0.25,"script":null)
+
 state_chart = Object(Node,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","script":ExtResource("4_rgyib"),"track_in_editor":false,"warn_on_sending_unknown_events":true,"initial_expression_properties":{},"_state":null,"_expression_properties":{},"_queued_events":Array[StringName]([]),"_property_change_pending":false,"_state_change_pending":false,"_locked_down":false,"_frozen":false,"_queued_transitions":Array[Dictionary]([]),"_transitions_processing_active":false,"_debugger_remote":null,"_valid_event_names":Array[StringName]([]),"metadata/_custom_type_script":"uid://couw105c3bde4")
 
 camera_mode_state_machine = Object(Node,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","script":ExtResource("6_8t03j"),"initial_state":NodePath("3rd_person"),"_active_state":null,"_initial_state":Object(Node,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","script":ExtResource("7_2ieo8"),"_state_active":false,"active":false,"_pending_transition":null,"_pending_transition_remaining_delay":0.0,"_pending_transition_initial_delay":0.0,"_transitions":Array[ExtResource("8_ebec5")]([]),"_chart":null)
@@ -51,6 +53,8 @@ free_state = Object(Node,"unique_name_in_owner":false,"process_mode":0,"process_
 
 locked_state = Object(Node,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","script":ExtResource("7_2ieo8"),"_state_active":false,"active":false,"_pending_transition":null,"_pending_transition_remaining_delay":0.0,"_pending_transition_initial_delay":0.0,"_transitions":Array[ExtResource("8_ebec5")]([]),"_chart":null)
 
+location = Vector3(0, 0, 0)
+old_camera_position = null
 
 [node name="camera_detector" type="Area3D" parent="." unique_id=2043606115]
 collision_layer = 4

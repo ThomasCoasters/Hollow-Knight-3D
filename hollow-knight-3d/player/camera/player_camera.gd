@@ -33,8 +33,19 @@ var state_to_mode: Dictionary[AtomicState, String] = {}
 
 
 #settings for the camera
+
+
 ##the speed the mouse moves around with the moving buttons
 @export var speed: float = 50
+
+##camera location for stuff like the locked camera
+@export var location: Vector3 = Vector3.ZERO
+
+##place to store the postion of the camera
+var old_camera_position: Vector3 = Vector3.ZERO
+
+##time to return to the old camera position nicely from modes like the locked mode
+@export var position_return_time: float = 0.5
 
 ##camera rotating
 @export_group("camera rotation")
@@ -59,6 +70,12 @@ var wanted_rotation: Vector3 = Vector3.ZERO
 @export_range(-180.0, 180.0, 0.1, "radians_as_degrees") var side_view_rotation_x: float = -deg_to_rad(10)
 ## the rotation of the camera in side view (Y)
 @export_range(-180.0, 180.0, 0.1, "radians_as_degrees") var side_view_rotation_y: float = -deg_to_rad(90)
+
+## the rotation of the camera in locked mode (X)
+@export_range(-180.0, 180.0, 0.1, "radians_as_degrees") var locked_rotation_x: float = -deg_to_rad(10)
+## the rotation of the camera in locked mode (Y)
+@export_range(-180.0, 180.0, 0.1, "radians_as_degrees") var locked_rotation_y: float = -deg_to_rad(90)
+
 ##the speed the mouse turns the camera
 @export var mouse_sensibility: float = 0.005
 ##minimal vertical angle for the camera
@@ -79,8 +96,15 @@ var wanted_rotation: Vector3 = Vector3.ZERO
 @export var starting_distance: float = 2.5
 ##speed that you zoom at
 @export var zoom_speed: float = 0.2
-#endregion
 
+
+
+
+
+##tween used for moving the camera
+var cam_moving_tween: Tween = create_tween()
+
+#endregion
 
 
 
@@ -105,6 +129,10 @@ func _ready() -> void:
 		free_state: "free",
 		locked_state: "locked",
 	}
+	
+	
+	#sets a nice easing to the camera moving tween
+	cam_moving_tween.set_ease(Tween.EASE_OUT)
 	
 	
 	#wait one frame else the setter breaks
@@ -193,7 +221,7 @@ func _validate_property(property: Dictionary) -> void:
 		"1st_person": ["mouse_sensibility", "min_vertical_angle", "max_vertical_angle", "rotation_lerp_power"],
 		"free": ["mouse_sensibility", "speed", "rotation_lerp_power"],
 		"side_view": ["side_view_distance", "side_view_rotation_x", "side_view_rotation_y", "rotation_lerp_power"],
-		"locked": ["location"]
+		"locked": ["location", "locked_rotation_x", "locked_rotation_y", "position_return_time"]
 	}
 	
 	#not remove the correct vars
@@ -246,7 +274,7 @@ func _on_st_person_state_input(event: InputEvent) -> void:
 #endregion
 
 #region side view camera
-##starting settings for 3rd person camera
+##starting settings for side view camera
 func _on_side_view_state_entered() -> void:
 	#set the spring length to the starting distance
 	spring_arm_3d.spring_length = side_view_distance
@@ -256,6 +284,38 @@ func _on_side_view_state_entered() -> void:
 	wanted_rotation.y = side_view_rotation_y
 #endregion
 
+#region free camera
+
+#endregion
+
+#region locked camera
+##starting settings for locked camera
+func _on_locked_state_entered() -> void:
+	#gets the current position and stores it to return to later
+	old_camera_position = position
+	
+	#sets self on top layer so the player does not move the camera
+	top_level = true
+	
+	#set the camera to the correct position
+	global_position = location
+	
+	#sets the correct rotation
+	wanted_rotation.x = locked_rotation_x
+	wanted_rotation.y = locked_rotation_y
+
+##resets changes that might break stuff
+func _on_locked_state_exited() -> void:
+	#reverse setting self on top layer so the player cam move the camera now
+	top_level = false
+	
+	
+	#kill all current camera tween processes
+	cam_moving_tween.kill()
+	
+	#tween to the correct position
+	cam_moving_tween.tween_property(self, "position", old_camera_position, position_return_time)
+#endregion
 
 
 
