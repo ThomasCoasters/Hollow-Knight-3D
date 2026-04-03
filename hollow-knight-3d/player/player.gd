@@ -9,6 +9,26 @@ class_name Player
 ##player camera
 @export var camera: Player_Camera
 
+
+##settings for restricting stuff
+@export_group("restrictions")
+##chooses whether you can use inputs or not
+@export var can_input: bool = true:
+	#when you 
+	set(value):
+		#sets the var to the new value
+		can_input = value
+		#dissables or enables the inputs
+		set_process_input(can_input)
+		
+		#stop the player from moving
+		velocity.x = 0
+		velocity.z = 0
+		
+		#set the moving state chart to the non moving state
+		state_chart.send_event(&"stop_moving")
+
+
 ##settings for the movement
 @export_group("movement")
 ##settings for moving
@@ -75,9 +95,13 @@ var jump_max_held: bool = false
 
 #region setup
 func _ready() -> void:
-	### ----- nodes setup ----- ###
+	### ----- setup ----- ###
 	#time for the max jump time
 	max_jump_time_timer.wait_time = max_jump_time
+	
+	#dissables or enables the inputs depending on the starting state of can_input
+	set_process_input(can_input)
+	
 
 #endregion
 
@@ -106,7 +130,7 @@ func _input(_event: InputEvent) -> void:
 		#check if the player released the jumping button
 		if Input.is_action_just_released(&"Jump"):
 			#make the player go to the falling state
-			state_chart.send_event("start_falling")
+			state_chart.send_event(&"start_falling")
 	
 	
 	#when you are not already having a positive velocity (jumping)
@@ -129,7 +153,7 @@ func _physics_process(delta: float) -> void:
 		#check if the player landed
 		if is_on_floor():
 			#stop falling and go to the idle state
-			state_chart.send_event("stop_falling")
+			state_chart.send_event(&"stop_falling")
 	
 	
 	#when you are not jumping nor falling
@@ -267,7 +291,7 @@ func _on_max_jump_time_timeout() -> void:
 	jump_max_held = true
 	
 	#make the player go to the falling state
-	state_chart.send_event("start_falling")
+	state_chart.send_event(&"start_falling")
 #endregion
 
 
