@@ -96,12 +96,14 @@ var jump_max_held: bool = false
 #region setup
 func _ready() -> void:
 	### ----- setup ----- ###
+	#sets the global player to the player
+	Global.player = self
+	
 	#time for the max jump time
 	max_jump_time_timer.wait_time = max_jump_time
 	
 	#dissables or enables the inputs depending on the starting state of can_input
 	set_process_input(can_input)
-	
 
 #endregion
 
@@ -148,6 +150,7 @@ func _input(_event: InputEvent) -> void:
 
 
 func _physics_process(delta: float) -> void:
+	
 	### ----- state chart stuff ----- ###
 	
 	#when you are falling

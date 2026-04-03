@@ -14,6 +14,10 @@ config/name="Hollow Knight 3D"
 run/main_scene="uid://cb6bjlgn0xuvj"
 config/features=PackedStringArray("4.6", "Forward Plus")
 
+[autoload]
+
+Global="*uid://qjy8yke0x640"
+
 [display]
 
 window/size/viewport_width=1920

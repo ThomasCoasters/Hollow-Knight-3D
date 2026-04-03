@@ -33,7 +33,6 @@ locked_state = Object(Node,"unique_name_in_owner":false,"process_mode":0,"proces
 
 camera_states = Array[ExtResource("4_yqmq6")]([])
 state_to_mode = Dictionary[ExtResource("4_yqmq6"), String]({})
-camera_mode = "free"
 old_camera_position = Vector3(0, 0, 0)
 wanted_rotation = Vector3(0, 0, 0)
 side_view_rotation_x = -0.3141592653589793

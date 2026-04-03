@@ -124,6 +124,10 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
 	
+	#sets this as the Global camera
+	Global.camera = self
+	
+	#makes the mouse invis
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
 	#initialize the arrays and dictionary that use @onready variables
@@ -185,6 +189,7 @@ func _process(delta: float) -> void:
 	#not make the editor play this 
 	if Engine.is_editor_hint():
 		return
+	
 	
 	#lerp the camera rotation
 	global_rotation.x = lerp_angle(global_rotation.x, wanted_rotation.x, delta*rotation_lerp_power)
@@ -400,6 +405,8 @@ func unrestricted_rotate_camera_by_mouse(event: InputEvent) -> void:
 		
 		#X camera rotation
 		wanted_rotation.x -= event.relative.y * mouse_sensibility
+		#not make the camera be able to go in a circle
+		wanted_rotation.x = clamp(wanted_rotation.x, deg_to_rad(-90), deg_to_rad(90))
 
 
 ##used for zooming the camera in/out by user inputs

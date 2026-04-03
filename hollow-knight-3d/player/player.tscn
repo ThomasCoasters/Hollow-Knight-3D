@@ -8,7 +8,6 @@
 [ext_resource type="Script" uid="uid://jk2jm1g6q853" path="res://addons/godot_state_charts/compound_state.gd" id="6_8t03j"]
 [ext_resource type="Script" uid="uid://cytafq8i1y8qm" path="res://addons/godot_state_charts/atomic_state.gd" id="7_2ieo8"]
 [ext_resource type="Script" uid="uid://cf1nsco3w0mf6" path="res://addons/godot_state_charts/transition.gd" id="8_ebec5"]
-[ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="9_hg6s5"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_oul6g"]
 radius = 0.076660156
@@ -51,7 +50,10 @@ free_state = Object(Node,"unique_name_in_owner":false,"process_mode":0,"process_
 
 locked_state = Object(Node,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","script":ExtResource("7_2ieo8"),"_state_active":false,"active":false,"_pending_transition":null,"_pending_transition_remaining_delay":0.0,"_pending_transition_initial_delay":0.0,"_transitions":Array[ExtResource("8_ebec5")]([]),"_chart":null)
 
-cam_move_tween_time = 0.5
+speed = 50.0
+max_speed = 30.0
+min_speed = 0.5
+scroll_speed = 0.3
 
 [node name="camera_detector" type="Area3D" parent="." unique_id=2043606115]
 collision_layer = 4
@@ -138,11 +140,6 @@ script = ExtResource("8_ebec5")
 to = NodePath("../../Jumping")
 event = &"start_jumping"
 delay_in_seconds = "0.0"
-
-[node name="StateChartDebugger" parent="." unique_id=438566491 instance=ExtResource("9_hg6s5")]
-offset_left = 1276.0
-offset_bottom = -630.0
-initial_node_to_watch = NodePath("../StateChart")
 
 [node name="max_jump_time" type="Timer" parent="." unique_id=1228798069]
 one_shot = true
