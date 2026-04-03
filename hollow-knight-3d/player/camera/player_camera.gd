@@ -34,10 +34,6 @@ var state_to_mode: Dictionary[AtomicState, String] = {}
 
 #settings for the camera
 
-
-##the speed the mouse moves around with the moving buttons
-@export var speed: float = 50
-
 ##camera location for stuff like the locked camera
 @export var location: Vector3 = Vector3.ZERO
 
@@ -84,8 +80,11 @@ var wanted_rotation: Vector3 = Vector3.ZERO
 @export_range(0.0, 90.0, 0.1, "radians_as_degrees") var max_vertical_angle: float = PI/4
 
 
+##variables that require the scrollwheel or looks like it does
+@export_group("scrolling")
+
 ##zooming variables
-@export_group("zoom")
+@export_subgroup("zoom")
 ## the distance the camera is from the player
 @export var side_view_distance: float = 4.0
 ##max distance from player
@@ -97,7 +96,16 @@ var wanted_rotation: Vector3 = Vector3.ZERO
 ##speed that you zoom at
 @export var zoom_speed: float = 0.2
 
-
+##freecam speed variables
+@export_subgroup("freecam_speed")
+##the speed the mouse moves around with the moving buttons
+@export var speed: float = 6.0
+##max speed
+@export var max_speed: float = 30.0
+##min speed
+@export var min_speed: float = 0.5
+##speed that scrolling changes the speed
+@export var scroll_speed: float = 0.3
 
 
 
@@ -130,6 +138,9 @@ func _ready() -> void:
 		locked_state: "locked",
 	}
 	
+	
+	#create the reset point for the camera
+	old_camera_position = position
 	
 	#wait one frame else the setter breaks
 	await get_tree().process_frame
@@ -269,7 +280,7 @@ func _on_rd_person_state_entered() -> void:
 ##camera movement for 3rd person
 func _on_rd_person_state_input(event: InputEvent) -> void:
 	#moving the camera
-	move_camera_by_mouse(event)
+	rotate_camera_by_mouse(event)
 	
 	#zooming
 	zoom_camera_by_input(event)
@@ -284,7 +295,7 @@ func _on_st_person_state_entered() -> void:
 ##camera movement for 1st person
 func _on_st_person_state_input(event: InputEvent) -> void:
 	#moving the camera
-	move_camera_by_mouse(event)
+	rotate_camera_by_mouse(event)
 #endregion
 
 #region side view camera
@@ -299,7 +310,36 @@ func _on_side_view_state_entered() -> void:
 #endregion
 
 #region free camera
+##starting settings for the free cam state
+func _on_free_state_entered() -> void:
+	#make the camera start in the player / rotate in a nicer way
+	spring_arm_3d.spring_length = 0
+	
+	#sets self on top layer so the player does not move the camera
+	top_level = true
 
+##camera movement (delta time needed version) for free cam
+func _on_free_state_physics_processing(delta: float) -> void:
+	#move the camera with the moving buttons
+	move_camera_freely(delta)
+
+
+##camera movement (input version) for free cam
+func _on_free_state_input(event: InputEvent) -> void:
+	#moving the camera (rotation)
+	unrestricted_rotate_camera_by_mouse(event)
+	
+	#slow down/speed up
+	change_speed_by_input(event)
+
+
+##resets some weird settings
+func _on_free_state_exited() -> void:
+	#reverse setting self on top layer so the player cam move the camera now
+	top_level = false
+	
+	#tween to the correct position
+	create_usable_tween(self, "position", old_camera_position, cam_move_tween_time, cam_moving_tween, Tween.EASE_OUT)
 #endregion
 
 #region locked camera
@@ -307,9 +347,6 @@ func _on_side_view_state_entered() -> void:
 func _on_locked_state_entered() -> void:
 	#make the spring arm not affect the position
 	spring_arm_3d.spring_length = 0
-	
-	#gets the current position and stores it to return to later
-	old_camera_position = position
 	
 	#sets self on top layer so the player does not move the camera
 	top_level = true
@@ -338,7 +375,7 @@ func _on_locked_state_exited() -> void:
 
 #region camera movement functions
 ##used for rotating the camera by moving the mouse
-func move_camera_by_mouse(event: InputEvent) -> void:
+func rotate_camera_by_mouse(event: InputEvent) -> void:
 	#mouse movement
 	if event is InputEventMouseMotion:
 		#Y rotation
@@ -352,15 +389,61 @@ func move_camera_by_mouse(event: InputEvent) -> void:
 		wanted_rotation.x = clamp(wanted_rotation.x, min_vertical_angle, max_vertical_angle)
 
 
+##used for rotating the camera by moving the mouse without restrictions
+func unrestricted_rotate_camera_by_mouse(event: InputEvent) -> void:
+	#mouse movement
+	if event is InputEventMouseMotion:
+		#Y rotation
+		wanted_rotation.y -= event.relative.x * mouse_sensibility
+		#wrap the Y to circle infinitly
+		wanted_rotation.y = wrapf(wanted_rotation.y, 0.0, TAU)
+		
+		#X camera rotation
+		wanted_rotation.x -= event.relative.y * mouse_sensibility
+
+
 ##used for zooming the camera in/out by user inputs
 func zoom_camera_by_input(event: InputEvent) -> void:
 	#zooming in
-	if event.is_action_pressed("ZoomIn"):
+	if event.is_action_pressed(&"ZoomIn"):
 		spring_arm_3d.spring_length = clamp(spring_arm_3d.spring_length - zoom_speed, min_distance, max_distance)
 	
 	#zooming out
-	if event.is_action_pressed("ZoomOut"):
+	if event.is_action_pressed(&"ZoomOut"):
 		spring_arm_3d.spring_length = clamp(spring_arm_3d.spring_length + zoom_speed, min_distance, max_distance)
+
+
+##used for changing the speed up/down by user inputs
+func change_speed_by_input(event: InputEvent) -> void:
+	#speeding up
+	if event.is_action_pressed(&"ZoomIn"):
+		speed = clamp(speed + zoom_speed, min_speed, max_speed)
+	
+	#slowing down
+	if event.is_action_pressed(&"ZoomOut"):
+		speed = clamp(speed - zoom_speed, min_speed, max_speed)
+
+
+##used for moving the camera freely
+func move_camera_freely(delta: float) -> void:
+	#gets the direction of the inputs
+	var input_dir: Vector2 = Input.get_vector(&"MoveLeft", &"MoveRight", &"MoveForward", &"MoveBackward")
+	
+	#changes the direction to a Vector3
+	var local_direction: Vector3 = Vector3(input_dir.x, 0, input_dir.y)
+	
+	#does not move when not moving (failsafe for later)
+	if local_direction == Vector3.ZERO:
+		return
+	
+	#gets the normalised version of the direction
+	local_direction = local_direction.normalized()
+	
+	#rotates the direction to be correct for the looking direction
+	var global_direction: Vector3 = global_transform.basis * local_direction
+	
+	#moves the camera
+	global_position += global_direction * speed * delta
 #endregion
 
 
