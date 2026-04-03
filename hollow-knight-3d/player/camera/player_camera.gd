@@ -45,7 +45,7 @@ var state_to_mode: Dictionary[AtomicState, String] = {}
 var old_camera_position: Vector3 = Vector3.ZERO
 
 ##time to return to the old camera position nicely from modes like the locked mode
-@export var position_return_time: float = 0.5
+@export var cam_move_tween_time: float = 0.5
 
 ##camera rotating
 @export_group("camera rotation")
@@ -102,7 +102,7 @@ var wanted_rotation: Vector3 = Vector3.ZERO
 
 
 ##tween used for moving the camera
-var cam_moving_tween: Tween = create_tween()
+var cam_moving_tween: Tween
 
 #endregion
 
@@ -131,10 +131,6 @@ func _ready() -> void:
 	}
 	
 	
-	#sets a nice easing to the camera moving tween
-	cam_moving_tween.set_ease(Tween.EASE_OUT)
-	
-	
 	#wait one frame else the setter breaks
 	await get_tree().process_frame
 	
@@ -142,6 +138,24 @@ func _ready() -> void:
 	set_camera_mode_state(camera_mode)
 	
 	await get_tree().process_frame
+
+
+
+##makes the specified tween usable with the settings given
+func create_usable_tween(object: Object, property: NodePath, final_val: Variant, duration: float, wanted_tween: Tween, wanted_ease: Tween.EaseType = Tween.EASE_IN_OUT):
+	#kill all current camera tween processes
+	if wanted_tween:
+		wanted_tween.kill()
+	
+	#create the usable tween
+	wanted_tween = create_tween()
+	
+	#sets the ease to the wanted one
+	wanted_tween.set_ease(wanted_ease)
+	
+	#actually runs the tween
+	wanted_tween.tween_property(object, property, final_val, duration)
+
 #endregion
 
 
@@ -221,7 +235,7 @@ func _validate_property(property: Dictionary) -> void:
 		"1st_person": ["mouse_sensibility", "min_vertical_angle", "max_vertical_angle", "rotation_lerp_power"],
 		"free": ["mouse_sensibility", "speed", "rotation_lerp_power"],
 		"side_view": ["side_view_distance", "side_view_rotation_x", "side_view_rotation_y", "rotation_lerp_power"],
-		"locked": ["location", "locked_rotation_x", "locked_rotation_y", "position_return_time"]
+		"locked": ["location", "locked_rotation_x", "locked_rotation_y", "cam_move_tween_time"]
 	}
 	
 	#not remove the correct vars
@@ -291,30 +305,31 @@ func _on_side_view_state_entered() -> void:
 #region locked camera
 ##starting settings for locked camera
 func _on_locked_state_entered() -> void:
+	#make the spring arm not affect the position
+	spring_arm_3d.spring_length = 0
+	
 	#gets the current position and stores it to return to later
 	old_camera_position = position
 	
 	#sets self on top layer so the player does not move the camera
 	top_level = true
 	
-	#set the camera to the correct position
-	global_position = location
-	
 	#sets the correct rotation
 	wanted_rotation.x = locked_rotation_x
 	wanted_rotation.y = locked_rotation_y
+	
+	
+	#tween to the new location
+	create_usable_tween(self, "global_position", location, cam_move_tween_time, cam_moving_tween, Tween.EASE_OUT)
+
 
 ##resets changes that might break stuff
 func _on_locked_state_exited() -> void:
 	#reverse setting self on top layer so the player cam move the camera now
 	top_level = false
 	
-	
-	#kill all current camera tween processes
-	cam_moving_tween.kill()
-	
 	#tween to the correct position
-	cam_moving_tween.tween_property(self, "position", old_camera_position, position_return_time)
+	create_usable_tween(self, "position", old_camera_position, cam_move_tween_time, cam_moving_tween, Tween.EASE_OUT)
 #endregion
 
 

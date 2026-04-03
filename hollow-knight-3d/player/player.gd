@@ -121,8 +121,10 @@ func _input(_event: InputEvent) -> void:
 	elif moving_state.active:
 		#check if you stop moving
 		if velocity == Vector3.ZERO:
-			#set the state chart to the non moving state
-			state_chart.send_event(&"stop_moving")
+			#check if the player does not want to keep moving 
+			if !(Input.is_action_pressed(&"MoveBackward") || Input.is_action_pressed(&"MoveForward") ||  Input.is_action_pressed(&"MoveLeft") || Input.is_action_pressed(&"MoveRight")):
+				#set the state chart to the non moving state
+				state_chart.send_event(&"stop_moving")
 	
 	
 	#when the player currently is jumping
@@ -302,8 +304,16 @@ func _on_camera_detector_area_entered(area: Area3D) -> void:
 	if !area.is_in_group("camera_area"):
 		return
 	
-	#makes the player see through
-	change_player_opacity(0.0, 0.2)
+	#make the player see though if not in 1st person else fully invis
+	if camera:
+		#check if the player is in 1st person
+		if camera._1st_person_state.active:
+			#makes the player invis
+			change_player_opacity(0.0, 0.2)
+		#if not in 1st person mode not fully invis
+		else:
+			#makes the player slightly see through
+			change_player_opacity(0.4, 0.2)
 
 ##runs when the camera leaves the camera detector
 func _on_camera_detector_area_exited(area: Area3D) -> void:
@@ -322,6 +332,16 @@ func change_player_opacity(to: float = 0.0, time: float = 0.5) -> void:
 	if knight is Player_Model:
 		#change every mesh of the player
 		for mesh: MeshInstance3D in knight.meshes:
+			#the ending opacity
+			var ending_opacity: float = to
+			
+			#make the body mesh always invis instead of see through (otherwise really ugly)
+			if mesh.name == "Body":
+				#check if it would be see through
+				if to < 1.0:
+					#make to always 0.0 (invis)
+					ending_opacity = 0.0
+			
 			#get the mesh material
 			var mat = mesh.get_active_material(0)
 			
@@ -331,7 +351,7 @@ func change_player_opacity(to: float = 0.0, time: float = 0.5) -> void:
 			
 			#make the opacity tween to the correct value nicely
 			var tween := create_tween()
-			tween.tween_property(mat, "albedo_color:a", to, time)
+			tween.tween_property(mat, "albedo_color:a", ending_opacity, time)
 			#when finished make the material transparant if needed else make it normal
 			tween.finished.connect(func():
 				if to < 1.0:
