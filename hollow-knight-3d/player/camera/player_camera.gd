@@ -156,20 +156,7 @@ func _ready() -> void:
 
 
 
-##makes the specified tween usable with the settings given
-func create_usable_tween(object: Object, property: NodePath, final_val: Variant, duration: float, wanted_tween: Tween, wanted_ease: Tween.EaseType = Tween.EASE_IN_OUT):
-	#kill all current camera tween processes
-	if wanted_tween:
-		wanted_tween.kill()
-	
-	#create the usable tween
-	wanted_tween = create_tween()
-	
-	#sets the ease to the wanted one
-	wanted_tween.set_ease(wanted_ease)
-	
-	#actually runs the tween
-	wanted_tween.tween_property(object, property, final_val, duration)
+
 
 #endregion
 
@@ -285,10 +272,10 @@ func _on_rd_person_state_entered() -> void:
 ##camera movement for 3rd person
 func _on_rd_person_state_input(event: InputEvent) -> void:
 	#moving the camera
-	rotate_camera_by_mouse(event)
+	_rotate_camera_by_mouse(event)
 	
 	#zooming
-	zoom_camera_by_input(event)
+	_zoom_camera_by_input(event)
 #endregion
 
 #region 1st person camera
@@ -300,7 +287,7 @@ func _on_st_person_state_entered() -> void:
 ##camera movement for 1st person
 func _on_st_person_state_input(event: InputEvent) -> void:
 	#moving the camera
-	rotate_camera_by_mouse(event)
+	_rotate_camera_by_mouse(event)
 #endregion
 
 #region side view camera
@@ -326,16 +313,16 @@ func _on_free_state_entered() -> void:
 ##camera movement (delta time needed version) for free cam
 func _on_free_state_physics_processing(delta: float) -> void:
 	#move the camera with the moving buttons
-	move_camera_freely(delta)
+	_move_camera_freely(delta)
 
 
 ##camera movement (input version) for free cam
 func _on_free_state_input(event: InputEvent) -> void:
 	#moving the camera (rotation)
-	unrestricted_rotate_camera_by_mouse(event)
+	_unrestricted_rotate_camera_by_mouse(event)
 	
 	#slow down/speed up
-	change_speed_by_input(event)
+	_change_speed_by_input(event)
 
 
 ##resets some weird settings
@@ -344,7 +331,7 @@ func _on_free_state_exited() -> void:
 	top_level = false
 	
 	#tween to the correct position
-	create_usable_tween(self, "position", old_camera_position, cam_move_tween_time, cam_moving_tween, Tween.EASE_OUT)
+	Global.create_usable_tween(self, "position", old_camera_position, cam_move_tween_time, cam_moving_tween, Tween.EASE_OUT)
 #endregion
 
 #region locked camera
@@ -362,7 +349,7 @@ func _on_locked_state_entered() -> void:
 	
 	
 	#tween to the new location
-	create_usable_tween(self, "global_position", location, cam_move_tween_time, cam_moving_tween, Tween.EASE_OUT)
+	Global.create_usable_tween(self, "global_position", location, cam_move_tween_time, cam_moving_tween, Tween.EASE_OUT)
 
 
 ##resets changes that might break stuff
@@ -371,7 +358,7 @@ func _on_locked_state_exited() -> void:
 	top_level = false
 	
 	#tween to the correct position
-	create_usable_tween(self, "position", old_camera_position, cam_move_tween_time, cam_moving_tween, Tween.EASE_OUT)
+	Global.create_usable_tween(self, "position", old_camera_position, cam_move_tween_time, cam_moving_tween, Tween.EASE_OUT)
 #endregion
 
 
@@ -380,7 +367,7 @@ func _on_locked_state_exited() -> void:
 
 #region camera movement functions
 ##used for rotating the camera by moving the mouse
-func rotate_camera_by_mouse(event: InputEvent) -> void:
+func _rotate_camera_by_mouse(event: InputEvent) -> void:
 	#mouse movement
 	if event is InputEventMouseMotion:
 		#Y rotation
@@ -395,7 +382,7 @@ func rotate_camera_by_mouse(event: InputEvent) -> void:
 
 
 ##used for rotating the camera by moving the mouse without restrictions
-func unrestricted_rotate_camera_by_mouse(event: InputEvent) -> void:
+func _unrestricted_rotate_camera_by_mouse(event: InputEvent) -> void:
 	#mouse movement
 	if event is InputEventMouseMotion:
 		#Y rotation
@@ -410,7 +397,7 @@ func unrestricted_rotate_camera_by_mouse(event: InputEvent) -> void:
 
 
 ##used for zooming the camera in/out by user inputs
-func zoom_camera_by_input(event: InputEvent) -> void:
+func _zoom_camera_by_input(event: InputEvent) -> void:
 	#zooming in
 	if event.is_action_pressed(&"ZoomIn"):
 		spring_arm_3d.spring_length = clamp(spring_arm_3d.spring_length - zoom_speed, min_distance, max_distance)
@@ -421,7 +408,7 @@ func zoom_camera_by_input(event: InputEvent) -> void:
 
 
 ##used for changing the speed up/down by user inputs
-func change_speed_by_input(event: InputEvent) -> void:
+func _change_speed_by_input(event: InputEvent) -> void:
 	#speeding up
 	if event.is_action_pressed(&"ZoomIn"):
 		speed = clamp(speed + zoom_speed, min_speed, max_speed)
@@ -432,7 +419,7 @@ func change_speed_by_input(event: InputEvent) -> void:
 
 
 ##used for moving the camera freely
-func move_camera_freely(delta: float) -> void:
+func _move_camera_freely(delta: float) -> void:
 	#gets the direction of the inputs
 	var input_dir: Vector2 = Input.get_vector(&"MoveLeft", &"MoveRight", &"MoveForward", &"MoveBackward")
 	
