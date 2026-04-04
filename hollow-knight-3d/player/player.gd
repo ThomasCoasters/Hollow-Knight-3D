@@ -14,19 +14,16 @@ class_name Player
 @export_group("restrictions")
 ##chooses whether you can use inputs or not
 @export var can_input: bool = true:
-	#when you 
 	set(value):
 		#sets the var to the new value
 		can_input = value
+		
 		#dissables or enables the inputs
 		set_process_input(can_input)
 		
 		#stop the player from moving
 		velocity.x = 0
 		velocity.z = 0
-		
-		#set the moving state chart to the non moving state
-		state_chart.send_event(&"stop_moving")
 
 
 ##settings for the movement
@@ -109,9 +106,28 @@ func _ready() -> void:
 
 
 #region loops
-func _input(_event: InputEvent) -> void:
+func _input(event: InputEvent) -> void:
 	### ----- state chart stuff ----- ###
+	_input_state_chart(event)
+
+
+
+
+func _physics_process(delta: float) -> void:
+	### ----- state chart stuff ----- ###
+	_state_chart_physics_process(delta)
 	
+	
+	### ----- physics stuff ----- ###
+	_handle_physics(delta)
+
+#endregion
+
+
+
+#region inputs
+##handles the _input version for the state chart inputs
+func _input_state_chart(_event: InputEvent) -> void:
 	#when not moving
 	if idle_moving_state.active:
 		#check if moving starts
@@ -149,10 +165,8 @@ func _input(_event: InputEvent) -> void:
 
 
 
-func _physics_process(delta: float) -> void:
-	
-	### ----- state chart stuff ----- ###
-	
+##handles the state chart in physics_process
+func _state_chart_physics_process(_delta: float) -> void:
 	#when you are falling
 	if falling_state.active:
 		#check if the player landed
@@ -167,35 +181,13 @@ func _physics_process(delta: float) -> void:
 		if !is_on_floor():
 			#set the state chart to the falling state
 			state_chart.send_event(&"start_falling")
-	
-	
-	
-	
-	
-	### ----- physics stuff ----- ###
-	
-	
-	#add gravity to the player
-	add_gravity() 
-	
-	
-	#add movement velocity and rotation when you are moving only
-	if moving_state.active:
-		#rotate the player to the looking direction and get the new velocity
-		rotate_and_velocity(delta)
-	
-	
-	
-	#move the player
-	move_and_slide()
+
 #endregion
-
-
 
 
 #region moving
 ##handles the moving direction and acceleration/deceleration
-func rotate_and_velocity(delta: float) -> void:
+func _rotate_and_velocity(delta: float) -> void:
 	#Get the movement input direction and handle the movement/deceleration
 	var input_dir: Vector2 = Input.get_vector(&"MoveLeft", &"MoveRight", &"MoveForward", &"MoveBackward")
 	var direction: Vector3 = Vector3(input_dir.x, 0, input_dir.y).normalized()
@@ -204,7 +196,7 @@ func rotate_and_velocity(delta: float) -> void:
 	direction = direction.rotated(Vector3.UP, camera.global_rotation.y)
 	
 	#if you held move in an direction
-	if direction:
+	if direction.length() > 0.001:
 		#make direction usable for movement
 		direction *= max_speed
 		
@@ -232,7 +224,21 @@ func rotate_and_velocity(delta: float) -> void:
 		velocity.z = move_toward(velocity.z, 0, delta * acceleration)
 
 
-
+##handles the physics_process physics (movement)
+func _handle_physics(delta: float) -> void:
+	#add gravity to the player
+	_add_gravity() 
+	
+	
+	#add movement velocity and rotation when you are moving only
+	if moving_state.active && can_input:
+		#rotate the player to the looking direction and get the new velocity
+		_rotate_and_velocity(delta)
+	
+	
+	
+	#move the player
+	move_and_slide()
 
 
 
@@ -245,7 +251,7 @@ func _on_idle_state_entered() -> void:
 
 
 ##adds gravity to the velocity
-func add_gravity() -> void:
+func _add_gravity() -> void:
 	#only add gravity when you are in the air
 	if !is_on_floor():
 		#add the gravity to the velocity
@@ -273,8 +279,6 @@ func _on_falling_state_entered() -> void:
 
 ##runs when you start jumping
 func _on_jumping_state_entered() -> void:
-	print("entur")
-	
 	#add the jumping velocity
 	velocity.y = jump_speed
 	

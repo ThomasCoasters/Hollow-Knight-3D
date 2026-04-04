@@ -38,10 +38,6 @@ wanted_rotation = Vector3(0, 0, 0)
 side_view_rotation_x = -0.3141592653589793
 side_view_rotation_y = -1.2566370614359172
 zoom_speed = 0.3
-speed = 3.0
-max_speed = null
-min_speed = null
-scroll_speed = null
 cam_moving_tween = null
 
 [node name="SpringArm3D" type="SpringArm3D" parent="." unique_id=1307545278]

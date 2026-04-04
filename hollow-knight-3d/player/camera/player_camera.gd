@@ -99,13 +99,13 @@ var wanted_rotation: Vector3 = Vector3.ZERO
 ##freecam speed variables
 @export_subgroup("freecam_speed")
 ##the speed the mouse moves around with the moving buttons
-@export var speed: float = 6.0
+@export var speed: float = 5.0
 ##max speed
-@export var max_speed: float = 30.0
+@export var max_speed: float = 15.0
 ##min speed
-@export var min_speed: float = 0.5
+@export var min_speed: float = 1.0
 ##speed that scrolling changes the speed
-@export var scroll_speed: float = 0.3
+@export var scroll_speed: float = 1.0
 
 
 
@@ -249,7 +249,7 @@ func _validate_property(property: Dictionary) -> void:
 	var allowed := {
 		"3rd_person": ["mouse_sensibility", "min_vertical_angle", "max_vertical_angle", "max_distance", "min_distance", "starting_distance", "zoom_speed", "rotation_lerp_power"],
 		"1st_person": ["mouse_sensibility", "min_vertical_angle", "max_vertical_angle", "rotation_lerp_power"],
-		"free": ["mouse_sensibility", "speed", "rotation_lerp_power"],
+		"free": ["mouse_sensibility", "speed", "rotation_lerp_power", "max_speed", "min_speed", "scroll_speed"],
 		"side_view": ["side_view_distance", "side_view_rotation_x", "side_view_rotation_y", "rotation_lerp_power"],
 		"locked": ["location", "locked_rotation_x", "locked_rotation_y", "cam_move_tween_time"]
 	}

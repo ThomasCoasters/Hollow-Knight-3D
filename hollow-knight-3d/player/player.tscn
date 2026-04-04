@@ -50,10 +50,7 @@ free_state = Object(Node,"unique_name_in_owner":false,"process_mode":0,"process_
 
 locked_state = Object(Node,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","script":ExtResource("7_2ieo8"),"_state_active":false,"active":false,"_pending_transition":null,"_pending_transition_remaining_delay":0.0,"_pending_transition_initial_delay":0.0,"_transitions":Array[ExtResource("8_ebec5")]([]),"_chart":null)
 
-speed = 50.0
-max_speed = 30.0
-min_speed = 0.5
-scroll_speed = 0.3
+camera_mode = "free"
 
 [node name="camera_detector" type="Area3D" parent="." unique_id=2043606115]
 collision_layer = 4
