@@ -86,4 +86,3 @@ Jump={
 [rendering]
 
 rendering_device/driver.windows="d3d12"
-anti_aliasing/quality/use_taa=true
