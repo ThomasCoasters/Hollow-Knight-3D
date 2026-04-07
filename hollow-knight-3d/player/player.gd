@@ -134,6 +134,9 @@ func _input_state_chart(_event: InputEvent) -> void:
 		if Input.is_action_pressed(&"MoveBackward") || Input.is_action_pressed(&"MoveForward") ||  Input.is_action_pressed(&"MoveLeft") || Input.is_action_pressed(&"MoveRight"):
 			#set the state chart to the moving state
 			state_chart.send_event(&"start_moving")
+			
+			#start the walking anim
+			knight.set_animation_segment("Walk")
 	
 	#when you are moving
 	elif moving_state.active:
@@ -143,6 +146,9 @@ func _input_state_chart(_event: InputEvent) -> void:
 			if !(Input.is_action_pressed(&"MoveBackward") || Input.is_action_pressed(&"MoveForward") ||  Input.is_action_pressed(&"MoveLeft") || Input.is_action_pressed(&"MoveRight")):
 				#set the state chart to the non moving state
 				state_chart.send_event(&"stop_moving")
+				
+				#stop the walk anim
+				knight.set_animation_segment("RESET")
 	
 	
 	#when the player currently is jumping

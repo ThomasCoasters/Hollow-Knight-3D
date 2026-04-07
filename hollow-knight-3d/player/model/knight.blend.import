@@ -39,12 +39,12 @@ materials/extract_format=0
 materials/extract_path=""
 _subresources={
 "animations": {
-"walk": {
-"save_to_file/enabled": false,
-"save_to_file/fallback_path": "",
-"save_to_file/keep_custom_tracks": "",
+"player_animation": {
+"save_to_file/enabled": true,
+"save_to_file/fallback_path": "res://player/model/player_animation.res",
+"save_to_file/keep_custom_tracks": true,
 "save_to_file/path": "",
-"settings/loop_mode": 1,
+"settings/loop_mode": 0,
 "slice_1/end_frame": 0,
 "slice_1/loop_mode": 0,
 "slice_1/name": "",
