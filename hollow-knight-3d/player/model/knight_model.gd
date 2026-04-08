@@ -14,11 +14,15 @@ class_name Player_Model
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 ##time segment for the animation
-var current_segment := Vector2.ZERO
+var current_segment: Vector2 = Vector2.ZERO
+##saved segment
+var saved_segment: Vector2 = Vector2.ZERO
 
 ##the current running animation name
 var current_anim: String = ""
 
+##all the animations with their priority
+@export var animation_priority: Dictionary[String, int]
 
 
 func _process(_delta):
@@ -27,19 +31,21 @@ func _process(_delta):
 	if current_anim == "":
 		return
 	
-	print(current_segment, animation_player.current_animation_position)
-	
 	#if the animation has been playing to long reset it to the starting time
 	if animation_player.current_animation_position >= current_segment.y:
+		#if this is not the animation that is saved set that as the correct segment
+		if current_segment != saved_segment:
+			current_segment = saved_segment
+		
+		#go to the starting point of the animation
 		animation_player.seek(current_segment.x, true)
-		animation_player.advance(0)
 
 
 
 ##starts the animation at a certaint time and set variables to the correct time
-func set_animation_segment(anim_name: String):
+func set_animation_segment(anim_name: String, one_time: bool = false):
 	#throws an error instead of randomly breaking if the animation name does not exist
-	if not animation_to_times.has(anim_name):
+	if !animation_to_times.has(anim_name) || !animation_priority.has(anim_name):
 		push_error("Animation does not exist: " + anim_name)
 		return
 	
@@ -52,13 +58,24 @@ func set_animation_segment(anim_name: String):
 		return
 	
 	
+	#only check if this anim has higher priority if the previous anim is in the dictionairy
+	if animation_priority.has(current_anim):
+		#if the new animation has a lower priority than the current do not play it
+		if animation_priority[current_anim] < animation_priority[anim_name]:
+			#check if the running animation is a looping animation
+			if saved_segment != current_segment:
+				return
+	
 	#set the segment to the new segment
 	current_segment = segment
 	
+	#save the saved segment if this is not a one time animation
+	if !one_time:
+		saved_segment = segment
+	
+	
 	#set the running animation to the new animation
 	current_anim = anim_name
-	
-	
 	
 	#start the animation if not started already
 	if !animation_player.is_playing():

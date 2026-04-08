@@ -50,7 +50,6 @@ free_state = Object(Node,"unique_name_in_owner":false,"process_mode":0,"process_
 
 locked_state = Object(Node,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","script":ExtResource("7_2ieo8"),"_state_active":false,"active":false,"_pending_transition":null,"_pending_transition_remaining_delay":0.0,"_pending_transition_initial_delay":0.0,"_transitions":Array[ExtResource("8_ebec5")]([]),"_chart":null)
 
-camera_mode = "free"
 
 [node name="camera_detector" type="Area3D" parent="." unique_id=2043606115]
 collision_layer = 4
@@ -136,6 +135,27 @@ delay_in_seconds = "0.0"
 script = ExtResource("8_ebec5")
 to = NodePath("../../Jumping")
 event = &"start_jumping"
+delay_in_seconds = "0.0"
+
+[node name="Attack" type="Node" parent="StateChart/ParallelState" unique_id=1425577996]
+script = ExtResource("6_8t03j")
+initial_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="StateChart/ParallelState/Attack" unique_id=1504896410]
+script = ExtResource("7_2ieo8")
+
+[node name="to_attacking" type="Node" parent="StateChart/ParallelState/Attack/Idle" unique_id=1680119646]
+script = ExtResource("8_ebec5")
+to = NodePath("../../Attacking")
+event = &"start_attack"
+delay_in_seconds = "0.0"
+
+[node name="Attacking" type="Node" parent="StateChart/ParallelState/Attack" unique_id=1003551824]
+script = ExtResource("7_2ieo8")
+
+[node name="to_attack_idle" type="Node" parent="StateChart/ParallelState/Attack/Attacking" unique_id=1074359871]
+script = ExtResource("8_ebec5")
+to = NodePath("../../Idle")
 delay_in_seconds = "0.0"
 
 [node name="max_jump_time" type="Timer" parent="." unique_id=1228798069]

@@ -29,12 +29,17 @@ roughness_texture = ExtResource("9_jrrs2")
 script = ExtResource("2_u5ohn")
 meshes = [NodePath("rig/Skeleton3D/Body"), NodePath("rig/Skeleton3D/Head"), NodePath("Armature/Skeleton3D/Bone_083/Weapon"), NodePath("Armature/Skeleton3D/Cloak")]
 animation_to_times = Dictionary[String, Vector2]({
-"Attack": Vector2(1.667, 2.04),
+"Attack": Vector2(1.667, 2),
 "RESET": Vector2(0, 0),
 "Walk": Vector2(0, 1.33)
 })
+animation_priority = Dictionary[String, int]({
+"Attack": 2,
+"RESET": 999,
+"Walk": 1
+})
 
-[node name="Skeleton3D" parent="rig" parent_id_path=PackedInt32Array(121940155) index="0" unique_id=1888585185]
+[node name="Skeleton3D" parent="rig" parent_id_path=PackedInt32Array(584166386) index="0" unique_id=1454097368]
 bones/1/position = Vector3(1.2212453e-15, 0.015906338, 0.13935986)
 bones/1/rotation = Quaternion(0.9058539, 5.0495867e-08, 1.0798616e-07, 0.42359024)
 bones/3/rotation = Quaternion(-0.10694101, -1.1852564e-07, -3.8245062e-08, 0.9942654)
@@ -210,10 +215,10 @@ bones/213/rotation = Quaternion(0.00017263164, 1.092873e-15, 1, 1.4205356e-17)
 bones/214/position = Vector3(-0.15197724, 0.051284775, 0.020704135)
 bones/214/rotation = Quaternion(-0.65020984, -7.559159e-15, -2.2677478e-14, 0.7597548)
 
-[node name="Head" parent="rig/Skeleton3D" index="1" unique_id=358666999]
+[node name="Head" parent="rig/Skeleton3D" index="1" unique_id=1586677226]
 surface_material_override/0 = SubResource("StandardMaterial3D_jbdqp")
 
-[node name="Skeleton3D" parent="Armature" parent_id_path=PackedInt32Array(669539603) index="0" unique_id=1460285757]
+[node name="Skeleton3D" parent="Armature" parent_id_path=PackedInt32Array(253044021) index="0" unique_id=946963222]
 bones/0/position = Vector3(1.7763568e-15, 0.37536427, 0.037072334)
 bones/0/rotation = Quaternion(0.70498234, 0.054772463, -0.7049822, -0.05477248)
 bones/2/rotation = Quaternion(0.085356385, 0.021599332, 0.49469912, 0.8645927)
@@ -277,14 +282,14 @@ bones/82/rotation = Quaternion(-1.6949812e-08, -8.720934e-08, -0.20681909, 0.978
 bones/83/position = Vector3(1.5314948e-08, 0.02477015, 3.0586084e-15)
 bones/83/rotation = Quaternion(3.2759104e-10, 7.9653734e-10, -0.26237574, 0.9649658)
 
-[node name="Bone_083" parent="Armature/Skeleton3D" index="0" unique_id=2005208074]
+[node name="Bone_083" parent="Armature/Skeleton3D" index="0" unique_id=1311819916]
 transform = Transform3D(-1.331471e-07, 6.374612e-08, -0.99999994, 0.88033813, 0.4743465, -9.2064774e-08, 0.47434646, -0.8803382, -1.83328e-07, 6.7437638e-09, 0.2686583, -0.05631471)
 
-[node name="Weapon" parent="Armature/Skeleton3D/Bone_083" index="0" unique_id=424825495]
+[node name="Weapon" parent="Armature/Skeleton3D/Bone_083" index="0" unique_id=318980483]
 surface_material_override/0 = SubResource("StandardMaterial3D_flgo1")
 
-[node name="Cloak" parent="Armature/Skeleton3D" index="1" unique_id=1302640539]
+[node name="Cloak" parent="Armature/Skeleton3D" index="1" unique_id=1728755021]
 surface_material_override/0 = SubResource("StandardMaterial3D_p3dbf")
 
-[node name="AnimationPlayer" parent="." index="81" unique_id=2076092629]
+[node name="AnimationPlayer" parent="." index="81" unique_id=1227327912]
 autoplay = &"player_animation"

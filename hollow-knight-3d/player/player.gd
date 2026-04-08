@@ -88,6 +88,12 @@ var jump_max_held: bool = false
 @onready var idle_jumping_falling_state: AtomicState = $StateChart/ParallelState/Jumping_Falling/Idle
 @onready var jumping_state: AtomicState = $StateChart/ParallelState/Jumping_Falling/Jumping
 @onready var falling_state: AtomicState = $StateChart/ParallelState/Jumping_Falling/Falling
+
+#attacking
+@onready var attack: CompoundState = $StateChart/ParallelState/Attack
+@onready var idle: AtomicState = $StateChart/ParallelState/Attack/Idle
+@onready var attacking: AtomicState = $StateChart/ParallelState/Attack/Attacking
+
 #endregion
 
 #region setup
@@ -128,6 +134,9 @@ func _physics_process(delta: float) -> void:
 #region inputs
 ##handles the _input version for the state chart inputs
 func _input_state_chart(_event: InputEvent) -> void:
+	#have inputs that require 1 extra frame work
+	await get_tree().process_frame
+	
 	#when not moving
 	if idle_moving_state.active:
 		#check if moving starts
@@ -141,7 +150,7 @@ func _input_state_chart(_event: InputEvent) -> void:
 	#when you are moving
 	elif moving_state.active:
 		#check if you stop moving
-		if velocity == Vector3.ZERO:
+		if velocity.x == 0 && velocity.z == 0:
 			#check if the player does not want to keep moving 
 			if !(Input.is_action_pressed(&"MoveBackward") || Input.is_action_pressed(&"MoveForward") ||  Input.is_action_pressed(&"MoveLeft") || Input.is_action_pressed(&"MoveRight")):
 				#set the state chart to the non moving state
@@ -168,6 +177,16 @@ func _input_state_chart(_event: InputEvent) -> void:
 				jumps_amount -= 1
 				#set the state chart to the jumping state
 				state_chart.send_event(&"start_jumping")
+	
+	#check if you are not already attacking
+	if !attacking.active:
+		#check if you just pressed the attack button
+		if Input.is_action_just_pressed(&"Attack"):
+			#start the attacking state
+			state_chart.send_event(&"start_attack")
+			
+			#start the attack animation
+			knight.set_animation_segment("Attack", true)
 
 
 
@@ -225,9 +244,9 @@ func _rotate_and_velocity(delta: float) -> void:
 		knight.global_transform.basis = Basis(new_rot)
 	
 	else:
-		#decelerate the player
-		velocity.x = move_toward(velocity.x, 0, delta * acceleration)
-		velocity.z = move_toward(velocity.z, 0, delta * acceleration)
+		#stop the player movement
+		velocity.x = 0
+		velocity.z = 0
 
 
 ##handles the physics_process physics (movement)
