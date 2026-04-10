@@ -341,11 +341,11 @@ func _on_camera_detector_area_entered(area: Area3D) -> void:
 		#check if the player is in 1st person
 		if camera._1st_person_state.active:
 			#makes the player invis
-			change_player_opacity(0.0, 0.2)
+			knight.change_player_opacity(0.0, 0.2)
 		#if not in 1st person mode not fully invis
 		else:
 			#makes the player slightly see through
-			change_player_opacity(0.4, 0.2)
+			knight.change_player_opacity(0.4, 0.2)
 
 ##runs when the camera leaves the camera detector
 func _on_camera_detector_area_exited(area: Area3D) -> void:
@@ -353,42 +353,5 @@ func _on_camera_detector_area_exited(area: Area3D) -> void:
 		return
 	
 	#makes the player visible again
-	change_player_opacity(1.0, 0.2)
-#endregion
-
-
-#region better feel
-##changes the opacity of the player
-func change_player_opacity(to: float = 0.0, time: float = 0.5) -> void:
-	#only change the player model opacity if it is the player model
-	if knight is Player_Model:
-		#change every mesh of the player
-		for mesh: MeshInstance3D in knight.meshes:
-			#the ending opacity
-			var ending_opacity: float = to
-			
-			#make the body mesh always invis instead of see through (otherwise really ugly)
-			if mesh.name == "Body":
-				#check if it would be see through
-				if to < 1.0:
-					#make to always 0.0 (invis)
-					ending_opacity = 0.0
-			
-			#get the mesh material
-			var mat = mesh.get_active_material(0)
-			
-			
-			# Enable transparency
-			mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-			
-			#make the opacity tween to the correct value nicely
-			var tween := create_tween()
-			tween.tween_property(mat, "albedo_color:a", ending_opacity, time)
-			#when finished make the material transparant if needed else make it normal
-			tween.finished.connect(func():
-				if to < 1.0:
-					mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-				else:
-					mat.transparency = BaseMaterial3D.TRANSPARENCY_DISABLED
-				)
+	knight.change_player_opacity(1.0, 0.2)
 #endregion

@@ -42,6 +42,9 @@ func _process(_delta):
 
 
 
+
+
+
 ##starts the animation at a certaint time and set variables to the correct time
 func set_animation_segment(anim_name: String, one_time: bool = false):
 	#throws an error instead of randomly breaking if the animation name does not exist
@@ -84,3 +87,67 @@ func set_animation_segment(anim_name: String, one_time: bool = false):
 	
 	#run the animation from the starting time
 	animation_player.seek(segment.x, true)
+
+
+
+
+
+
+
+##changes the opacity of the player
+func change_player_opacity(to: float = 0.0, time: float = 0.5) -> void:
+	#change every mesh of the player
+	for mesh: MeshInstance3D in meshes:
+		#the ending opacity
+		var ending_opacity: float = to
+		
+		#make the body mesh always invis instead of see through (otherwise really ugly)
+		if mesh.name == "Body":
+			#check if it would be see through
+			if to < 1.0:
+				#make to always 0.0 (invis)
+				ending_opacity = 0.0
+		
+		#get the mesh material
+		var mat: StandardMaterial3D = mesh.get_active_material(0)
+		
+		# Enable transparency
+		mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+		
+		#make the opacity tween to the correct value nicely
+		var tween := create_tween()
+		tween.tween_property(mat, "albedo_color:a", ending_opacity, time)
+		
+		#when finished make the material transparant if needed else make it normal
+		tween.finished.connect(func():
+			if to < 1.0:
+				mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+				
+				
+				#check if there is a next pass (outline)
+				if mat && mat.next_pass:
+					#store the outline in a var
+					var next = mat.next_pass
+					
+					#if the outline is a ShaderMaterial
+					if next is ShaderMaterial:
+						#get the Enable parameter
+						if next.shader.has_param("enable"):
+							#dissable the outline
+							next.enable = false
+				
+			else:
+				mat.transparency = BaseMaterial3D.TRANSPARENCY_DISABLED
+				
+				#check if there is a next pass (outline)
+				if mat && mat.next_pass:
+					#store the outline in a var
+					var next = mat.next_pass
+					
+					#if the outline is a ShaderMaterial
+					if next is ShaderMaterial:
+						#get the Enable parameter
+						if next.shader.has_param("enable"):
+							#enable the outline
+							next.enable = true
+			)

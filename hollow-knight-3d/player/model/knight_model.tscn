@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://6txikwufjlvx" path="res://player/model/knight.blend" id="1_tx3tu"]
 [ext_resource type="Script" uid="uid://bje2m4icvva5q" path="res://player/model/knight_model.gd" id="2_u5ohn"]
+[ext_resource type="Shader" uid="uid://ds51ubc2dt8js" path="res://player/model/outline.gdshader" id="3_awyfk"]
 [ext_resource type="Texture2D" uid="uid://7ok7m56ws6eo" path="res://player/model/knight_head color.png.png" id="3_hrbeg"]
 [ext_resource type="Texture2D" uid="uid://botywmfwvfpy6" path="res://player/model/knight_head roughness.png" id="4_awyfk"]
 [ext_resource type="Texture2D" uid="uid://cs4qk63yncaf6" path="res://player/model/knight_weapon color.png.png" id="5_pjafr"]
@@ -10,11 +11,24 @@
 [ext_resource type="Texture2D" uid="uid://dd1hl72gvm6yx" path="res://player/model/knight_cloak color.png" id="8_fr5qo"]
 [ext_resource type="Texture2D" uid="uid://doo6cg6hi1jq3" path="res://player/model/knight_cloak roughness.png" id="9_jrrs2"]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_awyfk"]
+render_priority = 0
+shader = ExtResource("3_awyfk")
+shader_parameter/enable = true
+shader_parameter/outline_thickness = 0.01
+shader_parameter/color = Color(0, 0, 0, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6cebr"]
+next_pass = SubResource("ShaderMaterial_awyfk")
+albedo_color = Color(0, 0, 0, 1)
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jbdqp"]
+next_pass = SubResource("ShaderMaterial_awyfk")
 albedo_texture = ExtResource("3_hrbeg")
 roughness_texture = ExtResource("4_awyfk")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_flgo1"]
+next_pass = SubResource("ShaderMaterial_awyfk")
 albedo_texture = ExtResource("5_pjafr")
 metallic = 1.0
 roughness_texture = ExtResource("7_62uqp")
@@ -22,6 +36,7 @@ normal_enabled = true
 normal_texture = ExtResource("6_6cebr")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_p3dbf"]
+next_pass = SubResource("ShaderMaterial_awyfk")
 albedo_texture = ExtResource("8_fr5qo")
 roughness_texture = ExtResource("9_jrrs2")
 
@@ -214,6 +229,9 @@ bones/211/position = Vector3(5.1490496e-09, 5.238691e-09, -5.493115e-09)
 bones/213/rotation = Quaternion(0.00017263164, 1.092873e-15, 1, 1.4205356e-17)
 bones/214/position = Vector3(-0.15197724, 0.051284775, 0.020704135)
 bones/214/rotation = Quaternion(-0.65020984, -7.559159e-15, -2.2677478e-14, 0.7597548)
+
+[node name="Body" parent="rig/Skeleton3D" index="0" unique_id=1313915502]
+surface_material_override/0 = SubResource("StandardMaterial3D_6cebr")
 
 [node name="Head" parent="rig/Skeleton3D" index="1" unique_id=1586677226]
 surface_material_override/0 = SubResource("StandardMaterial3D_jbdqp")
