@@ -108,46 +108,41 @@ func change_player_opacity(to: float = 0.0, time: float = 0.5) -> void:
 				#make to always 0.0 (invis)
 				ending_opacity = 0.0
 		
+		
+		
 		#get the mesh material
 		var mat: StandardMaterial3D = mesh.get_active_material(0)
 		
+		
 		# Enable transparency
 		mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+		
+		
+		
 		
 		#make the opacity tween to the correct value nicely
 		var tween := create_tween()
 		tween.tween_property(mat, "albedo_color:a", ending_opacity, time)
 		
+		
+		#check if the outline exists
+		if mat and mat.next_pass:
+			#store the outline in a var
+			var next = mat.next_pass
+			
+			#make sure the outline is always fully visible or fully invisible
+			var end_outline_opacity: float = 1.0 if ending_opacity >= 1.0 else 0.0
+			
+			#check if it is a shadermaterial
+			if next is ShaderMaterial:
+				#smooth tween to the opacity chosen
+				tween.parallel().tween_property(next, "shader_parameter/alpha", end_outline_opacity, time)
+		
+		
 		#when finished make the material transparant if needed else make it normal
 		tween.finished.connect(func():
 			if to < 1.0:
 				mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-				
-				
-				#check if there is a next pass (outline)
-				if mat && mat.next_pass:
-					#store the outline in a var
-					var next = mat.next_pass
-					
-					#if the outline is a ShaderMaterial
-					if next is ShaderMaterial:
-						#get the Enable parameter
-						if next.shader.has_param("enable"):
-							#dissable the outline
-							next.enable = false
-				
 			else:
 				mat.transparency = BaseMaterial3D.TRANSPARENCY_DISABLED
-				
-				#check if there is a next pass (outline)
-				if mat && mat.next_pass:
-					#store the outline in a var
-					var next = mat.next_pass
-					
-					#if the outline is a ShaderMaterial
-					if next is ShaderMaterial:
-						#get the Enable parameter
-						if next.shader.has_param("enable"):
-							#enable the outline
-							next.enable = true
 			)

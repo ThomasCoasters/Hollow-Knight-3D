@@ -14,7 +14,7 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_awyfk"]
 render_priority = 0
 shader = ExtResource("3_awyfk")
-shader_parameter/enable = true
+shader_parameter/alpha = 1.0
 shader_parameter/outline_thickness = 0.01
 shader_parameter/color = Color(0, 0, 0, 0)
 
