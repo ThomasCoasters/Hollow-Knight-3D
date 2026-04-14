@@ -36,6 +36,8 @@ func _process(_delta):
 		#if this is not the animation that is saved set that as the correct segment
 		if current_segment != saved_segment:
 			current_segment = saved_segment
+			
+			current_anim = animation_to_times.find_key(saved_segment) if not null else "null"
 		
 		#go to the starting point of the animation
 		animation_player.seek(current_segment.x, true)
@@ -46,11 +48,27 @@ func _process(_delta):
 
 
 ##starts the animation at a certaint time and set variables to the correct time
-func set_animation_segment(anim_name: String, one_time: bool = false):
+##play_if_current_anim only plays the set if the current anim is that string AND play_if_current_anim is not null
+func set_animation_segment(anim_name: String, one_time: bool = false, play_if_current_anim: String = "null"):
 	#throws an error instead of randomly breaking if the animation name does not exist
 	if !animation_to_times.has(anim_name) || !animation_priority.has(anim_name):
 		push_error("Animation does not exist: " + anim_name)
 		return
+	
+	# check if the current animation is the correct one to be overrided
+	if play_if_current_anim != "null": # only check this when it is set
+		
+		# do not play when this is not the wanted anim to override
+		if current_anim != play_if_current_anim:
+			
+			#check if the saved animation needs to be reset
+			var saved_anim = animation_to_times.find_key(saved_segment) if not null else "null"
+			
+			if saved_anim == play_if_current_anim: # check if the saved anim needs to be overridden
+				saved_segment = Vector2.ZERO
+			
+			return
+	
 	
 	#get the time segment
 	var segment: Vector2 = animation_to_times[anim_name]
@@ -64,9 +82,22 @@ func set_animation_segment(anim_name: String, one_time: bool = false):
 	#only check if this anim has higher priority if the previous anim is in the dictionairy
 	if animation_priority.has(current_anim):
 		#if the new animation has a lower priority than the current do not play it
-		if animation_priority[current_anim] < animation_priority[anim_name]:
-			#check if the running animation is a looping animation
-			if saved_segment != current_segment:
+		if animation_priority[current_anim] >= animation_priority[anim_name]:
+			# do not play the animation
+			if current_anim != "RESET": # still play it when the last animation was the reset
+				
+				# DO change the saved segment if this is not a one_time and the old one IS a one time
+				if !one_time: # check if this is not a one time animation
+					if saved_segment != current_segment: # check if the current animation is not a one time
+						#get the current saved animation
+						var saved_anim = animation_to_times.find_key(saved_segment) if not null else "null"
+						
+						print(saved_anim)
+						
+						if animation_priority[saved_anim] < animation_priority[anim_name] || saved_anim == "RESET" || saved_anim == "null": # change the saved segment when the saved anim is a lower priority
+							saved_segment = segment # set the saved segment to the new one
+				
+				#stop the animation from playing
 				return
 	
 	#set the segment to the new segment
@@ -80,8 +111,11 @@ func set_animation_segment(anim_name: String, one_time: bool = false):
 	#set the running animation to the new animation
 	current_anim = anim_name
 	
+	#stop the anim is it is reset
+	animation_player.stop()
+	
 	#start the animation if not started already
-	if !animation_player.is_playing():
+	if !animation_player.is_playing() && current_anim != "RESET":
 		animation_player.play("player_animation")
 	
 	

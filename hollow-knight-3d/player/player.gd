@@ -157,7 +157,7 @@ func _input_state_chart(_event: InputEvent) -> void:
 				state_chart.send_event(&"stop_moving")
 				
 				#stop the walk anim
-				knight.set_animation_segment("RESET")
+				knight.set_animation_segment("RESET", false, "Walk")
 	
 	
 	#when the player currently is jumping

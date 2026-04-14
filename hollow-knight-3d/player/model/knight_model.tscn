@@ -46,12 +46,14 @@ meshes = [NodePath("rig/Skeleton3D/Body"), NodePath("rig/Skeleton3D/Head"), Node
 animation_to_times = Dictionary[String, Vector2]({
 "Attack": Vector2(1.667, 2),
 "RESET": Vector2(0, 0),
-"Walk": Vector2(0, 1.33)
+"Walk": Vector2(0, 1.33),
+"null": Vector2(0, 0)
 })
 animation_priority = Dictionary[String, int]({
 "Attack": 2,
 "RESET": 999,
-"Walk": 1
+"Walk": 1,
+"null": 0
 })
 
 [node name="Skeleton3D" parent="rig" parent_id_path=PackedInt32Array(584166386) index="0" unique_id=1454097368]
