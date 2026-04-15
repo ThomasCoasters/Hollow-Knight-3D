@@ -25,6 +25,9 @@ class_name Player
 		velocity.x = 0
 		velocity.z = 0
 
+##if you have / can dash or not
+@export var has_dash: bool = true
+
 
 ##settings for the movement
 @export_group("movement")
@@ -68,6 +71,14 @@ var is_jumping: bool = false
 ##is true when the timer makes the player stop jumping
 var jump_max_held: bool = false
 
+##settings for dashing
+@export_subgroup("dashing")
+##speed of the dash
+@export var DASH_SPEED: float = 10
+##the time the dash takes
+@export var DASH_TIME: float = 0.2
+##the timer for the dash
+var dash_timer: float = 0.0
 
 
 
@@ -91,8 +102,14 @@ var jump_max_held: bool = false
 
 #attacking
 @onready var attack: CompoundState = $StateChart/ParallelState/Attack
-@onready var idle: AtomicState = $StateChart/ParallelState/Attack/Idle
-@onready var attacking: AtomicState = $StateChart/ParallelState/Attack/Attacking
+@onready var idle_attacking_state: AtomicState = $StateChart/ParallelState/Attack/Idle
+@onready var attacking_state: AtomicState = $StateChart/ParallelState/Attack/Attacking
+
+#dashing
+@onready var dash: CompoundState = $StateChart/ParallelState/Dash
+@onready var idle_dashing_state: AtomicState = $StateChart/ParallelState/Dash/Idle
+@onready var dashing_state: AtomicState = $StateChart/ParallelState/Dash/Dashing
+
 
 #endregion
 
@@ -179,7 +196,7 @@ func _input_state_chart(_event: InputEvent) -> void:
 				state_chart.send_event(&"start_jumping")
 	
 	#check if you are not already attacking
-	if !attacking.active:
+	if !attacking_state.active:
 		#check if you just pressed the attack button
 		if Input.is_action_just_pressed(&"Attack"):
 			#start the attacking state
@@ -187,6 +204,14 @@ func _input_state_chart(_event: InputEvent) -> void:
 			
 			#start the attack animation
 			knight.set_animation_segment("Attack", true)
+	
+	
+	#check if the player is not already dashing
+	if !dashing_state.active:
+		#check if the input is the dash input
+		if Input.is_action_just_pressed(&"Dash"):
+			#start the dashing state
+			state_chart.send_event(&"start_dash")
 
 
 
@@ -251,16 +276,15 @@ func _rotate_and_velocity(delta: float) -> void:
 
 ##handles the physics_process physics (movement)
 func _handle_physics(delta: float) -> void:
-	#add gravity to the player
-	_add_gravity() 
-	
-	
-	#add movement velocity and rotation when you are moving only
-	if moving_state.active && can_input:
-		#rotate the player to the looking direction and get the new velocity
-		_rotate_and_velocity(delta)
-	
-	
+	#do not give the player option to move or fall while dashing
+	if dash_timer == 0.0:
+		#add gravity to the player
+		_add_gravity() 
+		
+		#add movement velocity and rotation when you are moving only
+		if moving_state.active && can_input:
+			#rotate the player to the looking direction and get the new velocity
+			_rotate_and_velocity(delta)
 	
 	#move the player
 	move_and_slide()
@@ -284,6 +308,8 @@ func _add_gravity() -> void:
 	
 	#have a max falling speed
 	velocity.y = max(velocity.y, max_fall_speed)
+	
+	
 
 
 
@@ -326,6 +352,62 @@ func _on_max_jump_time_timeout() -> void:
 	
 	#make the player go to the falling state
 	state_chart.send_event(&"start_falling")
+
+
+
+### ----- dashing ----- ###
+
+##runs when the dashing state is entered (dash started)
+func _on_dashing_state_entered() -> void:
+	#set the dash timer to the correct time
+	dash_timer = DASH_TIME
+	
+	#stop the jump if it is active
+	if jumping_state.active:
+		#stop the jump
+		is_jumping = false
+		
+		#make the player go to the falling state
+		state_chart.send_event(&"start_falling")
+	
+	#change the velocity stuff
+	_set_dashing_velocity()
+
+
+##sets the velocity stuff for dashing
+func _set_dashing_velocity() -> void:
+	#stop falling
+	velocity.y = 0
+	
+	#get the direction of the camera 
+	var dir := -camera.global_transform.basis.z
+	
+	#do not change when changing the y value
+	dir.y = 0
+	dir = dir.normalized()
+	
+	#set the moving velocity
+	velocity.x = dir.x * DASH_SPEED
+	velocity.z = dir.z * DASH_SPEED
+	
+	#make the player look at that direction
+	var look_position: Vector3 = global_position - dir
+	knight.look_at(look_position, Vector3.UP)
+
+
+##runs every frame while dashing
+func _on_dashing_state_processing(delta: float) -> void:
+	#reduce the dash timer
+	if dash_timer > 0.0: # only reduce if the time should be reduced
+		dash_timer = max(0.0, dash_timer - delta)
+	
+	elif is_on_floor(): # if the timer stoped and the player is on the floor
+		#set the player to the non dashing state
+		state_chart.send_event(&"stop_dash")
+		
+		#stop the player movement
+		velocity.x = 0
+		velocity.z = 0
 #endregion
 
 

@@ -1,7 +1,5 @@
 [gd_scene format=3 uid="uid://67die22qqpu7"]
 
-[ext_resource type="PackedScene" uid="uid://de84rng12b6nx" path="res://player/model/knight_model.tscn" id="1_re2a8"]
-
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_bn70x"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
 ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -17,10 +15,6 @@ glow_enabled = true
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_bn70x"]
 size = Vector3(40, 0.5, 40)
-
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_yeoaq"]
-radius = 0.076660156
-height = 0.5341511
 
 [node name="TestingMap" type="Node3D" unique_id=1518694753]
 
@@ -40,12 +34,3 @@ size = Vector3(40, 0.5, 40)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Enviroment/StaticBody3D" unique_id=1010115504]
 shape = SubResource("BoxShape3D_bn70x")
-
-[node name="RigidBody3D" type="RigidBody3D" parent="." unique_id=458721468]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7512836, 1.7847769, 0)
-
-[node name="knight_model" parent="RigidBody3D" unique_id=2040427555 instance=ExtResource("1_re2a8")]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D" unique_id=1479702864]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2744491, 0)
-shape = SubResource("CapsuleShape3D_yeoaq")

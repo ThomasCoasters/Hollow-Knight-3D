@@ -158,6 +158,33 @@ script = ExtResource("8_ebec5")
 to = NodePath("../../Idle")
 delay_in_seconds = "0.0"
 
+[node name="Dash" type="Node" parent="StateChart/ParallelState" unique_id=1112781648]
+script = ExtResource("6_8t03j")
+initial_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="StateChart/ParallelState/Dash" unique_id=783562499]
+script = ExtResource("7_2ieo8")
+
+[node name="to_dashing" type="Node" parent="StateChart/ParallelState/Dash/Idle" unique_id=245812696]
+script = ExtResource("8_ebec5")
+to = NodePath("../../Dashing")
+event = &"start_dash"
+delay_in_seconds = "0.0"
+
+[node name="Dashing" type="Node" parent="StateChart/ParallelState/Dash" unique_id=2085130338]
+script = ExtResource("7_2ieo8")
+
+[node name="to_idle_fast" type="Node" parent="StateChart/ParallelState/Dash/Dashing" unique_id=1365406237]
+script = ExtResource("8_ebec5")
+to = NodePath("../../Idle")
+event = &"stop_dash"
+delay_in_seconds = "0.2"
+
+[node name="to_idle_automatic" type="Node" parent="StateChart/ParallelState/Dash/Dashing" unique_id=833330578]
+script = ExtResource("8_ebec5")
+to = NodePath("../../Idle")
+delay_in_seconds = "0.9"
+
 [node name="max_jump_time" type="Timer" parent="." unique_id=1228798069]
 one_shot = true
 
@@ -166,4 +193,6 @@ one_shot = true
 [connection signal="state_entered" from="StateChart/ParallelState/Jumping_Falling/Idle" to="." method="_on_idle_state_entered"]
 [connection signal="state_entered" from="StateChart/ParallelState/Jumping_Falling/Jumping" to="." method="_on_jumping_state_entered"]
 [connection signal="state_entered" from="StateChart/ParallelState/Jumping_Falling/Falling" to="." method="_on_falling_state_entered"]
+[connection signal="state_entered" from="StateChart/ParallelState/Dash/Dashing" to="." method="_on_dashing_state_entered"]
+[connection signal="state_processing" from="StateChart/ParallelState/Dash/Dashing" to="." method="_on_dashing_state_processing"]
 [connection signal="timeout" from="max_jump_time" to="." method="_on_max_jump_time_timeout"]
