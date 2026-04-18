@@ -76,7 +76,7 @@ var jump_max_held: bool = false
 ##speed of the dash
 @export var DASH_SPEED: float = 10
 ##the time the dash takes
-@export var DASH_TIME: float = 0.2
+@export var DASH_TIME: float = 0.27
 ##the timer for the dash
 var dash_timer: float = 0.0
 
