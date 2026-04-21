@@ -9,6 +9,7 @@
 [ext_resource type="Script" uid="uid://cytafq8i1y8qm" path="res://addons/godot_state_charts/atomic_state.gd" id="7_2ieo8"]
 [ext_resource type="Script" uid="uid://cf1nsco3w0mf6" path="res://addons/godot_state_charts/transition.gd" id="8_ebec5"]
 [ext_resource type="Texture2D" uid="uid://eu8bcovmmy1a" path="res://Game/general visuals/location_decal.png" id="9_hg6s5"]
+[ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="10_8t03j"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_oul6g"]
 radius = 0.076660156
@@ -22,9 +23,6 @@ collision_layer = 2
 script = ExtResource("1_g1dw6")
 knight = NodePath("knight_model")
 camera = NodePath("PlayerCamera")
-GRAVITY = 0.13
-max_fall_speed = -15.0
-jump_speed = 3.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2092652524]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2744491, 0)
@@ -162,7 +160,7 @@ script = ExtResource("7_2ieo8")
 [node name="to_attack_idle" type="Node" parent="StateChart/ParallelState/Attack/Attacking" unique_id=1074359871]
 script = ExtResource("8_ebec5")
 to = NodePath("../../Idle")
-delay_in_seconds = "0.0"
+delay_in_seconds = "0.5"
 
 [node name="Dash" type="Node" parent="StateChart/ParallelState" unique_id=1112781648]
 script = ExtResource("6_8t03j")
@@ -193,6 +191,11 @@ delay_in_seconds = "0.9"
 
 [node name="max_jump_time" type="Timer" parent="." unique_id=1228798069]
 one_shot = true
+
+[node name="StateChartDebugger" parent="." unique_id=514821575 instance=ExtResource("10_8t03j")]
+offset_left = 968.0
+offset_bottom = -581.0
+initial_node_to_watch = NodePath("../StateChart")
 
 [connection signal="area_entered" from="camera_detector" to="." method="_on_camera_detector_area_entered"]
 [connection signal="area_exited" from="camera_detector" to="." method="_on_camera_detector_area_exited"]

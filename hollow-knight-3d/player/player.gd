@@ -31,6 +31,15 @@ class_name Player
 
 ##settings for the movement
 @export_group("movement")
+##amount of (physics) frames you get for input buffering
+@export var max_input_buffer_frames: int = 5
+##input buffer frames left for the input
+@export var inputs_to_buffer: Dictionary[StringName, int] = {
+	&"Jump": 0,
+	&"Attack": 0,
+	&"Dash": 0,
+}
+
 ##settings for moving
 @export_subgroup("moving")
 ##maximum walking speed
@@ -42,8 +51,10 @@ class_name Player
 
 ##settings for falling
 @export_subgroup("falling")
+##the amount of (physics) frames you get for jumping after walking off off a ledge
+@export var max_coyote_frames: float = 5
 ##how fast the player will fall
-@export var GRAVITY: float = 0.1
+@export var GRAVITY: float = 0.13
 ##multiplier for the gravity
 var gravity_multiplier: float = 1.0
 ##ways of gravity and their gravity multiplier
@@ -52,7 +63,7 @@ var gravity_multiplier: float = 1.0
 	"jumping": 0.3,
 }
 ##max speed you can fall at
-@export var max_fall_speed: float = -50
+@export var max_fall_speed: float = -15
 
 ##settings for jumping
 @export_subgroup("jumping")
@@ -61,7 +72,7 @@ var gravity_multiplier: float = 1.0
 ##amount of jumps you have left
 var jumps_amount: int = max_jumps_amount
 ##the speed you jump at
-@export var jump_speed: float = 20
+@export var jump_speed: float = 3
 ##timer for how long you can hold the jump button
 @onready var max_jump_time_timer: Timer = $max_jump_time
 ##the time you can hold the jump button for max
@@ -99,6 +110,7 @@ var dash_timer: float = 0.0
 @onready var idle_jumping_falling_state: AtomicState = $StateChart/ParallelState/Jumping_Falling/Idle
 @onready var jumping_state: AtomicState = $StateChart/ParallelState/Jumping_Falling/Jumping
 @onready var falling_state: AtomicState = $StateChart/ParallelState/Jumping_Falling/Falling
+@onready var from_idle_to_falling_state: Transition = $StateChart/ParallelState/Jumping_Falling/Idle/Falling
 
 #attacking
 @onready var attack: CompoundState = $StateChart/ParallelState/Attack
@@ -122,6 +134,9 @@ func _ready() -> void:
 	#time for the max jump time
 	max_jump_time_timer.wait_time = max_jump_time
 	
+	#set the coyote time
+	from_idle_to_falling_state.delay_in_seconds = str(max_coyote_frames/60)
+	
 	#dissables or enables the inputs depending on the starting state of can_input
 	set_process_input(can_input)
 
@@ -130,13 +145,21 @@ func _ready() -> void:
 
 #region loops
 func _input(event: InputEvent) -> void:
+	### ----- input buffering ----- ###
+	_press_input_buffering(event)
+
+
+func _process(_delta: float) -> void:
 	### ----- state chart stuff ----- ###
-	_input_state_chart(event)
-
-
+	_input_state_chart()
+	
+	print(inputs_to_buffer)
 
 
 func _physics_process(delta: float) -> void:
+	### ----- input buffering ----- ###
+	_reduce_input_buffer()
+	
 	### ----- state chart stuff ----- ###
 	_state_chart_physics_process(delta)
 	
@@ -149,11 +172,50 @@ func _physics_process(delta: float) -> void:
 
 
 #region inputs
-##handles the _input version for the state chart inputs
-func _input_state_chart(_event: InputEvent) -> void:
-	#have inputs that require 1 extra frame work
-	await get_tree().process_frame
+##handles the input buffering for pressing
+func _press_input_buffering(_event: InputEvent) -> void:
+	#goes through the list of actions
+	for action in inputs_to_buffer.keys():
+		#remove the input if it was released
+		if not Input.is_action_pressed(action):
+			inputs_to_buffer[action] = 0
+		
+		#set the frame time to the max time if the action is just pressed
+		elif Input.is_action_just_pressed(action):
+			inputs_to_buffer[action] = max_input_buffer_frames
+
+
+##reduces all the input buffer timers
+func _reduce_input_buffer():
+	#goes through the list of actions
+	for action in inputs_to_buffer.keys():
+		#check if the input is currently buffered
+		if inputs_to_buffer[action] > 0:
+			#reduce the buffer time by 1
+			inputs_to_buffer[action] -= 1
+
+
+##gets if the input asked is buffered
+func is_action_buffered(action: StringName) -> bool:
+	#only check if the action is buffered if it even exists
+	if inputs_to_buffer.has(action):
+		#if the buffer frames are higher then 0 the input is buffered
+		if inputs_to_buffer[action] > 0:
+			#reset the input buffer time to 0 for no accidental double presses
+			inputs_to_buffer[action] = 0
+			
+			#returns true if buffered
+			return true
 	
+	#if the action does not exist
+	else:
+		push_error("action does not exist: " + action + ". Add it to the 'inputs_to_buffer' variable")
+	
+	return false
+
+
+##handles the _input version for the state chart inputs
+func _input_state_chart() -> void:
 	#when not moving
 	if idle_moving_state.active:
 		#check if moving starts
@@ -166,15 +228,13 @@ func _input_state_chart(_event: InputEvent) -> void:
 	
 	#when you are moving
 	elif moving_state.active:
-		#check if you stop moving
-		if velocity.x == 0 && velocity.z == 0:
-			#check if the player does not want to keep moving 
-			if !(Input.is_action_pressed(&"MoveBackward") || Input.is_action_pressed(&"MoveForward") ||  Input.is_action_pressed(&"MoveLeft") || Input.is_action_pressed(&"MoveRight")):
-				#set the state chart to the non moving state
-				state_chart.send_event(&"stop_moving")
-				
-				#stop the walk anim
-				knight.set_animation_segment("RESET", false, "Walk")
+		#check if the player does not want to keep moving 
+		if !(Input.is_action_pressed(&"MoveBackward") || Input.is_action_pressed(&"MoveForward") ||  Input.is_action_pressed(&"MoveLeft") || Input.is_action_pressed(&"MoveRight")):
+			#set the state chart to the non moving state
+			state_chart.send_event(&"stop_moving")
+			
+			#stop the walk anim
+			knight.set_animation_segment("RESET", false, "Walk")
 	
 	
 	#when the player currently is jumping
@@ -187,18 +247,17 @@ func _input_state_chart(_event: InputEvent) -> void:
 	
 	#when you are not already having a positive velocity (jumping)
 	if velocity.y <= 0:
-		#check if you can jump
-		if jumps_amount > 0:
+		#check if you can jump (enough jumps + not dashing)
+		if jumps_amount > 0 && !dashing_state.active:
 			#check if you just pressed the jump button
-			if Input.is_action_just_pressed(&"Jump"):
-				jumps_amount -= 1
+			if is_action_buffered(&"Jump"):
 				#set the state chart to the jumping state
 				state_chart.send_event(&"start_jumping")
 	
 	#check if you are not already attacking
 	if !attacking_state.active:
 		#check if you just pressed the attack button
-		if Input.is_action_just_pressed(&"Attack"):
+		if is_action_buffered(&"Attack"):
 			#start the attacking state
 			state_chart.send_event(&"start_attack")
 			
@@ -209,7 +268,7 @@ func _input_state_chart(_event: InputEvent) -> void:
 	#check if the player is not already dashing
 	if !dashing_state.active:
 		#check if the input is the dash input
-		if Input.is_action_just_pressed(&"Dash"):
+		if is_action_buffered(&"Dash"):
 			#start the dashing state
 			state_chart.send_event(&"start_dash")
 
@@ -281,8 +340,8 @@ func _handle_physics(delta: float) -> void:
 		#add gravity to the player
 		_add_gravity() 
 		
-		#add movement velocity and rotation when you are moving only
-		if moving_state.active && can_input:
+		#add movement velocity and rotation when can move only
+		if can_input:
 			#rotate the player to the looking direction and get the new velocity
 			_rotate_and_velocity(delta)
 	
@@ -315,6 +374,9 @@ func _add_gravity() -> void:
 
 ##runs when you start falling
 func _on_falling_state_entered() -> void:
+	#reduce the jumps amount you have left
+	jumps_amount -= 1
+	
 	#stop the jump timer so this state is not entered multiple times:
 	if !max_jump_time_timer.is_stopped():
 		max_jump_time_timer.stop()
@@ -400,14 +462,16 @@ func _on_dashing_state_processing(delta: float) -> void:
 	#reduce the dash timer
 	if dash_timer > 0.0: # only reduce if the time should be reduced
 		dash_timer = max(0.0, dash_timer - delta)
+		
+		#when the dash timer reaches 0 reset velocity to stop the dash speed from being preserved when not moving after the dash (bug)
+		if dash_timer == 0.0:
+			#stop the player movement
+			velocity.x = 0
+			velocity.z = 0
 	
 	elif is_on_floor(): # if the timer stoped and the player is on the floor
 		#set the player to the non dashing state
 		state_chart.send_event(&"stop_dash")
-		
-		#stop the player movement
-		velocity.x = 0
-		velocity.z = 0
 #endregion
 
 
