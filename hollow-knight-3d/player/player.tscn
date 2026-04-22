@@ -3,13 +3,33 @@
 [ext_resource type="Script" uid="uid://b7n47mmsluva4" path="res://player/player.gd" id="1_g1dw6"]
 [ext_resource type="PackedScene" uid="uid://de84rng12b6nx" path="res://player/model/knight_model.tscn" id="1_rkbax"]
 [ext_resource type="PackedScene" uid="uid://bq050tvb8e6of" path="res://player/camera/Player_camera.tscn" id="2_rkbax"]
+[ext_resource type="Script" uid="uid://6woskccgomag" path="res://Game/general scripts/InputBufferData.gd" id="2_yllr7"]
 [ext_resource type="Script" uid="uid://couw105c3bde4" path="res://addons/godot_state_charts/state_chart.gd" id="4_rgyib"]
 [ext_resource type="Script" uid="uid://c1vp0ojjvaby1" path="res://addons/godot_state_charts/parallel_state.gd" id="5_hg6s5"]
 [ext_resource type="Script" uid="uid://jk2jm1g6q853" path="res://addons/godot_state_charts/compound_state.gd" id="6_8t03j"]
 [ext_resource type="Script" uid="uid://cytafq8i1y8qm" path="res://addons/godot_state_charts/atomic_state.gd" id="7_2ieo8"]
 [ext_resource type="Script" uid="uid://cf1nsco3w0mf6" path="res://addons/godot_state_charts/transition.gd" id="8_ebec5"]
 [ext_resource type="Texture2D" uid="uid://eu8bcovmmy1a" path="res://Game/general visuals/location_decal.png" id="9_hg6s5"]
+[ext_resource type="Script" uid="uid://bambbrd2wupx0" path="res://addons/godot_state_charts/state_is_active_guard.gd" id="10_2ieo8"]
 [ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="10_8t03j"]
+[ext_resource type="Script" uid="uid://dgd4i8hrrxfvm" path="res://addons/godot_state_charts/not_guard.gd" id="11_ebec5"]
+
+[sub_resource type="Resource" id="Resource_wodsf"]
+script = ExtResource("2_yllr7")
+max_input_buffer_frames = 8
+metadata/_custom_type_script = "uid://6woskccgomag"
+
+[sub_resource type="Resource" id="Resource_32hag"]
+script = ExtResource("2_yllr7")
+max_input_buffer_frames = 12
+transition_path = NodePath("StateChart/ParallelState/Attack/Idle/to_attacking")
+metadata/_custom_type_script = "uid://6woskccgomag"
+
+[sub_resource type="Resource" id="Resource_tqiix"]
+script = ExtResource("2_yllr7")
+max_input_buffer_frames = 10
+transition_path = NodePath("StateChart/ParallelState/Dash/Idle/to_dashing")
+metadata/_custom_type_script = "uid://6woskccgomag"
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_oul6g"]
 radius = 0.076660156
@@ -18,11 +38,36 @@ height = 0.5341511
 [sub_resource type="SphereShape3D" id="SphereShape3D_g1dw6"]
 radius = 0.6562854
 
+[sub_resource type="Resource" id="Resource_e7oew"]
+script = ExtResource("10_2ieo8")
+state = NodePath("../../../Dash/Dashing")
+metadata/_custom_type_script = "uid://bambbrd2wupx0"
+
+[sub_resource type="Resource" id="Resource_c35mf"]
+script = ExtResource("11_ebec5")
+guard = SubResource("Resource_e7oew")
+metadata/_custom_type_script = "uid://dgd4i8hrrxfvm"
+
+[sub_resource type="Resource" id="Resource_yllr7"]
+script = ExtResource("10_2ieo8")
+state = NodePath("../../../Attack/Attacking")
+metadata/_custom_type_script = "uid://bambbrd2wupx0"
+
+[sub_resource type="Resource" id="Resource_kb6p2"]
+script = ExtResource("11_ebec5")
+guard = SubResource("Resource_yllr7")
+metadata/_custom_type_script = "uid://dgd4i8hrrxfvm"
+
 [node name="Node3D" type="CharacterBody3D" unique_id=2083664876 node_paths=PackedStringArray("knight", "camera")]
 collision_layer = 2
 script = ExtResource("1_g1dw6")
 knight = NodePath("knight_model")
 camera = NodePath("PlayerCamera")
+inputs_to_buffer = Dictionary[StringName, ExtResource("2_yllr7")]({
+&"Attack": SubResource("Resource_32hag"),
+&"Dash": SubResource("Resource_tqiix"),
+&"Jump": SubResource("Resource_wodsf")
+})
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2092652524]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2744491, 0)
@@ -152,12 +197,21 @@ script = ExtResource("7_2ieo8")
 script = ExtResource("8_ebec5")
 to = NodePath("../../Attacking")
 event = &"start_attack"
+guard = SubResource("Resource_c35mf")
 delay_in_seconds = "0.0"
 
 [node name="Attacking" type="Node" parent="StateChart/ParallelState/Attack" unique_id=1003551824]
 script = ExtResource("7_2ieo8")
 
-[node name="to_attack_idle" type="Node" parent="StateChart/ParallelState/Attack/Attacking" unique_id=1074359871]
+[node name="to_attack_recharge" type="Node" parent="StateChart/ParallelState/Attack/Attacking" unique_id=1074359871]
+script = ExtResource("8_ebec5")
+to = NodePath("../../Attack_recharge")
+delay_in_seconds = "0.33"
+
+[node name="Attack_recharge" type="Node" parent="StateChart/ParallelState/Attack" unique_id=1503661123]
+script = ExtResource("7_2ieo8")
+
+[node name="To_attack_idle" type="Node" parent="StateChart/ParallelState/Attack/Attack_recharge" unique_id=1382258736]
 script = ExtResource("8_ebec5")
 to = NodePath("../../Idle")
 delay_in_seconds = "0.5"
@@ -173,18 +227,27 @@ script = ExtResource("7_2ieo8")
 script = ExtResource("8_ebec5")
 to = NodePath("../../Dashing")
 event = &"start_dash"
+guard = SubResource("Resource_kb6p2")
 delay_in_seconds = "0.0"
 
 [node name="Dashing" type="Node" parent="StateChart/ParallelState/Dash" unique_id=2085130338]
 script = ExtResource("7_2ieo8")
 
-[node name="to_idle_fast" type="Node" parent="StateChart/ParallelState/Dash/Dashing" unique_id=1365406237]
+[node name="To_dash_recharge" type="Node" parent="StateChart/ParallelState/Dash/Dashing" unique_id=168001428]
+script = ExtResource("8_ebec5")
+to = NodePath("../../Dash_recharge")
+delay_in_seconds = "0.0"
+
+[node name="Dash_recharge" type="Node" parent="StateChart/ParallelState/Dash" unique_id=1470618647]
+script = ExtResource("7_2ieo8")
+
+[node name="to_idle_fast" type="Node" parent="StateChart/ParallelState/Dash/Dash_recharge" unique_id=1547216627]
 script = ExtResource("8_ebec5")
 to = NodePath("../../Idle")
 event = &"stop_dash"
 delay_in_seconds = "0.2"
 
-[node name="to_idle_automatic" type="Node" parent="StateChart/ParallelState/Dash/Dashing" unique_id=833330578]
+[node name="to_idle_automatic" type="Node" parent="StateChart/ParallelState/Dash/Dash_recharge" unique_id=309427216]
 script = ExtResource("8_ebec5")
 to = NodePath("../../Idle")
 delay_in_seconds = "0.9"

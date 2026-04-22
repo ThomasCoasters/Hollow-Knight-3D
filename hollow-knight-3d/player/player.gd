@@ -1,6 +1,6 @@
 #region vars
-extends CharacterBody3D
 class_name Player
+extends CharacterBody3D
 
 ##exported nodes
 @export_group("nodes")
@@ -31,14 +31,10 @@ class_name Player
 
 ##settings for the movement
 @export_group("movement")
-##amount of (physics) frames you get for input buffering
-@export var max_input_buffer_frames: int = 5
 ##input buffer frames left for the input
-@export var inputs_to_buffer: Dictionary[StringName, int] = {
-	&"Jump": 0,
-	&"Attack": 0,
-	&"Dash": 0,
-}
+##first the name of the input action
+##after that the corresponding transition state that is triggered when using this button or null
+@export var inputs_to_buffer: Dictionary[StringName, InputBufferData] = {}
 
 ##settings for moving
 @export_subgroup("moving")
@@ -92,6 +88,11 @@ var jump_max_held: bool = false
 var dash_timer: float = 0.0
 
 
+@export_group("attacking")
+##the time the dash takes
+@export var ATTACK_TIME: float = 0.33
+
+
 
 
 #state chart stuff
@@ -116,11 +117,18 @@ var dash_timer: float = 0.0
 @onready var attack: CompoundState = $StateChart/ParallelState/Attack
 @onready var idle_attacking_state: AtomicState = $StateChart/ParallelState/Attack/Idle
 @onready var attacking_state: AtomicState = $StateChart/ParallelState/Attack/Attacking
+@onready var attack_recharge: AtomicState = $StateChart/ParallelState/Attack/Attack_recharge
+@onready var to_attack_recharge: Transition = $StateChart/ParallelState/Attack/Attacking/to_attack_recharge
+@onready var to_attacking: Transition = $StateChart/ParallelState/Attack/Idle/to_attacking
 
 #dashing
 @onready var dash: CompoundState = $StateChart/ParallelState/Dash
 @onready var idle_dashing_state: AtomicState = $StateChart/ParallelState/Dash/Idle
 @onready var dashing_state: AtomicState = $StateChart/ParallelState/Dash/Dashing
+@onready var dash_recharge: AtomicState = $StateChart/ParallelState/Dash/Dash_recharge
+@onready var to_dash_recharge: Transition = $StateChart/ParallelState/Dash/Dashing/To_dash_recharge
+@onready var to_dashing: Transition = $StateChart/ParallelState/Dash/Idle/to_dashing
+
 
 
 #endregion
@@ -134,11 +142,33 @@ func _ready() -> void:
 	#time for the max jump time
 	max_jump_time_timer.wait_time = max_jump_time
 	
+	#dissables or enables the inputs depending on the starting state of can_input
+	set_process_input(can_input)
+	
+	
+	#input buffering setup
+	for action in inputs_to_buffer.keys():
+		#makes not every recource be shared
+		inputs_to_buffer[action] = inputs_to_buffer[action].duplicate()
+		
+		#get the data for this key
+		var data := inputs_to_buffer[action]
+		
+		#set the transition to the correct value
+		if data.transition_path != NodePath():
+			data.transition = get_node(data.transition_path)
+	
+	
+	
+	### ----- state chart delays ----- ###
 	#set the coyote time
 	from_idle_to_falling_state.delay_in_seconds = str(max_coyote_frames/60)
 	
-	#dissables or enables the inputs depending on the starting state of can_input
-	set_process_input(can_input)
+	#sets the attack active time
+	to_attack_recharge.delay_in_seconds = str(ATTACK_TIME)
+	
+	#sets the active dashing time
+	to_dash_recharge.delay_in_seconds = str(DASH_TIME)
 
 #endregion
 
@@ -176,11 +206,11 @@ func _press_input_buffering(_event: InputEvent) -> void:
 	for action in inputs_to_buffer.keys():
 		#remove the input if it was released
 		if not Input.is_action_pressed(action):
-			inputs_to_buffer[action] = 0
+			inputs_to_buffer[action].frames_left = 0
 		
 		#set the frame time to the max time if the action is just pressed
 		elif Input.is_action_just_pressed(action):
-			inputs_to_buffer[action] = max_input_buffer_frames
+			inputs_to_buffer[action].frames_left = inputs_to_buffer[action].max_input_buffer_frames
 
 
 ##reduces all the input buffer timers
@@ -188,9 +218,9 @@ func _reduce_input_buffer():
 	#goes through the list of actions
 	for action in inputs_to_buffer.keys():
 		#check if the input is currently buffered
-		if inputs_to_buffer[action] > 0:
+		if inputs_to_buffer[action].frames_left > 0:
 			#reduce the buffer time by 1
-			inputs_to_buffer[action] -= 1
+			inputs_to_buffer[action].frames_left -= 1
 
 
 ##gets if the input asked is buffered
@@ -198,9 +228,18 @@ func is_action_buffered(action: StringName) -> bool:
 	#only check if the action is buffered if it even exists
 	if inputs_to_buffer.has(action):
 		#if the buffer frames are higher then 0 the input is buffered
-		if inputs_to_buffer[action] > 0:
+		if inputs_to_buffer[action].frames_left > 0:
+			
+			#check if the childs transition can be taken safely
+			var trans := inputs_to_buffer[action].transition as Transition
+			#if not valid transition or just null
+			if trans != null:
+				#if the gaurd blocks the action
+				if not trans.evaluate_guard():
+					return false
+			
 			#reset the input buffer time to 0 for no accidental double presses
-			inputs_to_buffer[action] = 0
+			inputs_to_buffer[action].frames_left = 0
 			
 			#returns true if buffered
 			return true
@@ -269,6 +308,9 @@ func _input_state_chart() -> void:
 		if is_action_buffered(&"Dash"):
 			#start the dashing state
 			state_chart.send_event(&"start_dash")
+			
+			#start the dash animation
+			knight.set_animation_segment("Dash", true)
 
 
 
@@ -362,6 +404,12 @@ func _add_gravity() -> void:
 	if !is_on_floor():
 		#add the gravity to the velocity
 		velocity.y -= GRAVITY * gravity_multiplier
+	
+	#if you are recharging the dash and touching the ground make it recharge faster
+	elif dash_recharge.active:
+		#set the player to the non dashing state
+		state_chart.send_event(&"stop_dash")
+	
 	
 	#have a max falling speed
 	velocity.y = max(velocity.y, max_fall_speed)

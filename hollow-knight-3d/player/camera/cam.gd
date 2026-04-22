@@ -1,5 +1,5 @@
-extends Camera3D
 class_name Camera
+extends Camera3D
 
 ##the node the camera want to be at
 @export var wanted_position: Marker3D

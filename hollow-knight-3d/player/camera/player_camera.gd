@@ -1,7 +1,7 @@
 #region vars
 @tool
-extends Node3D
 class_name Player_Camera
+extends Node3D
 
 #springarm
 @onready var spring_arm_3d: SpringArm3D = $SpringArm3D
