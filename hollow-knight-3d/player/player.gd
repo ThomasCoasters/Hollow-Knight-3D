@@ -152,8 +152,6 @@ func _input(event: InputEvent) -> void:
 func _process(_delta: float) -> void:
 	### ----- state chart stuff ----- ###
 	_input_state_chart()
-	
-	print(inputs_to_buffer)
 
 
 func _physics_process(delta: float) -> void:
