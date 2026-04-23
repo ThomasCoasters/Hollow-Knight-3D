@@ -14,11 +14,6 @@
 [ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="10_8t03j"]
 [ext_resource type="Script" uid="uid://dgd4i8hrrxfvm" path="res://addons/godot_state_charts/not_guard.gd" id="11_ebec5"]
 
-[sub_resource type="Resource" id="Resource_wodsf"]
-script = ExtResource("2_yllr7")
-max_input_buffer_frames = 8
-metadata/_custom_type_script = "uid://6woskccgomag"
-
 [sub_resource type="Resource" id="Resource_32hag"]
 script = ExtResource("2_yllr7")
 max_input_buffer_frames = 12
@@ -29,6 +24,11 @@ metadata/_custom_type_script = "uid://6woskccgomag"
 script = ExtResource("2_yllr7")
 max_input_buffer_frames = 10
 transition_path = NodePath("StateChart/ParallelState/Dash/Idle/to_dashing")
+metadata/_custom_type_script = "uid://6woskccgomag"
+
+[sub_resource type="Resource" id="Resource_wodsf"]
+script = ExtResource("2_yllr7")
+max_input_buffer_frames = 8
 metadata/_custom_type_script = "uid://6woskccgomag"
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_oul6g"]

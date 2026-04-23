@@ -28,7 +28,7 @@ window/stretch/mode="canvas_items"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/godot_state_charts/plugin.cfg")
+enabled=PackedStringArray("res://addons/components/plugin.cfg", "res://addons/godot_state_charts/plugin.cfg")
 
 [input]
 
