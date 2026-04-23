@@ -1,7 +1,8 @@
 [gd_scene format=3 uid="uid://bo63f6sjklvg2"]
 
 [ext_resource type="Script" uid="uid://dglibsayi1w7q" path="res://addons/components/utilities/editor_sidebar.gd" id="1_4bt41"]
-[ext_resource type="Texture2D" uid="uid://bbudjoa3ds4qj" path="res://addons/godot_state_charts/compound_state.svg" id="3_b4okj"]
+[ext_resource type="Texture2D" uid="uid://b3fm5w6878u8o" path="res://addons/components/animation_component.svg" id="2_4bt41"]
+[ext_resource type="Texture2D" uid="uid://bm83cmlcld3h1" path="res://addons/components/transparancy_component.svg" id="3_iak3e"]
 [ext_resource type="Texture2D" uid="uid://vga3avpb4gyh" path="res://addons/godot_state_charts/toggle_sidebar.svg" id="9_dqcj0"]
 
 [node name="EditorSidebar" type="MarginContainer" unique_id=1536614234]
@@ -45,12 +46,20 @@ theme_override_constants/h_separation = 5
 theme_override_constants/v_separation = 5
 alignment = 1
 
-[node name="CompoundState" type="Button" parent="VBoxContainer/AddSection/AddGridContainer" unique_id=873908607 groups=["statebutton"]]
+[node name="AnimationComponent" type="Button" parent="VBoxContainer/AddSection/AddGridContainer" unique_id=873908607 groups=["componentbutton"]]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
-tooltip_text = "CompoundState"
-icon = ExtResource("3_b4okj")
+tooltip_text = "AnimationComponent"
+icon = ExtResource("2_4bt41")
+icon_alignment = 1
+
+[node name="TransparancyComponent" type="Button" parent="VBoxContainer/AddSection/AddGridContainer" unique_id=1657813632 groups=["componentbutton"]]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+tooltip_text = "TransparancyComponent"
+icon = ExtResource("3_iak3e")
 icon_alignment = 1
 
 [node name="NoOptionsLabel" type="Label" parent="VBoxContainer" unique_id=660133618]
@@ -72,5 +81,6 @@ size_flags_horizontal = 4
 tooltip_text = "Toggle sidebar location"
 icon = ExtResource("9_dqcj0")
 
-[connection signal="pressed" from="VBoxContainer/AddSection/AddGridContainer/CompoundState" to="." method="_on_compound_state_pressed"]
+[connection signal="pressed" from="VBoxContainer/AddSection/AddGridContainer/AnimationComponent" to="." method="_on_animation_component_pressed"]
+[connection signal="pressed" from="VBoxContainer/AddSection/AddGridContainer/TransparancyComponent" to="." method="_on_transparancy_component_pressed"]
 [connection signal="pressed" from="VBoxContainer/ToggleSidebarButton" to="." method="_on_toggle_sidebar_button_pressed"]

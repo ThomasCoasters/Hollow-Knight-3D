@@ -94,9 +94,7 @@ func _on_selection_changed() -> void:
 	# show sidebar if we selected a chart or a state
 	if selection.size() == 1:
 		var selected_node := selection[0]
-		if selected_node is StateChart \
-			or selected_node is StateChartState \
-			or selected_node is Transition:
+		if selected_node is Component_holder:
 			_ui_sidebar_canvas.show()
 			_ui_sidebar_canvas.change_selected_node(selected_node)
 			_ui_sidebar_spatial.show()

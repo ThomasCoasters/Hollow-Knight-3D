@@ -30,23 +30,16 @@ func _repaint() -> void:
 	# we can add states to all composite states and to the 
 	# root if the root has no child state yet.
 	var can_add_states := \
-		( _selected_node is StateChart and _selected_node.get_child_count() == 0 ) \
-		or _selected_node is ParallelState \
-		or _selected_node is CompoundState
+		_selected_node is Component_holder #\
+		#or _selected_node is CompoundState
 		
-	# we can add transitions to all states
-	var can_add_transitions := \
-		_selected_node is StateChartState
-		
-	_add_section.visible = can_add_states or can_add_transitions
-	_no_options_label.visible = not (can_add_states or can_add_transitions)
+	_add_section.visible = can_add_states
+	_no_options_label.visible = not (can_add_states)
 	
 	
 	for btn in _add_grid_container.get_children():
-		if btn.is_in_group("statebutton"):
+		if btn.is_in_group("componentbutton"):
 			btn.visible = can_add_states
-		else:
-			btn.visible = can_add_transitions
 
 
 func _create_node(type, name:StringName) -> void:
@@ -75,25 +68,13 @@ func _create_node(type, name:StringName) -> void:
 		
 
 
-func _on_atomic_state_pressed() -> void:
-	_create_node(AtomicState, "AtomicState")
-
-
-func _on_compound_state_pressed() -> void:
-	_create_node(CompoundState, "CompoundState")
-
-
-func _on_parallel_state_pressed() -> void:
-	_create_node(ParallelState, "ParallelState")
-
-
-func _on_history_state_pressed() -> void:
-	_create_node(HistoryState, "HistoryState")
-
-
-func _on_transition_pressed() -> void:
-	_create_node(Transition, "Transition")
-
-
 func _on_toggle_sidebar_button_pressed() -> void:
 	sidebar_toggle_requested.emit()
+
+
+func _on_animation_component_pressed() -> void:
+	_create_node(animation_component, "AnimationComponent")
+
+
+func _on_transparancy_component_pressed() -> void:
+	_create_node(transparancy_component, "TransparancyComponent")
