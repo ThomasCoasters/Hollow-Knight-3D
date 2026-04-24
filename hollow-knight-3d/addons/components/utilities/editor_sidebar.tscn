@@ -29,24 +29,37 @@ text = "Add Component"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="AddNodeNameLineEdit" type="LineEdit" parent="VBoxContainer/AddSection" unique_id=1861946379]
+[node name="SearchNodeLineEdit" type="LineEdit" parent="VBoxContainer/AddSection" unique_id=1861946379]
 unique_name_in_owner = true
 layout_mode = 2
-placeholder_text = "Name"
+placeholder_text = "search"
 alignment = 1
 expand_to_text_length = true
 select_all_on_focus = true
 caret_blink = true
 caret_blink_interval = 0.5
 
-[node name="AddGridContainer" type="HFlowContainer" parent="VBoxContainer/AddSection" unique_id=827623941]
+[node name="AddGridContainer" type="VBoxContainer" parent="VBoxContainer/AddSection" unique_id=975734426]
 unique_name_in_owner = true
+layout_mode = 2
+alignment = 1
+
+[node name="3DModelSection" type="VBoxContainer" parent="VBoxContainer/AddSection/AddGridContainer" unique_id=1745078646]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/AddSection/AddGridContainer/3DModelSection" unique_id=1223354654]
+layout_mode = 2
+text = "3D Model Components"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AddGridContainer" type="HFlowContainer" parent="VBoxContainer/AddSection/AddGridContainer/3DModelSection" unique_id=1760995334]
 layout_mode = 2
 theme_override_constants/h_separation = 5
 theme_override_constants/v_separation = 5
 alignment = 1
 
-[node name="AnimationComponent" type="Button" parent="VBoxContainer/AddSection/AddGridContainer" unique_id=873908607 groups=["componentbutton"]]
+[node name="AnimationComponent" type="Button" parent="VBoxContainer/AddSection/AddGridContainer/3DModelSection/AddGridContainer" unique_id=2077390765 groups=["componentbutton"]]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
@@ -54,22 +67,13 @@ tooltip_text = "AnimationComponent"
 icon = ExtResource("2_4bt41")
 icon_alignment = 1
 
-[node name="TransparancyComponent" type="Button" parent="VBoxContainer/AddSection/AddGridContainer" unique_id=1657813632 groups=["componentbutton"]]
+[node name="TransparancyComponent" type="Button" parent="VBoxContainer/AddSection/AddGridContainer/3DModelSection/AddGridContainer" unique_id=1912325604 groups=["componentbutton"]]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 tooltip_text = "TransparancyComponent"
 icon = ExtResource("3_iak3e")
 icon_alignment = 1
-
-[node name="NoOptionsLabel" type="Label" parent="VBoxContainer" unique_id=660133618]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(100, 0)
-layout_mode = 2
-size_flags_vertical = 0
-text = "This node cannot have further child nodes."
-horizontal_alignment = 1
-autowrap_mode = 2
 
 [node name="Spacer" type="Control" parent="VBoxContainer" unique_id=761526453]
 layout_mode = 2
@@ -81,6 +85,5 @@ size_flags_horizontal = 4
 tooltip_text = "Toggle sidebar location"
 icon = ExtResource("9_dqcj0")
 
-[connection signal="pressed" from="VBoxContainer/AddSection/AddGridContainer/AnimationComponent" to="." method="_on_animation_component_pressed"]
-[connection signal="pressed" from="VBoxContainer/AddSection/AddGridContainer/TransparancyComponent" to="." method="_on_transparancy_component_pressed"]
+[connection signal="text_changed" from="VBoxContainer/AddSection/SearchNodeLineEdit" to="." method="_on_search_node_line_edit_text_changed"]
 [connection signal="pressed" from="VBoxContainer/ToggleSidebarButton" to="." method="_on_toggle_sidebar_button_pressed"]

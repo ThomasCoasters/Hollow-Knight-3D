@@ -12,8 +12,7 @@ var _editor_interface:EditorInterface
 var _undo_redo:EditorUndoRedoManager
 
 @onready var _add_section:Control = %AddSection
-@onready var _no_options_label:Control = %NoOptionsLabel
-@onready var _add_node_name_line_edit:LineEdit = %AddNodeNameLineEdit
+@onready var _Search_node_line_edit:LineEdit = %SearchNodeLineEdit
 @onready var _add_grid_container:Control = %AddGridContainer
 
 
@@ -24,29 +23,11 @@ func setup(editor_interface:EditorInterface, undo_redo:EditorUndoRedoManager) ->
 
 func change_selected_node(node) -> void:
 	_selected_node = node
-	_repaint()
-
-func _repaint() -> void:
-	# we can add states to all composite states and to the 
-	# root if the root has no child state yet.
-	var can_add_states := \
-		_selected_node is Component_holder #\
-		#or _selected_node is CompoundState
-		
-	_add_section.visible = can_add_states
-	_no_options_label.visible = not (can_add_states)
-	
-	
-	for btn in _add_grid_container.get_children():
-		if btn.is_in_group("componentbutton"):
-			btn.visible = can_add_states
 
 
 func _create_node(type, name:StringName) -> void:
 	
-	var final_name := _add_node_name_line_edit.text.strip_edges()
-	if final_name.length() == 0:
-		final_name = name
+	var final_name := name
 	
 	var new_node = type.new()
 	_undo_redo.create_action("Add " + final_name)
@@ -61,11 +42,36 @@ func _create_node(type, name:StringName) -> void:
 	if Input.is_key_pressed(KEY_SHIFT):
 		_editor_interface.get_selection().clear()
 		_editor_interface.get_selection().add_node(new_node)
-
-	_add_node_name_line_edit.grab_focus()
+	
 	_editor_interface.edit_node(new_node)
-	_repaint()
+
+
+
+func _on_search_node_line_edit_text_changed(new_text: String) -> void:
+	#get the searched input
+	new_text = new_text.strip_edges().to_lower()
+	
+	for section in _add_grid_container.get_children():
+		var flow := section.get_node_or_null("AddGridContainer")
 		
+		if flow == null:
+			continue
+		
+		var any_visible := false
+		
+		for btn in flow.get_children():
+			if btn is Button:
+				var text = btn.tooltip_text.to_lower()
+				btn.visible = new_text == "" or text.contains(new_text)
+				
+				if btn.visible:
+					any_visible = true
+		
+		section.visible = any_visible
+
+
+
+
 
 
 func _on_toggle_sidebar_button_pressed() -> void:
