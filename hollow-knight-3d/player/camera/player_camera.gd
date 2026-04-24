@@ -331,7 +331,7 @@ func _on_free_state_exited() -> void:
 	top_level = false
 	
 	#tween to the correct position
-	Global.create_usable_tween(self, "position", old_camera_position, cam_move_tween_time, cam_moving_tween, Tween.EASE_OUT)
+	TweenUtils.create_usable_tween(self, self, "position", old_camera_position, cam_move_tween_time, cam_moving_tween, Tween.EASE_OUT)
 #endregion
 
 #region locked camera
@@ -349,7 +349,7 @@ func _on_locked_state_entered() -> void:
 	
 	
 	#tween to the new location
-	Global.create_usable_tween(self, "global_position", location, cam_move_tween_time, cam_moving_tween, Tween.EASE_OUT)
+	TweenUtils.create_usable_tween(self, self, "global_position", location, cam_move_tween_time, cam_moving_tween, Tween.EASE_OUT)
 
 
 ##resets changes that might break stuff
@@ -358,7 +358,7 @@ func _on_locked_state_exited() -> void:
 	top_level = false
 	
 	#tween to the correct position
-	Global.create_usable_tween(self, "position", old_camera_position, cam_move_tween_time, cam_moving_tween, Tween.EASE_OUT)
+	TweenUtils.create_usable_tween(self, self, "position", old_camera_position, cam_move_tween_time, cam_moving_tween, Tween.EASE_OUT)
 #endregion
 
 

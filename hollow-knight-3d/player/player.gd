@@ -131,6 +131,13 @@ var dash_timer: float = 0.0
 
 
 
+
+## settings for components
+@export_group("components")
+## the component for the health settings
+@export var health_comp: health_component
+
+
 #endregion
 
 #region setup

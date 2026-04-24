@@ -26,19 +26,23 @@ func change_selected_node(node) -> void:
 
 
 func _create_node(type, name:StringName) -> void:
-	
 	var final_name := name
-	
 	var new_node = type.new()
+	
+	var target_parent := _selected_node
+	
+	# If the selected node is a component use its parent instead
+	if _selected_node is component and _selected_node.get_parent():
+		target_parent = _selected_node.get_parent()
+	
 	_undo_redo.create_action("Add " + final_name)
-	_undo_redo.add_do_method(_selected_node, "add_child", new_node)
-	_undo_redo.add_undo_method(_selected_node, "remove_child", new_node)
+	_undo_redo.add_do_method(target_parent, "add_child", new_node)
+	_undo_redo.add_undo_method(target_parent, "remove_child", new_node)
 	_undo_redo.add_do_reference(new_node)
 	_undo_redo.add_do_method(new_node, "set_owner", _selected_node.get_tree().edited_scene_root)
 	_undo_redo.add_do_property(new_node, "name", final_name)
 	_undo_redo.commit_action()
-		
-	
+
 	if Input.is_key_pressed(KEY_SHIFT):
 		_editor_interface.get_selection().clear()
 		_editor_interface.get_selection().add_node(new_node)
@@ -84,3 +88,7 @@ func _on_animation_component_pressed() -> void:
 
 func _on_transparancy_component_pressed() -> void:
 	_create_node(transparancy_component, "TransparancyComponent")
+
+
+func _on_health_component_pressed() -> void:
+	_create_node(health_component, "HealthComponent")
