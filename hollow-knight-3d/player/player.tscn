@@ -13,7 +13,6 @@
 [ext_resource type="Script" uid="uid://cf1nsco3w0mf6" path="res://addons/godot_state_charts/transition.gd" id="8_ebec5"]
 [ext_resource type="Texture2D" uid="uid://eu8bcovmmy1a" path="res://Game/general visuals/location_decal.png" id="9_hg6s5"]
 [ext_resource type="Script" uid="uid://bambbrd2wupx0" path="res://addons/godot_state_charts/state_is_active_guard.gd" id="10_2ieo8"]
-[ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="10_8t03j"]
 [ext_resource type="Script" uid="uid://dgd4i8hrrxfvm" path="res://addons/godot_state_charts/not_guard.gd" id="11_ebec5"]
 
 [sub_resource type="Resource" id="Resource_32hag"]
@@ -266,11 +265,6 @@ delay_in_seconds = "0.9"
 
 [node name="max_jump_time" type="Timer" parent="." unique_id=1228798069]
 one_shot = true
-
-[node name="StateChartDebugger" parent="." unique_id=514821575 instance=ExtResource("10_8t03j")]
-offset_left = 968.0
-offset_bottom = -581.0
-initial_node_to_watch = NodePath("../StateChart")
 
 [connection signal="damaged" from="Component_holder/HealthComponent" to="." method="_on_health_component_damaged"]
 [connection signal="health_changed" from="Component_holder/HealthComponent" to="." method="_on_health_component_health_changed"]

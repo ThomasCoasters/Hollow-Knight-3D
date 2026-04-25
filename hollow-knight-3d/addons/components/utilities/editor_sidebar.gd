@@ -92,3 +92,7 @@ func _on_transparancy_component_pressed() -> void:
 
 func _on_health_component_pressed() -> void:
 	_create_node(health_component, "HealthComponent")
+
+
+func _on_spawn_pooled_component_pressed() -> void:
+	_create_node(spawn_pooled_component, "SpawnPooledComponent")
