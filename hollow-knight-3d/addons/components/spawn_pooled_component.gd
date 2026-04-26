@@ -24,6 +24,16 @@ var _pooled_objects: Array[pooled_object_settings] = []
 
 
 
+## called when a new object is created
+signal new_object_made(node: Node)
+
+## called when a object is returned
+signal object_returned(node: Node)
+
+## called when a object is got
+signal got_object(node: Node)
+
+
 func _ready() -> void:
 	#do not play in the editor
 	if Engine.is_editor_hint():
@@ -50,6 +60,9 @@ func return_object(node: Node) -> void:
 			if node.has_method("_on_pool_return"):
 				node._on_pool_return()
 			
+			# emit the returned object signal
+			object_returned.emit(node)
+			
 			return
 	
 	push_error("Trying to return object not in pool")
@@ -58,7 +71,7 @@ func return_object(node: Node) -> void:
 
 ## gets a unused object, if not possible creates a new one if overflow is enabled.
 ## a new one always gets the use settings auto enabled
-func _get_unused_object(create_overflow: bool, auto_set_use_settings: bool = true) -> Node:
+func get_unused_object(create_overflow: bool, auto_set_use_settings: bool = true) -> Node:
 	#goes through every pooled object
 	for settings: pooled_object_settings in _pooled_objects:
 		# the node
@@ -79,6 +92,9 @@ func _get_unused_object(create_overflow: bool, auto_set_use_settings: bool = tru
 		if node.has_method("_on_pool_get"):
 			node._on_pool_get()
 		
+		# emit the got signal
+		got_object.emit(node)
+		
 		#return it
 		return node
 	
@@ -89,6 +105,9 @@ func _get_unused_object(create_overflow: bool, auto_set_use_settings: bool = tru
 		# runs the pool_get function
 		if node.has_method("_on_pool_get"):
 			node._on_pool_get()
+		
+		# emit the got signal
+		got_object.emit(node)
 		
 		return node
 	
@@ -133,6 +152,9 @@ func _create_new_pooled_object(use_now: bool = false) -> Node:
 	
 	# create the node
 	add_child(new_pooled_object)
+	
+	# emit the new object made signal
+	new_object_made.emit(new_pooled_object) 
 	
 	# return the node made
 	return new_pooled_object

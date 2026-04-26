@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://brro60y7o03e2" path="res://addons/components/health_component.gd" id="4_32hag"]
 [ext_resource type="Script" uid="uid://couw105c3bde4" path="res://addons/godot_state_charts/state_chart.gd" id="4_rgyib"]
 [ext_resource type="Script" uid="uid://c1vp0ojjvaby1" path="res://addons/godot_state_charts/parallel_state.gd" id="5_hg6s5"]
+[ext_resource type="Script" uid="uid://dxiqcx0ei8njy" path="res://addons/components/spawn_pooled_component.gd" id="5_wodsf"]
 [ext_resource type="Script" uid="uid://jk2jm1g6q853" path="res://addons/godot_state_charts/compound_state.gd" id="6_8t03j"]
 [ext_resource type="Script" uid="uid://cytafq8i1y8qm" path="res://addons/godot_state_charts/atomic_state.gd" id="7_2ieo8"]
 [ext_resource type="Script" uid="uid://cf1nsco3w0mf6" path="res://addons/godot_state_charts/transition.gd" id="8_ebec5"]
@@ -79,6 +80,11 @@ metadata/_custom_type_script = "uid://1qi0tlwofusy"
 script = ExtResource("4_32hag")
 max_health = 5
 heal_on_max_health_gain = true
+
+[node name="SpawnPooledComponent" type="Node" parent="Component_holder" unique_id=701043375]
+script = ExtResource("5_wodsf")
+object = ExtResource("1_rkbax")
+initial_object_count = 2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2092652524]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2744491, 0)
@@ -266,10 +272,6 @@ delay_in_seconds = "0.9"
 [node name="max_jump_time" type="Timer" parent="." unique_id=1228798069]
 one_shot = true
 
-[connection signal="damaged" from="Component_holder/HealthComponent" to="." method="_on_health_component_damaged"]
-[connection signal="health_changed" from="Component_holder/HealthComponent" to="." method="_on_health_component_health_changed"]
-[connection signal="health_depleated" from="Component_holder/HealthComponent" to="." method="_on_health_component_health_depleated"]
-[connection signal="max_health_changed" from="Component_holder/HealthComponent" to="." method="_on_health_component_max_health_changed"]
 [connection signal="area_entered" from="camera_detector" to="." method="_on_camera_detector_area_entered"]
 [connection signal="area_exited" from="camera_detector" to="." method="_on_camera_detector_area_exited"]
 [connection signal="state_entered" from="StateChart/ParallelState/Jumping_Falling/Idle" to="." method="_on_idle_state_entered"]

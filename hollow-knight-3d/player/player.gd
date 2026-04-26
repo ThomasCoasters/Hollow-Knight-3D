@@ -136,8 +136,6 @@ var dash_timer: float = 0.0
 @export_group("components")
 ## the component for the health settings
 @export var health_comp: health_component
-
-
 #endregion
 
 #region setup
@@ -201,7 +199,6 @@ func _physics_process(delta: float) -> void:
 	
 	### ----- physics stuff ----- ###
 	_handle_physics(delta)
-
 #endregion
 
 
@@ -298,8 +295,8 @@ func _input_state_chart() -> void:
 				#set the state chart to the jumping state
 				state_chart.send_event(&"start_jumping")
 	
-	#check if you are not already attacking
-	if !attacking_state.active:
+	#check if the player is in the attacking idle state
+	if idle_attacking_state.active:
 		#check if you just pressed the attack button
 		if is_action_buffered(&"Attack"):
 			#start the attacking state
@@ -309,8 +306,8 @@ func _input_state_chart() -> void:
 			knight.set_animation_segment("Attack", true)
 	
 	
-	#check if the player is not already dashing
-	if !dashing_state.active:
+	#check if the player is in the dashing idle state
+	if idle_dashing_state.active:
 		#check if the input is the dash input
 		if is_action_buffered(&"Dash"):
 			#start the dashing state
