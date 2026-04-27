@@ -1,4 +1,4 @@
-@icon("transparancy_component.svg")
+@icon("spawn_pooled_component.svg")
 @tool
 
 ##component used to spawn objects and pool them for future use
@@ -20,7 +20,6 @@ class pooled_object_settings:
 
 ## the objects that are currently pooled
 var _pooled_objects: Array[pooled_object_settings] = []
-
 
 
 
@@ -69,9 +68,15 @@ func return_object(node: Node) -> void:
 
 
 
+## makes an unused object usable and returns it, if not possible creates a new one if overflow is enabled.
+## a new one gets the use settings if that is enabled.
+func create_unused_object(create_overflow: bool, auto_set_use_settings: bool = true) -> Node:
+	return _get_unused_object(create_overflow, auto_set_use_settings)
+
+
 ## gets a unused object, if not possible creates a new one if overflow is enabled.
 ## a new one always gets the use settings auto enabled
-func get_unused_object(create_overflow: bool, auto_set_use_settings: bool = true) -> Node:
+func _get_unused_object(create_overflow: bool, auto_set_use_settings: bool = true) -> Node:
 	#goes through every pooled object
 	for settings: pooled_object_settings in _pooled_objects:
 		# the node
@@ -137,6 +142,9 @@ func _create_new_pooled_object(use_now: bool = false) -> Node:
 	# dissable everything if the object is not used
 	if not use_now:
 		_dissable_object(new_pooled_object)
+	# if it is enabled enable it
+	else:
+		_enable_object(new_pooled_object)
 	
 	# creates the settings for the new object
 	var settings: pooled_object_settings = pooled_object_settings.new()

@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://c84vs37f6hr2x"
-path="res://.godot/imported/Attack.blend-d0b67424a967ea24da5ccd9082f1b14a.scn"
+path="res://.godot/imported/Attack.blend-28a73af781ced6d991f5064d2c6984ba.scn"
 
 [deps]
 
-source_file="res://player/attack/Attack.blend"
-dest_files=["res://.godot/imported/Attack.blend-d0b67424a967ea24da5ccd9082f1b14a.scn"]
+source_file="res://player/attack/visuals/Attack.blend"
+dest_files=["res://.godot/imported/Attack.blend-28a73af781ced6d991f5064d2c6984ba.scn"]
 
 [params]
 

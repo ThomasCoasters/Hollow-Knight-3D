@@ -91,6 +91,10 @@ var dash_timer: float = 0.0
 @export_group("attacking")
 ##the time the dash takes
 @export var ATTACK_TIME: float = 0.33
+## the y angle from which the pogo should happen
+@export_range(-90, 0.0, 0.1, "radians_as_degrees") var pogo_angle: float = -PI/3
+## the minimum angle the player can attack at when on the ground
+@export_range(-90, 0.0, 0.1, "radians_as_degrees") var min_floored_attack_angle: float = deg_to_rad(-10)
 
 
 
@@ -130,12 +134,17 @@ var dash_timer: float = 0.0
 @onready var to_dashing: Transition = $StateChart/ParallelState/Dash/Idle/to_dashing
 
 
+## if the camera detector is currently entered by the camera
+var camera_currently_detected: bool = false
 
 
 ## settings for components
 @export_group("components")
 ## the component for the health settings
 @export var health_comp: health_component
+## the attack pooling component
+@export var pooled_attack_comp: spawn_pooled_component
+
 #endregion
 
 #region setup
@@ -491,20 +500,14 @@ func _set_dashing_velocity() -> void:
 	#stop falling
 	velocity.y = 0
 	
-	#get the direction of the camera 
-	var dir := -camera.global_transform.basis.z
-	
-	#do not change when changing the y value
-	dir.y = 0
-	dir = dir.normalized()
+	# rotate the player to look away from the camera and get the direction
+	var dir := _instant_player_rotation()
 	
 	#set the moving velocity
 	velocity.x = dir.x * DASH_SPEED
 	velocity.z = dir.z * DASH_SPEED
 	
-	#make the player look at that direction
-	var look_position: Vector3 = global_position - dir
-	knight.look_at(look_position, Vector3.UP)
+	
 
 
 ##runs every frame while dashing
@@ -522,8 +525,59 @@ func _on_dashing_state_processing(delta: float) -> void:
 	elif is_on_floor(): # if the timer stoped and the player is on the floor
 		#set the player to the non dashing state
 		state_chart.send_event(&"stop_dash")
+
+
+
+
+## makes the player look at the camera rotation instantly.
+## returns the direction
+func _instant_player_rotation() -> Vector3:
+	#get the direction of the camera 
+	var dir := -camera.global_transform.basis.z
+	
+	#do not change when changing the y value
+	dir.y = 0
+	dir = dir.normalized()
+	
+	#make the player look at that direction
+	var look_position: Vector3 = global_position - dir
+	knight.look_at(look_position, Vector3.UP)
+	
+	return dir
 #endregion
 
+
+#region attacking
+func _on_attacking_state_entered() -> void:
+	# spawns the attack and gets it
+	var spawned_attack = pooled_attack_comp.create_unused_object(true)
+	
+	# rotate the player to look away from the camera
+	_instant_player_rotation()
+	
+	#get the direction of the camera 
+	var dir := -camera.global_transform.basis.z
+	
+	#normalize the direction
+	dir = _clamp_attack_y_dir(dir)
+	dir = dir.normalized()
+	
+	#make the attack look at that direction
+	var look_position: Vector3 = global_position - dir
+	spawned_attack.look_at(look_position, Vector3.UP)
+
+
+
+## makes the attack not go at a crazy angle
+func _clamp_attack_y_dir(dir) -> Vector3:
+	# if the player is grounded it should not be able to attack downwards really far
+	if is_on_floor():
+		# make the angle always be higher than the pogo angle
+		dir.y = max(min_floored_attack_angle, dir.y)
+	
+	# returns the direction
+	return dir
+#endregion
 
 
 #region camera stuff
@@ -531,6 +585,9 @@ func _on_dashing_state_processing(delta: float) -> void:
 func _on_camera_detector_area_entered(area: Area3D) -> void:
 	if !area.is_in_group("camera_area"):
 		return
+	
+	# set the camera detected to true
+	camera_currently_detected = true
 	
 	#make the player see though if not in 1st person else fully invis
 	if camera:
@@ -548,6 +605,22 @@ func _on_camera_detector_area_exited(area: Area3D) -> void:
 	if !area.is_in_group("camera_area"):
 		return
 	
+	# set the camera detected to false
+	camera_currently_detected = false
+	
 	#makes the player visible again
 	knight.change_player_opacity(1.0, 0.2)
+
+
+func _on_player_camera_camera_mode_changed(new_mode: String, old_mode: String) -> void:
+	# easily add / change settings without big if elif else loop
+	match old_mode:
+		"3rd_person":
+			# check if you are in the camera_detector
+			if camera_currently_detected:
+				#check if the new mode is 1st person
+				if new_mode == "1st_person":
+					#makes the player invis
+					knight.change_player_opacity(0.0, 0.2)
+
 #endregion

@@ -112,6 +112,10 @@ var wanted_rotation: Vector3 = Vector3.ZERO
 ##tween used for moving the camera
 var cam_moving_tween: Tween
 
+
+## called when the cameramode changes
+signal camera_mode_changed(new_mode: String, old_mode: String)
+
 #endregion
 
 
@@ -188,6 +192,10 @@ func _process(delta: float) -> void:
 #region setting/getting
 ##setter for the camera mode state chart
 func set_camera_mode_state(mode_name: String) -> void:
+	# emit the mode changed signal
+	camera_mode_changed.emit(mode_name, get_camera_mode_state())
+	
+	
 	for state: AtomicState in camera_states:
 		#stop all states that do not need to be on
 		if state.active:
@@ -196,6 +204,7 @@ func set_camera_mode_state(mode_name: String) -> void:
 		#activate the correct state
 		if state_to_mode[state] == mode_name:
 			state._state_enter(null)
+	
 
 ##getter for the current camera state
 ##returns an string of the name
