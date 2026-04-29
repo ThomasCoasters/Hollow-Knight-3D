@@ -96,3 +96,7 @@ func _on_health_component_pressed() -> void:
 
 func _on_spawn_pooled_component_pressed() -> void:
 	_create_node(spawn_pooled_component, "SpawnPooledComponent")
+
+
+func _on_component_holder_pressed() -> void:
+	_create_node(Component_holder, "ComponentHolder")

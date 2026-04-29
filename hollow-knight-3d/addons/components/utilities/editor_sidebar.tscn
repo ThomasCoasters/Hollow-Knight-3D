@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dglibsayi1w7q" path="res://addons/components/utilities/editor_sidebar.gd" id="1_4bt41"]
 [ext_resource type="Texture2D" uid="uid://b3fm5w6878u8o" path="res://addons/components/animation_component.svg" id="2_4bt41"]
+[ext_resource type="Texture2D" uid="uid://c0l31g8uaeku6" path="res://addons/components/Component_holder.svg" id="2_xr380"]
 [ext_resource type="Texture2D" uid="uid://bm83cmlcld3h1" path="res://addons/components/transparancy_component.svg" id="3_iak3e"]
 [ext_resource type="Texture2D" uid="uid://dqe0r2regfabe" path="res://addons/components/health_component.svg" id="4_70jva"]
 [ext_resource type="Texture2D" uid="uid://c0j4jsd8aawjn" path="res://addons/components/spawn_pooled_component.svg" id="5_dpq78"]
@@ -45,6 +46,31 @@ caret_blink_interval = 0.5
 unique_name_in_owner = true
 layout_mode = 2
 alignment = 1
+
+[node name="SortingSection" type="VBoxContainer" parent="VBoxContainer/AddSection/AddGridContainer" unique_id=366921303]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/AddSection/AddGridContainer/SortingSection" unique_id=309134285]
+custom_minimum_size = Vector2(60, 10)
+layout_mode = 2
+text = "Component Sorting"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="AddGridContainer" type="HFlowContainer" parent="VBoxContainer/AddSection/AddGridContainer/SortingSection" unique_id=713120534]
+layout_mode = 2
+theme_override_constants/h_separation = 5
+theme_override_constants/v_separation = 5
+alignment = 1
+
+[node name="ComponentHolder" type="Button" parent="VBoxContainer/AddSection/AddGridContainer/SortingSection/AddGridContainer" unique_id=297611147 groups=["componentbutton"]]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+tooltip_text = "ComponentHolder"
+icon = ExtResource("2_xr380")
+icon_alignment = 1
 
 [node name="3DModelSection" type="VBoxContainer" parent="VBoxContainer/AddSection/AddGridContainer" unique_id=1745078646]
 layout_mode = 2
@@ -140,6 +166,7 @@ tooltip_text = "Toggle sidebar location"
 icon = ExtResource("9_dqcj0")
 
 [connection signal="text_changed" from="VBoxContainer/AddSection/SearchNodeLineEdit" to="." method="_on_search_node_line_edit_text_changed"]
+[connection signal="pressed" from="VBoxContainer/AddSection/AddGridContainer/SortingSection/AddGridContainer/ComponentHolder" to="." method="_on_component_holder_pressed"]
 [connection signal="pressed" from="VBoxContainer/AddSection/AddGridContainer/3DModelSection/AddGridContainer/AnimationComponent" to="." method="_on_animation_component_pressed"]
 [connection signal="pressed" from="VBoxContainer/AddSection/AddGridContainer/3DModelSection/AddGridContainer/TransparancyComponent" to="." method="_on_transparancy_component_pressed"]
 [connection signal="pressed" from="VBoxContainer/AddSection/AddGridContainer/HP_DMG_Section/AddGridContainer/HealthComponent" to="." method="_on_health_component_pressed"]
