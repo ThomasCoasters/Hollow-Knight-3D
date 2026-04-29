@@ -1,0 +1,102 @@
+[gd_scene format=3 uid="uid://fo6hwqkx1dyx"]
+
+[ext_resource type="Texture2D" uid="uid://bo4fs32ov01jd" path="res://player/HUD/HUD main.png" id="1_c64v1"]
+[ext_resource type="PackedScene" uid="uid://drboyx4o62ua7" path="res://player/HUD/mana/HUD_mana.tscn" id="2_6xmvw"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c64v1"]
+atlas = ExtResource("1_c64v1")
+region = Rect2(6, 157, 238, 143)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6xmvw"]
+atlas = ExtResource("1_c64v1")
+region = Rect2(252, 157, 238, 143)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2nrls"]
+atlas = ExtResource("1_c64v1")
+region = Rect2(498, 157, 238, 143)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_332af"]
+atlas = ExtResource("1_c64v1")
+region = Rect2(744, 157, 238, 143)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jrcpa"]
+atlas = ExtResource("1_c64v1")
+region = Rect2(6, 6, 238, 143)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_swn5t"]
+atlas = ExtResource("1_c64v1")
+region = Rect2(252, 6, 238, 143)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3nudv"]
+atlas = ExtResource("1_c64v1")
+region = Rect2(498, 6, 238, 143)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v4u2a"]
+atlas = ExtResource("1_c64v1")
+region = Rect2(744, 6, 238, 143)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_pndn6"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c64v1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6xmvw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2nrls")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_332af")
+}],
+"loop": false,
+"name": &"Dead",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jrcpa")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_swn5t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3nudv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v4u2a")
+}],
+"loop": false,
+"name": &"Normal",
+"speed": 10.0
+}]
+
+[node name="HudMain" type="Control" unique_id=543680684]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="Player_info" type="Control" parent="." unique_id=86257308]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 41.0
+offset_top = 52.0
+offset_right = 81.0
+offset_bottom = 92.0
+scale = Vector2(0.4, 0.4)
+
+[node name="HUD_main_bg" type="AnimatedSprite2D" parent="Player_info" unique_id=690979721]
+position = Vector2(236, 114)
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_pndn6")
+animation = &"Normal"
+autoplay = "Normal"
+frame = 3
+frame_progress = 1.0
+
+[node name="HudMana" parent="Player_info" unique_id=1185626800 instance=ExtResource("2_6xmvw")]
+layout_mode = 1
+offset_left = 16.0
+offset_top = 30.0
+offset_right = 16.0
+offset_bottom = 30.0

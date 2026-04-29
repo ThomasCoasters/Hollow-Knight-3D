@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://drboyx4o62ua7"]
+
+[ext_resource type="Shader" uid="uid://doe73lll8hc12" path="res://player/HUD/mana/Mana_ball_shder.gdshader" id="1_fqq6o"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tx15x"]
+shader = ExtResource("1_fqq6o")
+shader_parameter/fill_ratio = 0.5
+shader_parameter/fill_color = Color(1, 1, 1, 1)
+shader_parameter/bg_color = Color(0.050980393, 0.050980393, 0.07058824, 0)
+shader_parameter/light_dir = Vector2(-0.4, -0.4)
+shader_parameter/light_strength = 0.6
+shader_parameter/ambient = 0.6
+shader_parameter/wave_amp = 0.05
+shader_parameter/wave_freq = 8.0
+shader_parameter/wave_speed = 2.0
+shader_parameter/edge_softness = 0.08
+
+[node name="HudMana" type="Control" unique_id=1185626800]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=645411389]
+material = SubResource("ShaderMaterial_tx15x")
+layout_mode = 0
+offset_right = 225.0
+offset_bottom = 225.0
