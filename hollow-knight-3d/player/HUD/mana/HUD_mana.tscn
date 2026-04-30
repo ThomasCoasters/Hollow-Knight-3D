@@ -1,30 +1,131 @@
 [gd_scene format=3 uid="uid://drboyx4o62ua7"]
 
-[ext_resource type="Shader" uid="uid://doe73lll8hc12" path="res://player/HUD/mana/Mana_ball_shder.gdshader" id="1_fqq6o"]
+[ext_resource type="Script" uid="uid://dshoix7iuloe3" path="res://player/HUD/mana/hud_mana.gd" id="1_tx15x"]
+[ext_resource type="Shader" uid="uid://dp0sp673ef26o" path="res://player/HUD/mana/Mana_ball_texture_shader.gdshader" id="2_1biii"]
+[ext_resource type="Script" uid="uid://d4akw071yqlcs" path="res://player/HUD/mana/mana_visual_settings.gd" id="2_tx15x"]
+[ext_resource type="Texture2D" uid="uid://cuk2t63aws8yy" path="res://player/HUD/mana/soul_orb_full.png" id="3_k8p6i"]
+[ext_resource type="Texture2D" uid="uid://c8b8ue6f2k72c" path="res://player/HUD/mana/soul_full_glow.png" id="4_4whrn"]
+[ext_resource type="Shader" uid="uid://doe73lll8hc12" path="res://player/HUD/mana/Mana_ball_shader.gdshader" id="5_cn66k"]
+[ext_resource type="Shader" uid="uid://i1mlv66mbjgq" path="res://player/HUD/mana/transparant_circle_auto_fade.gdshader" id="7_3l2uv"]
+[ext_resource type="Script" uid="uid://cvc06rs5kx81q" path="res://player/HUD/mana/flash_circle.gd" id="8_v6kkg"]
+[ext_resource type="Script" uid="uid://1qi0tlwofusy" path="res://addons/components/Component_holder.gd" id="9_n2453"]
+[ext_resource type="Script" uid="uid://dxiqcx0ei8njy" path="res://addons/components/spawn_pooled_component.gd" id="10_xqfb2"]
+[ext_resource type="PackedScene" uid="uid://dmw1uy4t5ssrk" path="res://player/HUD/mana/orb_particles.tscn" id="11_xqfb2"]
+
+[sub_resource type="Resource" id="Resource_1biii"]
+script = ExtResource("2_tx15x")
+max_mana_amount = 33
+color = Color(0.45882353, 0.4509804, 0.45490196, 1)
+metadata/_custom_type_script = "uid://d4akw071yqlcs"
+
+[sub_resource type="Resource" id="Resource_tx15x"]
+script = ExtResource("2_tx15x")
+min_mana_amount = 33
+max_mana_amount = 66
+color = Color(1, 1, 1, 1)
+metadata/_custom_type_script = "uid://d4akw071yqlcs"
+
+[sub_resource type="Resource" id="Resource_k8p6i"]
+script = ExtResource("2_tx15x")
+min_mana_amount = 66
+max_mana_amount = 99
+texture = ExtResource("3_k8p6i")
+metadata/_custom_type_script = "uid://d4akw071yqlcs"
+
+[sub_resource type="Resource" id="Resource_4whrn"]
+script = ExtResource("2_tx15x")
+min_mana_amount = 99
+max_mana_amount = 100
+texture = ExtResource("4_4whrn")
+pulsing_lighting = true
+metadata/_custom_type_script = "uid://d4akw071yqlcs"
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_tx15x"]
-shader = ExtResource("1_fqq6o")
-shader_parameter/fill_ratio = 0.5
+shader = ExtResource("5_cn66k")
+shader_parameter/fill_ratio = 0.0
 shader_parameter/fill_color = Color(1, 1, 1, 1)
 shader_parameter/bg_color = Color(0.050980393, 0.050980393, 0.07058824, 0)
+shader_parameter/dissable_lights = false
 shader_parameter/light_dir = Vector2(-0.4, -0.4)
 shader_parameter/light_strength = 0.6
 shader_parameter/ambient = 0.6
-shader_parameter/wave_amp = 0.05
-shader_parameter/wave_freq = 8.0
-shader_parameter/wave_speed = 2.0
+shader_parameter/pulsing_lights = false
+shader_parameter/pulse_speed = 1.0
+shader_parameter/pulse_range = Vector2(0.8, 1)
+shader_parameter/wave_amp = 0.03
+shader_parameter/wave_freq = 5.0
+shader_parameter/wave_speed = 10.0
 shader_parameter/edge_softness = 0.08
 
-[node name="HudMana" type="Control" unique_id=1185626800]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4whrn"]
+shader = ExtResource("2_1biii")
+shader_parameter/fill_ratio = 1.0
+shader_parameter/fill_tex = ExtResource("3_k8p6i")
+shader_parameter/dissable_bg = true
+shader_parameter/light_dir = Vector2(-0.4, -0.4)
+shader_parameter/light_strength = 0.6
+shader_parameter/ambient = 0.6
+shader_parameter/dissable_lights = false
+shader_parameter/pulsing_lights = false
+shader_parameter/pulse_speed = 2.0
+shader_parameter/pulse_range = Vector2(0.95, 1.2)
+shader_parameter/wave_amp = 0.03
+shader_parameter/wave_freq = 5.0
+shader_parameter/wave_speed = 10.0
+shader_parameter/edge_softness = 0.08
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_v6kkg"]
+shader = ExtResource("7_3l2uv")
+shader_parameter/start_alpha = 0.6
+shader_parameter/fade_time = 0.2
+shader_parameter/edge_softness = 0.3
+shader_parameter/lifetime = 0.0
+
+[node name="HudMana" type="Control" unique_id=1185626800 node_paths=PackedStringArray("color_mana", "texture_mana", "flash_circle", "orb_particle_spawner")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_tx15x")
+color_mana = NodePath("ColorMana")
+texture_mana = NodePath("TextureMana")
+flash_circle = NodePath("Flash_circle")
+orb_particle_spawner = NodePath("Component_holder/Orb_spawn")
+percentage_visual = Array[ExtResource("2_tx15x")]([SubResource("Resource_1biii"), SubResource("Resource_tx15x"), SubResource("Resource_k8p6i"), SubResource("Resource_4whrn")])
 
-[node name="ColorRect" type="ColorRect" parent="." unique_id=645411389]
+[node name="ColorMana" type="ColorRect" parent="." unique_id=645411389]
 material = SubResource("ShaderMaterial_tx15x")
 layout_mode = 0
 offset_right = 225.0
 offset_bottom = 225.0
+
+[node name="TextureMana" type="ColorRect" parent="." unique_id=2076858256]
+visible = false
+material = SubResource("ShaderMaterial_4whrn")
+layout_mode = 0
+offset_left = -11.0
+offset_top = -13.0
+offset_right = 239.0
+offset_bottom = 237.0
+pivot_offset = Vector2(125, 125)
+
+[node name="Flash_circle" type="ColorRect" parent="." unique_id=1701903232]
+material = SubResource("ShaderMaterial_v6kkg")
+layout_mode = 0
+offset_left = -50.0
+offset_top = -50.0
+offset_right = 275.0
+offset_bottom = 275.0
+script = ExtResource("8_v6kkg")
+
+[node name="Component_holder" type="Node" parent="." unique_id=162327174]
+script = ExtResource("9_n2453")
+metadata/_custom_type_script = "uid://1qi0tlwofusy"
+
+[node name="Orb_spawn" type="Node" parent="Component_holder" unique_id=909157943]
+script = ExtResource("10_xqfb2")
+object = ExtResource("11_xqfb2")
+
+[connection signal="setting_changed" from="." to="." method="_on_setting_changed"]

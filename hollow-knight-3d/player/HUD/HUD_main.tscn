@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://fo6hwqkx1dyx"]
 
+[ext_resource type="Script" uid="uid://cfy6ewd8t76kk" path="res://player/HUD/hud_main.gd" id="1_2nrls"]
 [ext_resource type="Texture2D" uid="uid://bo4fs32ov01jd" path="res://player/HUD/HUD main.png" id="1_c64v1"]
 [ext_resource type="PackedScene" uid="uid://drboyx4o62ua7" path="res://player/HUD/mana/HUD_mana.tscn" id="2_6xmvw"]
 
@@ -72,9 +73,11 @@ animations = [{
 "speed": 10.0
 }]
 
-[node name="HudMain" type="Control" unique_id=543680684]
+[node name="HudMain" type="Control" unique_id=543680684 node_paths=PackedStringArray("Mana_HUD")]
 layout_mode = 3
 anchors_preset = 0
+script = ExtResource("1_2nrls")
+Mana_HUD = NodePath("Player_info/HudMana")
 
 [node name="Player_info" type="Control" parent="." unique_id=86257308]
 layout_mode = 1
@@ -94,9 +97,10 @@ autoplay = "Normal"
 frame = 3
 frame_progress = 1.0
 
-[node name="HudMana" parent="Player_info" unique_id=1185626800 instance=ExtResource("2_6xmvw")]
+[node name="HudMana" parent="Player_info" unique_id=1185626800 node_paths=PackedStringArray("scale_parent") instance=ExtResource("2_6xmvw")]
 layout_mode = 1
 offset_left = 16.0
 offset_top = 30.0
-offset_right = 16.0
-offset_bottom = 30.0
+offset_right = -24.0
+offset_bottom = -10.0
+scale_parent = NodePath("..")

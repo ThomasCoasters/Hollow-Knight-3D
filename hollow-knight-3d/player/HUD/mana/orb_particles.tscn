@@ -1,0 +1,70 @@
+[gd_scene format=3 uid="uid://dmw1uy4t5ssrk"]
+
+[ext_resource type="Script" uid="uid://cqmqyj56jp600" path="res://Game/extended built in scripts/PoolingGPUParticles2D.gd" id="1_djk1x"]
+
+[sub_resource type="Gradient" id="Gradient_pu3r3"]
+offsets = PackedFloat32Array(0, 0.5399449, 0.7355372, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.93112946, 1, 1, 1, 0, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_djk1x"]
+gradient = SubResource("Gradient_pu3r3")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 0.15)
+
+[sub_resource type="Curve" id="Curve_rj2i6"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.25, 1), 0.0, 0.0, 0, 0, Vector2(0.65, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_wiaft"]
+curve = SubResource("Curve_rj2i6")
+
+[sub_resource type="Curve" id="Curve_v6kkg"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.39999998, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 4.54844, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_itdw2"]
+curve_y = SubResource("Curve_v6kkg")
+
+[sub_resource type="Curve" id="Curve_rv53h"]
+_limits = [-200.0, 200.0, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.1, 0), 0.0, 0.0, 0, 0, Vector2(1, 200), 487.49988, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_o7tfu"]
+curve = SubResource("Curve_rv53h")
+
+[sub_resource type="CurveTexture" id="CurveTexture_736pn"]
+curve = SubResource("Curve_rj2i6")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_v6kkg"]
+particle_flag_disable_z = true
+emission_shape = 6
+emission_ring_axis = Vector3(0, 0, 0)
+emission_ring_height = 1.0
+emission_ring_radius = 110.0
+emission_ring_inner_radius = 110.0
+emission_ring_cone_angle = 90.0
+direction = Vector3(0, -1, 0)
+directional_velocity_min = -1.6093254e-05
+directional_velocity_max = -1.6093254e-05
+directional_velocity_curve = SubResource("CurveXYZTexture_itdw2")
+gravity = Vector3(0, 0, 0)
+linear_accel_min = -2.2351742e-06
+linear_accel_max = 2.9999976
+linear_accel_curve = SubResource("CurveTexture_o7tfu")
+scale_min = 0.79999995
+scale_max = 0.79999995
+scale_curve = SubResource("CurveTexture_736pn")
+alpha_curve = SubResource("CurveTexture_wiaft")
+
+[node name="orb_particles" type="GPUParticles2D" unique_id=297142278]
+emitting = false
+amount = 30
+texture = SubResource("GradientTexture2D_djk1x")
+lifetime = 1.5
+one_shot = true
+explosiveness = 0.9
+process_material = SubResource("ParticleProcessMaterial_v6kkg")
+script = ExtResource("1_djk1x")
+metadata/_custom_type_script = "uid://cqmqyj56jp600"

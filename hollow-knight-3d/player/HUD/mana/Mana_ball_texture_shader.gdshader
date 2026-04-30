@@ -8,10 +8,11 @@ uniform float fill_ratio : hint_range(0, 1.0) = 0.5;
 
 // colors //
 
-// editable vars that are colors that have R G B and A
-// source_color makes colors work correctly
-uniform vec4 fill_color: source_color = vec4(0.8, 0.9, 1.0, 1.0);
-uniform vec4 bg_color: source_color = vec4(0.05, 0.05, 0.07, 1.0);
+// changed to be textures insted of colors
+uniform sampler2D fill_tex;
+uniform sampler2D bg_tex;
+
+uniform bool dissable_bg;
 
 // light //
 
@@ -20,6 +21,16 @@ uniform vec2 light_dir = vec2(-0.6, -0.8); // direction light comes from
 // just fill in yourself float editable vars
 uniform float light_strength = 0.6;
 uniform float ambient = 0.4;
+
+uniform bool dissable_lights;
+
+// pulsing //
+uniform bool pulsing_lights;
+
+// the pulsing speed
+uniform float pulse_speed = 2.0;
+
+uniform vec2 pulse_range = vec2(0.0, 1.0); // x = min, y = max
 
 // waves //
 
@@ -51,21 +62,36 @@ void fragment() {
 	
 	// lights //
 	
-	// step 1: get the left / right (location_uv) and make a fake 3D point
-	// step 2: do sphere calculations (z = sqrt(1 - x² - y²))
-	// step 3: clamp it
-	// step 4: normalize it
-	vec3 normal = normalize(vec3(location_uv.x, location_uv.y, sqrt(max(0.0, 1.0 - dist * dist))));
 	
-	// normalize the light with a small forward tilt 
-	vec3 light = normalize(vec3(light_dir, 0.5));
 	
-	// dot product (if facing the light) make it bright
-	float diff = max(dot(normal, light), 0.0);
+	float lighting;
+
+	if (dissable_lights) {
+		lighting = 1.0;
 	
-	// make the final lights
-	float lighting = ambient + diff * light_strength;
+	} else if (pulsing_lights) {
+		// 0 → 1 sine wave
+		float t = (sin(TIME * pulse_speed) + 1.0) * 0.5;
+		
+		// map to custom range
+		lighting = mix(pulse_range.x, pulse_range.y, t);
 	
+	} else {
+		// step 1: get the left / right (location_uv) and make a fake 3D point
+		// step 2: do sphere calculations (z = sqrt(1 - x² - y²))
+		// step 3: clamp it
+		// step 4: normalize it
+		vec3 normal = normalize(vec3(location_uv.x, location_uv.y, sqrt(max(0.0, 1.0 - dist * dist))));
+		
+		// normalize the light with a small forward tilt 
+		vec3 light = normalize(vec3(light_dir, 0.5));
+		
+		// dot product (if facing the light) make it bright
+		float diff = max(dot(normal, light), 0.0);
+		
+		// make the final lights
+		lighting = ambient + diff * light_strength;
+	}
 	
 	
 	
@@ -92,9 +118,21 @@ void fragment() {
 	
 	// lights (again) //
 	// apply the lights
-	vec4 lit_bg   = vec4(bg_color.rgb * lighting, bg_color.a);
-	vec4 lit_fill = vec4(fill_color.rgb * lighting, fill_color.a);
+	if (dissable_lights){
+		lighting = 1.0;
+	}
 	
+	vec4 fill_sample = texture(fill_tex, uv);
+	vec4 bg_sample   = texture(bg_tex, uv);
+	
+	vec4 lit_fill = vec4(fill_sample.rgb * lighting, fill_sample.a);
+	vec4 lit_bg;
+	
+	if (!dissable_bg){
+		lit_bg = vec4(bg_sample.rgb * lighting, bg_sample.a);
+	} else{
+		lit_bg =  vec4(0, 0, 0, 0);
+	}
 	
 	
 	// final stuff //

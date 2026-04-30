@@ -22,7 +22,6 @@ class pooled_object_settings:
 var _pooled_objects: Array[pooled_object_settings] = []
 
 
-
 ## called when a new object is created
 signal new_object_made(node: Node)
 
@@ -71,7 +70,11 @@ func return_object(node: Node) -> void:
 ## makes an unused object usable and returns it, if not possible creates a new one if overflow is enabled.
 ## a new one gets the use settings if that is enabled.
 func create_unused_object(create_overflow: bool, auto_set_use_settings: bool = true) -> Node:
-	return _get_unused_object(create_overflow, auto_set_use_settings)
+	# get a unused object
+	var new_obj: Node = _get_unused_object(create_overflow, auto_set_use_settings)
+	
+	# return it
+	return new_obj
 
 
 ## gets a unused object, if not possible creates a new one if overflow is enabled.
