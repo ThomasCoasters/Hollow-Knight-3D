@@ -144,6 +144,8 @@ var camera_currently_detected: bool = false
 @export var health_comp: health_component
 ## the attack pooling component
 @export var pooled_attack_comp: spawn_pooled_component
+## the component for playing random audios
+@export var random_audio_comp: random_audio_component
 
 #endregion
 
@@ -464,6 +466,9 @@ func _on_jumping_state_entered() -> void:
 	is_jumping = true
 	#reset the jump max held variable
 	jump_max_held = false
+	
+	#play the jump audio
+	random_audio_comp.play_audio(&"Jump")
 
 
 ##runs when you held the jump button for too long
@@ -493,6 +498,9 @@ func _on_dashing_state_entered() -> void:
 	
 	#change the velocity stuff
 	_set_dashing_velocity()
+	
+	#play the audio
+	random_audio_comp.play_audio(&"Dash")
 
 
 ##sets the velocity stuff for dashing
@@ -565,6 +573,9 @@ func _on_attacking_state_entered() -> void:
 	#make the attack look at that direction
 	var look_position: Vector3 = global_position - dir
 	spawned_attack.look_at(look_position, Vector3.UP)
+	
+	# play the attacking audio
+	random_audio_comp.play_audio(&"Attack")
 
 
 

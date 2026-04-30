@@ -11,6 +11,7 @@
 [ext_resource type="Script" uid="uid://1qi0tlwofusy" path="res://addons/components/Component_holder.gd" id="9_n2453"]
 [ext_resource type="Script" uid="uid://dxiqcx0ei8njy" path="res://addons/components/spawn_pooled_component.gd" id="10_xqfb2"]
 [ext_resource type="PackedScene" uid="uid://dmw1uy4t5ssrk" path="res://player/HUD/mana/orb_particles.tscn" id="11_xqfb2"]
+[ext_resource type="Texture2D" uid="uid://esuu4aximbn8" path="res://player/HUD/mana/soul_filled_shine.png" id="12_aebih"]
 
 [sub_resource type="Resource" id="Resource_1biii"]
 script = ExtResource("2_tx15x")
@@ -67,7 +68,7 @@ shader_parameter/light_strength = 0.6
 shader_parameter/ambient = 0.6
 shader_parameter/dissable_lights = false
 shader_parameter/pulsing_lights = false
-shader_parameter/pulse_speed = 2.0
+shader_parameter/pulse_speed = 4.0
 shader_parameter/pulse_range = Vector2(0.95, 1.2)
 shader_parameter/wave_amp = 0.03
 shader_parameter/wave_freq = 5.0
@@ -81,7 +82,51 @@ shader_parameter/fade_time = 0.2
 shader_parameter/edge_softness = 0.3
 shader_parameter/lifetime = 0.0
 
-[node name="HudMana" type="Control" unique_id=1185626800 node_paths=PackedStringArray("color_mana", "texture_mana", "flash_circle", "orb_particle_spawner")]
+[sub_resource type="AtlasTexture" id="AtlasTexture_ea027"]
+atlas = ExtResource("12_aebih")
+region = Rect2(0, 0, 295, 295)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t761s"]
+atlas = ExtResource("12_aebih")
+region = Rect2(300, 0, 295, 295)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bo0hl"]
+atlas = ExtResource("12_aebih")
+region = Rect2(600, 0, 295, 295)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_22ie2"]
+atlas = ExtResource("12_aebih")
+region = Rect2(900, 0, 295, 295)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_xqfb2"]
+animations = [{
+"frames": [],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ea027")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t761s")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bo0hl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_22ie2")
+}, {
+"duration": 1.0,
+"texture": null
+}],
+"loop": false,
+"name": &"shine",
+"speed": 20.0
+}]
+
+[node name="HudMana" type="Control" unique_id=1185626800]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -89,19 +134,17 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_tx15x")
-color_mana = NodePath("ColorMana")
-texture_mana = NodePath("TextureMana")
-flash_circle = NodePath("Flash_circle")
-orb_particle_spawner = NodePath("Component_holder/Orb_spawn")
 percentage_visual = Array[ExtResource("2_tx15x")]([SubResource("Resource_1biii"), SubResource("Resource_tx15x"), SubResource("Resource_k8p6i"), SubResource("Resource_4whrn")])
 
 [node name="ColorMana" type="ColorRect" parent="." unique_id=645411389]
+unique_name_in_owner = true
 material = SubResource("ShaderMaterial_tx15x")
 layout_mode = 0
 offset_right = 225.0
 offset_bottom = 225.0
 
 [node name="TextureMana" type="ColorRect" parent="." unique_id=2076858256]
+unique_name_in_owner = true
 visible = false
 material = SubResource("ShaderMaterial_4whrn")
 layout_mode = 0
@@ -112,6 +155,7 @@ offset_bottom = 237.0
 pivot_offset = Vector2(125, 125)
 
 [node name="Flash_circle" type="ColorRect" parent="." unique_id=1701903232]
+unique_name_in_owner = true
 material = SubResource("ShaderMaterial_v6kkg")
 layout_mode = 0
 offset_left = -50.0
@@ -125,7 +169,18 @@ script = ExtResource("9_n2453")
 metadata/_custom_type_script = "uid://1qi0tlwofusy"
 
 [node name="Orb_spawn" type="Node" parent="Component_holder" unique_id=909157943]
+unique_name_in_owner = true
 script = ExtResource("10_xqfb2")
 object = ExtResource("11_xqfb2")
+
+[node name="soul_fill_shine" type="AnimatedSprite2D" parent="." unique_id=1648872338]
+unique_name_in_owner = true
+position = Vector2(112.5, 112.5)
+scale = Vector2(3, 3)
+sprite_frames = SubResource("SpriteFrames_xqfb2")
+animation = &"shine"
+autoplay = "default"
+frame = 4
+frame_progress = 1.0
 
 [connection signal="setting_changed" from="." to="." method="_on_setting_changed"]

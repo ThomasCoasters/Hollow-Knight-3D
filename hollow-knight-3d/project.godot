@@ -14,6 +14,10 @@ config/name="Hollow Knight 3D"
 run/main_scene="uid://cb6bjlgn0xuvj"
 config/features=PackedStringArray("4.6", "Forward Plus")
 
+[audio]
+
+buses/default_bus_layout="uid://cf1lmbacdpp8p"
+
 [autoload]
 
 Global="*uid://qjy8yke0x640"
@@ -28,7 +32,7 @@ window/stretch/mode="canvas_items"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/components/plugin.cfg", "res://addons/godot_state_charts/plugin.cfg")
+enabled=PackedStringArray("res://addons/components/plugin.cfg", "res://addons/godot_state_charts/plugin.cfg", "res://addons/raytraced_audio/plugin.cfg")
 
 [input]
 
@@ -92,6 +96,11 @@ Dash={
 [physics]
 
 3d/physics_engine="Jolt Physics"
+
+[raytraced_audio]
+
+reverb_bus=&"RaytracedReverb"
+ambient_bus=&"RaytracedAmbient"
 
 [rendering]
 

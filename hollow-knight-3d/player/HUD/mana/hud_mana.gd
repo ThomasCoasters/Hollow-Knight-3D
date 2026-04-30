@@ -6,16 +6,19 @@ extends Control
 @export var scale_parent: Control
 
 ## the mana where you can select the color
-@export var color_mana: ColorRect
+@onready var color_mana: ColorRect = %ColorMana
 
 ## the static full mana visual
-@export var texture_mana: ColorRect
+@onready var texture_mana: ColorRect = %TextureMana
 
 ## the circle that will show a short flash when you gain soul
-@export var flash_circle: ManaFlashCircle
+@onready var flash_circle: ManaFlashCircle = %Flash_circle
 
 ## the thing that spawns the orb particles thing
-@export var orb_particle_spawner: spawn_pooled_component
+@onready var orb_particle_spawner: spawn_pooled_component = %Orb_spawn
+
+## the shine that plays when you fill your mana bar
+@onready var mana_fill_shine: AnimatedSprite2D = %soul_fill_shine
 
 ## which percentage the visuals should be what color or texture
 @export var percentage_visual: Array[ManaVisualSettings]
@@ -29,8 +32,12 @@ extends Control
 		if current_mana < value && flash_circle:
 			flash_circle.time_alive = 0.0
 		
+		# play the mana fill shine if value is max_mana and current mana not
+		if value == max_mana && current_mana != max_mana:
+			mana_fill_shine.play(&"shine")
+		
 		#set the value correct
-		current_mana = value
+		current_mana = clamp(value, 0, max_mana)
 		
 		#update the visuals
 		_update_mana_visuals(value)

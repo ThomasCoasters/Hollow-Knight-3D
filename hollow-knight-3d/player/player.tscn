@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://b7n47mmsluva4" path="res://player/player.gd" id="1_g1dw6"]
 [ext_resource type="PackedScene" uid="uid://de84rng12b6nx" path="res://player/model/knight_model.tscn" id="1_rkbax"]
 [ext_resource type="PackedScene" uid="uid://bq050tvb8e6of" path="res://player/camera/Player_camera.tscn" id="2_rkbax"]
-[ext_resource type="Script" uid="uid://6woskccgomag" path="res://Game/general scripts/InputBufferData.gd" id="2_yllr7"]
+[ext_resource type="Script" uid="uid://6woskccgomag" path="res://Game/recource scripts/InputBufferData.gd" id="2_yllr7"]
 [ext_resource type="Script" uid="uid://1qi0tlwofusy" path="res://addons/components/Component_holder.gd" id="3_wodsf"]
 [ext_resource type="Script" uid="uid://brro60y7o03e2" path="res://addons/components/health_component.gd" id="4_32hag"]
 [ext_resource type="Script" uid="uid://couw105c3bde4" path="res://addons/godot_state_charts/state_chart.gd" id="4_rgyib"]
@@ -12,10 +12,18 @@
 [ext_resource type="Script" uid="uid://jk2jm1g6q853" path="res://addons/godot_state_charts/compound_state.gd" id="6_8t03j"]
 [ext_resource type="PackedScene" uid="uid://bu18au0hc04e3" path="res://player/attack/visuals/Player_attack_visual.tscn" id="6_32hag"]
 [ext_resource type="Script" uid="uid://cytafq8i1y8qm" path="res://addons/godot_state_charts/atomic_state.gd" id="7_2ieo8"]
+[ext_resource type="Script" uid="uid://cumt6ucl7ynyt" path="res://addons/components/random_audio_component.gd" id="7_e7oew"]
 [ext_resource type="Script" uid="uid://cf1nsco3w0mf6" path="res://addons/godot_state_charts/transition.gd" id="8_ebec5"]
+[ext_resource type="Script" uid="uid://dhd7p5piqvqhy" path="res://Game/recource scripts/RandomAudioSettings.gd" id="8_s7qer"]
+[ext_resource type="AudioStream" uid="uid://dm22v5gd008av" path="res://player/audio/sword_1.wav" id="9_g4c7l"]
 [ext_resource type="Texture2D" uid="uid://eu8bcovmmy1a" path="res://Game/general visuals/location_decal.png" id="9_hg6s5"]
 [ext_resource type="Script" uid="uid://bambbrd2wupx0" path="res://addons/godot_state_charts/state_is_active_guard.gd" id="10_2ieo8"]
+[ext_resource type="AudioStream" uid="uid://bgo8ibjyctp51" path="res://player/audio/sword_2.wav" id="10_knn7v"]
+[ext_resource type="AudioStream" uid="uid://d1a0ietnke2us" path="res://player/audio/sword_3.wav" id="11_7pqkx"]
 [ext_resource type="Script" uid="uid://dgd4i8hrrxfvm" path="res://addons/godot_state_charts/not_guard.gd" id="11_ebec5"]
+[ext_resource type="AudioStream" uid="uid://jaemxva3tlbl" path="res://player/audio/sword_4.wav" id="12_uw77l"]
+[ext_resource type="AudioStream" uid="uid://chr8tq5itit4w" path="res://player/audio/hero_dash.wav" id="13_knn7v"]
+[ext_resource type="AudioStream" uid="uid://bfk6rqb8b62wt" path="res://player/audio/hero_jump.wav" id="14_7pqkx"]
 [ext_resource type="PackedScene" uid="uid://fo6hwqkx1dyx" path="res://player/HUD/HUD_main.tscn" id="17_tqiix"]
 
 [sub_resource type="Resource" id="Resource_32hag"]
@@ -34,6 +42,24 @@ metadata/_custom_type_script = "uid://6woskccgomag"
 script = ExtResource("2_yllr7")
 max_input_buffer_frames = 8
 metadata/_custom_type_script = "uid://6woskccgomag"
+
+[sub_resource type="Resource" id="Resource_uw77l"]
+script = ExtResource("8_s7qer")
+Audio = Array[AudioStream]([ExtResource("9_g4c7l"), ExtResource("10_knn7v"), ExtResource("11_7pqkx"), ExtResource("12_uw77l")])
+audio_bus = &"SFX"
+metadata/_custom_type_script = "uid://dhd7p5piqvqhy"
+
+[sub_resource type="Resource" id="Resource_rptt4"]
+script = ExtResource("8_s7qer")
+Audio = Array[AudioStream]([ExtResource("13_knn7v")])
+audio_bus = &"SFX"
+metadata/_custom_type_script = "uid://dhd7p5piqvqhy"
+
+[sub_resource type="Resource" id="Resource_r7pn3"]
+script = ExtResource("8_s7qer")
+Audio = Array[AudioStream]([ExtResource("14_7pqkx")])
+audio_bus = &"SFX"
+metadata/_custom_type_script = "uid://dhd7p5piqvqhy"
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_oul6g"]
 radius = 0.076660156
@@ -62,7 +88,7 @@ script = ExtResource("11_ebec5")
 guard = SubResource("Resource_yllr7")
 metadata/_custom_type_script = "uid://dgd4i8hrrxfvm"
 
-[node name="Node3D" type="CharacterBody3D" unique_id=2083664876 node_paths=PackedStringArray("knight", "camera", "health_comp", "pooled_attack_comp")]
+[node name="Node3D" type="CharacterBody3D" unique_id=2083664876 node_paths=PackedStringArray("knight", "camera", "health_comp", "pooled_attack_comp", "random_audio_comp")]
 collision_layer = 2
 script = ExtResource("1_g1dw6")
 knight = NodePath("knight_model")
@@ -75,6 +101,7 @@ inputs_to_buffer = Dictionary[StringName, ExtResource("2_yllr7")]({
 pogo_angle = -0.5235987755982988
 health_comp = NodePath("Component_holder/HealthComponent")
 pooled_attack_comp = NodePath("Component_holder/pooled_attack")
+random_audio_comp = NodePath("Component_holder/RandomAudioComponent")
 
 [node name="Component_holder" type="Node" parent="." unique_id=1835810022]
 script = ExtResource("3_wodsf")
@@ -88,6 +115,15 @@ heal_on_max_health_gain = true
 [node name="pooled_attack" type="Node" parent="Component_holder" unique_id=701043375]
 script = ExtResource("5_wodsf")
 object = ExtResource("6_32hag")
+
+[node name="RandomAudioComponent" type="Node" parent="Component_holder" unique_id=1026927822 node_paths=PackedStringArray("following_node")]
+script = ExtResource("7_e7oew")
+random_audios = Dictionary[StringName, ExtResource("8_s7qer")]({
+&"Attack": SubResource("Resource_uw77l"),
+&"Dash": SubResource("Resource_rptt4"),
+&"Jump": SubResource("Resource_r7pn3")
+})
+following_node = NodePath("../..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2092652524]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2744491, 0)
@@ -114,6 +150,10 @@ free_state = Object(Node,"unique_name_in_owner":false,"process_mode":0,"process_
 
 locked_state = Object(Node,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","script":ExtResource("7_2ieo8"),"_state_active":false,"active":false,"_pending_transition":null,"_pending_transition_remaining_delay":0.0,"_pending_transition_initial_delay":0.0,"_transitions":Array[ExtResource("8_ebec5")]([]),"_chart":null)
 
+
+[node name="AudioListener3D" type="AudioListener3D" parent="PlayerCamera/Camera3D" parent_id_path=PackedInt32Array(1536589263, 1964754616) index="1" unique_id=415108323]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.45235673, 0)
+current = true
 
 [node name="Locator" type="Decal" parent="." unique_id=136416775]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.881437, 0)
@@ -287,3 +327,5 @@ one_shot = true
 [connection signal="state_entered" from="StateChart/ParallelState/Dash/Dashing" to="." method="_on_dashing_state_entered"]
 [connection signal="state_processing" from="StateChart/ParallelState/Dash/Dashing" to="." method="_on_dashing_state_processing"]
 [connection signal="timeout" from="max_jump_time" to="." method="_on_max_jump_time_timeout"]
+
+[editable path="PlayerCamera"]

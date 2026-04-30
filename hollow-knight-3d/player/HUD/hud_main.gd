@@ -7,7 +7,8 @@ extends Control
 var mana: int = 0:
 	set(value):
 		#actually set the mana
-		mana = value
+		mana = clamp(value, 0, max_mana)
+		
 		
 		#set the visual mana
 		_change_visual_mana(value)
