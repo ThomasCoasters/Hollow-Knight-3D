@@ -1,7 +1,8 @@
 @icon("random_audio_component.svg")
 @tool
 
-##component used to Play a random audio with a random pitch / speed
+## component used to Play a random audio with a random pitch / speed.
+## mostly used for sfx. Not reccomended to use for music
 class_name random_audio_component
 extends component
 

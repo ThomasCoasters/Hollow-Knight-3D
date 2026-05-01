@@ -46,19 +46,16 @@ metadata/_custom_type_script = "uid://6woskccgomag"
 [sub_resource type="Resource" id="Resource_uw77l"]
 script = ExtResource("8_s7qer")
 Audio = Array[AudioStream]([ExtResource("9_g4c7l"), ExtResource("10_knn7v"), ExtResource("11_7pqkx"), ExtResource("12_uw77l")])
-audio_bus = &"SFX"
 metadata/_custom_type_script = "uid://dhd7p5piqvqhy"
 
 [sub_resource type="Resource" id="Resource_rptt4"]
 script = ExtResource("8_s7qer")
 Audio = Array[AudioStream]([ExtResource("13_knn7v")])
-audio_bus = &"SFX"
 metadata/_custom_type_script = "uid://dhd7p5piqvqhy"
 
 [sub_resource type="Resource" id="Resource_r7pn3"]
 script = ExtResource("8_s7qer")
 Audio = Array[AudioStream]([ExtResource("14_7pqkx")])
-audio_bus = &"SFX"
 metadata/_custom_type_script = "uid://dhd7p5piqvqhy"
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_oul6g"]
@@ -93,6 +90,7 @@ collision_layer = 2
 script = ExtResource("1_g1dw6")
 knight = NodePath("knight_model")
 camera = NodePath("PlayerCamera")
+rotation_use_camera = false
 inputs_to_buffer = Dictionary[StringName, ExtResource("2_yllr7")]({
 &"Attack": SubResource("Resource_32hag"),
 &"Dash": SubResource("Resource_tqiix"),

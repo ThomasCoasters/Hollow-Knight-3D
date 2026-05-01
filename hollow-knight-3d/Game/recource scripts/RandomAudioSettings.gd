@@ -14,7 +14,7 @@ extends Resource
 @export var random_offset_db: float = 2.0
 
 ## the audio bus
-@export var audio_bus: StringName = &"Master"
+@export var audio_bus: StringName = &"SFX"
 
 ### no group again
 #@export_group("", "")

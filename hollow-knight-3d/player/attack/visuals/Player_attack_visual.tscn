@@ -146,7 +146,8 @@ _data = {
 transform = Transform3D(0.9999999, 0, 0, 0, 0.9999999, 0, 0, 0, 1, 0, 0, 0)
 script = ExtResource("1_nt6qb")
 animation_player = NodePath("AnimationPlayer")
-random_rotation_angle = Vector2(15, 25)
+random_rotation_angle = Vector2(5, 15)
+offset = Vector3(0, 0.2, 0)
 
 [node name="AttackSlash" type="MeshInstance3D" parent="." unique_id=616704347]
 transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0.13536602)

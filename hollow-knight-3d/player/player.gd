@@ -10,6 +10,12 @@ extends CharacterBody3D
 @export var camera: Player_Camera
 
 
+## settings for QOL
+@export_group("QOL settings")
+## if stuff like attacks will use the camera position or the player rotation
+@export var rotation_use_camera: bool = true
+
+
 ##settings for restricting stuff
 @export_group("restrictions")
 ##chooses whether you can use inputs or not
@@ -509,7 +515,14 @@ func _set_dashing_velocity() -> void:
 	velocity.y = 0
 	
 	# rotate the player to look away from the camera and get the direction
-	var dir := _instant_player_rotation()
+	# only if the rotation_use_camera is true
+	var dir: Vector3
+	if rotation_use_camera:
+		dir = _instant_player_rotation()
+	
+	# else just get the dir
+	else:
+		dir = knight.global_basis.z
 	
 	#set the moving velocity
 	velocity.x = dir.x * DASH_SPEED
@@ -560,11 +573,22 @@ func _on_attacking_state_entered() -> void:
 	# spawns the attack and gets it
 	var spawned_attack = pooled_attack_comp.create_unused_object(true)
 	
-	# rotate the player to look away from the camera
-	_instant_player_rotation()
+	#get the direction of the camera or the player model depending on settings 
+	var dir: Vector3
+	if rotation_use_camera:
+		# use camera
+		dir = -camera.global_transform.basis.z
 	
-	#get the direction of the camera 
-	var dir := -camera.global_transform.basis.z
+		# rotate the player to look away from the camera
+		_instant_player_rotation()
+	
+	else:
+		# use player transform
+		dir = knight.global_transform.basis.z
+		# do not rotate the player
+		
+		# still get the y dir from the camera because that is used for attacking up/down
+		dir.y = -camera.global_transform.basis.z.y
 	
 	#normalize the direction
 	dir = _clamp_attack_y_dir(dir)
