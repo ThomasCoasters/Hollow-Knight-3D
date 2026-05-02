@@ -4,10 +4,10 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5s5f0"]
 shader = ExtResource("1_nx5yy")
-shader_parameter/center_color = Color(0.06948045, 0.116549365, 0.20732509, 1)
+shader_parameter/center_color = Color(0.091762014, 0.1455456, 0.24954423, 1)
 shader_parameter/edge_color = Color(0.015686275, 0, 0.03137255, 1)
-shader_parameter/radius = 0.038
-shader_parameter/softness = 15.0
+shader_parameter/radius = 0.019
+shader_parameter/softness = 30.0
 shader_parameter/stretch = Vector2(1.1, 0.4)
 shader_parameter/rotation = 0.19
 shader_parameter/offset = Vector2(0.48, 0.5)
@@ -65,17 +65,11 @@ linear_accel_curve = SubResource("CurveTexture_wcvlp")
 scale_min = 0.19999999
 alpha_curve = SubResource("CurveTexture_5s5f0")
 
-[node name="BgClassic" type="Control" unique_id=1914635687]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="BgClassic" type="SubViewport" unique_id=1630267527]
+size = Vector2i(1920, 1080)
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=982417270]
 material = SubResource("ShaderMaterial_5s5f0")
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

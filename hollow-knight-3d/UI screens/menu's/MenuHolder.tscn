@@ -1,0 +1,199 @@
+[gd_scene format=3 uid="uid://b6dmgkp6yl2f7"]
+
+[ext_resource type="PackedScene" uid="uid://cy8cjrt6weyef" path="res://UI screens/menu's/menu.tscn" id="1_aw56r"]
+[ext_resource type="Script" uid="uid://ekg3ednfvvf5" path="res://UI screens/menu's/menu_holder.gd" id="1_okqb8"]
+[ext_resource type="Script" uid="uid://54ijfc61lomj" path="res://UI screens/menu's/MenuConfigRecource.gd" id="2_w13no"]
+[ext_resource type="FontFile" uid="uid://cenjxcrx4xfyc" path="res://Game/fonts/TrajanPro-Bold.otf" id="3_okqb8"]
+[ext_resource type="Texture2D" uid="uid://cd1vqkh711rhj" path="res://UI screens/menu's/visuals/title.png" id="4_w13no"]
+
+[sub_resource type="Resource" id="Resource_o7w2k"]
+script = ExtResource("2_w13no")
+mode = 3
+_text_group_enabled = false
+font_size = 30
+_button_group_enabled = false
+_anim_texture_group_enabled = null
+anim_frames = null
+fps = null
+loop = null
+spacer_size = 80.0
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_4tlp2"]
+script = ExtResource("2_w13no")
+mode = 2
+_text_group_enabled = false
+font_size = 30
+_button_group_enabled = false
+_texture_group_enabled = true
+texture = ExtResource("4_w13no")
+texture_scale = Vector2(0.38, 0.38)
+_anim_texture_group_enabled = null
+anim_frames = null
+fps = null
+loop = null
+spacer_size = 60.0
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_tk25w"]
+script = ExtResource("2_w13no")
+text = "Start Game"
+font_size = 30
+send_to = NodePath("../play_menu")
+_anim_texture_group_enabled = null
+anim_frames = null
+fps = null
+loop = null
+spacer_size = 25.0
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_w13no"]
+script = ExtResource("2_w13no")
+text = "Options"
+font_size = 30
+_anim_texture_group_enabled = null
+anim_frames = null
+fps = null
+loop = null
+spacer_size = 25.0
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_okqb8"]
+script = ExtResource("2_w13no")
+text = "Achievements"
+font_size = 30
+_anim_texture_group_enabled = null
+anim_frames = null
+fps = null
+loop = null
+spacer_size = 25.0
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_g16ma"]
+script = ExtResource("2_w13no")
+text = "Extras"
+font_size = 30
+_anim_texture_group_enabled = null
+anim_frames = null
+fps = null
+loop = null
+spacer_size = 25.0
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_cnqc0"]
+script = ExtResource("2_w13no")
+text = "Quit Game"
+font_size = 30
+send_to = NodePath("../quit_menu")
+_anim_texture_group_enabled = null
+anim_frames = null
+fps = null
+loop = null
+spacer_size = 25.0
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_uqghw"]
+script = ExtResource("2_w13no")
+text = "Back"
+send_to = NodePath("../start_Menu")
+_anim_texture_group_enabled = null
+anim_frames = null
+fps = null
+loop = null
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_0j5pn"]
+script = ExtResource("2_w13no")
+mode = 3
+_text_group_enabled = false
+_button_group_enabled = false
+_anim_texture_group_enabled = null
+anim_frames = null
+fps = null
+loop = null
+spacer_size = 200.0
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_2jqgy"]
+script = ExtResource("2_w13no")
+mode = 2
+_text_group_enabled = false
+_button_group_enabled = false
+_texture_group_enabled = true
+_anim_texture_group_enabled = null
+anim_frames = null
+fps = null
+loop = null
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_ye08n"]
+script = ExtResource("2_w13no")
+mode = 1
+text = "Quit Game?"
+_button_group_enabled = false
+_anim_texture_group_enabled = null
+anim_frames = null
+fps = null
+loop = null
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_vxt2s"]
+script = ExtResource("2_w13no")
+text = "Yes"
+pressed_function = "ctx.get_tree().quit()"
+_anim_texture_group_enabled = null
+anim_frames = null
+fps = null
+loop = null
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_rmu4f"]
+script = ExtResource("2_w13no")
+text = "No"
+send_to = NodePath("../start_Menu")
+_anim_texture_group_enabled = null
+anim_frames = null
+fps = null
+loop = null
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[node name="MenuHolder" type="Control" unique_id=1637527713 node_paths=PackedStringArray("initial_menu")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_okqb8")
+initial_menu = NodePath("start_Menu")
+
+[node name="start_Menu" parent="." unique_id=726592690 instance=ExtResource("1_aw56r")]
+layout_mode = 1
+visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_o7w2k"), SubResource("Resource_4tlp2"), SubResource("Resource_tk25w"), SubResource("Resource_w13no"), SubResource("Resource_okqb8"), SubResource("Resource_g16ma"), SubResource("Resource_cnqc0")])
+
+[node name="play_menu" parent="." unique_id=2038750279 instance=ExtResource("1_aw56r")]
+visible = false
+layout_mode = 1
+visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_uqghw")])
+
+[node name="options_menu" parent="." unique_id=1146284057 instance=ExtResource("1_aw56r")]
+visible = false
+layout_mode = 1
+visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_uqghw")])
+
+[node name="achievement_menu" parent="." unique_id=1311632692 instance=ExtResource("1_aw56r")]
+visible = false
+layout_mode = 1
+visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_uqghw")])
+
+[node name="extra_menu" parent="." unique_id=2036755983 instance=ExtResource("1_aw56r")]
+visible = false
+layout_mode = 1
+visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_uqghw")])
+
+[node name="quit_menu" parent="." unique_id=301975963 instance=ExtResource("1_aw56r")]
+visible = false
+layout_mode = 1
+visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_0j5pn"), SubResource("Resource_2jqgy"), SubResource("Resource_ye08n"), SubResource("Resource_vxt2s"), SubResource("Resource_rmu4f")])

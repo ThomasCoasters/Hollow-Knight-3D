@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://6txikwufjlvx" path="res://player/model/knight.blend" id="1_tx3tu"]
 [ext_resource type="Script" uid="uid://bje2m4icvva5q" path="res://player/model/knight_model.gd" id="2_u5ohn"]
 [ext_resource type="Script" uid="uid://1qi0tlwofusy" path="res://addons/components/Component_holder.gd" id="3_6cebr"]
-[ext_resource type="Shader" uid="uid://ds51ubc2dt8js" path="res://player/model/outline.gdshader" id="3_awyfk"]
+[ext_resource type="Shader" uid="uid://ds51ubc2dt8js" path="res://Game/general shaders/outline.gdshader" id="3_awyfk"]
 [ext_resource type="Texture2D" uid="uid://7ok7m56ws6eo" path="res://player/model/knight_head color.png.png" id="3_hrbeg"]
 [ext_resource type="Script" uid="uid://devfx6oa18pq8" path="res://addons/components/animation_component.gd" id="4_6cebr"]
 [ext_resource type="Texture2D" uid="uid://botywmfwvfpy6" path="res://player/model/knight_head roughness.png" id="4_awyfk"]
