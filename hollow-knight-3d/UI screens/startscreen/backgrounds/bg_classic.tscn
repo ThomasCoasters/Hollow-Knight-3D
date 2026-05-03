@@ -4,7 +4,7 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5s5f0"]
 shader = ExtResource("1_nx5yy")
-shader_parameter/center_color = Color(0.091762014, 0.1455456, 0.24954423, 1)
+shader_parameter/center_color = Color(0.10699914, 0.16372684, 0.27279904, 1)
 shader_parameter/edge_color = Color(0.015686275, 0, 0.03137255, 1)
 shader_parameter/radius = 0.019
 shader_parameter/softness = 30.0
@@ -37,35 +37,50 @@ point_count = 3
 [sub_resource type="CurveTexture" id="CurveTexture_wcvlp"]
 curve = SubResource("Curve_5s5f0")
 
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_1p7w8"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(200, 600, 1)
+spread = 10.0
+initial_velocity_min = 50.0
+initial_velocity_max = 100.0
+gravity = Vector3(0, 0, 0)
+linear_accel_min = 0.99999774
+linear_accel_max = 1.2999977
+linear_accel_curve = SubResource("CurveTexture_wcvlp")
+scale_min = 0.19999999
+scale_max = 0.39999998
+alpha_curve = SubResource("CurveTexture_5s5f0")
+
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_5s5f0"]
 particle_flag_disable_z = true
 emission_shape = 3
 emission_box_extents = Vector3(500, 600, 1)
 spread = 10.0
-initial_velocity_min = 40.0
-initial_velocity_max = 200.0
+initial_velocity_min = 20.0
+initial_velocity_max = 100.0
 gravity = Vector3(0, 0, 0)
 linear_accel_min = 0.99999774
 linear_accel_max = 1.2999977
 linear_accel_curve = SubResource("CurveTexture_wcvlp")
-scale_min = 0.19999999
+scale_min = 0.59999996
 alpha_curve = SubResource("CurveTexture_5s5f0")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_nx5yy"]
 particle_flag_disable_z = true
 emission_shape = 3
-emission_box_extents = Vector3(300, 500, 1)
+emission_box_extents = Vector3(300, 600, 1)
 spread = 10.0
-initial_velocity_min = 40.0
-initial_velocity_max = 200.0
+initial_velocity_min = 20.0
+initial_velocity_max = 100.0
 gravity = Vector3(0, 0, 0)
 linear_accel_min = 0.99999774
 linear_accel_max = 1.2999977
 linear_accel_curve = SubResource("CurveTexture_wcvlp")
-scale_min = 0.19999999
+scale_min = 0.59999996
 alpha_curve = SubResource("CurveTexture_5s5f0")
 
-[node name="BgClassic" type="SubViewport" unique_id=1630267527]
+[node name="BgClassic" type="SubViewport" unique_id=1121228147]
 size = Vector2i(1920, 1080)
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=982417270]
@@ -76,20 +91,42 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="left particles" type="GPUParticles2D" parent="." unique_id=777640666]
-position = Vector2(335, 544)
-amount = 50
+[node name="small left particles" type="GPUParticles2D" parent="." unique_id=1482325]
+position = Vector2(244, 544)
+amount = 55
 texture = SubResource("GradientTexture2D_nx5yy")
-lifetime = 4.5
+lifetime = 6.0
+preprocess = 2.0
+randomness = 0.2
+fixed_fps = 10
+process_material = SubResource("ParticleProcessMaterial_1p7w8")
+
+[node name="left particles" type="GPUParticles2D" parent="." unique_id=777640666]
+position = Vector2(246, 544)
+amount = 17
+texture = SubResource("GradientTexture2D_nx5yy")
+lifetime = 6.0
+preprocess = 2.0
 randomness = 0.2
 fixed_fps = 10
 process_material = SubResource("ParticleProcessMaterial_5s5f0")
 
-[node name="right particles2" type="GPUParticles2D" parent="." unique_id=699774915]
-position = Vector2(1410, 544)
-amount = 15
+[node name="small right particles" type="GPUParticles2D" parent="." unique_id=2043233502]
+position = Vector2(1302, 544)
+amount = 25
 texture = SubResource("GradientTexture2D_nx5yy")
-lifetime = 3.0
+lifetime = 4.0
+preprocess = 2.0
+randomness = 0.2
+fixed_fps = 10
+process_material = SubResource("ParticleProcessMaterial_1p7w8")
+
+[node name="right particles" type="GPUParticles2D" parent="." unique_id=239783399]
+position = Vector2(1222, 544)
+amount = 10
+texture = SubResource("GradientTexture2D_nx5yy")
+lifetime = 4.0
+preprocess = 2.0
 randomness = 0.2
 fixed_fps = 10
 process_material = SubResource("ParticleProcessMaterial_nx5yy")

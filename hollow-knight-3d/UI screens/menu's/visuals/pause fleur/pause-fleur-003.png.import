@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dg50jno83unsu"
-path="res://.godot/imported/title.png-1b6fabfd20f6af3ef38ff96cbe02a245.ctex"
+uid="uid://dmx8iu7f1ryb"
+path="res://.godot/imported/pause-fleur-003.png-3756602ba9a7def684b69be63eac9cec.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://UI screens/menu's/visuals/title.png"
-dest_files=["res://.godot/imported/title.png-1b6fabfd20f6af3ef38ff96cbe02a245.ctex"]
+source_file="res://UI screens/menu's/visuals/pause fleur/pause-fleur-003.png"
+dest_files=["res://.godot/imported/pause-fleur-003.png-3756602ba9a7def684b69be63eac9cec.ctex"]
 
 [params]
 

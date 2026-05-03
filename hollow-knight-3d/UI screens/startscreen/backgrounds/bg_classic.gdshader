@@ -32,17 +32,9 @@ void fragment() {
 	
 	float t = smoothstep(radius, radius * softness, dist);
 	
-	// make the midle a bit brighter
-	float center_boost = smoothstep(0.2, 0.0, dist);
-	center_boost = pow(center_boost, 1.0);
-	
-	
 	
 	//aply the color
 	vec4 base = mix(center_color, edge_color, t);
-	
-	// add brightness only in center
-	base.rgb += center_boost * 0.05; // intensity control
 	
 	COLOR = base;
 }

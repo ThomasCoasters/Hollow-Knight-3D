@@ -34,12 +34,11 @@ enum Mode {
 		match value:
 			# if this is a button
 			Mode.BUTTON:
-				# enable text and button settings
+				# enable all settings
 				_text_group_enabled = true
 				_button_group_enabled = true
-				# disable all texture settings
-				_texture_group_enabled = false
-				_anim_texture_group_enabled = false
+				_anim_texture_group_enabled = true
+				_texture_group_enabled = true
 			
 			# if this is plain text
 			Mode.TEXT:
@@ -76,6 +75,18 @@ enum Mode {
 				_button_group_enabled = false
 				_anim_texture_group_enabled = false
 
+
+
+## settings everything has for fading in/out
+@export_group("fading settings")
+## time the fade takes when fading in
+@export var in_fade_duration: float = 0.17
+## time the fade takes when fading out
+@export var out_fade_duration: float = 0.17
+## time it waits before fading in
+@export var in_start_delay: float = 0.0
+## time it waits before fading out
+@export var out_start_delay: float = 0.0
 
 
 
@@ -125,12 +136,13 @@ enum Mode {
 @export_group("animated texture settings")
 ## if this group is enabled IGNORE THIS VAR
 @export_custom(PROPERTY_HINT_GROUP_ENABLE, "") var _anim_texture_group_enabled: bool = false
-## the animation frames this texture will use
+## the animation frames this texture will use (if this is a button will play when the button is pressed)
 @export var anim_frames: Array[Texture2D]
 ## the FPS this animation will play at
 @export var fps: float = 20.0
 ## if this animation should loop
 @export var loop: bool = false
+
 
 
 

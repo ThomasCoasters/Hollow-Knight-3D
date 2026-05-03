@@ -3,7 +3,8 @@ class_name ScriptRunUtil
 ## Executes a multiline string as code.
 ## code_string: is the raw GDscript code you want to run.
 ## context: The object the code can interact with (referenced as 'ctx' in the string).
-static func execute_multiline_code(code_string: String, context: Object = null) -> void:
+## context is an array so if you only have 1 thing you still use ctx[0]
+static func execute_multiline_code(code_string: String, context: Array[Object] = [null]) -> void:
 	# if the usable characters end us as nothing return
 	if code_string.strip_edges() == "":
 		return
@@ -13,9 +14,14 @@ static func execute_multiline_code(code_string: String, context: Object = null) 
 	
 	# add the code to the script and wrap it inside a function
 	# the script extends RefCounted to make memory management easier and faster
-	# also add "ctx" (context) so that you can use stuff like ctx.score += 10
+	# also add "ctx" (context) so that you can use stuff like ctx[0].score += 10
 	# indent the code inside the func because this is still GDscript
-	script.source_code = "extends RefCounted\n\nfunc run(ctx):\n" + code_string.indent("\t")
+	script.source_code = ("
+extends RefCounted
+\n
+\n
+func run(ctx: Array[Object]):
+\n" + code_string.indent("\t"))
 	
 	# reload the script to check if there is an error
 	var error: int = script.reload()

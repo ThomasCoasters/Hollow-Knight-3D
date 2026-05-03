@@ -4,22 +4,33 @@
 [ext_resource type="Script" uid="uid://ekg3ednfvvf5" path="res://UI screens/menu's/menu_holder.gd" id="1_okqb8"]
 [ext_resource type="Script" uid="uid://54ijfc61lomj" path="res://UI screens/menu's/MenuConfigRecource.gd" id="2_w13no"]
 [ext_resource type="FontFile" uid="uid://cenjxcrx4xfyc" path="res://Game/fonts/TrajanPro-Bold.otf" id="3_okqb8"]
-[ext_resource type="Texture2D" uid="uid://cd1vqkh711rhj" path="res://UI screens/menu's/visuals/title.png" id="4_w13no"]
+[ext_resource type="Texture2D" uid="uid://b6nx1x10eqxrf" path="res://UI screens/menu's/visuals/press fleur/press-fleur-000.png" id="4_5puos"]
+[ext_resource type="Texture2D" uid="uid://dg50jno83unsu" path="res://UI screens/menu's/visuals/title.png" id="4_w13no"]
+[ext_resource type="Texture2D" uid="uid://dmdpxblsbahxd" path="res://UI screens/menu's/visuals/press fleur/press-fleur-001.png" id="5_55gc4"]
+[ext_resource type="Texture2D" uid="uid://c7xmb0lua7mqq" path="res://UI screens/menu's/visuals/pause fleur/pause-fleur-001.png" id="6_0j5pn"]
+[ext_resource type="Texture2D" uid="uid://bn8g8tmr7k5gq" path="res://UI screens/menu's/visuals/press fleur/press-fleur-002.png" id="6_5pew3"]
+[ext_resource type="Texture2D" uid="uid://c5g4km46xgwc5" path="res://UI screens/menu's/visuals/pause fleur/pause-fleur-000.png" id="6_rmu4f"]
+[ext_resource type="Texture2D" uid="uid://rb7xaiwye7w3" path="res://UI screens/menu's/visuals/press fleur/press-fleur-003.png" id="7_5pjdf"]
+[ext_resource type="Texture2D" uid="uid://bbag2geuftk1m" path="res://UI screens/menu's/visuals/pause fleur/pause-fleur-002.png" id="7_rmu4f"]
+[ext_resource type="Texture2D" uid="uid://cajnf15322opa" path="res://UI screens/menu's/visuals/press fleur/press-fleur-004.png" id="8_34fmv"]
+[ext_resource type="Texture2D" uid="uid://dmx8iu7f1ryb" path="res://UI screens/menu's/visuals/pause fleur/pause-fleur-003.png" id="8_ye08n"]
+[ext_resource type="Texture2D" uid="uid://cpii3qqawfybt" path="res://UI screens/menu's/visuals/pause fleur/pause-fleur-004.png" id="9_vxt2s"]
+[ext_resource type="Texture2D" uid="uid://ea0boa2lrquc" path="res://UI screens/menu's/visuals/press fleur/press-fleur-005.png" id="9_x3cxq"]
+[ext_resource type="Texture2D" uid="uid://c5l02pk18mys8" path="res://UI screens/menu's/visuals/pause fleur/pause-fleur-005.png" id="10_2jqgy"]
+[ext_resource type="Texture2D" uid="uid://dvfwvguk43ue7" path="res://UI screens/menu's/visuals/press fleur/press-fleur-006.png" id="10_kossj"]
+[ext_resource type="Texture2D" uid="uid://ds5p14a0bhott" path="res://UI screens/menu's/visuals/pause fleur/pause-fleur-006.png" id="11_p17pv"]
+[ext_resource type="Texture2D" uid="uid://dm2j71ymahdpx" path="res://UI screens/menu's/visuals/pause fleur/pause-fleur-007.png" id="12_50hpd"]
 
-[sub_resource type="Resource" id="Resource_o7w2k"]
+[sub_resource type="Resource" id="Resource_ayfdy"]
 script = ExtResource("2_w13no")
-mode = 3
+mode = 4
 _text_group_enabled = false
 font_size = 30
 _button_group_enabled = false
-_anim_texture_group_enabled = null
-anim_frames = null
-fps = null
-loop = null
 spacer_size = 80.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
-[sub_resource type="Resource" id="Resource_4tlp2"]
+[sub_resource type="Resource" id="Resource_5puos"]
 script = ExtResource("2_w13no")
 mode = 2
 _text_group_enabled = false
@@ -27,134 +38,131 @@ font_size = 30
 _button_group_enabled = false
 _texture_group_enabled = true
 texture = ExtResource("4_w13no")
-texture_scale = Vector2(0.38, 0.38)
-_anim_texture_group_enabled = null
-anim_frames = null
-fps = null
-loop = null
+texture_scale = Vector2(0.95, 0.95)
 spacer_size = 60.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
-[sub_resource type="Resource" id="Resource_tk25w"]
+[sub_resource type="Resource" id="Resource_vxmfm"]
 script = ExtResource("2_w13no")
 text = "Start Game"
 font_size = 30
 send_to = NodePath("../play_menu")
-_anim_texture_group_enabled = null
-anim_frames = null
-fps = null
-loop = null
+_texture_group_enabled = true
+texture_scale = Vector2(0.5, 0.5)
+_anim_texture_group_enabled = true
+anim_frames = Array[Texture2D]([ExtResource("4_5puos"), ExtResource("5_55gc4"), ExtResource("6_5pew3"), ExtResource("7_5pjdf"), ExtResource("8_34fmv"), ExtResource("9_x3cxq"), ExtResource("10_kossj"), ExtResource("4_5puos")])
 spacer_size = 25.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
-[sub_resource type="Resource" id="Resource_w13no"]
+[sub_resource type="Resource" id="Resource_gge7p"]
 script = ExtResource("2_w13no")
 text = "Options"
 font_size = 30
-_anim_texture_group_enabled = null
-anim_frames = null
-fps = null
-loop = null
+_texture_group_enabled = true
+texture_scale = Vector2(0.5, 0.5)
+_anim_texture_group_enabled = true
+anim_frames = Array[Texture2D]([ExtResource("4_5puos"), ExtResource("5_55gc4"), ExtResource("6_5pew3"), ExtResource("7_5pjdf"), ExtResource("8_34fmv"), ExtResource("9_x3cxq"), ExtResource("10_kossj"), ExtResource("4_5puos")])
 spacer_size = 25.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
-[sub_resource type="Resource" id="Resource_okqb8"]
+[sub_resource type="Resource" id="Resource_mxu3d"]
 script = ExtResource("2_w13no")
 text = "Achievements"
 font_size = 30
-_anim_texture_group_enabled = null
-anim_frames = null
-fps = null
-loop = null
+_texture_group_enabled = true
+texture_scale = Vector2(0.5, 0.5)
+_anim_texture_group_enabled = true
+anim_frames = Array[Texture2D]([ExtResource("4_5puos"), ExtResource("5_55gc4"), ExtResource("6_5pew3"), ExtResource("7_5pjdf"), ExtResource("8_34fmv"), ExtResource("9_x3cxq"), ExtResource("10_kossj"), ExtResource("4_5puos")])
 spacer_size = 25.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
-[sub_resource type="Resource" id="Resource_g16ma"]
+[sub_resource type="Resource" id="Resource_4cth6"]
 script = ExtResource("2_w13no")
 text = "Extras"
 font_size = 30
-_anim_texture_group_enabled = null
-anim_frames = null
-fps = null
-loop = null
+_texture_group_enabled = true
+texture_scale = Vector2(0.5, 0.5)
+_anim_texture_group_enabled = true
+anim_frames = Array[Texture2D]([ExtResource("4_5puos"), ExtResource("5_55gc4"), ExtResource("6_5pew3"), ExtResource("7_5pjdf"), ExtResource("8_34fmv"), ExtResource("9_x3cxq"), ExtResource("10_kossj"), ExtResource("4_5puos")])
 spacer_size = 25.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
-[sub_resource type="Resource" id="Resource_cnqc0"]
+[sub_resource type="Resource" id="Resource_jeomw"]
 script = ExtResource("2_w13no")
 text = "Quit Game"
 font_size = 30
 send_to = NodePath("../quit_menu")
-_anim_texture_group_enabled = null
-anim_frames = null
-fps = null
-loop = null
+_texture_group_enabled = true
+texture_scale = Vector2(0.5, 0.5)
+_anim_texture_group_enabled = true
+anim_frames = Array[Texture2D]([ExtResource("4_5puos"), ExtResource("5_55gc4"), ExtResource("6_5pew3"), ExtResource("7_5pjdf"), ExtResource("8_34fmv"), ExtResource("9_x3cxq"), ExtResource("10_kossj"), ExtResource("4_5puos")])
 spacer_size = 25.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_uqghw"]
 script = ExtResource("2_w13no")
+in_fade_duration = 0.5
+out_fade_duration = 0.5
 text = "Back"
 send_to = NodePath("../start_Menu")
-_anim_texture_group_enabled = null
-anim_frames = null
-fps = null
-loop = null
-metadata/_custom_type_script = "uid://54ijfc61lomj"
-
-[sub_resource type="Resource" id="Resource_0j5pn"]
-script = ExtResource("2_w13no")
-mode = 3
-_text_group_enabled = false
-_button_group_enabled = false
-_anim_texture_group_enabled = null
-anim_frames = null
-fps = null
-loop = null
-spacer_size = 200.0
-metadata/_custom_type_script = "uid://54ijfc61lomj"
-
-[sub_resource type="Resource" id="Resource_2jqgy"]
-script = ExtResource("2_w13no")
-mode = 2
-_text_group_enabled = false
-_button_group_enabled = false
-_texture_group_enabled = true
-_anim_texture_group_enabled = null
-anim_frames = null
-fps = null
-loop = null
+_anim_texture_group_enabled = true
+anim_frames = Array[Texture2D]([ExtResource("4_5puos"), ExtResource("5_55gc4"), ExtResource("6_5pew3"), ExtResource("7_5pjdf"), ExtResource("8_34fmv"), ExtResource("9_x3cxq"), ExtResource("10_kossj"), ExtResource("4_5puos")])
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_ye08n"]
 script = ExtResource("2_w13no")
+mode = 4
+in_start_delay = 0.17
+out_start_delay = 0.17
+_text_group_enabled = false
+_button_group_enabled = false
+spacer_size = 360.0
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_2jqgy"]
+script = ExtResource("2_w13no")
+mode = 3
+in_fade_duration = 0.27
+out_fade_duration = 0.27
+in_start_delay = 0.07
+out_start_delay = 0.07
+_text_group_enabled = false
+_button_group_enabled = false
+_texture_group_enabled = true
+texture_scale = Vector2(0.55, 0.55)
+_anim_texture_group_enabled = true
+anim_frames = Array[Texture2D]([ExtResource("6_rmu4f"), ExtResource("6_0j5pn"), ExtResource("7_rmu4f"), ExtResource("8_ye08n"), ExtResource("9_vxt2s"), ExtResource("10_2jqgy"), ExtResource("11_p17pv"), ExtResource("12_50hpd")])
+fps = 30.0
+spacer_size = 30.0
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_0j5pn"]
+script = ExtResource("2_w13no")
 mode = 1
 text = "Quit Game?"
+font_size = 37
 _button_group_enabled = false
-_anim_texture_group_enabled = null
-anim_frames = null
-fps = null
-loop = null
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_vxt2s"]
 script = ExtResource("2_w13no")
+in_start_delay = 0.17
+out_start_delay = 0.17
 text = "Yes"
-pressed_function = "ctx.get_tree().quit()"
-_anim_texture_group_enabled = null
-anim_frames = null
-fps = null
-loop = null
+pressed_function = "ctx[0].get_tree().quit()"
+_anim_texture_group_enabled = true
+anim_frames = Array[Texture2D]([ExtResource("4_5puos"), ExtResource("5_55gc4"), ExtResource("6_5pew3"), ExtResource("7_5pjdf"), ExtResource("8_34fmv"), ExtResource("9_x3cxq"), ExtResource("10_kossj"), ExtResource("4_5puos")])
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_rmu4f"]
 script = ExtResource("2_w13no")
+in_start_delay = 0.17
+out_start_delay = 0.17
 text = "No"
 send_to = NodePath("../start_Menu")
-_anim_texture_group_enabled = null
-anim_frames = null
-fps = null
-loop = null
+_anim_texture_group_enabled = true
+anim_frames = Array[Texture2D]([ExtResource("4_5puos"), ExtResource("5_55gc4"), ExtResource("6_5pew3"), ExtResource("7_5pjdf"), ExtResource("8_34fmv"), ExtResource("9_x3cxq"), ExtResource("10_kossj"), ExtResource("4_5puos")])
+should_add_spacer = false
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [node name="MenuHolder" type="Control" unique_id=1637527713 node_paths=PackedStringArray("initial_menu")]
@@ -171,7 +179,7 @@ initial_menu = NodePath("start_Menu")
 
 [node name="start_Menu" parent="." unique_id=726592690 instance=ExtResource("1_aw56r")]
 layout_mode = 1
-visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_o7w2k"), SubResource("Resource_4tlp2"), SubResource("Resource_tk25w"), SubResource("Resource_w13no"), SubResource("Resource_okqb8"), SubResource("Resource_g16ma"), SubResource("Resource_cnqc0")])
+visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_ayfdy"), SubResource("Resource_5puos"), SubResource("Resource_vxmfm"), SubResource("Resource_gge7p"), SubResource("Resource_mxu3d"), SubResource("Resource_4cth6"), SubResource("Resource_jeomw")])
 
 [node name="play_menu" parent="." unique_id=2038750279 instance=ExtResource("1_aw56r")]
 visible = false
@@ -196,4 +204,4 @@ visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_uqghw")])
 [node name="quit_menu" parent="." unique_id=301975963 instance=ExtResource("1_aw56r")]
 visible = false
 layout_mode = 1
-visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_0j5pn"), SubResource("Resource_2jqgy"), SubResource("Resource_ye08n"), SubResource("Resource_vxt2s"), SubResource("Resource_rmu4f")])
+visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_ye08n"), SubResource("Resource_2jqgy"), SubResource("Resource_0j5pn"), SubResource("Resource_vxt2s"), SubResource("Resource_rmu4f")])

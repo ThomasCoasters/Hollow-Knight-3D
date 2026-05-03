@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dg50jno83unsu"
-path="res://.godot/imported/title.png-1b6fabfd20f6af3ef38ff96cbe02a245.ctex"
+uid="uid://bn8g8tmr7k5gq"
+path="res://.godot/imported/press-fleur-002.png-5a5653558a2bc6a7b3fc565abc53e95a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://UI screens/menu's/visuals/title.png"
-dest_files=["res://.godot/imported/title.png-1b6fabfd20f6af3ef38ff96cbe02a245.ctex"]
+source_file="res://UI screens/menu's/visuals/press fleur/press-fleur-002.png"
+dest_files=["res://.godot/imported/press-fleur-002.png-5a5653558a2bc6a7b3fc565abc53e95a.ctex"]
 
 [params]
 
