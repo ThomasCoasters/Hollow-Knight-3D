@@ -17,6 +17,9 @@ extends Control
 signal menu_button_pressed(config: MenuConfigRecource, menu: Menu)
 
 
+## settings for the animation when pressing a button
+@export var button_press_anim: MenuConfigRecource
+
 
 func _ready() -> void:
 	# go through every visual and build them
@@ -198,9 +201,9 @@ func _build_sprite_frames(config: MenuConfigRecource) -> SpriteFrames:
 		return frames
 	
 	# set the FPS but it can't go beneath 1
-	var fps: float = max(config.fps, 1.0)
+	var anim_fps: float = max(config.fps, 1.0)
 	# set the fps off the animation
-	frames.set_animation_speed("default", fps)
+	frames.set_animation_speed("default", anim_fps)
 	
 	# add every texture to the animation
 	for tex in config.anim_frames:
@@ -243,9 +246,9 @@ func _create_button_visual(config: MenuConfigRecource) -> Button:
 	var sprite: AnimatedSprite2D = null
 	
 	# check if the button should have an anim on pressed
-	if not config.anim_frames.is_empty():
+	if not button_press_anim.anim_frames.is_empty():
 		# get the spriteframes
-		var frames: SpriteFrames = _build_sprite_frames(config)
+		var frames: SpriteFrames = _build_sprite_frames(button_press_anim)
 		
 		# set the basic values to the animated sprite
 		sprite = AnimatedSprite2D.new()
@@ -262,7 +265,7 @@ func _create_button_visual(config: MenuConfigRecource) -> Button:
 		wraper.size_flags_vertical = Control.SIZE_EXPAND_FILL
 		
 		# set the custom minimum size
-		wraper.custom_minimum_size = config.anim_frames[0].get_size() * config.texture_scale
+		wraper.custom_minimum_size = button_press_anim.anim_frames[0].get_size() * button_press_anim.texture_scale
 		
 		# make the wraper not steal inputs
 		wraper.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -273,9 +276,9 @@ func _create_button_visual(config: MenuConfigRecource) -> Button:
 		
 		# center the sprite
 		sprite.centered = true
-		sprite.position -= 10 * config.texture_scale
+		sprite.position -= 10 * button_press_anim.texture_scale
 		# set the scale of the sprite
-		sprite.scale = config.texture_scale
+		sprite.scale = button_press_anim.texture_scale
 		# add the sprite to the wraper
 		wraper.add_child(sprite)
 		# add the wraper to the button
@@ -285,8 +288,10 @@ func _create_button_visual(config: MenuConfigRecource) -> Button:
 	
 	# when the button is pressed what should happen
 	button.pressed.connect(func():
-		# emit the signal
-		menu_button_pressed.emit(config, self)
+		# check if there is an send to in the config and emit the signal
+		if config.send_to:
+			# emit the signal
+			menu_button_pressed.emit(config, self)
 		
 		# play the sprite if it exists
 		if sprite:

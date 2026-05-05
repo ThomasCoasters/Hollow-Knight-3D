@@ -34,11 +34,12 @@ enum Mode {
 		match value:
 			# if this is a button
 			Mode.BUTTON:
-				# enable all settings
+				# enable button and text settings
 				_text_group_enabled = true
 				_button_group_enabled = true
-				_anim_texture_group_enabled = true
-				_texture_group_enabled = true
+				# dissable all texture types
+				_anim_texture_group_enabled = false
+				_texture_group_enabled = false
 			
 			# if this is plain text
 			Mode.TEXT:
@@ -115,7 +116,13 @@ enum Mode {
 
 ## the menu this will open when pressed
 @export var send_to: NodePath
-## a lambda function that will run when the button is pressed
+## a lambda function that will run when the button is pressed.
+##[br][br]
+## ScripRunUtil explanation:[br]
+## Executes a multiline string as code.[br]
+## code_string: is the raw GDscript code you want to run.[br]
+## context: The object the code can interact with (referenced as 'ctx' in the string).[br]
+## context is an array so if you only have 1 thing you still use ctx[0][br]
 @export_multiline var pressed_function: String = ""
 
 
@@ -136,7 +143,7 @@ enum Mode {
 @export_group("animated texture settings")
 ## if this group is enabled IGNORE THIS VAR
 @export_custom(PROPERTY_HINT_GROUP_ENABLE, "") var _anim_texture_group_enabled: bool = false
-## the animation frames this texture will use (if this is a button will play when the button is pressed)
+## the animation frames this texture will use
 @export var anim_frames: Array[Texture2D]
 ## the FPS this animation will play at
 @export var fps: float = 20.0

@@ -1,9 +1,9 @@
 class_name ScriptRunUtil
 
-## Executes a multiline string as code.
-## code_string: is the raw GDscript code you want to run.
-## context: The object the code can interact with (referenced as 'ctx' in the string).
-## context is an array so if you only have 1 thing you still use ctx[0]
+## Executes a multiline string as code.[br]
+## code_string: is the raw GDscript code you want to run.[br]
+## context: The object the code can interact with (referenced as 'ctx' in the string).[br]
+## context is an array so if you only have 1 thing you still use ctx[0][br]
 static func execute_multiline_code(code_string: String, context: Array[Object] = [null]) -> void:
 	# if the usable characters end us as nothing return
 	if code_string.strip_edges() == "":
@@ -38,4 +38,5 @@ func run(ctx: Array[Object]):
 	script_instance.set_script(script)
 	
 	# Execute the function and add the context object to it
-	script_instance.call(&"run", context)
+	# also wait until it is finished else it gets garbage collected before it is done
+	await script_instance.call(&"run", context)

@@ -58,7 +58,7 @@ var wanted_rotation: Vector3 = Vector3.ZERO
 }
 
 
-##the power of the lerp (how fast the camera gets to that rotation)
+##the power of the lerp (how fast the camera gets to that rotation)[br]
 ##for the rotation only
 @export var rotation_lerp_power: float = 7.0
 

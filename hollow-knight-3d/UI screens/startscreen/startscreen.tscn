@@ -2,21 +2,16 @@
 
 [ext_resource type="Script" uid="uid://cjfetp0m4f6qu" path="res://UI screens/startscreen/startscreen.gd" id="1_pnmaq"]
 [ext_resource type="PackedScene" uid="uid://ncsw5lug3l31" path="res://UI screens/startscreen/backgrounds/bg_classic.tscn" id="2_sghvg"]
-[ext_resource type="Shader" uid="uid://cjv531vn43jar" path="res://Game/general shaders/Blurr.gdshader" id="3_mgv6y"]
 [ext_resource type="PackedScene" uid="uid://b6dmgkp6yl2f7" path="res://UI screens/menu's/MenuHolder.tscn" id="3_sslgb"]
-[ext_resource type="Shader" uid="uid://bqsp0gxewtc55" path="res://UI screens/startscreen/bloom.gdshader" id="5_cqc7b"]
+[ext_resource type="Shader" uid="uid://bqsp0gxewtc55" path="res://Game/general shaders/bloom.gdshader" id="5_cqc7b"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_cqc7b"]
-shader = ExtResource("3_mgv6y")
-shader_parameter/blur_strength = 1.200000057
-
-[sub_resource type="ViewportTexture" id="ViewportTexture_cqc7b"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_mgv6y"]
 viewport_path = NodePath("BG/BgClassic")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_f5uuf"]
 shader = ExtResource("5_cqc7b")
-shader_parameter/bloom_spread = 1.0
-shader_parameter/bloom_intensity = 0.13
+shader_parameter/bloom_spread = 0.70000003325
+shader_parameter/bloom_intensity = 0.30000001425
 
 [node name="startscreen" type="Control" unique_id=1388395703]
 layout_mode = 3
@@ -41,11 +36,10 @@ grow_vertical = 2
 
 [node name="BG_Renderer" type="TextureRect" parent="BG" unique_id=2143459802]
 unique_name_in_owner = true
-material = SubResource("ShaderMaterial_cqc7b")
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
-texture = SubResource("ViewportTexture_cqc7b")
+texture = SubResource("ViewportTexture_mgv6y")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=225843187]
 layout_mode = 1

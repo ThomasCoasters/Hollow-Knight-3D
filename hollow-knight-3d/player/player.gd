@@ -37,9 +37,9 @@ extends CharacterBody3D
 
 ##settings for the movement
 @export_group("movement")
-##input buffer frames left for the input
-##first the name of the input action
-##after that the corresponding transition state that is triggered when using this button or null
+##input buffer frames left for the input[br]
+##first the name of the input action[br]
+##after that the corresponding transition state that is triggered when using this button or null[br]
 @export var inputs_to_buffer: Dictionary[StringName, InputBufferData] = {}
 
 ##settings for moving
@@ -550,7 +550,7 @@ func _on_dashing_state_processing(delta: float) -> void:
 
 
 
-## makes the player look at the camera rotation instantly.
+## makes the player look at the camera rotation instantly.[br]
 ## returns the direction
 func _instant_player_rotation() -> Vector3:
 	#get the direction of the camera 

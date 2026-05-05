@@ -47,10 +47,6 @@ script = ExtResource("2_w13no")
 text = "Start Game"
 font_size = 30
 send_to = NodePath("../play_menu")
-_texture_group_enabled = true
-texture_scale = Vector2(0.5, 0.5)
-_anim_texture_group_enabled = true
-anim_frames = Array[Texture2D]([ExtResource("4_5puos"), ExtResource("5_55gc4"), ExtResource("6_5pew3"), ExtResource("7_5pjdf"), ExtResource("8_34fmv"), ExtResource("9_x3cxq"), ExtResource("10_kossj"), ExtResource("4_5puos")])
 spacer_size = 25.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
@@ -58,10 +54,6 @@ metadata/_custom_type_script = "uid://54ijfc61lomj"
 script = ExtResource("2_w13no")
 text = "Options"
 font_size = 30
-_texture_group_enabled = true
-texture_scale = Vector2(0.5, 0.5)
-_anim_texture_group_enabled = true
-anim_frames = Array[Texture2D]([ExtResource("4_5puos"), ExtResource("5_55gc4"), ExtResource("6_5pew3"), ExtResource("7_5pjdf"), ExtResource("8_34fmv"), ExtResource("9_x3cxq"), ExtResource("10_kossj"), ExtResource("4_5puos")])
 spacer_size = 25.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
@@ -69,10 +61,6 @@ metadata/_custom_type_script = "uid://54ijfc61lomj"
 script = ExtResource("2_w13no")
 text = "Achievements"
 font_size = 30
-_texture_group_enabled = true
-texture_scale = Vector2(0.5, 0.5)
-_anim_texture_group_enabled = true
-anim_frames = Array[Texture2D]([ExtResource("4_5puos"), ExtResource("5_55gc4"), ExtResource("6_5pew3"), ExtResource("7_5pjdf"), ExtResource("8_34fmv"), ExtResource("9_x3cxq"), ExtResource("10_kossj"), ExtResource("4_5puos")])
 spacer_size = 25.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
@@ -80,10 +68,6 @@ metadata/_custom_type_script = "uid://54ijfc61lomj"
 script = ExtResource("2_w13no")
 text = "Extras"
 font_size = 30
-_texture_group_enabled = true
-texture_scale = Vector2(0.5, 0.5)
-_anim_texture_group_enabled = true
-anim_frames = Array[Texture2D]([ExtResource("4_5puos"), ExtResource("5_55gc4"), ExtResource("6_5pew3"), ExtResource("7_5pjdf"), ExtResource("8_34fmv"), ExtResource("9_x3cxq"), ExtResource("10_kossj"), ExtResource("4_5puos")])
 spacer_size = 25.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
@@ -92,11 +76,18 @@ script = ExtResource("2_w13no")
 text = "Quit Game"
 font_size = 30
 send_to = NodePath("../quit_menu")
+spacer_size = 25.0
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_55gc4"]
+script = ExtResource("2_w13no")
+mode = 3
+_text_group_enabled = false
+_button_group_enabled = false
 _texture_group_enabled = true
 texture_scale = Vector2(0.5, 0.5)
 _anim_texture_group_enabled = true
 anim_frames = Array[Texture2D]([ExtResource("4_5puos"), ExtResource("5_55gc4"), ExtResource("6_5pew3"), ExtResource("7_5pjdf"), ExtResource("8_34fmv"), ExtResource("9_x3cxq"), ExtResource("10_kossj"), ExtResource("4_5puos")])
-spacer_size = 25.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_uqghw"]
@@ -105,8 +96,6 @@ in_fade_duration = 0.5
 out_fade_duration = 0.5
 text = "Back"
 send_to = NodePath("../start_Menu")
-_anim_texture_group_enabled = true
-anim_frames = Array[Texture2D]([ExtResource("4_5puos"), ExtResource("5_55gc4"), ExtResource("6_5pew3"), ExtResource("7_5pjdf"), ExtResource("8_34fmv"), ExtResource("9_x3cxq"), ExtResource("10_kossj"), ExtResource("4_5puos")])
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_ye08n"]
@@ -149,9 +138,21 @@ script = ExtResource("2_w13no")
 in_start_delay = 0.17
 out_start_delay = 0.17
 text = "Yes"
-pressed_function = "ctx[0].get_tree().quit()"
-_anim_texture_group_enabled = true
-anim_frames = Array[Texture2D]([ExtResource("4_5puos"), ExtResource("5_55gc4"), ExtResource("6_5pew3"), ExtResource("7_5pjdf"), ExtResource("8_34fmv"), ExtResource("9_x3cxq"), ExtResource("10_kossj"), ExtResource("4_5puos")])
+pressed_function = "# dissable all the buttons
+ctx[0].toggle_buttons(false)
+
+# play the transition
+transition.play_transition(false, true)
+
+print(ctx)
+
+# wait untill transition is finished
+await transition.on_transition_finished
+
+print(ctx[0])
+
+# quit the game using the Menu
+ctx[0].get_tree().quit()"
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_rmu4f"]
@@ -160,8 +161,6 @@ in_start_delay = 0.17
 out_start_delay = 0.17
 text = "No"
 send_to = NodePath("../start_Menu")
-_anim_texture_group_enabled = true
-anim_frames = Array[Texture2D]([ExtResource("4_5puos"), ExtResource("5_55gc4"), ExtResource("6_5pew3"), ExtResource("7_5pjdf"), ExtResource("8_34fmv"), ExtResource("9_x3cxq"), ExtResource("10_kossj"), ExtResource("4_5puos")])
 should_add_spacer = false
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
@@ -180,28 +179,34 @@ initial_menu = NodePath("start_Menu")
 [node name="start_Menu" parent="." unique_id=726592690 instance=ExtResource("1_aw56r")]
 layout_mode = 1
 visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_ayfdy"), SubResource("Resource_5puos"), SubResource("Resource_vxmfm"), SubResource("Resource_gge7p"), SubResource("Resource_mxu3d"), SubResource("Resource_4cth6"), SubResource("Resource_jeomw")])
+button_press_anim = SubResource("Resource_55gc4")
 
 [node name="play_menu" parent="." unique_id=2038750279 instance=ExtResource("1_aw56r")]
 visible = false
 layout_mode = 1
 visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_uqghw")])
+button_press_anim = SubResource("Resource_55gc4")
 
 [node name="options_menu" parent="." unique_id=1146284057 instance=ExtResource("1_aw56r")]
 visible = false
 layout_mode = 1
 visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_uqghw")])
+button_press_anim = SubResource("Resource_55gc4")
 
 [node name="achievement_menu" parent="." unique_id=1311632692 instance=ExtResource("1_aw56r")]
 visible = false
 layout_mode = 1
 visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_uqghw")])
+button_press_anim = SubResource("Resource_55gc4")
 
 [node name="extra_menu" parent="." unique_id=2036755983 instance=ExtResource("1_aw56r")]
 visible = false
 layout_mode = 1
 visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_uqghw")])
+button_press_anim = SubResource("Resource_55gc4")
 
 [node name="quit_menu" parent="." unique_id=301975963 instance=ExtResource("1_aw56r")]
 visible = false
 layout_mode = 1
 visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_ye08n"), SubResource("Resource_2jqgy"), SubResource("Resource_0j5pn"), SubResource("Resource_vxt2s"), SubResource("Resource_rmu4f")])
+button_press_anim = SubResource("Resource_55gc4")
