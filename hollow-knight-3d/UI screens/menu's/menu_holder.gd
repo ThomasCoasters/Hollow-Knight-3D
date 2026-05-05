@@ -237,8 +237,11 @@ func _get_all_visual_nodes(parent: Node) -> Array[Control]:
 	
 	# go through every child
 	for child in parent.get_children():
+		# if this child has a config metadata it is always correct
+		if child.has_meta(&"config"):
+			found.append(child)
 		# if the child is an container: try to find visual nodes in it
-		if child is HBoxContainer or child is GridContainer:
+		elif child is HBoxContainer or child is GridContainer or child.is_in_group(&"wraper"):
 			# add the found things from inside the container
 			found.append_array(_get_all_visual_nodes(child))
 		# if it is no container and not an spacer

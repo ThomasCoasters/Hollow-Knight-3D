@@ -16,7 +16,8 @@ enum Mode {
 	TEXTURE,
 	ANIMATED_TEXTURE,
 	ROW,
-	NONE
+	BUTTON_ROW,
+	NONE,
 }
 
 ## set what mode this is
@@ -81,6 +82,16 @@ enum Mode {
 				_texture_group_enabled = false
 				_text_group_enabled = false
 				_button_group_enabled = false
+				_anim_texture_group_enabled = false
+			
+			# if this is an button row
+			Mode.BUTTON_ROW:
+				# enable row and button settings
+				_row_group_enabled = true
+				_button_group_enabled = true
+				# disable all texture and text settings
+				_text_group_enabled = false
+				_texture_group_enabled = false
 				_anim_texture_group_enabled = false
 			
 			# if it is just empty
@@ -196,3 +207,14 @@ enum Mode {
 @export_custom(PROPERTY_HINT_GROUP_ENABLE, "") var should_add_horizontal_spacer: bool = false
 ## the size of the spacer
 @export var horizontal_spacer_size: float = 40
+
+
+
+
+
+## settings for an offset
+@export_group("offset")
+## if this visual should have an offset
+@export_custom(PROPERTY_HINT_GROUP_ENABLE, "") var should_have_offset: bool = false
+## the offset
+@export var offset: Vector2 = Vector2.ZERO

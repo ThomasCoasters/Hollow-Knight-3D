@@ -52,7 +52,6 @@ func _ready() -> void:
 			if current_row == null or object_row_count > max_columns:
 				# create a new HBoxcontainer
 				current_row = HBoxContainer.new()
-				# set the row to be max size
 				
 				# make all object try to be in the center
 				current_row.alignment = BoxContainer.ALIGNMENT_CENTER
@@ -126,9 +125,13 @@ func _create_visual(config: MenuConfigRecource) -> Control:
 		config.Mode.ROW:
 			control = _create_row_visual(config)
 		
+		# if the config is an button row
+		config.Mode.BUTTON_ROW:
+			control = _create_button_row_visual(config)
+		
 		# if there is a NONE node just make a new control
 		config.Mode.NONE:
-			control = Control.new()
+			control = _create_empty_node(config)
 	
 	
 	# give a error if there is no (control) node made
@@ -141,7 +144,47 @@ func _create_visual(config: MenuConfigRecource) -> Control:
 	# create a metadata on the control with the config
 	control.set_meta(&"config", config)
 	
+	# apply offset to the given node
+	control = _apply_offset_if_needed(control, config)
+	
 	# return the built node
+	return control
+
+
+
+
+
+## creates an empty node (with possibility for extra settings)
+func _create_empty_node(config: MenuConfigRecource) -> Control:
+	# create the empty control
+	var control: Control
+	
+	# check if the row settings are enabled and there are any sub cofigs
+	if config._row_group_enabled and config.sub_configs:
+		# create a wraper so that the layout works
+		var wraper: CenterContainer = CenterContainer.new()
+		
+		# add the wraper to the wraper group
+		wraper.add_to_group(&"wraper")
+		
+		# set the size flags
+		wraper.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		wraper.size_flags_vertical = Control.SIZE_EXPAND_FILL
+		
+		# make the wraper not steal inputs
+		wraper.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		
+		# add sub elements to this control
+		wraper = _build_sub_elements(wraper, config)
+		
+		# set the control to this wraper
+		control = wraper
+	
+	# otherwise make an control
+	else: control = Control.new()
+	
+	
+	# return the control
 	return control
 
 
@@ -176,8 +219,13 @@ func _create_animated_texture_visual(config: MenuConfigRecource) -> Control:
 		# run the normal texture visual and return the made texture
 		return _create_texture_visual(config)
 	
-	# create a control as the wrapper for the AnimatedSprite2D
+	# create a control as the wraper for the AnimatedSprite2D
 	var wraper: Control = Control.new()
+	
+	# add the wraper to the wraper group
+	wraper.add_to_group(&"wraper")
+	
+	
 	
 	# create the AnimatedSprite2D
 	var sprite: AnimatedSprite2D= AnimatedSprite2D.new()
@@ -287,63 +335,24 @@ func _create_button_visual(config: MenuConfigRecource) -> Button:
 	# make the text visuals
 	_build_text_visual(button, config)
 	
+	# change the button to have an invis bg
+	button = _build_invis_button_bg(button)
 	
-	# create the empty stylebox
-	var empty_stylebox: StyleBoxEmpty = StyleBoxEmpty.new()
+	
 	
 	# set the size to be the smallest possible (not full width of the screen)
 	button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	
-	# set all the styles to empty
-	button.add_theme_stylebox_override(&"normal", empty_stylebox)
-	button.add_theme_stylebox_override(&"hover", empty_stylebox)
-	button.add_theme_stylebox_override(&"focus", empty_stylebox)
-	button.add_theme_stylebox_override(&"disabled", empty_stylebox)
-	button.add_theme_stylebox_override(&"pressed", empty_stylebox)
 	
 	
-	# create a new anim sprite
-	var sprite: AnimatedSprite2D = null
+	# add the animnation when pressing the button.
+	# also get the result
+	var result = _build_button_press_anim(button)
 	
-	# check if the button should have an anim on pressed
-	if not button_press_anim.anim_frames.is_empty():
-		# get the spriteframes
-		var frames: SpriteFrames = _build_sprite_frames(button_press_anim)
-		
-		# set the basic values to the animated sprite
-		sprite = AnimatedSprite2D.new()
-		sprite.sprite_frames = frames
-		sprite.animation = "default"
-		# don't autoplay this animation
-		sprite.autoplay = ""
-		
-		# create a wraper so that the layout works
-		var wraper := CenterContainer.new()
-		
-		# set the size flags
-		wraper.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		wraper.size_flags_vertical = Control.SIZE_EXPAND_FILL
-		
-		# set the custom minimum size
-		wraper.custom_minimum_size = button_press_anim.anim_frames[0].get_size() * button_press_anim.texture_scale
-		
-		# make the wraper not steal inputs
-		wraper.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		
-		
-		wraper.set_anchors_preset(Control.PRESET_CENTER)
-		
-		
-		# center the sprite
-		sprite.centered = true
-		sprite.position -= 10 * button_press_anim.texture_scale
-		# set the scale of the sprite
-		sprite.scale = button_press_anim.texture_scale
-		# add the sprite to the wraper
-		wraper.add_child(sprite)
-		# add the wraper to the button
-		button.add_child(wraper)
-	
+	# get the new button from the result
+	button = result[0]
+	# also get the sprite
+	var sprite: AnimatedSprite2D = result[1]
 	
 	
 	# when the button is pressed what should happen
@@ -379,16 +388,172 @@ func _create_row_visual(config: MenuConfigRecource) -> HBoxContainer:
 	row.alignment = BoxContainer.ALIGNMENT_CENTER
 	
 	# add the sub elements
-	for sub_cfg in config.sub_configs:
-		# create element
-		var element = _create_visual(sub_cfg) # can make more rows inside this row
-		# add the element
-		row.add_child(element)
+	row = _build_sub_elements(row, config)
 	
 	# return it
 	return row
 
 
+
+## builds sub elements
+func _build_sub_elements(parent: Control, config: MenuConfigRecource) -> Control:
+	# add the sub elements
+	for sub_cfg in config.sub_configs:
+		# create element
+		var element = _create_visual(sub_cfg) # can make more rows inside this row
+		# add the element
+		parent.add_child(element)
+	
+	# return the parent back
+	return parent
+
+
+## build the visual for the button press anim
+func _build_button_press_anim(button: Button):
+	# create a new anim sprite
+	var sprite: AnimatedSprite2D = null
+	
+	# check if the button should have an anim on pressed
+	if not button_press_anim.anim_frames.is_empty():
+		# get the spriteframes
+		var frames: SpriteFrames = _build_sprite_frames(button_press_anim)
+		
+		# set the basic values to the animated sprite
+		sprite = AnimatedSprite2D.new()
+		sprite.sprite_frames = frames
+		sprite.animation = "default"
+		# don't autoplay this animation
+		sprite.autoplay = ""
+		
+		# create a wraper so that the layout works
+		var wraper: CenterContainer = CenterContainer.new()
+		
+		# add the wraper to the wraper group
+		wraper.add_to_group(&"wraper")
+		
+		# set the size flags
+		wraper.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		wraper.size_flags_vertical = Control.SIZE_EXPAND_FILL
+		
+		# set the custom minimum size
+		wraper.custom_minimum_size = button_press_anim.anim_frames[0].get_size() * button_press_anim.texture_scale
+		
+		# make the wraper not steal inputs
+		wraper.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		
+		
+		wraper.set_anchors_preset(Control.PRESET_CENTER)
+		
+		
+		# center the sprite
+		sprite.centered = true
+		sprite.position -= 10 * button_press_anim.texture_scale
+		# set the scale of the sprite
+		sprite.scale = button_press_anim.texture_scale
+		# add the sprite to the wraper
+		wraper.add_child(sprite)
+		# add the wraper to the button
+		button.add_child(wraper)
+	
+	
+	# return the updated button and the sprite
+	return [button, sprite]
+
+
+## builds an empty button background visual
+func _build_invis_button_bg(button: Button) -> Button:
+	# create the empty stylebox
+	var empty_stylebox: StyleBoxEmpty = StyleBoxEmpty.new()
+	
+	# set all the styles to empty
+	button.add_theme_stylebox_override(&"normal", empty_stylebox)
+	button.add_theme_stylebox_override(&"hover", empty_stylebox)
+	button.add_theme_stylebox_override(&"focus", empty_stylebox)
+	button.add_theme_stylebox_override(&"disabled", empty_stylebox)
+	button.add_theme_stylebox_override(&"pressed", empty_stylebox)
+	
+	# return the new button
+	return button
+
+
+
+
+## creates a container and populate it with sub-elements while having it work like a button
+func _create_button_row_visual(config: MenuConfigRecource) -> Button:
+	# create the row (button)
+	var row_button: Button = Button.new()
+	
+	# make the text visuals
+	_build_text_visual(row_button, config)
+	
+	# change the button to have an invis bg
+	row_button = _build_invis_button_bg(row_button)
+	
+	# create a layout container
+	var hbox: HBoxContainer = HBoxContainer.new()
+	
+	# lets click go through this container
+	hbox.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	# set the ancors correct
+	hbox.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	# add the seperation and make the objects exist from the center
+	hbox.alignment = BoxContainer.ALIGNMENT_CENTER
+	hbox.add_theme_constant_override(&"separation", config.row_spacing)
+	# add the sub elements
+	hbox = _build_sub_elements(hbox, config)
+	
+	
+	# add the hbox
+	row_button.add_child(hbox)
+	
+	
+	
+	# add the animnation when pressing the button.
+	# also get the result
+	var result = _build_button_press_anim(row_button)
+	
+	# get the new button from the result
+	row_button = result[0]
+	# also get the sprite
+	var sprite: AnimatedSprite2D = result[1]
+	
+	
+	# when the button is pressed what should happen
+	row_button.pressed.connect(func():
+		# check if there is an send to in the config and emit the signal
+		if config.send_to:
+			# emit the signal
+			menu_button_pressed.emit(config, self)
+		
+		# play the sprite if it exists
+		if sprite:
+			# actually play the sprite
+			sprite.play()
+		
+		# call the multiline script running object 
+		# add "self" as the context so the script can change this node whatever it will
+		# also add this button and the config
+		ScriptRunUtil.execute_multiline_code(config.pressed_function, [self, config, row_button])
+	)
+	
+	
+	# idk why this was needed but it broke otherwise
+	_set_button_size_to_container(row_button, hbox)
+	
+	# return it
+	return row_button
+
+
+
+
+## only fix ig
+func _set_button_size_to_container(button: Button, hbox: HBoxContainer) -> void:
+	# wait untill the hbox has any size
+	while hbox.size == Vector2.ZERO:
+		await get_tree().process_frame
+	
+	# set the buttons min size to the hbox size
+	button.custom_minimum_size = hbox.size
 
 
 
@@ -401,3 +566,28 @@ func toggle_buttons(disable: bool) -> void:
 		
 		# if it is a button set the enable to the given value
 		button.disabled = disable
+
+
+
+
+## applies offset to the given control if it should have offset
+func _apply_offset_if_needed(control: Control, config: MenuConfigRecource) -> MarginContainer:
+	# not ofset = instant return without change
+	if not config.should_have_offset:
+		return control
+	
+	# create a wrapper
+	var wraper: MarginContainer = MarginContainer.new()
+	
+	# set the wrapper offset
+	@warning_ignore("narrowing_conversion")
+	wraper.add_theme_constant_override("margin_left", config.offset.x)
+	@warning_ignore("narrowing_conversion")
+	wraper.add_theme_constant_override("margin_top", config.offset.y)
+	
+	# add the wraper to the wraper group
+	wraper.add_to_group(&"wraper")
+	
+	# add the given node to the wraper and return the wraper
+	wraper.add_child(control)
+	return wraper
