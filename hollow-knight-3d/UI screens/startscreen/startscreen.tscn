@@ -10,8 +10,8 @@ viewport_path = NodePath("BG/BgClassic")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_f5uuf"]
 shader = ExtResource("5_cqc7b")
-shader_parameter/bloom_spread = 0.70000003325
-shader_parameter/bloom_intensity = 0.30000001425
+shader_parameter/bloom_spread = 2.000000095
+shader_parameter/bloom_intensity = 0.2000000095
 
 [node name="startscreen" type="Control" unique_id=1388395703]
 layout_mode = 3

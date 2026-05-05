@@ -20,23 +20,77 @@ signal menu_button_pressed(config: MenuConfigRecource, menu: Menu)
 ## settings for the animation when pressing a button
 @export var button_press_anim: MenuConfigRecource
 
+## the max amount of columns this node can have
+@export var max_columns: int = 1
+
 
 func _ready() -> void:
+	# get a refrence for the current row
+	var current_row: HBoxContainer = null
+	# get amount of objects in this row
+	var object_row_count: int = 1
+	
 	# go through every visual and build them
 	for visual in visuals:
 		# get a refrence to the built visual
 		var made_visual: Control = _create_visual(visual)
 		
-		# add the made visual as a child of the vbox
-		VerticalVisualContainer.add_child(made_visual)
+		# if this visual is full width
+		if visual.full_width:
+			# directly add it to the main VBox
+			VerticalVisualContainer.add_child(made_visual)
+			# reset the current row and obj row count
+			current_row = null
+			object_row_count = 1
+		
+		# if it is not full width
+		else:
+			# increase the object in this row
+			object_row_count += 1
+			
+			# if we currently are not in a row OR the columns 
+			if current_row == null or object_row_count > max_columns:
+				# create a new HBoxcontainer
+				current_row = HBoxContainer.new()
+				# set the row to be max size
+				
+				# make all object try to be in the center
+				current_row.alignment = BoxContainer.ALIGNMENT_CENTER
+				# add it
+				VerticalVisualContainer.add_child(current_row)
+				
+				# reset object row count
+				object_row_count = 1
+			
+			
+			
+			
+			# if relevant add a horizontal spacer
+			if visual.should_add_horizontal_spacer and object_row_count != max_columns:
+				# create the spacer
+				var spacer: Control = Control.new()
+				
+				# set the spacer size
+				spacer.custom_minimum_size.x = visual.horizontal_spacer_size
+				
+				# add the spacer to the current_row
+				current_row.add_child(spacer)
+				# also add it to a spacer group
+				spacer.add_to_group(&"spacer")
+			
+			
+			# add the visual to the HBox
+			current_row.add_child(made_visual)
+		
+		
 		
 		# if relevant add a spacer
-		if visual.should_add_spacer:
+		if visual.should_add_vertical_spacer:
 			# create the spacer
 			var spacer: Control = Control.new()
 			
 			# set the spacer size
-			spacer.custom_minimum_size.y = visual.spacer_size
+			spacer.custom_minimum_size.y = visual.vertical_spacer_size
 			
 			# add the spacer
 			VerticalVisualContainer.add_child(spacer)
@@ -68,6 +122,10 @@ func _create_visual(config: MenuConfigRecource) -> Control:
 		config.Mode.ANIMATED_TEXTURE:
 			control = _create_animated_texture_visual(config)
 		
+		# if the config is an row
+		config.Mode.ROW:
+			control = _create_row_visual(config)
+		
 		# if there is a NONE node just make a new control
 		config.Mode.NONE:
 			control = Control.new()
@@ -78,8 +136,10 @@ func _create_visual(config: MenuConfigRecource) -> Control:
 		# send an error
 		push_error("no control node was made in the menu for config: " + str(config) + ". Please change the mode to NONE if this was intended, else remove it.")
 		# just make a temp new control as a substitute
-		return Control.new()
+		control = Control.new()
 	
+	# create a metadata on the control with the config
+	control.set_meta(&"config", config)
 	
 	# return the built node
 	return control
@@ -307,6 +367,26 @@ func _create_button_visual(config: MenuConfigRecource) -> Button:
 	
 	# return the button
 	return button
+
+
+## creates a horizontal container and populate it with sub-elements
+func _create_row_visual(config: MenuConfigRecource) -> HBoxContainer:
+	# create the row (HBox)
+	var row: HBoxContainer = HBoxContainer.new()
+	
+	# add the seperation and make the objects exist from the center
+	row.add_theme_constant_override(&"separation", config.row_spacing)
+	row.alignment = BoxContainer.ALIGNMENT_CENTER
+	
+	# add the sub elements
+	for sub_cfg in config.sub_configs:
+		# create element
+		var element = _create_visual(sub_cfg) # can make more rows inside this row
+		# add the element
+		row.add_child(element)
+	
+	# return it
+	return row
 
 
 

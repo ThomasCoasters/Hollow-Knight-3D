@@ -15,6 +15,7 @@ enum Mode {
 	TEXT,
 	TEXTURE,
 	ANIMATED_TEXTURE,
+	ROW,
 	NONE
 }
 
@@ -37,36 +38,50 @@ enum Mode {
 				# enable button and text settings
 				_text_group_enabled = true
 				_button_group_enabled = true
-				# dissable all texture types
+				# dissable all texture and grid settings
 				_anim_texture_group_enabled = false
 				_texture_group_enabled = false
+				_row_group_enabled = false
 			
 			# if this is plain text
 			Mode.TEXT:
 				# enable text settings
 				_text_group_enabled = true
-				# disable all texture and button settings
+				# disable all texture, grid and button settings
 				_button_group_enabled = false
 				_texture_group_enabled = false
 				_anim_texture_group_enabled = false
+				_row_group_enabled = false
 			
 			# if this is a texture
 			Mode.TEXTURE:
 				# enable texture settings
 				_texture_group_enabled = true
-				# disable text, button and animated texture settings
+				# disable text, button, grid and animated texture settings
 				_text_group_enabled = false
 				_button_group_enabled = false
 				_anim_texture_group_enabled = false
+				_row_group_enabled = false
 			
 			# if this is an animated texture
 			Mode.ANIMATED_TEXTURE:
 				# enable all texture settings
 				_anim_texture_group_enabled = true
 				_texture_group_enabled = true
-				# disable text and button settings
+				# disable text, grid and button settings
 				_text_group_enabled = false
 				_button_group_enabled = false
+				_row_group_enabled = false
+			
+			# if this in an row
+			Mode.ROW:
+				# only enable row settings
+				_row_group_enabled = true
+				# disable all other settings
+				_texture_group_enabled = false
+				_text_group_enabled = false
+				_button_group_enabled = false
+				_anim_texture_group_enabled = false
 			
 			# if it is just empty
 			Mode.NONE:
@@ -75,7 +90,12 @@ enum Mode {
 				_text_group_enabled = false
 				_button_group_enabled = false
 				_anim_texture_group_enabled = false
+				_row_group_enabled = false
 
+
+
+## if false this will sit in the previous item in a row if there is an grid in these settings
+@export var full_width: bool = true
 
 
 ## settings everything has for fading in/out
@@ -151,11 +171,28 @@ enum Mode {
 @export var loop: bool = false
 
 
+## settings only for the row mode
+@export_group("row settings")
+## if this group is enabled IGNORE THIS VAR
+@export_custom(PROPERTY_HINT_GROUP_ENABLE, "") var _row_group_enabled: bool = false
+## The things that are inside this row
+@export var sub_configs: Array[MenuConfigRecource] = []
+## spacing between visuals in this row
+@export var row_spacing: int = 20
 
 
-## settings only for the spacer
-@export_group("spacer settings")
-## if this visual should add a spacer
-@export_custom(PROPERTY_HINT_GROUP_ENABLE, "") var should_add_spacer: bool = true
+
+## settings only for the vertical spacer
+@export_group("vertical spacer settings")
+## if this visual should add a vertical spacer
+@export_custom(PROPERTY_HINT_GROUP_ENABLE, "") var should_add_vertical_spacer: bool = true
 ## the size of the spacer
-@export var spacer_size: float = 40
+@export var vertical_spacer_size: float = 40
+
+
+## settings only for the horizontal spacer
+@export_group("horizontal spacer settings")
+## if this visual should add a horizontal spacer
+@export_custom(PROPERTY_HINT_GROUP_ENABLE, "") var should_add_horizontal_spacer: bool = false
+## the size of the spacer
+@export var horizontal_spacer_size: float = 40

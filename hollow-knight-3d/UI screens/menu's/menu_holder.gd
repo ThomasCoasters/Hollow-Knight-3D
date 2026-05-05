@@ -55,13 +55,10 @@ func _animate_menu_fade(menu: Menu, fading_in: bool) -> void:
 	var tween = create_tween().set_parallel(true)
 	
 	# get all the menu items
-	var items = menu.VerticalVisualContainer.get_children()
+	var items = _get_all_visual_nodes(menu.VerticalVisualContainer)
 	
 	# track what is the longest animation so we know when the whole menu is finished fading
 	var max_time: float = 0.0
-	
-	# the current item index without the spacers
-	var visual_index: int = 0
 	
 	# go through every item in the menu and set the animation
 	for item_index: int in range(items.size()):
@@ -69,21 +66,15 @@ func _animate_menu_fade(menu: Menu, fading_in: bool) -> void:
 		var item: Control = items[item_index] as Control
 		
 		# if the current item is not a control something is wrong and just ignore it
-		if not item: continue
-		
 		# also continue if the current item is an spacer
-		if item.is_in_group(&"spacer"): continue
+		if not item or item.is_in_group(&"spacer"): continue
 		
+		# get the config metadata
+		var config: MenuConfigRecource = item.get_meta(&"config", null)
 		
-		# get the config that is responsible for this visual
-		var config: MenuConfigRecource = menu.visuals[visual_index]
-		# we have no spacer now so increase the visual_index
-		# make sure this increases after being used
-		visual_index += 1
-		
-		
-		# if there was no config for this item index continue
+		# if the item does not have any config metadata also continue
 		if not config: continue
+		
 		
 		# get the alpha we try to hit and start at
 		var target_alpha: float = 1.0 if fading_in else 0.0
@@ -236,3 +227,24 @@ func _toggle_buttons(disable: bool) -> void:
 	for menu: Menu in get_children():
 		# set the buttons to the selected vars in every menu
 		menu.toggle_buttons(disable)
+
+
+
+## tries to find all nodes that are not a container 
+func _get_all_visual_nodes(parent: Node) -> Array[Control]:
+	# all the nodes that are found
+	var found: Array[Control] = []
+	
+	# go through every child
+	for child in parent.get_children():
+		# if the child is an container: try to find visual nodes in it
+		if child is HBoxContainer or child is GridContainer:
+			# add the found things from inside the container
+			found.append_array(_get_all_visual_nodes(child))
+		# if it is no container and not an spacer
+		elif child is Control and not child.is_in_group(&"spacer"):
+			# add this to the found
+			found.append(child)
+	
+	# return the found items
+	return found
