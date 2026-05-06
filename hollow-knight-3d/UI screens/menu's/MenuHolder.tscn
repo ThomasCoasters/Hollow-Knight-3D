@@ -206,12 +206,15 @@ texture_scale = Vector2(0.8, 0.8)
 _anim_texture_group_enabled = true
 anim_frames = Array[Texture2D]([ExtResource("6_rmu4f"), ExtResource("6_0j5pn"), ExtResource("7_rmu4f"), ExtResource("8_ye08n"), ExtResource("9_vxt2s"), ExtResource("10_2jqgy"), ExtResource("11_p17pv"), ExtResource("12_50hpd")])
 fps = 30.0
-vertical_spacer_size = 55.0
+should_add_vertical_spacer = false
+vertical_spacer_size = 0.0
+horizontal_spacer_size = 0.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_saxcl"]
 script = ExtResource("2_w13no")
 mode = 1
+full_width = false
 text = "Up"
 font_size = 40
 _button_group_enabled = false
@@ -220,6 +223,7 @@ metadata/_custom_type_script = "uid://54ijfc61lomj"
 [sub_resource type="Resource" id="Resource_kexv5"]
 script = ExtResource("2_w13no")
 mode = 1
+full_width = false
 text = "W"
 font_size = 50
 _button_group_enabled = false
@@ -230,6 +234,7 @@ metadata/_custom_type_script = "uid://54ijfc61lomj"
 [sub_resource type="Resource" id="Resource_sqr72"]
 script = ExtResource("2_w13no")
 mode = 2
+full_width = false
 _text_group_enabled = false
 _button_group_enabled = false
 _texture_group_enabled = true
@@ -240,6 +245,7 @@ metadata/_custom_type_script = "uid://54ijfc61lomj"
 [sub_resource type="Resource" id="Resource_er0lx"]
 script = ExtResource("2_w13no")
 mode = 6
+full_width = false
 _text_group_enabled = false
 _button_group_enabled = false
 _row_group_enabled = true
@@ -250,14 +256,95 @@ metadata/_custom_type_script = "uid://54ijfc61lomj"
 [sub_resource type="Resource" id="Resource_jq4vk"]
 script = ExtResource("2_w13no")
 mode = 5
+full_width = false
 _text_group_enabled = false
+pressed_function = "#get this button
+var me: Button = ctx[2]
+
+ # refrence to the visual
+var Texture: Texture2D
+
+# refrence to the text
+var text: Label
+"
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_saxcl"), SubResource("Resource_er0lx")])
 row_spacing = 300
-vertical_spacer_size = 400.0
+should_add_vertical_spacer = false
+vertical_spacer_size = 0.0
+horizontal_spacer_size = 0.0
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_4edy0"]
+script = ExtResource("2_w13no")
+mode = 1
+full_width = false
+text = "Up"
+font_size = 40
+_button_group_enabled = false
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_qt6wr"]
+script = ExtResource("2_w13no")
+mode = 1
+full_width = false
+text = "W"
+font_size = 50
+_button_group_enabled = false
+should_have_offset = true
+offset = Vector2(-3, 15)
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_hqo3k"]
+load_path = "res://.godot/imported/button_skin_0004_square_key.png-8907e04bb75f6a9cfc100e49db0ee7f3.ctex"
+
+[sub_resource type="Resource" id="Resource_wk02m"]
+script = ExtResource("2_w13no")
+mode = 2
+full_width = false
+_text_group_enabled = false
+_button_group_enabled = false
+_texture_group_enabled = true
+texture = SubResource("CompressedTexture2D_hqo3k")
+texture_scale = Vector2(0.7, 0.7)
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_mk4j3"]
+script = ExtResource("2_w13no")
+mode = 6
+full_width = false
+_text_group_enabled = false
+_button_group_enabled = false
+_row_group_enabled = true
+sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_qt6wr"), SubResource("Resource_wk02m")])
+row_spacing = 0
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_adj7i"]
+script = ExtResource("2_w13no")
+mode = 5
+full_width = false
+_text_group_enabled = false
+_row_group_enabled = true
+sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_4edy0"), SubResource("Resource_mk4j3")])
+row_spacing = 300
+should_add_vertical_spacer = false
+vertical_spacer_size = 0.0
+horizontal_spacer_size = 0.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_rgr21"]
+script = ExtResource("2_w13no")
+mode = 4
+_text_group_enabled = false
+_button_group_enabled = false
+_row_group_enabled = true
+sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_jq4vk"), SubResource("Resource_adj7i")])
+row_spacing = 200
+vertical_spacer_size = 55.0
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_hqo3k"]
 script = ExtResource("2_w13no")
 in_fade_duration = 0.5
 out_fade_duration = 0.5
@@ -358,9 +445,8 @@ button_press_anim = SubResource("Resource_55gc4")
 [node name="keyboard_input_menu" parent="." unique_id=156141385 instance=ExtResource("1_aw56r")]
 visible = false
 layout_mode = 1
-visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_62inh"), SubResource("Resource_vllhe"), SubResource("Resource_om5fx"), SubResource("Resource_jq4vk"), SubResource("Resource_rgr21")])
+visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_62inh"), SubResource("Resource_vllhe"), SubResource("Resource_om5fx"), SubResource("Resource_rgr21"), SubResource("Resource_rgr21"), SubResource("Resource_rgr21"), SubResource("Resource_rgr21"), SubResource("Resource_hqo3k")])
 button_press_anim = SubResource("Resource_55gc4")
-max_columns = 2
 
 [node name="achievement_menu" parent="." unique_id=1311632692 instance=ExtResource("1_aw56r")]
 visible = false

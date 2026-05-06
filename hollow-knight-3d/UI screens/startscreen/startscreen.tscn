@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://cjfetp0m4f6qu" path="res://UI screens/startscreen/startscreen.gd" id="1_pnmaq"]
 [ext_resource type="PackedScene" uid="uid://ncsw5lug3l31" path="res://UI screens/startscreen/backgrounds/bg_classic.tscn" id="2_sghvg"]
 [ext_resource type="PackedScene" uid="uid://b6dmgkp6yl2f7" path="res://UI screens/menu's/MenuHolder.tscn" id="3_sslgb"]
-[ext_resource type="Shader" uid="uid://bqsp0gxewtc55" path="res://Game/general shaders/bloom.gdshader" id="5_cqc7b"]
+[ext_resource type="Shader" path="res://Game/general shaders/bloom.gdshader" id="5_cqc7b"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_mgv6y"]
 viewport_path = NodePath("BG/BgClassic")

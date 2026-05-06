@@ -222,6 +222,9 @@ func _create_animated_texture_visual(config: MenuConfigRecource) -> Control:
 	# create a control as the wraper for the AnimatedSprite2D
 	var wraper: Control = Control.new()
 	
+	#set the wraper horizontal size flags
+	wraper.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	
 	# add the wraper to the wraper group
 	wraper.add_to_group(&"wraper")
 	
