@@ -206,8 +206,7 @@ texture_scale = Vector2(0.8, 0.8)
 _anim_texture_group_enabled = true
 anim_frames = Array[Texture2D]([ExtResource("6_rmu4f"), ExtResource("6_0j5pn"), ExtResource("7_rmu4f"), ExtResource("8_ye08n"), ExtResource("9_vxt2s"), ExtResource("10_2jqgy"), ExtResource("11_p17pv"), ExtResource("12_50hpd")])
 fps = 30.0
-should_add_vertical_spacer = false
-vertical_spacer_size = 0.0
+vertical_spacer_size = 50.0
 horizontal_spacer_size = 0.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
@@ -216,8 +215,9 @@ script = ExtResource("2_w13no")
 mode = 1
 full_width = false
 text = "Up"
-font_size = 40
+font_size = 28
 _button_group_enabled = false
+should_have_offset = true
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_kexv5"]
@@ -225,10 +225,10 @@ script = ExtResource("2_w13no")
 mode = 1
 full_width = false
 text = "W"
-font_size = 50
+font_size = 17
 _button_group_enabled = false
 should_have_offset = true
-offset = Vector2(-3, 15)
+offset = Vector2(-1, 6)
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_sqr72"]
@@ -239,7 +239,7 @@ _text_group_enabled = false
 _button_group_enabled = false
 _texture_group_enabled = true
 texture = ExtResource("21_55gc4")
-texture_scale = Vector2(0.7, 0.7)
+texture_scale = Vector2(0.6, 0.6)
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_er0lx"]
@@ -258,76 +258,163 @@ script = ExtResource("2_w13no")
 mode = 5
 full_width = false
 _text_group_enabled = false
-pressed_function = "#get this button
-var me: Button = ctx[2]
+pressed_function = "# get this node
+var me = ctx[2]
+var config = ctx[1]
+# set this node as the initial node you should check
+var nodes_to_check = [me]
 
- # refrence to the visual
-var Texture: Texture2D
+# the visual for non texture buttons
+var empty_visual = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_key.png\")
+var empty_visual_big = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0003_wide_square_key.png\")
 
-# refrence to the text
-var text: Label
-"
+
+# visuals for each key
+var visual_map = {
+	\"Up\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_u.png\"),
+	\"Down\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_d.png\"),
+	\"Left\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow.png\"),
+	\"Right\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_r.png\"),
+	\"Left Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_left_click.png\"),
+	\"Middle Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_click.png\"),
+	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\")
+}
+
+
+# the final label found
+var target_label: Label = null
+# current amount of labels found
+var label_count = 0 
+# the final number of label in the index that is the one you search for
+var label_target_index = 1
+
+# the found texture rect
+var rect_node: TextureRect = null
+
+# the final hbox found
+var target_hbox: HBoxContainer = null
+# current amount of hboxes found
+var hbox_count = 0 
+# the final number of hboxes in the index that is the one you search for
+var hbox_target_index = 1
+
+
+# keep searching untill all children are gone through
+while nodes_to_check.size() > 0:
+	#remove the current node from the nodes you should check
+	var current = nodes_to_check.pop_back()
+	
+	# if you found an label
+	if current is Label:
+		#increase label count
+		label_count += 1
+		# if you found the target number of labels
+		if label_count == label_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label = current
+	
+	# if the found is an HBOX
+	if current is HBoxContainer:
+		#increase HBOX count
+		hbox_count += 1
+		# if you found the target number of hboxes
+		if hbox_count == hbox_target_index:
+			# THIS IS THE GOOD hbox
+			target_hbox = current
+
+	# if you found an textureRect
+	elif current is TextureRect:
+		# this node is the texture rect
+		rect_node = current
+	
+	# also search all these node's children
+	nodes_to_check.append_array(current.get_children())
+
+# change the label you found
+if target_label:
+	target_label.text = \"Press New Key\"
+
+# also change the textureRect you found
+if rect_node:
+	rect_node.texture = null
+
+# change the hbox seperation
+if target_hbox:
+	target_hbox.add_theme_constant_override(&\"separation\", 150)
+
+
+
+# first wait a small time
+await me.get_tree().create_timer(0.1).timeout
+
+# create a overlay that makes the other buttons not pressable
+var overlay = Control.new()
+me.get_tree().root.add_child(overlay)
+overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+overlay.mouse_filter = Control.MOUSE_FILTER_STOP
+
+# have the overlay get keyboard buttons
+overlay.focus_mode = Control.FOCUS_ALL 
+overlay.grab_focus()
+
+# the var that should get the event
+var final_event: InputEvent = null
+
+# the name that the key has (readable version)
+var key_name
+
+# keep looping untill the event is found
+while final_event == null:
+	# wait one frame to not crash by always asking the engine for new input
+	await me.get_tree().process_frame
+	# wait for input and set it
+	final_event = await overlay.gui_input 
+	
+	# normal button presses
+	if final_event is InputEventKey and final_event.is_pressed():
+		# get the name of the press
+		key_name = OS.get_keycode_string(final_event.get_keycode_with_modifiers())
+		
+		# make the UI not use this button input
+		me.get_viewport().set_input_as_handled()
+	
+	# mouse button presses
+	elif final_event is InputEventMouseButton and final_event.is_pressed():
+		# set a readable name
+		if final_event.button_index == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
+		elif final_event.button_index == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
+		elif final_event.button_index == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
+		else: key_name = \"Mouse \" + str(final_event.button_index)
+		
+		# make the UI not use this button input
+		me.get_viewport().set_input_as_handled()
+
+	else:
+		#try waiting again untill it is something that is correct
+		final_event = null
+
+# remove the overlay
+overlay.queue_free()
+
+# if you have a label and texture rect
+if target_label and rect_node:
+	# if the key to visual has this button 
+	if visual_map.has(key_name):
+		# if it does hide text and show that icon
+		target_label.text = \"\"
+		rect_node.texture = visual_map[key_name]
+	else:
+		# if not use the key name and the empty visual
+		target_label.text = \"  \" + key_name + \"  \"
+		# use a bigger texture if it is an bigger word
+		rect_node.texture = empty_visual if key_name.length() <= 4 else empty_visual_big
+
+# change the hbox seperation
+if target_hbox:
+	target_hbox.add_theme_constant_override(&\"separation\", config.row_spacing)"
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_saxcl"), SubResource("Resource_er0lx")])
-row_spacing = 300
-should_add_vertical_spacer = false
-vertical_spacer_size = 0.0
-horizontal_spacer_size = 0.0
-metadata/_custom_type_script = "uid://54ijfc61lomj"
-
-[sub_resource type="Resource" id="Resource_4edy0"]
-script = ExtResource("2_w13no")
-mode = 1
-full_width = false
-text = "Up"
-font_size = 40
-_button_group_enabled = false
-metadata/_custom_type_script = "uid://54ijfc61lomj"
-
-[sub_resource type="Resource" id="Resource_qt6wr"]
-script = ExtResource("2_w13no")
-mode = 1
-full_width = false
-text = "W"
-font_size = 50
-_button_group_enabled = false
-should_have_offset = true
-offset = Vector2(-3, 15)
-metadata/_custom_type_script = "uid://54ijfc61lomj"
-
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_hqo3k"]
-load_path = "res://.godot/imported/button_skin_0004_square_key.png-8907e04bb75f6a9cfc100e49db0ee7f3.ctex"
-
-[sub_resource type="Resource" id="Resource_wk02m"]
-script = ExtResource("2_w13no")
-mode = 2
-full_width = false
-_text_group_enabled = false
-_button_group_enabled = false
-_texture_group_enabled = true
-texture = SubResource("CompressedTexture2D_hqo3k")
-texture_scale = Vector2(0.7, 0.7)
-metadata/_custom_type_script = "uid://54ijfc61lomj"
-
-[sub_resource type="Resource" id="Resource_mk4j3"]
-script = ExtResource("2_w13no")
-mode = 6
-full_width = false
-_text_group_enabled = false
-_button_group_enabled = false
-_row_group_enabled = true
-sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_qt6wr"), SubResource("Resource_wk02m")])
-row_spacing = 0
-metadata/_custom_type_script = "uid://54ijfc61lomj"
-
-[sub_resource type="Resource" id="Resource_adj7i"]
-script = ExtResource("2_w13no")
-mode = 5
-full_width = false
-_text_group_enabled = false
-_row_group_enabled = true
-sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_4edy0"), SubResource("Resource_mk4j3")])
-row_spacing = 300
+row_spacing = 350
 should_add_vertical_spacer = false
 vertical_spacer_size = 0.0
 horizontal_spacer_size = 0.0
@@ -336,12 +423,16 @@ metadata/_custom_type_script = "uid://54ijfc61lomj"
 [sub_resource type="Resource" id="Resource_rgr21"]
 script = ExtResource("2_w13no")
 mode = 4
+in_fade_duration = 0.5
+out_fade_duration = 0.5
 _text_group_enabled = false
+text = "Back"
 _button_group_enabled = false
+send_to = NodePath("../start_Menu")
 _row_group_enabled = true
-sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_jq4vk"), SubResource("Resource_adj7i")])
+sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_jq4vk"), SubResource("Resource_jq4vk")])
 row_spacing = 200
-vertical_spacer_size = 55.0
+vertical_spacer_size = 10.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_hqo3k"]
@@ -423,7 +514,7 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_okqb8")
-initial_menu = NodePath("start_Menu")
+initial_menu = NodePath("keyboard_input_menu")
 
 [node name="start_Menu" parent="." unique_id=726592690 instance=ExtResource("1_aw56r")]
 layout_mode = 1

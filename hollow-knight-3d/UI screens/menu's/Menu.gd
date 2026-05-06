@@ -162,7 +162,7 @@ func _create_empty_node(config: MenuConfigRecource) -> Control:
 	# check if the row settings are enabled and there are any sub cofigs
 	if config._row_group_enabled and config.sub_configs:
 		# create a wraper so that the layout works
-		var wraper: CenterContainer = CenterContainer.new()
+		var wraper: MarginContainer = MarginContainer.new()
 		
 		# add the wraper to the wraper group
 		wraper.add_to_group(&"wraper")
@@ -209,6 +209,8 @@ func _create_texture_visual(config: MenuConfigRecource) -> TextureRect:
 	
 	# return it
 	return tex
+
+
 
 ## creates the animated texture (AnimatedSprite2D wraped in an Control node)
 func _create_animated_texture_visual(config: MenuConfigRecource) -> Control:
@@ -398,6 +400,8 @@ func _create_row_visual(config: MenuConfigRecource) -> HBoxContainer:
 
 
 
+
+
 ## builds sub elements
 func _build_sub_elements(parent: Control, config: MenuConfigRecource) -> Control:
 	# add the sub elements
@@ -569,7 +573,6 @@ func toggle_buttons(disable: bool) -> void:
 		
 		# if it is a button set the enable to the given value
 		button.disabled = disable
-
 
 
 
