@@ -31,8 +31,6 @@ _text_group_enabled = false
 font_size = 30
 _button_group_enabled = false
 vertical_spacer_size = 80.0
-should_have_offset = null
-offset = null
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_5puos"]
@@ -45,8 +43,6 @@ _texture_group_enabled = true
 texture = ExtResource("4_w13no")
 texture_scale = Vector2(0.95, 0.95)
 vertical_spacer_size = 60.0
-should_have_offset = null
-offset = null
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_vxmfm"]
@@ -57,8 +53,6 @@ send_to = NodePath("../play_menu")
 vertical_spacer_size = 25.0
 should_add_horizontal_spacer = true
 horizontal_spacer_size = 100.0
-should_have_offset = null
-offset = null
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_gge7p"]
@@ -69,8 +63,6 @@ send_to = NodePath("../options_menu")
 vertical_spacer_size = 25.0
 should_add_horizontal_spacer = true
 horizontal_spacer_size = 100.0
-should_have_offset = null
-offset = null
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_mxu3d"]
@@ -80,8 +72,6 @@ font_size = 30
 vertical_spacer_size = 25.0
 should_add_horizontal_spacer = true
 horizontal_spacer_size = 100.0
-should_have_offset = null
-offset = null
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_4cth6"]
@@ -107,8 +97,6 @@ _texture_group_enabled = true
 texture_scale = Vector2(0.5, 0.5)
 _anim_texture_group_enabled = true
 anim_frames = Array[Texture2D]([ExtResource("4_5puos"), ExtResource("5_55gc4"), ExtResource("6_5pew3"), ExtResource("7_5pjdf"), ExtResource("8_34fmv"), ExtResource("9_x3cxq"), ExtResource("10_kossj"), ExtResource("4_5puos")])
-should_have_offset = null
-offset = null
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_uqghw"]
@@ -117,8 +105,6 @@ in_fade_duration = 0.5
 out_fade_duration = 0.5
 text = "Back"
 send_to = NodePath("../start_Menu")
-should_have_offset = null
-offset = null
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_5pew3"]
@@ -129,8 +115,6 @@ out_fade_duration = 0.0
 _text_group_enabled = false
 _button_group_enabled = false
 vertical_spacer_size = 130.0
-should_have_offset = null
-offset = null
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_5pjdf"]
@@ -142,8 +126,6 @@ _button_group_enabled = false
 send_to = NodePath("../start_Menu")
 should_add_vertical_spacer = false
 vertical_spacer_size = 0.0
-should_have_offset = null
-offset = null
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_34fmv"]
@@ -161,8 +143,6 @@ _anim_texture_group_enabled = true
 anim_frames = Array[Texture2D]([ExtResource("6_rmu4f"), ExtResource("6_0j5pn"), ExtResource("7_rmu4f"), ExtResource("8_ye08n"), ExtResource("9_vxt2s"), ExtResource("10_2jqgy"), ExtResource("11_p17pv"), ExtResource("12_50hpd")])
 fps = 30.0
 vertical_spacer_size = 55.0
-should_have_offset = null
-offset = null
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_x3cxq"]
@@ -171,8 +151,6 @@ in_start_delay = 0.17
 out_start_delay = 0.17
 text = "Video"
 vertical_spacer_size = 55.0
-should_have_offset = null
-offset = null
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_kossj"]
@@ -182,8 +160,6 @@ out_start_delay = 0.17
 text = "Keyboard"
 send_to = NodePath("../keyboard_input_menu")
 vertical_spacer_size = 500.0
-should_have_offset = null
-offset = null
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_nssm8"]
@@ -193,8 +169,6 @@ out_fade_duration = 0.5
 text = "Back"
 send_to = NodePath("../start_Menu")
 should_add_vertical_spacer = false
-should_have_offset = null
-offset = null
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_62inh"]
@@ -205,8 +179,6 @@ out_fade_duration = 0.0
 _text_group_enabled = false
 _button_group_enabled = false
 vertical_spacer_size = 120.0
-should_have_offset = null
-offset = null
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_vllhe"]
@@ -218,8 +190,6 @@ _button_group_enabled = false
 send_to = NodePath("../start_Menu")
 should_add_vertical_spacer = false
 vertical_spacer_size = 0.0
-should_have_offset = null
-offset = null
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_om5fx"]
@@ -237,8 +207,6 @@ _anim_texture_group_enabled = true
 anim_frames = Array[Texture2D]([ExtResource("6_rmu4f"), ExtResource("6_0j5pn"), ExtResource("7_rmu4f"), ExtResource("8_ye08n"), ExtResource("9_vxt2s"), ExtResource("10_2jqgy"), ExtResource("11_p17pv"), ExtResource("12_50hpd")])
 fps = 30.0
 vertical_spacer_size = 55.0
-should_have_offset = null
-offset = null
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_saxcl"]
@@ -247,8 +215,6 @@ mode = 1
 text = "Up"
 font_size = 40
 _button_group_enabled = false
-should_have_offset = null
-offset = null
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_kexv5"]
@@ -269,8 +235,6 @@ _button_group_enabled = false
 _texture_group_enabled = true
 texture = ExtResource("21_55gc4")
 texture_scale = Vector2(0.7, 0.7)
-should_have_offset = null
-offset = null
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_er0lx"]
@@ -281,8 +245,6 @@ _button_group_enabled = false
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_kexv5"), SubResource("Resource_sqr72")])
 row_spacing = 0
-should_have_offset = null
-offset = null
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_jq4vk"]
@@ -293,8 +255,6 @@ _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_saxcl"), SubResource("Resource_er0lx")])
 row_spacing = 300
 vertical_spacer_size = 400.0
-should_have_offset = null
-offset = null
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_rgr21"]
@@ -303,8 +263,6 @@ in_fade_duration = 0.5
 out_fade_duration = 0.5
 text = "Back"
 send_to = NodePath("../start_Menu")
-should_have_offset = null
-offset = null
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_ye08n"]
@@ -315,8 +273,6 @@ out_start_delay = 0.17
 _text_group_enabled = false
 _button_group_enabled = false
 vertical_spacer_size = 360.0
-should_have_offset = null
-offset = null
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_2jqgy"]
@@ -334,8 +290,6 @@ _anim_texture_group_enabled = true
 anim_frames = Array[Texture2D]([ExtResource("6_rmu4f"), ExtResource("6_0j5pn"), ExtResource("7_rmu4f"), ExtResource("8_ye08n"), ExtResource("9_vxt2s"), ExtResource("10_2jqgy"), ExtResource("11_p17pv"), ExtResource("12_50hpd")])
 fps = 30.0
 vertical_spacer_size = 30.0
-should_have_offset = null
-offset = null
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_0j5pn"]
@@ -344,8 +298,6 @@ mode = 1
 text = "Quit Game?"
 font_size = 37
 _button_group_enabled = false
-should_have_offset = null
-offset = null
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_vxt2s"]
@@ -364,8 +316,6 @@ await transition.on_transition_finished
 
 # quit the game using the Menu
 ctx[0].get_tree().quit()"
-should_have_offset = null
-offset = null
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_rmu4f"]
@@ -374,8 +324,6 @@ in_start_delay = 0.17
 out_start_delay = 0.17
 text = "No"
 send_to = NodePath("../start_Menu")
-should_have_offset = null
-offset = null
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [node name="MenuHolder" type="Control" unique_id=1637527713 node_paths=PackedStringArray("initial_menu")]

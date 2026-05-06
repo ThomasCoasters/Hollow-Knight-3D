@@ -29,7 +29,7 @@ func run(ctx: Array[Object]):
 	# if the script contains an error
 	if error != OK:
 		# say that there is an error and return
-		push_error("the script given has an error. Please check the syntax in the inspector.")
+		push_error("GDScript Parse Error at line: ", script.get_source_code().split("\n").size(), " Error code: ", error)
 		return
 	
 	# create a new instance to add the script to
