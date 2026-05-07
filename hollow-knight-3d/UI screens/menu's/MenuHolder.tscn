@@ -30,6 +30,7 @@ out_fade_duration = 0.0
 _text_group_enabled = false
 font_size = 30
 _button_group_enabled = false
+ready_function = null
 vertical_spacer_size = 80.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
@@ -39,6 +40,7 @@ mode = 2
 _text_group_enabled = false
 font_size = 30
 _button_group_enabled = false
+ready_function = null
 _texture_group_enabled = true
 texture = ExtResource("4_w13no")
 texture_scale = Vector2(0.95, 0.95)
@@ -50,6 +52,7 @@ script = ExtResource("2_w13no")
 text = "Start Game"
 font_size = 30
 send_to = NodePath("../play_menu")
+ready_function = null
 vertical_spacer_size = 25.0
 should_add_horizontal_spacer = true
 horizontal_spacer_size = 100.0
@@ -60,6 +63,7 @@ script = ExtResource("2_w13no")
 text = "Options"
 font_size = 30
 send_to = NodePath("../options_menu")
+ready_function = null
 vertical_spacer_size = 25.0
 should_add_horizontal_spacer = true
 horizontal_spacer_size = 100.0
@@ -69,6 +73,7 @@ metadata/_custom_type_script = "uid://54ijfc61lomj"
 script = ExtResource("2_w13no")
 text = "Achievements"
 font_size = 30
+ready_function = null
 vertical_spacer_size = 25.0
 should_add_horizontal_spacer = true
 horizontal_spacer_size = 100.0
@@ -78,6 +83,7 @@ metadata/_custom_type_script = "uid://54ijfc61lomj"
 script = ExtResource("2_w13no")
 text = "Extras"
 font_size = 30
+ready_function = null
 vertical_spacer_size = 25.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
@@ -86,6 +92,7 @@ script = ExtResource("2_w13no")
 text = "Quit Game"
 font_size = 30
 send_to = NodePath("../quit_menu")
+ready_function = null
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_55gc4"]
@@ -93,6 +100,7 @@ script = ExtResource("2_w13no")
 mode = 3
 _text_group_enabled = false
 _button_group_enabled = false
+ready_function = null
 _texture_group_enabled = true
 texture_scale = Vector2(0.5, 0.5)
 _anim_texture_group_enabled = true
@@ -105,6 +113,7 @@ in_fade_duration = 0.5
 out_fade_duration = 0.5
 text = "Back"
 send_to = NodePath("../start_Menu")
+ready_function = null
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_5pew3"]
@@ -114,6 +123,7 @@ in_fade_duration = 0.0
 out_fade_duration = 0.0
 _text_group_enabled = false
 _button_group_enabled = false
+ready_function = null
 vertical_spacer_size = 130.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
@@ -124,6 +134,7 @@ text = "Options"
 font_size = 48
 _button_group_enabled = false
 send_to = NodePath("../start_Menu")
+ready_function = null
 should_add_vertical_spacer = false
 vertical_spacer_size = 0.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
@@ -137,6 +148,7 @@ in_start_delay = 0.07
 out_start_delay = 0.07
 _text_group_enabled = false
 _button_group_enabled = false
+ready_function = null
 _texture_group_enabled = true
 texture_scale = Vector2(0.8, 0.8)
 _anim_texture_group_enabled = true
@@ -150,6 +162,7 @@ script = ExtResource("2_w13no")
 in_start_delay = 0.17
 out_start_delay = 0.17
 text = "Video"
+ready_function = null
 vertical_spacer_size = 55.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
@@ -159,6 +172,7 @@ in_start_delay = 0.17
 out_start_delay = 0.17
 text = "Keyboard"
 send_to = NodePath("../keyboard_input_menu")
+ready_function = null
 vertical_spacer_size = 500.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
@@ -168,6 +182,7 @@ in_fade_duration = 0.5
 out_fade_duration = 0.5
 text = "Back"
 send_to = NodePath("../start_Menu")
+ready_function = null
 should_add_vertical_spacer = false
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
@@ -178,6 +193,7 @@ in_fade_duration = 0.0
 out_fade_duration = 0.0
 _text_group_enabled = false
 _button_group_enabled = false
+ready_function = null
 vertical_spacer_size = 120.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
@@ -188,6 +204,7 @@ text = "Keyboard"
 font_size = 48
 _button_group_enabled = false
 send_to = NodePath("../start_Menu")
+ready_function = null
 should_add_vertical_spacer = false
 vertical_spacer_size = 0.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
@@ -201,6 +218,7 @@ in_start_delay = 0.07
 out_start_delay = 0.07
 _text_group_enabled = false
 _button_group_enabled = false
+ready_function = null
 _texture_group_enabled = true
 texture_scale = Vector2(0.8, 0.8)
 _anim_texture_group_enabled = true
@@ -217,6 +235,7 @@ full_width = false
 text = "Up"
 font_size = 28
 _button_group_enabled = false
+ready_function = null
 should_have_offset = true
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
@@ -227,6 +246,7 @@ full_width = false
 text = "W"
 font_size = 17
 _button_group_enabled = false
+ready_function = null
 should_have_offset = true
 offset = Vector2(-1, 6)
 metadata/_custom_type_script = "uid://54ijfc61lomj"
@@ -237,6 +257,7 @@ mode = 2
 full_width = false
 _text_group_enabled = false
 _button_group_enabled = false
+ready_function = null
 _texture_group_enabled = true
 texture = ExtResource("21_55gc4")
 texture_scale = Vector2(0.6, 0.6)
@@ -248,6 +269,7 @@ mode = 6
 full_width = false
 _text_group_enabled = false
 _button_group_enabled = false
+ready_function = null
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_kexv5"), SubResource("Resource_sqr72")])
 row_spacing = 0
@@ -258,6 +280,153 @@ script = ExtResource("2_w13no")
 mode = 5
 full_width = false
 _text_group_enabled = false
+ready_function = "# the input this searches for
+var input: StringName = &\"Attack\"
+var key_name: String
+var events
+
+# get if there are input key(s)
+if not InputMap.has_action(input):
+	return
+
+# get  input key(s)
+events = InputMap.action_get_events(input)
+
+# if there are no input keys return
+if events.is_empty():
+	return
+
+# get the event that is connected
+var final_event = events[0]
+
+# keyboard
+if final_event is InputEventKey:
+	# get the keycode string
+	key_name = OS.get_keycode_string(final_event.keycode)
+
+	if key_name.is_empty():
+		# if that does not work get the PHYSICAL keycode string
+		key_name = OS.get_keycode_string(final_event.physical_keycode)
+
+# mouse
+elif final_event is InputEventMouseButton:
+	# set a readable name
+	if final_event.button_index == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
+	elif final_event.button_index == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
+	elif final_event.button_index == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
+	else: key_name = \"Mouse \" + str(final_event.button_index)
+
+
+
+# get this node
+var me = ctx[2]
+var config = ctx[1]
+# set this node as the initial node you should check
+var nodes_to_check = [me]
+
+# the visual for non texture buttons
+var empty_visual = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_key.png\")
+var empty_visual_big = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0003_wide_square_key.png\")
+
+
+# visuals for each key
+var visual_map = {
+	\"Up\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_u.png\"),
+	\"Down\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_d.png\"),
+	\"Left\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow.png\"),
+	\"Right\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_r.png\"),
+	\"Left Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_left_click.png\"),
+	\"Middle Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_click.png\"),
+	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\")
+}
+
+
+
+
+
+
+# the final label found
+var target_label_1: Label = null
+var target_label_2: Label = null
+# current amount of labels found
+var label_count = 0 
+# the final number of label in the index that is the one you search for
+var label_1_target_index = 1
+var label_2_target_index = 2
+
+# the found texture rect
+var rect_node: TextureRect = null
+
+# the final hbox found
+var target_hbox: HBoxContainer = null
+# current amount of hboxes found
+var hbox_count = 0 
+# the final number of hboxes in the index that is the one you search for
+var hbox_target_index = 1
+
+
+# keep searching untill all children are gone through
+while nodes_to_check.size() > 0:
+	#remove the current node from the nodes you should check
+	var current = nodes_to_check.pop_back()
+	
+	# if you found an label
+	if current is Label:
+		#increase label count
+		label_count += 1
+		# if you found the target number of labels
+		if label_count == label_1_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label_1 = current
+		# if you found the target number of labels: 2 electric boogaloo
+		if label_count == label_2_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label_2 = current
+	
+	# if the found is an HBOX
+	if current is HBoxContainer:
+		#increase HBOX count
+		hbox_count += 1
+		# if you found the target number of hboxes
+		if hbox_count == hbox_target_index:
+			# THIS IS THE GOOD hbox
+			target_hbox = current
+
+	# if you found an textureRect
+	elif current is TextureRect:
+		# this node is the texture rect
+		rect_node = current
+	
+	# also search all these node's children
+	nodes_to_check.append_array(current.get_children())
+
+
+await ctx[0].get_tree().create_timer(1).timeout
+
+print(\"KEY NAME: \", key_name)
+print(\"LABEL FOUND: \", target_label_1)
+print(\"RECT FOUND: \", rect_node)
+
+# if you have a label and texture rect
+if target_label_1 and rect_node:
+	# if the key to visual has this button 
+	if visual_map.has(key_name):
+		# if it does hide text and show that icon
+		target_label_1.text = \"\"
+		rect_node.texture = visual_map[key_name]
+	else:
+		# if not use the key name and the empty visual
+		target_label_1.text = \"  \" + key_name + \"  \"
+		# use a bigger texture if it is an bigger word
+		rect_node.texture = empty_visual if key_name.length() <= 4 else empty_visual_big
+
+# set the input name
+if target_label_2:
+	target_label_2.text = input
+
+# change the hbox seperation
+if target_hbox:
+	target_hbox.add_theme_constant_override(&\"separation\", config.row_spacing)"
 pressed_function = "# get this node
 var me = ctx[2]
 var config = ctx[1]
@@ -429,6 +598,7 @@ _text_group_enabled = false
 text = "Back"
 _button_group_enabled = false
 send_to = NodePath("../start_Menu")
+ready_function = null
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_jq4vk"), SubResource("Resource_jq4vk")])
 row_spacing = 200
@@ -441,6 +611,7 @@ in_fade_duration = 0.5
 out_fade_duration = 0.5
 text = "Back"
 send_to = NodePath("../start_Menu")
+ready_function = null
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_ye08n"]
@@ -450,6 +621,7 @@ in_start_delay = 0.17
 out_start_delay = 0.17
 _text_group_enabled = false
 _button_group_enabled = false
+ready_function = null
 vertical_spacer_size = 360.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
@@ -462,6 +634,7 @@ in_start_delay = 0.07
 out_start_delay = 0.07
 _text_group_enabled = false
 _button_group_enabled = false
+ready_function = null
 _texture_group_enabled = true
 texture_scale = Vector2(0.55, 0.55)
 _anim_texture_group_enabled = true
@@ -476,6 +649,7 @@ mode = 1
 text = "Quit Game?"
 font_size = 37
 _button_group_enabled = false
+ready_function = null
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_vxt2s"]
@@ -483,6 +657,7 @@ script = ExtResource("2_w13no")
 in_start_delay = 0.17
 out_start_delay = 0.17
 text = "Yes"
+ready_function = null
 pressed_function = "# dissable all the buttons
 ctx[0].toggle_buttons(false)
 
@@ -502,6 +677,7 @@ in_start_delay = 0.17
 out_start_delay = 0.17
 text = "No"
 send_to = NodePath("../start_Menu")
+ready_function = null
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [node name="MenuHolder" type="Control" unique_id=1637527713 node_paths=PackedStringArray("initial_menu")]
@@ -514,9 +690,10 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_okqb8")
-initial_menu = NodePath("keyboard_input_menu")
+initial_menu = NodePath("start_Menu")
 
 [node name="start_Menu" parent="." unique_id=726592690 instance=ExtResource("1_aw56r")]
+visible = false
 layout_mode = 1
 visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_ayfdy"), SubResource("Resource_5puos"), SubResource("Resource_vxmfm"), SubResource("Resource_gge7p"), SubResource("Resource_mxu3d"), SubResource("Resource_4cth6"), SubResource("Resource_jeomw")])
 button_press_anim = SubResource("Resource_55gc4")
@@ -534,7 +711,6 @@ visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_5pew3"), SubResou
 button_press_anim = SubResource("Resource_55gc4")
 
 [node name="keyboard_input_menu" parent="." unique_id=156141385 instance=ExtResource("1_aw56r")]
-visible = false
 layout_mode = 1
 visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_62inh"), SubResource("Resource_vllhe"), SubResource("Resource_om5fx"), SubResource("Resource_rgr21"), SubResource("Resource_rgr21"), SubResource("Resource_rgr21"), SubResource("Resource_rgr21"), SubResource("Resource_hqo3k")])
 button_press_anim = SubResource("Resource_55gc4")

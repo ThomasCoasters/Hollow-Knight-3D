@@ -147,6 +147,14 @@ enum Mode {
 
 ## the menu this will open when pressed
 @export var send_to: NodePath
+## a lambda function that will run when the button is created.
+##[br][br]
+## ScripRunUtil explanation:[br]
+## Executes a multiline string as code.[br]
+## code_string: is the raw GDscript code you want to run.[br]
+## context: The object the code can interact with (referenced as 'ctx' in the string).[br]
+## context is an array so if you only have 1 thing you still use ctx[0][br]
+@export_multiline var ready_function: String = ""
 ## a lambda function that will run when the button is pressed.
 ##[br][br]
 ## ScripRunUtil explanation:[br]

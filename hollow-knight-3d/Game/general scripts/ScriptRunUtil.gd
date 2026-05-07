@@ -6,7 +6,7 @@ class_name ScriptRunUtil
 ## context is an array so if you only have 1 thing you still use ctx[0][br]
 static func execute_multiline_code(code_string: String, context: Array[Object] = [null]) -> void:
 	# if the usable characters end us as nothing return
-	if code_string.strip_edges() == "":
+	if code_string.strip_edges() == "" || code_string == null:
 		return
 	
 	# create a new GDscript to run the function

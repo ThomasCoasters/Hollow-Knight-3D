@@ -360,6 +360,13 @@ func _create_button_visual(config: MenuConfigRecource) -> Button:
 	var sprite: AnimatedSprite2D = result[1]
 	
 	
+	
+	# call the multiline script running object 
+	# add "self" as the context so the script can change this node whatever it will
+	# also add this button and the config
+	ScriptRunUtil.execute_multiline_code(config.ready_function, [self, config, button])
+	
+	
 	# when the button is pressed what should happen
 	button.pressed.connect(func():
 		# check if there is an send to in the config and emit the signal
@@ -381,6 +388,7 @@ func _create_button_visual(config: MenuConfigRecource) -> Button:
 	
 	# return the button
 	return button
+
 
 
 ## creates a horizontal container and populate it with sub-elements
@@ -523,6 +531,13 @@ func _create_button_row_visual(config: MenuConfigRecource) -> Button:
 	row_button = result[0]
 	# also get the sprite
 	var sprite: AnimatedSprite2D = result[1]
+	
+	
+	# call the multiline script running object 
+	# add "self" as the context so the script can change this node whatever it will
+	# also add this button and the config
+	ScriptRunUtil.execute_multiline_code(config.ready_function, [self, config, row_button])
+	
 	
 	
 	# when the button is pressed what should happen
