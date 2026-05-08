@@ -5,9 +5,6 @@
 [ext_resource type="PackedScene" uid="uid://b6dmgkp6yl2f7" path="res://UI screens/menu's/MenuHolder.tscn" id="3_sslgb"]
 [ext_resource type="Shader" uid="uid://bqsp0gxewtc55" path="res://Game/general shaders/bloom.gdshader" id="5_cqc7b"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_mgv6y"]
-viewport_path = NodePath("BG/BgClassic")
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_f5uuf"]
 shader = ExtResource("5_cqc7b")
 shader_parameter/bloom_spread = 2.000000095
@@ -39,7 +36,6 @@ unique_name_in_owner = true
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
-texture = SubResource("ViewportTexture_mgv6y")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=225843187]
 layout_mode = 1

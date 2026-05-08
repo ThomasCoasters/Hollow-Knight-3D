@@ -4238,15 +4238,14 @@ send_to = NodePath("../start_Menu")
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_oghqo"), SubResource("Resource_62oxb")])
 row_spacing = 264
-vertical_spacer_size = 10.0
+vertical_spacer_size = 285.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_hqo3k"]
 script = ExtResource("2_w13no")
-in_fade_duration = 0.5
-out_fade_duration = 0.5
 text = "Back"
-send_to = NodePath("../start_Menu")
+send_to = NodePath("../options_menu")
+should_add_vertical_spacer = false
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_ye08n"]

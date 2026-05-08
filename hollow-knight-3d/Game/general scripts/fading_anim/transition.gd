@@ -13,7 +13,7 @@ signal on_transition_finished
 var fade_in_out: bool = false
 
 ## if the anim is currently active
-var fading: bool = false 
+static var fading: bool = false 
 
 
 func _ready() -> void:
