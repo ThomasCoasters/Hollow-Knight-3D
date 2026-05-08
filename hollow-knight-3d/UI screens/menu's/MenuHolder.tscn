@@ -210,6 +210,402 @@ vertical_spacer_size = 50.0
 horizontal_spacer_size = 0.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
+[sub_resource type="Resource" id="Resource_4edy0"]
+script = ExtResource("2_w13no")
+mode = 1
+full_width = false
+text = "Up"
+font_size = 28
+_button_group_enabled = false
+should_add_vertical_spacer = false
+should_have_offset = true
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_qt6wr"]
+script = ExtResource("2_w13no")
+mode = 1
+full_width = false
+text = "W"
+font_size = 17
+_button_group_enabled = false
+should_have_offset = true
+offset = Vector2(-1, 6)
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_hqo3k"]
+load_path = "res://.godot/imported/button_skin_0004_square_key.png-8907e04bb75f6a9cfc100e49db0ee7f3.ctex"
+
+[sub_resource type="Resource" id="Resource_wk02m"]
+script = ExtResource("2_w13no")
+mode = 2
+full_width = false
+_text_group_enabled = false
+_button_group_enabled = false
+_texture_group_enabled = true
+texture = SubResource("CompressedTexture2D_hqo3k")
+texture_scale = Vector2(0.6, 0.6)
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_mk4j3"]
+script = ExtResource("2_w13no")
+mode = 6
+full_width = false
+_text_group_enabled = false
+_button_group_enabled = false
+_row_group_enabled = true
+sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_qt6wr"), SubResource("Resource_wk02m")])
+row_spacing = 0
+should_add_vertical_spacer = false
+should_add_horizontal_spacer = true
+horizontal_spacer_size = 250.0
+should_have_offset = true
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_adj7i"]
+script = ExtResource("2_w13no")
+mode = 5
+full_width = false
+_text_group_enabled = false
+ready_function = "# the input this searches for
+var input: StringName = &\"MoveForward\"
+var input_name: StringName = \"Forward\"
+var key_name: String
+var events
+
+
+# wait
+await ctx[0].get_tree().process_frame
+await ctx[0].get_tree().create_timer(1).timeout
+await ctx[0].get_tree().process_frame
+
+# get if there are input key(s)
+if not InputMap.has_action(input):
+	return
+
+# get  input key(s)
+events = InputMap.action_get_events(input)
+
+# if there are no input keys return
+if events.is_empty():
+	return
+
+# get the event that is connected
+var final_event = events[0]
+
+# keyboard
+if final_event is InputEventKey:
+	# get the keycode string
+	key_name = OS.get_keycode_string(final_event.keycode)
+
+	if key_name.is_empty():
+		# if that does not work get the PHYSICAL keycode string
+		key_name = OS.get_keycode_string(final_event.physical_keycode)
+
+# mouse
+elif final_event is InputEventMouseButton:
+	# set a readable name
+	if final_event.button_index == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
+	elif final_event.button_index == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
+	elif final_event.button_index == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
+	else: key_name = \"Mouse \" + str(final_event.button_index)
+
+
+
+# get this node
+var me = ctx[2]
+var config = ctx[1]
+# set this node as the initial node you should check
+var nodes_to_check = [me]
+
+# the visual for non texture buttons
+var empty_visual = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_key.png\")
+var empty_visual_big = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0003_wide_square_key.png\")
+
+
+# visuals for each key
+var visual_map = {
+	\"Up\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_u.png\"),
+	\"Down\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_d.png\"),
+	\"Left\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow.png\"),
+	\"Right\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_r.png\"),
+	\"Left Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_left_click.png\"),
+	\"Middle Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_click.png\"),
+	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\")
+}
+
+
+
+
+
+
+# the final label found
+var target_label_1: Label = null
+var target_label_2: Label = null
+# current amount of labels found
+var label_count = 0 
+# the final number of label in the index that is the one you search for
+var label_1_target_index = 1
+var label_2_target_index = 2
+
+# the found texture rect
+var rect_node: TextureRect = null
+
+# the final hbox found
+var target_hbox: HBoxContainer = null
+# current amount of hboxes found
+var hbox_count = 0 
+# the final number of hboxes in the index that is the one you search for
+var hbox_target_index = 1
+
+
+# keep searching untill all children are gone through
+while nodes_to_check.size() > 0:
+	#remove the current node from the nodes you should check
+	var current = nodes_to_check.pop_back()
+	
+	# if you found an label
+	if current is Label:
+		#increase label count
+		label_count += 1
+		# if you found the target number of labels
+		if label_count == label_1_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label_1 = current
+		# if you found the target number of labels: 2 electric boogaloo
+		if label_count == label_2_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label_2 = current
+	
+	# if the found is an HBOX
+	if current is HBoxContainer:
+		#increase HBOX count
+		hbox_count += 1
+		# if you found the target number of hboxes
+		if hbox_count == hbox_target_index:
+			# THIS IS THE GOOD hbox
+			target_hbox = current
+
+	# if you found an textureRect
+	elif current is TextureRect:
+		# this node is the texture rect
+		rect_node = current
+	
+	# also search all these node's children
+	nodes_to_check.append_array(current.get_children())
+
+
+
+
+#print(\"KEY NAME: \", key_name)
+#print(\"LABEL FOUND: \", target_label_1)
+#print(\"RECT FOUND: \", rect_node)
+
+# if you have a label and texture rect
+if target_label_1 and rect_node:
+	# if the key to visual has this button 
+	if visual_map.has(key_name):
+		# if it does hide text and show that icon
+		target_label_1.text = \"\"
+		rect_node.texture = visual_map[key_name]
+	else:
+		# if not use the key name and the empty visual
+		target_label_1.text = \"  \" + key_name + \"  \"
+		# use a bigger texture if it is an bigger word
+		rect_node.texture = empty_visual if key_name.length() <= 4 else empty_visual_big
+
+# set the input name
+if target_label_2:
+	target_label_2.text = input_name
+
+# change the hbox seperation
+if target_hbox:
+	target_hbox.add_theme_constant_override(&\"separation\", config.row_spacing)"
+pressed_function = "# the input this searches for
+var input: StringName = &\"MoveForward\"
+
+# get this node
+var me = ctx[2]
+var config = ctx[1]
+# set this node as the initial node you should check
+var nodes_to_check = [me]
+
+# the visual for non texture buttons
+var empty_visual = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_key.png\")
+var empty_visual_big = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0003_wide_square_key.png\")
+
+
+# visuals for each key
+var visual_map = {
+	\"Up\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_u.png\"),
+	\"Down\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_d.png\"),
+	\"Left\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow.png\"),
+	\"Right\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_r.png\"),
+	\"Left Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_left_click.png\"),
+	\"Middle Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_click.png\"),
+	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\")
+}
+
+
+# the final label found
+var target_label: Label = null
+# current amount of labels found
+var label_count = 0 
+# the final number of label in the index that is the one you search for
+var label_target_index = 1
+
+# the found texture rect
+var rect_node: TextureRect = null
+
+# the final hbox found
+var target_hbox: HBoxContainer = null
+# current amount of hboxes found
+var hbox_count = 0 
+# the final number of hboxes in the index that is the one you search for
+var hbox_target_index = 1
+
+
+# keep searching untill all children are gone through
+while nodes_to_check.size() > 0:
+	#remove the current node from the nodes you should check
+	var current = nodes_to_check.pop_back()
+	
+	# if you found an label
+	if current is Label:
+		#increase label count
+		label_count += 1
+		# if you found the target number of labels
+		if label_count == label_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label = current
+	
+	# if the found is an HBOX
+	if current is HBoxContainer:
+		#increase HBOX count
+		hbox_count += 1
+		# if you found the target number of hboxes
+		if hbox_count == hbox_target_index:
+			# THIS IS THE GOOD hbox
+			target_hbox = current
+
+	# if you found an textureRect
+	elif current is TextureRect:
+		# this node is the texture rect
+		rect_node = current
+	
+	# also search all these node's children
+	nodes_to_check.append_array(current.get_children())
+
+# change the label you found
+if target_label:
+	target_label.text = \"Press New Key\"
+
+# also change the textureRect you found
+if rect_node:
+	rect_node.texture = null
+
+# change the hbox seperation
+if target_hbox:
+	target_hbox.add_theme_constant_override(&\"separation\", config.row_spacing - 100)
+
+
+
+# first wait a small time
+await me.get_tree().create_timer(0.1).timeout
+
+# create a overlay that makes the other buttons not pressable
+var overlay = Control.new()
+me.get_tree().root.add_child(overlay)
+overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+overlay.mouse_filter = Control.MOUSE_FILTER_STOP
+
+# have the overlay get keyboard buttons
+overlay.focus_mode = Control.FOCUS_ALL 
+overlay.grab_focus()
+
+# the var that should get the event
+var final_event: InputEvent = null
+
+# the name that the key has (readable version)
+var key_name
+
+# keep looping untill the event is found
+while final_event == null:
+	# wait one frame to not crash by always asking the engine for new input
+	await me.get_tree().process_frame
+	# wait for input and set it
+	final_event = await overlay.gui_input 
+	
+	# normal button presses
+	if final_event is InputEventKey and final_event.is_pressed():
+		# get the name of the press
+		key_name = OS.get_keycode_string(final_event.get_keycode_with_modifiers())
+		
+		# make the UI not use this button input
+		me.get_viewport().set_input_as_handled()
+	
+	# mouse button presses
+	elif final_event is InputEventMouseButton and final_event.is_pressed():
+		# set a readable name
+		if final_event.button_index == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
+		elif final_event.button_index == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
+		elif final_event.button_index == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
+		else: key_name = \"Mouse \" + str(final_event.button_index)
+		
+		# make the UI not use this button input
+		me.get_viewport().set_input_as_handled()
+
+	else:
+		#try waiting again untill it is something that is correct
+		final_event = null
+
+# remove the overlay
+overlay.queue_free()
+
+# if you have a label and texture rect
+if target_label and rect_node:
+	# if the key to visual has this button 
+	if visual_map.has(key_name):
+		# if it does hide text and show that icon
+		target_label.text = \"\"
+		rect_node.texture = visual_map[key_name]
+	else:
+		# if not use the key name and the empty visual
+		target_label.text = \"  \" + key_name + \"  \"
+		# use a bigger texture if it is an bigger word
+		rect_node.texture = empty_visual if key_name.length() <= 4 else empty_visual_big
+
+# change the hbox seperation
+if target_hbox:
+	target_hbox.add_theme_constant_override(&\"separation\", config.row_spacing)
+
+
+
+
+# get the value to save
+var value_to_save: int = 0
+
+# set the value to save to the correct value
+if final_event is InputEventKey:
+	value_to_save = final_event.keycode
+elif final_event is InputEventMouseButton:
+	value_to_save = final_event.button_index
+
+# set the action to the new input
+SaveLoad.general_contents[\"Buttons\"][input] = value_to_save
+SaveLoad.save_general()
+
+# load the saved inputs
+SaveLoad.load_general()"
+_row_group_enabled = true
+sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_4edy0"), SubResource("Resource_mk4j3")])
+row_spacing = 215
+should_add_vertical_spacer = false
+vertical_spacer_size = 0.0
+horizontal_spacer_size = 0.0
+should_have_offset = true
+offset = Vector2(42, 0)
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
 [sub_resource type="Resource" id="Resource_saxcl"]
 script = ExtResource("2_w13no")
 mode = 1
@@ -217,6 +613,7 @@ full_width = false
 text = "Up"
 font_size = 28
 _button_group_enabled = false
+should_add_vertical_spacer = false
 should_have_offset = true
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
@@ -251,10 +648,2038 @@ _button_group_enabled = false
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_kexv5"), SubResource("Resource_sqr72")])
 row_spacing = 0
+should_add_vertical_spacer = false
+should_add_horizontal_spacer = true
+horizontal_spacer_size = 250.0
 should_have_offset = true
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
-[sub_resource type="Resource" id="Resource_jq4vk"]
+[sub_resource type="Resource" id="Resource_clipe"]
+script = ExtResource("2_w13no")
+mode = 5
+full_width = false
+_text_group_enabled = false
+ready_function = "# the input this searches for
+var input: StringName = &\"MoveLeft\"
+var input_name: StringName = \"Left\"
+var key_name: String
+var events
+
+
+# wait
+await ctx[0].get_tree().process_frame
+await ctx[0].get_tree().create_timer(1).timeout
+await ctx[0].get_tree().process_frame
+
+# get if there are input key(s)
+if not InputMap.has_action(input):
+	return
+
+# get  input key(s)
+events = InputMap.action_get_events(input)
+
+# if there are no input keys return
+if events.is_empty():
+	return
+
+# get the event that is connected
+var final_event = events[0]
+
+# keyboard
+if final_event is InputEventKey:
+	# get the keycode string
+	key_name = OS.get_keycode_string(final_event.keycode)
+
+	if key_name.is_empty():
+		# if that does not work get the PHYSICAL keycode string
+		key_name = OS.get_keycode_string(final_event.physical_keycode)
+
+# mouse
+elif final_event is InputEventMouseButton:
+	# set a readable name
+	if final_event.button_index == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
+	elif final_event.button_index == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
+	elif final_event.button_index == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
+	else: key_name = \"Mouse \" + str(final_event.button_index)
+
+
+
+# get this node
+var me = ctx[2]
+var config = ctx[1]
+# set this node as the initial node you should check
+var nodes_to_check = [me]
+
+# the visual for non texture buttons
+var empty_visual = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_key.png\")
+var empty_visual_big = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0003_wide_square_key.png\")
+
+
+# visuals for each key
+var visual_map = {
+	\"Up\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_u.png\"),
+	\"Down\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_d.png\"),
+	\"Left\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow.png\"),
+	\"Right\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_r.png\"),
+	\"Left Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_left_click.png\"),
+	\"Middle Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_click.png\"),
+	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\")
+}
+
+
+
+
+
+
+# the final label found
+var target_label_1: Label = null
+var target_label_2: Label = null
+# current amount of labels found
+var label_count = 0 
+# the final number of label in the index that is the one you search for
+var label_1_target_index = 1
+var label_2_target_index = 2
+
+# the found texture rect
+var rect_node: TextureRect = null
+
+# the final hbox found
+var target_hbox: HBoxContainer = null
+# current amount of hboxes found
+var hbox_count = 0 
+# the final number of hboxes in the index that is the one you search for
+var hbox_target_index = 1
+
+
+# keep searching untill all children are gone through
+while nodes_to_check.size() > 0:
+	#remove the current node from the nodes you should check
+	var current = nodes_to_check.pop_back()
+	
+	# if you found an label
+	if current is Label:
+		#increase label count
+		label_count += 1
+		# if you found the target number of labels
+		if label_count == label_1_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label_1 = current
+		# if you found the target number of labels: 2 electric boogaloo
+		if label_count == label_2_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label_2 = current
+	
+	# if the found is an HBOX
+	if current is HBoxContainer:
+		#increase HBOX count
+		hbox_count += 1
+		# if you found the target number of hboxes
+		if hbox_count == hbox_target_index:
+			# THIS IS THE GOOD hbox
+			target_hbox = current
+
+	# if you found an textureRect
+	elif current is TextureRect:
+		# this node is the texture rect
+		rect_node = current
+	
+	# also search all these node's children
+	nodes_to_check.append_array(current.get_children())
+
+
+
+
+#print(\"KEY NAME: \", key_name)
+#print(\"LABEL FOUND: \", target_label_1)
+#print(\"RECT FOUND: \", rect_node)
+
+# if you have a label and texture rect
+if target_label_1 and rect_node:
+	# if the key to visual has this button 
+	if visual_map.has(key_name):
+		# if it does hide text and show that icon
+		target_label_1.text = \"\"
+		rect_node.texture = visual_map[key_name]
+	else:
+		# if not use the key name and the empty visual
+		target_label_1.text = \"  \" + key_name + \"  \"
+		# use a bigger texture if it is an bigger word
+		rect_node.texture = empty_visual if key_name.length() <= 4 else empty_visual_big
+
+# set the input name
+if target_label_2:
+	target_label_2.text = input_name
+
+# change the hbox seperation
+if target_hbox:
+	target_hbox.add_theme_constant_override(&\"separation\", config.row_spacing)"
+pressed_function = "# the input this searches for
+var input: StringName = &\"MoveLeft\"
+
+# get this node
+var me = ctx[2]
+var config = ctx[1]
+# set this node as the initial node you should check
+var nodes_to_check = [me]
+
+# the visual for non texture buttons
+var empty_visual = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_key.png\")
+var empty_visual_big = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0003_wide_square_key.png\")
+
+
+# visuals for each key
+var visual_map = {
+	\"Up\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_u.png\"),
+	\"Down\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_d.png\"),
+	\"Left\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow.png\"),
+	\"Right\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_r.png\"),
+	\"Left Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_left_click.png\"),
+	\"Middle Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_click.png\"),
+	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\")
+}
+
+
+# the final label found
+var target_label: Label = null
+# current amount of labels found
+var label_count = 0 
+# the final number of label in the index that is the one you search for
+var label_target_index = 1
+
+# the found texture rect
+var rect_node: TextureRect = null
+
+# the final hbox found
+var target_hbox: HBoxContainer = null
+# current amount of hboxes found
+var hbox_count = 0 
+# the final number of hboxes in the index that is the one you search for
+var hbox_target_index = 1
+
+
+# keep searching untill all children are gone through
+while nodes_to_check.size() > 0:
+	#remove the current node from the nodes you should check
+	var current = nodes_to_check.pop_back()
+	
+	# if you found an label
+	if current is Label:
+		#increase label count
+		label_count += 1
+		# if you found the target number of labels
+		if label_count == label_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label = current
+	
+	# if the found is an HBOX
+	if current is HBoxContainer:
+		#increase HBOX count
+		hbox_count += 1
+		# if you found the target number of hboxes
+		if hbox_count == hbox_target_index:
+			# THIS IS THE GOOD hbox
+			target_hbox = current
+
+	# if you found an textureRect
+	elif current is TextureRect:
+		# this node is the texture rect
+		rect_node = current
+	
+	# also search all these node's children
+	nodes_to_check.append_array(current.get_children())
+
+# change the label you found
+if target_label:
+	target_label.text = \"Press New Key\"
+
+# also change the textureRect you found
+if rect_node:
+	rect_node.texture = null
+
+# change the hbox seperation
+if target_hbox:
+	target_hbox.add_theme_constant_override(&\"separation\", config.row_spacing - 100)
+
+
+
+# first wait a small time
+await me.get_tree().create_timer(0.1).timeout
+
+# create a overlay that makes the other buttons not pressable
+var overlay = Control.new()
+me.get_tree().root.add_child(overlay)
+overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+overlay.mouse_filter = Control.MOUSE_FILTER_STOP
+
+# have the overlay get keyboard buttons
+overlay.focus_mode = Control.FOCUS_ALL 
+overlay.grab_focus()
+
+# the var that should get the event
+var final_event: InputEvent = null
+
+# the name that the key has (readable version)
+var key_name
+
+# keep looping untill the event is found
+while final_event == null:
+	# wait one frame to not crash by always asking the engine for new input
+	await me.get_tree().process_frame
+	# wait for input and set it
+	final_event = await overlay.gui_input 
+	
+	# normal button presses
+	if final_event is InputEventKey and final_event.is_pressed():
+		# get the name of the press
+		key_name = OS.get_keycode_string(final_event.get_keycode_with_modifiers())
+		
+		# make the UI not use this button input
+		me.get_viewport().set_input_as_handled()
+	
+	# mouse button presses
+	elif final_event is InputEventMouseButton and final_event.is_pressed():
+		# set a readable name
+		if final_event.button_index == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
+		elif final_event.button_index == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
+		elif final_event.button_index == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
+		else: key_name = \"Mouse \" + str(final_event.button_index)
+		
+		# make the UI not use this button input
+		me.get_viewport().set_input_as_handled()
+
+	else:
+		#try waiting again untill it is something that is correct
+		final_event = null
+
+# remove the overlay
+overlay.queue_free()
+
+# if you have a label and texture rect
+if target_label and rect_node:
+	# if the key to visual has this button 
+	if visual_map.has(key_name):
+		# if it does hide text and show that icon
+		target_label.text = \"\"
+		rect_node.texture = visual_map[key_name]
+	else:
+		# if not use the key name and the empty visual
+		target_label.text = \"  \" + key_name + \"  \"
+		# use a bigger texture if it is an bigger word
+		rect_node.texture = empty_visual if key_name.length() <= 4 else empty_visual_big
+
+# change the hbox seperation
+if target_hbox:
+	target_hbox.add_theme_constant_override(&\"separation\", config.row_spacing)
+
+
+
+
+# get the value to save
+var value_to_save: int = 0
+
+# set the value to save to the correct value
+if final_event is InputEventKey:
+	value_to_save = final_event.keycode
+elif final_event is InputEventMouseButton:
+	value_to_save = final_event.button_index
+
+# set the action to the new input
+SaveLoad.general_contents[\"Buttons\"][input] = value_to_save
+SaveLoad.save_general()
+
+# load the saved inputs
+SaveLoad.load_general()"
+_row_group_enabled = true
+sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_saxcl"), SubResource("Resource_er0lx")])
+row_spacing = 297
+should_add_vertical_spacer = false
+vertical_spacer_size = 0.0
+horizontal_spacer_size = 0.0
+should_have_offset = true
+offset = Vector2(42, 0)
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_6pcm4"]
+script = ExtResource("2_w13no")
+mode = 4
+in_fade_duration = 0.5
+out_fade_duration = 0.5
+_text_group_enabled = false
+text = "Back"
+_button_group_enabled = false
+send_to = NodePath("../start_Menu")
+_row_group_enabled = true
+sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_adj7i"), SubResource("Resource_clipe")])
+row_spacing = 290
+vertical_spacer_size = 10.0
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_sced3"]
+script = ExtResource("2_w13no")
+mode = 1
+full_width = false
+text = "Up"
+font_size = 28
+_button_group_enabled = false
+should_add_vertical_spacer = false
+should_have_offset = true
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_itpb0"]
+script = ExtResource("2_w13no")
+mode = 1
+full_width = false
+text = "W"
+font_size = 17
+_button_group_enabled = false
+should_have_offset = true
+offset = Vector2(-1, 6)
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_il87v"]
+load_path = "res://.godot/imported/button_skin_0004_square_key.png-8907e04bb75f6a9cfc100e49db0ee7f3.ctex"
+
+[sub_resource type="Resource" id="Resource_xquyn"]
+script = ExtResource("2_w13no")
+mode = 2
+full_width = false
+_text_group_enabled = false
+_button_group_enabled = false
+_texture_group_enabled = true
+texture = SubResource("CompressedTexture2D_il87v")
+texture_scale = Vector2(0.6, 0.6)
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_ce16e"]
+script = ExtResource("2_w13no")
+mode = 6
+full_width = false
+_text_group_enabled = false
+_button_group_enabled = false
+_row_group_enabled = true
+sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_itpb0"), SubResource("Resource_xquyn")])
+row_spacing = 0
+should_add_vertical_spacer = false
+should_add_horizontal_spacer = true
+horizontal_spacer_size = 250.0
+should_have_offset = true
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_cbvuo"]
+script = ExtResource("2_w13no")
+mode = 5
+full_width = false
+_text_group_enabled = false
+ready_function = "# the input this searches for
+var input: StringName = &\"MoveBackward\"
+var input_name: StringName = \"Back\"
+var key_name: String
+var events
+
+
+# wait
+await ctx[0].get_tree().process_frame
+await ctx[0].get_tree().create_timer(1).timeout
+await ctx[0].get_tree().process_frame
+
+# get if there are input key(s)
+if not InputMap.has_action(input):
+	return
+
+# get  input key(s)
+events = InputMap.action_get_events(input)
+
+# if there are no input keys return
+if events.is_empty():
+	return
+
+# get the event that is connected
+var final_event = events[0]
+
+# keyboard
+if final_event is InputEventKey:
+	# get the keycode string
+	key_name = OS.get_keycode_string(final_event.keycode)
+
+	if key_name.is_empty():
+		# if that does not work get the PHYSICAL keycode string
+		key_name = OS.get_keycode_string(final_event.physical_keycode)
+
+# mouse
+elif final_event is InputEventMouseButton:
+	# set a readable name
+	if final_event.button_index == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
+	elif final_event.button_index == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
+	elif final_event.button_index == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
+	else: key_name = \"Mouse \" + str(final_event.button_index)
+
+
+
+# get this node
+var me = ctx[2]
+var config = ctx[1]
+# set this node as the initial node you should check
+var nodes_to_check = [me]
+
+# the visual for non texture buttons
+var empty_visual = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_key.png\")
+var empty_visual_big = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0003_wide_square_key.png\")
+
+
+# visuals for each key
+var visual_map = {
+	\"Up\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_u.png\"),
+	\"Down\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_d.png\"),
+	\"Left\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow.png\"),
+	\"Right\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_r.png\"),
+	\"Left Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_left_click.png\"),
+	\"Middle Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_click.png\"),
+	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\")
+}
+
+
+
+
+
+
+# the final label found
+var target_label_1: Label = null
+var target_label_2: Label = null
+# current amount of labels found
+var label_count = 0 
+# the final number of label in the index that is the one you search for
+var label_1_target_index = 1
+var label_2_target_index = 2
+
+# the found texture rect
+var rect_node: TextureRect = null
+
+# the final hbox found
+var target_hbox: HBoxContainer = null
+# current amount of hboxes found
+var hbox_count = 0 
+# the final number of hboxes in the index that is the one you search for
+var hbox_target_index = 1
+
+
+# keep searching untill all children are gone through
+while nodes_to_check.size() > 0:
+	#remove the current node from the nodes you should check
+	var current = nodes_to_check.pop_back()
+	
+	# if you found an label
+	if current is Label:
+		#increase label count
+		label_count += 1
+		# if you found the target number of labels
+		if label_count == label_1_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label_1 = current
+		# if you found the target number of labels: 2 electric boogaloo
+		if label_count == label_2_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label_2 = current
+	
+	# if the found is an HBOX
+	if current is HBoxContainer:
+		#increase HBOX count
+		hbox_count += 1
+		# if you found the target number of hboxes
+		if hbox_count == hbox_target_index:
+			# THIS IS THE GOOD hbox
+			target_hbox = current
+
+	# if you found an textureRect
+	elif current is TextureRect:
+		# this node is the texture rect
+		rect_node = current
+	
+	# also search all these node's children
+	nodes_to_check.append_array(current.get_children())
+
+
+
+
+#print(\"KEY NAME: \", key_name)
+#print(\"LABEL FOUND: \", target_label_1)
+#print(\"RECT FOUND: \", rect_node)
+
+# if you have a label and texture rect
+if target_label_1 and rect_node:
+	# if the key to visual has this button 
+	if visual_map.has(key_name):
+		# if it does hide text and show that icon
+		target_label_1.text = \"\"
+		rect_node.texture = visual_map[key_name]
+	else:
+		# if not use the key name and the empty visual
+		target_label_1.text = \"  \" + key_name + \"  \"
+		# use a bigger texture if it is an bigger word
+		rect_node.texture = empty_visual if key_name.length() <= 4 else empty_visual_big
+
+# set the input name
+if target_label_2:
+	target_label_2.text = input_name
+
+# change the hbox seperation
+if target_hbox:
+	target_hbox.add_theme_constant_override(&\"separation\", config.row_spacing)"
+pressed_function = "# the input this searches for
+var input: StringName = &\"MoveBackward\"
+
+# get this node
+var me = ctx[2]
+var config = ctx[1]
+# set this node as the initial node you should check
+var nodes_to_check = [me]
+
+# the visual for non texture buttons
+var empty_visual = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_key.png\")
+var empty_visual_big = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0003_wide_square_key.png\")
+
+
+# visuals for each key
+var visual_map = {
+	\"Up\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_u.png\"),
+	\"Down\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_d.png\"),
+	\"Left\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow.png\"),
+	\"Right\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_r.png\"),
+	\"Left Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_left_click.png\"),
+	\"Middle Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_click.png\"),
+	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\")
+}
+
+
+# the final label found
+var target_label: Label = null
+# current amount of labels found
+var label_count = 0 
+# the final number of label in the index that is the one you search for
+var label_target_index = 1
+
+# the found texture rect
+var rect_node: TextureRect = null
+
+# the final hbox found
+var target_hbox: HBoxContainer = null
+# current amount of hboxes found
+var hbox_count = 0 
+# the final number of hboxes in the index that is the one you search for
+var hbox_target_index = 1
+
+
+# keep searching untill all children are gone through
+while nodes_to_check.size() > 0:
+	#remove the current node from the nodes you should check
+	var current = nodes_to_check.pop_back()
+	
+	# if you found an label
+	if current is Label:
+		#increase label count
+		label_count += 1
+		# if you found the target number of labels
+		if label_count == label_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label = current
+	
+	# if the found is an HBOX
+	if current is HBoxContainer:
+		#increase HBOX count
+		hbox_count += 1
+		# if you found the target number of hboxes
+		if hbox_count == hbox_target_index:
+			# THIS IS THE GOOD hbox
+			target_hbox = current
+
+	# if you found an textureRect
+	elif current is TextureRect:
+		# this node is the texture rect
+		rect_node = current
+	
+	# also search all these node's children
+	nodes_to_check.append_array(current.get_children())
+
+# change the label you found
+if target_label:
+	target_label.text = \"Press New Key\"
+
+# also change the textureRect you found
+if rect_node:
+	rect_node.texture = null
+
+# change the hbox seperation
+if target_hbox:
+	target_hbox.add_theme_constant_override(&\"separation\", config.row_spacing - 100)
+
+
+
+# first wait a small time
+await me.get_tree().create_timer(0.1).timeout
+
+# create a overlay that makes the other buttons not pressable
+var overlay = Control.new()
+me.get_tree().root.add_child(overlay)
+overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+overlay.mouse_filter = Control.MOUSE_FILTER_STOP
+
+# have the overlay get keyboard buttons
+overlay.focus_mode = Control.FOCUS_ALL 
+overlay.grab_focus()
+
+# the var that should get the event
+var final_event: InputEvent = null
+
+# the name that the key has (readable version)
+var key_name
+
+# keep looping untill the event is found
+while final_event == null:
+	# wait one frame to not crash by always asking the engine for new input
+	await me.get_tree().process_frame
+	# wait for input and set it
+	final_event = await overlay.gui_input 
+	
+	# normal button presses
+	if final_event is InputEventKey and final_event.is_pressed():
+		# get the name of the press
+		key_name = OS.get_keycode_string(final_event.get_keycode_with_modifiers())
+		
+		# make the UI not use this button input
+		me.get_viewport().set_input_as_handled()
+	
+	# mouse button presses
+	elif final_event is InputEventMouseButton and final_event.is_pressed():
+		# set a readable name
+		if final_event.button_index == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
+		elif final_event.button_index == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
+		elif final_event.button_index == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
+		else: key_name = \"Mouse \" + str(final_event.button_index)
+		
+		# make the UI not use this button input
+		me.get_viewport().set_input_as_handled()
+
+	else:
+		#try waiting again untill it is something that is correct
+		final_event = null
+
+# remove the overlay
+overlay.queue_free()
+
+# if you have a label and texture rect
+if target_label and rect_node:
+	# if the key to visual has this button 
+	if visual_map.has(key_name):
+		# if it does hide text and show that icon
+		target_label.text = \"\"
+		rect_node.texture = visual_map[key_name]
+	else:
+		# if not use the key name and the empty visual
+		target_label.text = \"  \" + key_name + \"  \"
+		# use a bigger texture if it is an bigger word
+		rect_node.texture = empty_visual if key_name.length() <= 4 else empty_visual_big
+
+# change the hbox seperation
+if target_hbox:
+	target_hbox.add_theme_constant_override(&\"separation\", config.row_spacing)
+
+
+
+
+# get the value to save
+var value_to_save: int = 0
+
+# set the value to save to the correct value
+if final_event is InputEventKey:
+	value_to_save = final_event.keycode
+elif final_event is InputEventMouseButton:
+	value_to_save = final_event.button_index
+
+# set the action to the new input
+SaveLoad.general_contents[\"Buttons\"][input] = value_to_save
+SaveLoad.save_general()
+
+# load the saved inputs
+SaveLoad.load_general()"
+_row_group_enabled = true
+sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_sced3"), SubResource("Resource_ce16e")])
+row_spacing = 283
+should_add_vertical_spacer = false
+vertical_spacer_size = 0.0
+horizontal_spacer_size = 0.0
+should_have_offset = true
+offset = Vector2(12, 0)
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_po4x5"]
+script = ExtResource("2_w13no")
+mode = 1
+full_width = false
+text = "Up"
+font_size = 28
+_button_group_enabled = false
+should_add_vertical_spacer = false
+should_have_offset = true
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_k0oey"]
+script = ExtResource("2_w13no")
+mode = 1
+full_width = false
+text = "W"
+font_size = 17
+_button_group_enabled = false
+should_have_offset = true
+offset = Vector2(-1, 6)
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_nyj0u"]
+load_path = "res://.godot/imported/button_skin_0004_square_key.png-8907e04bb75f6a9cfc100e49db0ee7f3.ctex"
+
+[sub_resource type="Resource" id="Resource_phr7u"]
+script = ExtResource("2_w13no")
+mode = 2
+full_width = false
+_text_group_enabled = false
+_button_group_enabled = false
+_texture_group_enabled = true
+texture = SubResource("CompressedTexture2D_nyj0u")
+texture_scale = Vector2(0.6, 0.6)
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_5jsrr"]
+script = ExtResource("2_w13no")
+mode = 6
+full_width = false
+_text_group_enabled = false
+_button_group_enabled = false
+_row_group_enabled = true
+sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_k0oey"), SubResource("Resource_phr7u")])
+row_spacing = 0
+should_add_vertical_spacer = false
+should_add_horizontal_spacer = true
+horizontal_spacer_size = 250.0
+should_have_offset = true
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_timi6"]
+script = ExtResource("2_w13no")
+mode = 5
+full_width = false
+_text_group_enabled = false
+ready_function = "# the input this searches for
+var input: StringName = &\"MoveRight\"
+var input_name: StringName = \"Right\"
+var key_name: String
+var events
+
+
+# wait
+await ctx[0].get_tree().process_frame
+await ctx[0].get_tree().create_timer(1).timeout
+await ctx[0].get_tree().process_frame
+
+# get if there are input key(s)
+if not InputMap.has_action(input):
+	return
+
+# get  input key(s)
+events = InputMap.action_get_events(input)
+
+# if there are no input keys return
+if events.is_empty():
+	return
+
+# get the event that is connected
+var final_event = events[0]
+
+# keyboard
+if final_event is InputEventKey:
+	# get the keycode string
+	key_name = OS.get_keycode_string(final_event.keycode)
+
+	if key_name.is_empty():
+		# if that does not work get the PHYSICAL keycode string
+		key_name = OS.get_keycode_string(final_event.physical_keycode)
+
+# mouse
+elif final_event is InputEventMouseButton:
+	# set a readable name
+	if final_event.button_index == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
+	elif final_event.button_index == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
+	elif final_event.button_index == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
+	else: key_name = \"Mouse \" + str(final_event.button_index)
+
+
+
+# get this node
+var me = ctx[2]
+var config = ctx[1]
+# set this node as the initial node you should check
+var nodes_to_check = [me]
+
+# the visual for non texture buttons
+var empty_visual = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_key.png\")
+var empty_visual_big = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0003_wide_square_key.png\")
+
+
+# visuals for each key
+var visual_map = {
+	\"Up\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_u.png\"),
+	\"Down\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_d.png\"),
+	\"Left\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow.png\"),
+	\"Right\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_r.png\"),
+	\"Left Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_left_click.png\"),
+	\"Middle Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_click.png\"),
+	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\")
+}
+
+
+
+
+
+
+# the final label found
+var target_label_1: Label = null
+var target_label_2: Label = null
+# current amount of labels found
+var label_count = 0 
+# the final number of label in the index that is the one you search for
+var label_1_target_index = 1
+var label_2_target_index = 2
+
+# the found texture rect
+var rect_node: TextureRect = null
+
+# the final hbox found
+var target_hbox: HBoxContainer = null
+# current amount of hboxes found
+var hbox_count = 0 
+# the final number of hboxes in the index that is the one you search for
+var hbox_target_index = 1
+
+
+# keep searching untill all children are gone through
+while nodes_to_check.size() > 0:
+	#remove the current node from the nodes you should check
+	var current = nodes_to_check.pop_back()
+	
+	# if you found an label
+	if current is Label:
+		#increase label count
+		label_count += 1
+		# if you found the target number of labels
+		if label_count == label_1_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label_1 = current
+		# if you found the target number of labels: 2 electric boogaloo
+		if label_count == label_2_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label_2 = current
+	
+	# if the found is an HBOX
+	if current is HBoxContainer:
+		#increase HBOX count
+		hbox_count += 1
+		# if you found the target number of hboxes
+		if hbox_count == hbox_target_index:
+			# THIS IS THE GOOD hbox
+			target_hbox = current
+
+	# if you found an textureRect
+	elif current is TextureRect:
+		# this node is the texture rect
+		rect_node = current
+	
+	# also search all these node's children
+	nodes_to_check.append_array(current.get_children())
+
+
+
+
+#print(\"KEY NAME: \", key_name)
+#print(\"LABEL FOUND: \", target_label_1)
+#print(\"RECT FOUND: \", rect_node)
+
+# if you have a label and texture rect
+if target_label_1 and rect_node:
+	# if the key to visual has this button 
+	if visual_map.has(key_name):
+		# if it does hide text and show that icon
+		target_label_1.text = \"\"
+		rect_node.texture = visual_map[key_name]
+	else:
+		# if not use the key name and the empty visual
+		target_label_1.text = \"  \" + key_name + \"  \"
+		# use a bigger texture if it is an bigger word
+		rect_node.texture = empty_visual if key_name.length() <= 4 else empty_visual_big
+
+# set the input name
+if target_label_2:
+	target_label_2.text = input_name
+
+# change the hbox seperation
+if target_hbox:
+	target_hbox.add_theme_constant_override(&\"separation\", config.row_spacing)"
+pressed_function = "# the input this searches for
+var input: StringName = &\"MoveRight\"
+
+# get this node
+var me = ctx[2]
+var config = ctx[1]
+# set this node as the initial node you should check
+var nodes_to_check = [me]
+
+# the visual for non texture buttons
+var empty_visual = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_key.png\")
+var empty_visual_big = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0003_wide_square_key.png\")
+
+
+# visuals for each key
+var visual_map = {
+	\"Up\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_u.png\"),
+	\"Down\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_d.png\"),
+	\"Left\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow.png\"),
+	\"Right\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_r.png\"),
+	\"Left Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_left_click.png\"),
+	\"Middle Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_click.png\"),
+	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\")
+}
+
+
+# the final label found
+var target_label: Label = null
+# current amount of labels found
+var label_count = 0 
+# the final number of label in the index that is the one you search for
+var label_target_index = 1
+
+# the found texture rect
+var rect_node: TextureRect = null
+
+# the final hbox found
+var target_hbox: HBoxContainer = null
+# current amount of hboxes found
+var hbox_count = 0 
+# the final number of hboxes in the index that is the one you search for
+var hbox_target_index = 1
+
+
+# keep searching untill all children are gone through
+while nodes_to_check.size() > 0:
+	#remove the current node from the nodes you should check
+	var current = nodes_to_check.pop_back()
+	
+	# if you found an label
+	if current is Label:
+		#increase label count
+		label_count += 1
+		# if you found the target number of labels
+		if label_count == label_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label = current
+	
+	# if the found is an HBOX
+	if current is HBoxContainer:
+		#increase HBOX count
+		hbox_count += 1
+		# if you found the target number of hboxes
+		if hbox_count == hbox_target_index:
+			# THIS IS THE GOOD hbox
+			target_hbox = current
+
+	# if you found an textureRect
+	elif current is TextureRect:
+		# this node is the texture rect
+		rect_node = current
+	
+	# also search all these node's children
+	nodes_to_check.append_array(current.get_children())
+
+# change the label you found
+if target_label:
+	target_label.text = \"Press New Key\"
+
+# also change the textureRect you found
+if rect_node:
+	rect_node.texture = null
+
+# change the hbox seperation
+if target_hbox:
+	target_hbox.add_theme_constant_override(&\"separation\", config.row_spacing - 100)
+
+
+
+# first wait a small time
+await me.get_tree().create_timer(0.1).timeout
+
+# create a overlay that makes the other buttons not pressable
+var overlay = Control.new()
+me.get_tree().root.add_child(overlay)
+overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+overlay.mouse_filter = Control.MOUSE_FILTER_STOP
+
+# have the overlay get keyboard buttons
+overlay.focus_mode = Control.FOCUS_ALL 
+overlay.grab_focus()
+
+# the var that should get the event
+var final_event: InputEvent = null
+
+# the name that the key has (readable version)
+var key_name
+
+# keep looping untill the event is found
+while final_event == null:
+	# wait one frame to not crash by always asking the engine for new input
+	await me.get_tree().process_frame
+	# wait for input and set it
+	final_event = await overlay.gui_input 
+	
+	# normal button presses
+	if final_event is InputEventKey and final_event.is_pressed():
+		# get the name of the press
+		key_name = OS.get_keycode_string(final_event.get_keycode_with_modifiers())
+		
+		# make the UI not use this button input
+		me.get_viewport().set_input_as_handled()
+	
+	# mouse button presses
+	elif final_event is InputEventMouseButton and final_event.is_pressed():
+		# set a readable name
+		if final_event.button_index == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
+		elif final_event.button_index == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
+		elif final_event.button_index == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
+		else: key_name = \"Mouse \" + str(final_event.button_index)
+		
+		# make the UI not use this button input
+		me.get_viewport().set_input_as_handled()
+
+	else:
+		#try waiting again untill it is something that is correct
+		final_event = null
+
+# remove the overlay
+overlay.queue_free()
+
+# if you have a label and texture rect
+if target_label and rect_node:
+	# if the key to visual has this button 
+	if visual_map.has(key_name):
+		# if it does hide text and show that icon
+		target_label.text = \"\"
+		rect_node.texture = visual_map[key_name]
+	else:
+		# if not use the key name and the empty visual
+		target_label.text = \"  \" + key_name + \"  \"
+		# use a bigger texture if it is an bigger word
+		rect_node.texture = empty_visual if key_name.length() <= 4 else empty_visual_big
+
+# change the hbox seperation
+if target_hbox:
+	target_hbox.add_theme_constant_override(&\"separation\", config.row_spacing)
+
+
+
+
+# get the value to save
+var value_to_save: int = 0
+
+# set the value to save to the correct value
+if final_event is InputEventKey:
+	value_to_save = final_event.keycode
+elif final_event is InputEventMouseButton:
+	value_to_save = final_event.button_index
+
+# set the action to the new input
+SaveLoad.general_contents[\"Buttons\"][input] = value_to_save
+SaveLoad.save_general()
+
+# load the saved inputs
+SaveLoad.load_general()"
+_row_group_enabled = true
+sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_po4x5"), SubResource("Resource_5jsrr")])
+row_spacing = 266
+should_add_vertical_spacer = false
+vertical_spacer_size = 0.0
+horizontal_spacer_size = 0.0
+should_have_offset = true
+offset = Vector2(4, 0)
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_bs0jo"]
+script = ExtResource("2_w13no")
+mode = 4
+in_fade_duration = 0.5
+out_fade_duration = 0.5
+_text_group_enabled = false
+text = "Back"
+_button_group_enabled = false
+send_to = NodePath("../start_Menu")
+_row_group_enabled = true
+sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_cbvuo"), SubResource("Resource_timi6")])
+row_spacing = 259
+vertical_spacer_size = 10.0
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_il87v"]
+script = ExtResource("2_w13no")
+mode = 1
+full_width = false
+text = "Up"
+font_size = 28
+_button_group_enabled = false
+should_add_vertical_spacer = false
+should_have_offset = true
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_nyj0u"]
+script = ExtResource("2_w13no")
+mode = 1
+full_width = false
+text = "W"
+font_size = 17
+_button_group_enabled = false
+should_have_offset = true
+offset = Vector2(-1, 6)
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_phr7u"]
+load_path = "res://.godot/imported/button_skin_0004_square_key.png-8907e04bb75f6a9cfc100e49db0ee7f3.ctex"
+
+[sub_resource type="Resource" id="Resource_pmq4o"]
+script = ExtResource("2_w13no")
+mode = 2
+full_width = false
+_text_group_enabled = false
+_button_group_enabled = false
+_texture_group_enabled = true
+texture = SubResource("CompressedTexture2D_phr7u")
+texture_scale = Vector2(0.6, 0.6)
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_osvu0"]
+script = ExtResource("2_w13no")
+mode = 6
+full_width = false
+_text_group_enabled = false
+_button_group_enabled = false
+_row_group_enabled = true
+sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_nyj0u"), SubResource("Resource_pmq4o")])
+row_spacing = 0
+should_add_vertical_spacer = false
+should_add_horizontal_spacer = true
+horizontal_spacer_size = 250.0
+should_have_offset = true
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_4k48s"]
+script = ExtResource("2_w13no")
+mode = 5
+full_width = false
+_text_group_enabled = false
+ready_function = "# the input this searches for
+var input: StringName = &\"Jump\"
+var input_name: StringName = input
+var key_name: String
+var events
+
+
+# wait
+await ctx[0].get_tree().process_frame
+await ctx[0].get_tree().create_timer(1).timeout
+await ctx[0].get_tree().process_frame
+
+# get if there are input key(s)
+if not InputMap.has_action(input):
+	return
+
+# get  input key(s)
+events = InputMap.action_get_events(input)
+
+# if there are no input keys return
+if events.is_empty():
+	return
+
+# get the event that is connected
+var final_event = events[0]
+
+# keyboard
+if final_event is InputEventKey:
+	# get the keycode string
+	key_name = OS.get_keycode_string(final_event.keycode)
+
+	if key_name.is_empty():
+		# if that does not work get the PHYSICAL keycode string
+		key_name = OS.get_keycode_string(final_event.physical_keycode)
+
+# mouse
+elif final_event is InputEventMouseButton:
+	# set a readable name
+	if final_event.button_index == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
+	elif final_event.button_index == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
+	elif final_event.button_index == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
+	else: key_name = \"Mouse \" + str(final_event.button_index)
+
+
+
+# get this node
+var me = ctx[2]
+var config = ctx[1]
+# set this node as the initial node you should check
+var nodes_to_check = [me]
+
+# the visual for non texture buttons
+var empty_visual = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_key.png\")
+var empty_visual_big = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0003_wide_square_key.png\")
+
+
+# visuals for each key
+var visual_map = {
+	\"Up\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_u.png\"),
+	\"Down\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_d.png\"),
+	\"Left\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow.png\"),
+	\"Right\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_r.png\"),
+	\"Left Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_left_click.png\"),
+	\"Middle Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_click.png\"),
+	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\")
+}
+
+
+
+
+
+
+# the final label found
+var target_label_1: Label = null
+var target_label_2: Label = null
+# current amount of labels found
+var label_count = 0 
+# the final number of label in the index that is the one you search for
+var label_1_target_index = 1
+var label_2_target_index = 2
+
+# the found texture rect
+var rect_node: TextureRect = null
+
+# the final hbox found
+var target_hbox: HBoxContainer = null
+# current amount of hboxes found
+var hbox_count = 0 
+# the final number of hboxes in the index that is the one you search for
+var hbox_target_index = 1
+
+
+# keep searching untill all children are gone through
+while nodes_to_check.size() > 0:
+	#remove the current node from the nodes you should check
+	var current = nodes_to_check.pop_back()
+	
+	# if you found an label
+	if current is Label:
+		#increase label count
+		label_count += 1
+		# if you found the target number of labels
+		if label_count == label_1_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label_1 = current
+		# if you found the target number of labels: 2 electric boogaloo
+		if label_count == label_2_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label_2 = current
+	
+	# if the found is an HBOX
+	if current is HBoxContainer:
+		#increase HBOX count
+		hbox_count += 1
+		# if you found the target number of hboxes
+		if hbox_count == hbox_target_index:
+			# THIS IS THE GOOD hbox
+			target_hbox = current
+
+	# if you found an textureRect
+	elif current is TextureRect:
+		# this node is the texture rect
+		rect_node = current
+	
+	# also search all these node's children
+	nodes_to_check.append_array(current.get_children())
+
+
+
+
+#print(\"KEY NAME: \", key_name)
+#print(\"LABEL FOUND: \", target_label_1)
+#print(\"RECT FOUND: \", rect_node)
+
+# if you have a label and texture rect
+if target_label_1 and rect_node:
+	# if the key to visual has this button 
+	if visual_map.has(key_name):
+		# if it does hide text and show that icon
+		target_label_1.text = \"\"
+		rect_node.texture = visual_map[key_name]
+	else:
+		# if not use the key name and the empty visual
+		target_label_1.text = \"  \" + key_name + \"  \"
+		# use a bigger texture if it is an bigger word
+		rect_node.texture = empty_visual if key_name.length() <= 4 else empty_visual_big
+
+# set the input name
+if target_label_2:
+	target_label_2.text = input_name
+
+# change the hbox seperation
+if target_hbox:
+	target_hbox.add_theme_constant_override(&\"separation\", config.row_spacing)"
+pressed_function = "# the input this searches for
+var input: StringName = &\"Jump\"
+
+# get this node
+var me = ctx[2]
+var config = ctx[1]
+# set this node as the initial node you should check
+var nodes_to_check = [me]
+
+# the visual for non texture buttons
+var empty_visual = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_key.png\")
+var empty_visual_big = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0003_wide_square_key.png\")
+
+
+# visuals for each key
+var visual_map = {
+	\"Up\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_u.png\"),
+	\"Down\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_d.png\"),
+	\"Left\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow.png\"),
+	\"Right\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_r.png\"),
+	\"Left Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_left_click.png\"),
+	\"Middle Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_click.png\"),
+	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\")
+}
+
+
+# the final label found
+var target_label: Label = null
+# current amount of labels found
+var label_count = 0 
+# the final number of label in the index that is the one you search for
+var label_target_index = 1
+
+# the found texture rect
+var rect_node: TextureRect = null
+
+# the final hbox found
+var target_hbox: HBoxContainer = null
+# current amount of hboxes found
+var hbox_count = 0 
+# the final number of hboxes in the index that is the one you search for
+var hbox_target_index = 1
+
+
+# keep searching untill all children are gone through
+while nodes_to_check.size() > 0:
+	#remove the current node from the nodes you should check
+	var current = nodes_to_check.pop_back()
+	
+	# if you found an label
+	if current is Label:
+		#increase label count
+		label_count += 1
+		# if you found the target number of labels
+		if label_count == label_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label = current
+	
+	# if the found is an HBOX
+	if current is HBoxContainer:
+		#increase HBOX count
+		hbox_count += 1
+		# if you found the target number of hboxes
+		if hbox_count == hbox_target_index:
+			# THIS IS THE GOOD hbox
+			target_hbox = current
+
+	# if you found an textureRect
+	elif current is TextureRect:
+		# this node is the texture rect
+		rect_node = current
+	
+	# also search all these node's children
+	nodes_to_check.append_array(current.get_children())
+
+# change the label you found
+if target_label:
+	target_label.text = \"Press New Key\"
+
+# also change the textureRect you found
+if rect_node:
+	rect_node.texture = null
+
+# change the hbox seperation
+if target_hbox:
+	target_hbox.add_theme_constant_override(&\"separation\", config.row_spacing - 100)
+
+
+
+# first wait a small time
+await me.get_tree().create_timer(0.1).timeout
+
+# create a overlay that makes the other buttons not pressable
+var overlay = Control.new()
+me.get_tree().root.add_child(overlay)
+overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+overlay.mouse_filter = Control.MOUSE_FILTER_STOP
+
+# have the overlay get keyboard buttons
+overlay.focus_mode = Control.FOCUS_ALL 
+overlay.grab_focus()
+
+# the var that should get the event
+var final_event: InputEvent = null
+
+# the name that the key has (readable version)
+var key_name
+
+# keep looping untill the event is found
+while final_event == null:
+	# wait one frame to not crash by always asking the engine for new input
+	await me.get_tree().process_frame
+	# wait for input and set it
+	final_event = await overlay.gui_input 
+	
+	# normal button presses
+	if final_event is InputEventKey and final_event.is_pressed():
+		# get the name of the press
+		key_name = OS.get_keycode_string(final_event.get_keycode_with_modifiers())
+		
+		# make the UI not use this button input
+		me.get_viewport().set_input_as_handled()
+	
+	# mouse button presses
+	elif final_event is InputEventMouseButton and final_event.is_pressed():
+		# set a readable name
+		if final_event.button_index == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
+		elif final_event.button_index == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
+		elif final_event.button_index == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
+		else: key_name = \"Mouse \" + str(final_event.button_index)
+		
+		# make the UI not use this button input
+		me.get_viewport().set_input_as_handled()
+
+	else:
+		#try waiting again untill it is something that is correct
+		final_event = null
+
+# remove the overlay
+overlay.queue_free()
+
+# if you have a label and texture rect
+if target_label and rect_node:
+	# if the key to visual has this button 
+	if visual_map.has(key_name):
+		# if it does hide text and show that icon
+		target_label.text = \"\"
+		rect_node.texture = visual_map[key_name]
+	else:
+		# if not use the key name and the empty visual
+		target_label.text = \"  \" + key_name + \"  \"
+		# use a bigger texture if it is an bigger word
+		rect_node.texture = empty_visual if key_name.length() <= 4 else empty_visual_big
+
+# change the hbox seperation
+if target_hbox:
+	target_hbox.add_theme_constant_override(&\"separation\", config.row_spacing)
+
+
+
+
+# get the value to save
+var value_to_save: int = 0
+
+# set the value to save to the correct value
+if final_event is InputEventKey:
+	value_to_save = final_event.keycode
+elif final_event is InputEventMouseButton:
+	value_to_save = final_event.button_index
+
+# set the action to the new input
+SaveLoad.general_contents[\"Buttons\"][input] = value_to_save
+SaveLoad.save_general()
+
+# load the saved inputs
+SaveLoad.load_general()"
+_row_group_enabled = true
+sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_il87v"), SubResource("Resource_osvu0")])
+row_spacing = 280
+should_add_vertical_spacer = false
+vertical_spacer_size = 0.0
+horizontal_spacer_size = 0.0
+should_have_offset = true
+offset = Vector2(-25, 0)
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_pi22a"]
+script = ExtResource("2_w13no")
+mode = 1
+full_width = false
+text = "Up"
+font_size = 28
+_button_group_enabled = false
+should_add_vertical_spacer = false
+should_have_offset = true
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_os5ai"]
+script = ExtResource("2_w13no")
+mode = 1
+full_width = false
+text = "W"
+font_size = 17
+_button_group_enabled = false
+should_have_offset = true
+offset = Vector2(-1, 6)
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_wuqwg"]
+load_path = "res://.godot/imported/button_skin_0004_square_key.png-8907e04bb75f6a9cfc100e49db0ee7f3.ctex"
+
+[sub_resource type="Resource" id="Resource_vpft0"]
+script = ExtResource("2_w13no")
+mode = 2
+full_width = false
+_text_group_enabled = false
+_button_group_enabled = false
+_texture_group_enabled = true
+texture = SubResource("CompressedTexture2D_wuqwg")
+texture_scale = Vector2(0.6, 0.6)
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_r71db"]
+script = ExtResource("2_w13no")
+mode = 6
+full_width = false
+_text_group_enabled = false
+_button_group_enabled = false
+_row_group_enabled = true
+sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_os5ai"), SubResource("Resource_vpft0")])
+row_spacing = 0
+should_add_vertical_spacer = false
+should_add_horizontal_spacer = true
+horizontal_spacer_size = 250.0
+should_have_offset = true
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_y78by"]
+script = ExtResource("2_w13no")
+mode = 5
+full_width = false
+_text_group_enabled = false
+ready_function = "# the input this searches for
+var input: StringName = &\"ZoomIn\"
+var input_name: StringName = \"Zoom In\"
+var key_name: String
+var events
+
+
+# wait
+await ctx[0].get_tree().process_frame
+await ctx[0].get_tree().create_timer(1).timeout
+await ctx[0].get_tree().process_frame
+
+# get if there are input key(s)
+if not InputMap.has_action(input):
+	return
+
+# get  input key(s)
+events = InputMap.action_get_events(input)
+
+# if there are no input keys return
+if events.is_empty():
+	return
+
+# get the event that is connected
+var final_event = events[0]
+
+# keyboard
+if final_event is InputEventKey:
+	# get the keycode string
+	key_name = OS.get_keycode_string(final_event.keycode)
+
+	if key_name.is_empty():
+		# if that does not work get the PHYSICAL keycode string
+		key_name = OS.get_keycode_string(final_event.physical_keycode)
+
+# mouse
+elif final_event is InputEventMouseButton:
+	# set a readable name
+	if final_event.button_index == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
+	elif final_event.button_index == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
+	elif final_event.button_index == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
+	else: key_name = \"Mouse \" + str(final_event.button_index)
+
+
+
+# get this node
+var me = ctx[2]
+var config = ctx[1]
+# set this node as the initial node you should check
+var nodes_to_check = [me]
+
+# the visual for non texture buttons
+var empty_visual = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_key.png\")
+var empty_visual_big = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0003_wide_square_key.png\")
+
+
+# visuals for each key
+var visual_map = {
+	\"Up\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_u.png\"),
+	\"Down\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_d.png\"),
+	\"Left\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow.png\"),
+	\"Right\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_r.png\"),
+	\"Left Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_left_click.png\"),
+	\"Middle Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_click.png\"),
+	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\")
+}
+
+
+
+
+
+
+# the final label found
+var target_label_1: Label = null
+var target_label_2: Label = null
+# current amount of labels found
+var label_count = 0 
+# the final number of label in the index that is the one you search for
+var label_1_target_index = 1
+var label_2_target_index = 2
+
+# the found texture rect
+var rect_node: TextureRect = null
+
+# the final hbox found
+var target_hbox: HBoxContainer = null
+# current amount of hboxes found
+var hbox_count = 0 
+# the final number of hboxes in the index that is the one you search for
+var hbox_target_index = 1
+
+
+# keep searching untill all children are gone through
+while nodes_to_check.size() > 0:
+	#remove the current node from the nodes you should check
+	var current = nodes_to_check.pop_back()
+	
+	# if you found an label
+	if current is Label:
+		#increase label count
+		label_count += 1
+		# if you found the target number of labels
+		if label_count == label_1_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label_1 = current
+		# if you found the target number of labels: 2 electric boogaloo
+		if label_count == label_2_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label_2 = current
+	
+	# if the found is an HBOX
+	if current is HBoxContainer:
+		#increase HBOX count
+		hbox_count += 1
+		# if you found the target number of hboxes
+		if hbox_count == hbox_target_index:
+			# THIS IS THE GOOD hbox
+			target_hbox = current
+
+	# if you found an textureRect
+	elif current is TextureRect:
+		# this node is the texture rect
+		rect_node = current
+	
+	# also search all these node's children
+	nodes_to_check.append_array(current.get_children())
+
+
+
+
+#print(\"KEY NAME: \", key_name)
+#print(\"LABEL FOUND: \", target_label_1)
+#print(\"RECT FOUND: \", rect_node)
+
+# if you have a label and texture rect
+if target_label_1 and rect_node:
+	# if the key to visual has this button 
+	if visual_map.has(key_name):
+		# if it does hide text and show that icon
+		target_label_1.text = \"\"
+		rect_node.texture = visual_map[key_name]
+	else:
+		# if not use the key name and the empty visual
+		target_label_1.text = \"  \" + key_name + \"  \"
+		# use a bigger texture if it is an bigger word
+		rect_node.texture = empty_visual if key_name.length() <= 4 else empty_visual_big
+
+# set the input name
+if target_label_2:
+	target_label_2.text = input_name
+
+# change the hbox seperation
+if target_hbox:
+	target_hbox.add_theme_constant_override(&\"separation\", config.row_spacing)"
+pressed_function = "# the input this searches for
+var input: StringName = &\"ZoomIn\"
+
+# get this node
+var me = ctx[2]
+var config = ctx[1]
+# set this node as the initial node you should check
+var nodes_to_check = [me]
+
+# the visual for non texture buttons
+var empty_visual = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_key.png\")
+var empty_visual_big = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0003_wide_square_key.png\")
+
+
+# visuals for each key
+var visual_map = {
+	\"Up\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_u.png\"),
+	\"Down\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_d.png\"),
+	\"Left\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow.png\"),
+	\"Right\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_r.png\"),
+	\"Left Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_left_click.png\"),
+	\"Middle Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_click.png\"),
+	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\")
+}
+
+
+# the final label found
+var target_label: Label = null
+# current amount of labels found
+var label_count = 0 
+# the final number of label in the index that is the one you search for
+var label_target_index = 1
+
+# the found texture rect
+var rect_node: TextureRect = null
+
+# the final hbox found
+var target_hbox: HBoxContainer = null
+# current amount of hboxes found
+var hbox_count = 0 
+# the final number of hboxes in the index that is the one you search for
+var hbox_target_index = 1
+
+
+# keep searching untill all children are gone through
+while nodes_to_check.size() > 0:
+	#remove the current node from the nodes you should check
+	var current = nodes_to_check.pop_back()
+	
+	# if you found an label
+	if current is Label:
+		#increase label count
+		label_count += 1
+		# if you found the target number of labels
+		if label_count == label_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label = current
+	
+	# if the found is an HBOX
+	if current is HBoxContainer:
+		#increase HBOX count
+		hbox_count += 1
+		# if you found the target number of hboxes
+		if hbox_count == hbox_target_index:
+			# THIS IS THE GOOD hbox
+			target_hbox = current
+
+	# if you found an textureRect
+	elif current is TextureRect:
+		# this node is the texture rect
+		rect_node = current
+	
+	# also search all these node's children
+	nodes_to_check.append_array(current.get_children())
+
+# change the label you found
+if target_label:
+	target_label.text = \"Press New Key\"
+
+# also change the textureRect you found
+if rect_node:
+	rect_node.texture = null
+
+# change the hbox seperation
+if target_hbox:
+	target_hbox.add_theme_constant_override(&\"separation\", config.row_spacing - 100)
+
+
+
+# first wait a small time
+await me.get_tree().create_timer(0.1).timeout
+
+# create a overlay that makes the other buttons not pressable
+var overlay = Control.new()
+me.get_tree().root.add_child(overlay)
+overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+overlay.mouse_filter = Control.MOUSE_FILTER_STOP
+
+# have the overlay get keyboard buttons
+overlay.focus_mode = Control.FOCUS_ALL 
+overlay.grab_focus()
+
+# the var that should get the event
+var final_event: InputEvent = null
+
+# the name that the key has (readable version)
+var key_name
+
+# keep looping untill the event is found
+while final_event == null:
+	# wait one frame to not crash by always asking the engine for new input
+	await me.get_tree().process_frame
+	# wait for input and set it
+	final_event = await overlay.gui_input 
+	
+	# normal button presses
+	if final_event is InputEventKey and final_event.is_pressed():
+		# get the name of the press
+		key_name = OS.get_keycode_string(final_event.get_keycode_with_modifiers())
+		
+		# make the UI not use this button input
+		me.get_viewport().set_input_as_handled()
+	
+	# mouse button presses
+	elif final_event is InputEventMouseButton and final_event.is_pressed():
+		# set a readable name
+		if final_event.button_index == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
+		elif final_event.button_index == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
+		elif final_event.button_index == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
+		else: key_name = \"Mouse \" + str(final_event.button_index)
+		
+		# make the UI not use this button input
+		me.get_viewport().set_input_as_handled()
+
+	else:
+		#try waiting again untill it is something that is correct
+		final_event = null
+
+# remove the overlay
+overlay.queue_free()
+
+# if you have a label and texture rect
+if target_label and rect_node:
+	# if the key to visual has this button 
+	if visual_map.has(key_name):
+		# if it does hide text and show that icon
+		target_label.text = \"\"
+		rect_node.texture = visual_map[key_name]
+	else:
+		# if not use the key name and the empty visual
+		target_label.text = \"  \" + key_name + \"  \"
+		# use a bigger texture if it is an bigger word
+		rect_node.texture = empty_visual if key_name.length() <= 4 else empty_visual_big
+
+# change the hbox seperation
+if target_hbox:
+	target_hbox.add_theme_constant_override(&\"separation\", config.row_spacing)
+
+
+
+
+# get the value to save
+var value_to_save: int = 0
+
+# set the value to save to the correct value
+if final_event is InputEventKey:
+	value_to_save = final_event.keycode
+elif final_event is InputEventMouseButton:
+	value_to_save = final_event.button_index
+
+# set the action to the new input
+SaveLoad.general_contents[\"Buttons\"][input] = value_to_save
+SaveLoad.save_general()
+
+# load the saved inputs
+SaveLoad.load_general()"
+_row_group_enabled = true
+sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_pi22a"), SubResource("Resource_r71db")])
+row_spacing = 228
+should_add_vertical_spacer = false
+vertical_spacer_size = 0.0
+horizontal_spacer_size = 0.0
+should_have_offset = true
+offset = Vector2(-60, 0)
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_yhgsf"]
+script = ExtResource("2_w13no")
+mode = 4
+in_fade_duration = 0.5
+out_fade_duration = 0.5
+_text_group_enabled = false
+text = "Back"
+_button_group_enabled = false
+send_to = NodePath("../start_Menu")
+_row_group_enabled = true
+sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_4k48s"), SubResource("Resource_y78by")])
+row_spacing = 322
+vertical_spacer_size = 10.0
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_wuqwg"]
+script = ExtResource("2_w13no")
+mode = 1
+full_width = false
+text = "Up"
+font_size = 28
+_button_group_enabled = false
+should_add_vertical_spacer = false
+should_have_offset = true
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_ldbwr"]
+script = ExtResource("2_w13no")
+mode = 1
+full_width = false
+text = "W"
+font_size = 17
+_button_group_enabled = false
+should_have_offset = true
+offset = Vector2(-1, 6)
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ay8iu"]
+load_path = "res://.godot/imported/button_skin_0004_square_key.png-8907e04bb75f6a9cfc100e49db0ee7f3.ctex"
+
+[sub_resource type="Resource" id="Resource_yddqr"]
+script = ExtResource("2_w13no")
+mode = 2
+full_width = false
+_text_group_enabled = false
+_button_group_enabled = false
+_texture_group_enabled = true
+texture = SubResource("CompressedTexture2D_ay8iu")
+texture_scale = Vector2(0.6, 0.6)
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_kxmd3"]
+script = ExtResource("2_w13no")
+mode = 6
+full_width = false
+_text_group_enabled = false
+_button_group_enabled = false
+_row_group_enabled = true
+sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_ldbwr"), SubResource("Resource_yddqr")])
+row_spacing = 0
+should_add_vertical_spacer = false
+should_add_horizontal_spacer = true
+horizontal_spacer_size = 250.0
+should_have_offset = true
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_bu8qj"]
 script = ExtResource("2_w13no")
 mode = 5
 full_width = false
@@ -412,15 +2837,7 @@ if target_label_2:
 
 # change the hbox seperation
 if target_hbox:
-	target_hbox.add_theme_constant_override(&\"separation\", config.row_spacing)
-
-
-
-
-
-while true:
-	await ctx[0].get_tree().create_timer(5).timeout
-	print(InputMap.action_get_events(input))"
+	target_hbox.add_theme_constant_override(&\"separation\", config.row_spacing)"
 pressed_function = "# the input this searches for
 var input: StringName = &\"Attack\"
 
@@ -506,7 +2923,7 @@ if rect_node:
 
 # change the hbox seperation
 if target_hbox:
-	target_hbox.add_theme_constant_override(&\"separation\", 150)
+	target_hbox.add_theme_constant_override(&\"separation\", config.row_spacing - 100)
 
 
 
@@ -598,14 +3015,412 @@ SaveLoad.save_general()
 # load the saved inputs
 SaveLoad.load_general()"
 _row_group_enabled = true
-sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_saxcl"), SubResource("Resource_er0lx")])
+sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_wuqwg"), SubResource("Resource_kxmd3")])
 row_spacing = 250
 should_add_vertical_spacer = false
 vertical_spacer_size = 0.0
 horizontal_spacer_size = 0.0
+should_have_offset = true
+offset = Vector2(-60, 0)
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
-[sub_resource type="Resource" id="Resource_rgr21"]
+[sub_resource type="Resource" id="Resource_i0trc"]
+script = ExtResource("2_w13no")
+mode = 1
+full_width = false
+text = "Up"
+font_size = 28
+_button_group_enabled = false
+should_add_vertical_spacer = false
+should_have_offset = true
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_ldxp8"]
+script = ExtResource("2_w13no")
+mode = 1
+full_width = false
+text = "W"
+font_size = 17
+_button_group_enabled = false
+should_have_offset = true
+offset = Vector2(-1, 6)
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_4ot2d"]
+load_path = "res://.godot/imported/button_skin_0004_square_key.png-8907e04bb75f6a9cfc100e49db0ee7f3.ctex"
+
+[sub_resource type="Resource" id="Resource_gqyq8"]
+script = ExtResource("2_w13no")
+mode = 2
+full_width = false
+_text_group_enabled = false
+_button_group_enabled = false
+_texture_group_enabled = true
+texture = SubResource("CompressedTexture2D_4ot2d")
+texture_scale = Vector2(0.6, 0.6)
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_pqgyx"]
+script = ExtResource("2_w13no")
+mode = 6
+full_width = false
+_text_group_enabled = false
+_button_group_enabled = false
+_row_group_enabled = true
+sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_ldxp8"), SubResource("Resource_gqyq8")])
+row_spacing = 0
+should_add_vertical_spacer = false
+should_add_horizontal_spacer = true
+horizontal_spacer_size = 250.0
+should_have_offset = true
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_ly7bb"]
+script = ExtResource("2_w13no")
+mode = 5
+full_width = false
+_text_group_enabled = false
+ready_function = "# the input this searches for
+var input: StringName = &\"ZoomOut\"
+var input_name: StringName = \"Zoom Out\"
+var key_name: String
+var events
+
+
+# wait
+await ctx[0].get_tree().process_frame
+await ctx[0].get_tree().create_timer(1).timeout
+await ctx[0].get_tree().process_frame
+
+# get if there are input key(s)
+if not InputMap.has_action(input):
+	return
+
+# get  input key(s)
+events = InputMap.action_get_events(input)
+
+# if there are no input keys return
+if events.is_empty():
+	return
+
+# get the event that is connected
+var final_event = events[0]
+
+# keyboard
+if final_event is InputEventKey:
+	# get the keycode string
+	key_name = OS.get_keycode_string(final_event.keycode)
+
+	if key_name.is_empty():
+		# if that does not work get the PHYSICAL keycode string
+		key_name = OS.get_keycode_string(final_event.physical_keycode)
+
+# mouse
+elif final_event is InputEventMouseButton:
+	# set a readable name
+	if final_event.button_index == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
+	elif final_event.button_index == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
+	elif final_event.button_index == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
+	else: key_name = \"Mouse \" + str(final_event.button_index)
+
+
+
+# get this node
+var me = ctx[2]
+var config = ctx[1]
+# set this node as the initial node you should check
+var nodes_to_check = [me]
+
+# the visual for non texture buttons
+var empty_visual = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_key.png\")
+var empty_visual_big = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0003_wide_square_key.png\")
+
+
+# visuals for each key
+var visual_map = {
+	\"Up\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_u.png\"),
+	\"Down\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_d.png\"),
+	\"Left\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow.png\"),
+	\"Right\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_r.png\"),
+	\"Left Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_left_click.png\"),
+	\"Middle Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_click.png\"),
+	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\")
+}
+
+
+
+
+
+
+# the final label found
+var target_label_1: Label = null
+var target_label_2: Label = null
+# current amount of labels found
+var label_count = 0 
+# the final number of label in the index that is the one you search for
+var label_1_target_index = 1
+var label_2_target_index = 2
+
+# the found texture rect
+var rect_node: TextureRect = null
+
+# the final hbox found
+var target_hbox: HBoxContainer = null
+# current amount of hboxes found
+var hbox_count = 0 
+# the final number of hboxes in the index that is the one you search for
+var hbox_target_index = 1
+
+
+# keep searching untill all children are gone through
+while nodes_to_check.size() > 0:
+	#remove the current node from the nodes you should check
+	var current = nodes_to_check.pop_back()
+	
+	# if you found an label
+	if current is Label:
+		#increase label count
+		label_count += 1
+		# if you found the target number of labels
+		if label_count == label_1_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label_1 = current
+		# if you found the target number of labels: 2 electric boogaloo
+		if label_count == label_2_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label_2 = current
+	
+	# if the found is an HBOX
+	if current is HBoxContainer:
+		#increase HBOX count
+		hbox_count += 1
+		# if you found the target number of hboxes
+		if hbox_count == hbox_target_index:
+			# THIS IS THE GOOD hbox
+			target_hbox = current
+
+	# if you found an textureRect
+	elif current is TextureRect:
+		# this node is the texture rect
+		rect_node = current
+	
+	# also search all these node's children
+	nodes_to_check.append_array(current.get_children())
+
+
+
+
+#print(\"KEY NAME: \", key_name)
+#print(\"LABEL FOUND: \", target_label_1)
+#print(\"RECT FOUND: \", rect_node)
+
+# if you have a label and texture rect
+if target_label_1 and rect_node:
+	# if the key to visual has this button 
+	if visual_map.has(key_name):
+		# if it does hide text and show that icon
+		target_label_1.text = \"\"
+		rect_node.texture = visual_map[key_name]
+	else:
+		# if not use the key name and the empty visual
+		target_label_1.text = \"  \" + key_name + \"  \"
+		# use a bigger texture if it is an bigger word
+		rect_node.texture = empty_visual if key_name.length() <= 4 else empty_visual_big
+
+# set the input name
+if target_label_2:
+	target_label_2.text = input_name
+
+# change the hbox seperation
+if target_hbox:
+	target_hbox.add_theme_constant_override(&\"separation\", config.row_spacing)"
+pressed_function = "# the input this searches for
+var input: StringName = &\"ZoomOut\"
+
+# get this node
+var me = ctx[2]
+var config = ctx[1]
+# set this node as the initial node you should check
+var nodes_to_check = [me]
+
+# the visual for non texture buttons
+var empty_visual = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_key.png\")
+var empty_visual_big = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0003_wide_square_key.png\")
+
+
+# visuals for each key
+var visual_map = {
+	\"Up\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_u.png\"),
+	\"Down\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_d.png\"),
+	\"Left\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow.png\"),
+	\"Right\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_r.png\"),
+	\"Left Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_left_click.png\"),
+	\"Middle Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_click.png\"),
+	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\")
+}
+
+
+# the final label found
+var target_label: Label = null
+# current amount of labels found
+var label_count = 0 
+# the final number of label in the index that is the one you search for
+var label_target_index = 1
+
+# the found texture rect
+var rect_node: TextureRect = null
+
+# the final hbox found
+var target_hbox: HBoxContainer = null
+# current amount of hboxes found
+var hbox_count = 0 
+# the final number of hboxes in the index that is the one you search for
+var hbox_target_index = 1
+
+
+# keep searching untill all children are gone through
+while nodes_to_check.size() > 0:
+	#remove the current node from the nodes you should check
+	var current = nodes_to_check.pop_back()
+	
+	# if you found an label
+	if current is Label:
+		#increase label count
+		label_count += 1
+		# if you found the target number of labels
+		if label_count == label_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label = current
+	
+	# if the found is an HBOX
+	if current is HBoxContainer:
+		#increase HBOX count
+		hbox_count += 1
+		# if you found the target number of hboxes
+		if hbox_count == hbox_target_index:
+			# THIS IS THE GOOD hbox
+			target_hbox = current
+
+	# if you found an textureRect
+	elif current is TextureRect:
+		# this node is the texture rect
+		rect_node = current
+	
+	# also search all these node's children
+	nodes_to_check.append_array(current.get_children())
+
+# change the label you found
+if target_label:
+	target_label.text = \"Press New Key\"
+
+# also change the textureRect you found
+if rect_node:
+	rect_node.texture = null
+
+# change the hbox seperation
+if target_hbox:
+	target_hbox.add_theme_constant_override(&\"separation\", config.row_spacing - 100)
+
+
+
+# first wait a small time
+await me.get_tree().create_timer(0.1).timeout
+
+# create a overlay that makes the other buttons not pressable
+var overlay = Control.new()
+me.get_tree().root.add_child(overlay)
+overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+overlay.mouse_filter = Control.MOUSE_FILTER_STOP
+
+# have the overlay get keyboard buttons
+overlay.focus_mode = Control.FOCUS_ALL 
+overlay.grab_focus()
+
+# the var that should get the event
+var final_event: InputEvent = null
+
+# the name that the key has (readable version)
+var key_name
+
+# keep looping untill the event is found
+while final_event == null:
+	# wait one frame to not crash by always asking the engine for new input
+	await me.get_tree().process_frame
+	# wait for input and set it
+	final_event = await overlay.gui_input 
+	
+	# normal button presses
+	if final_event is InputEventKey and final_event.is_pressed():
+		# get the name of the press
+		key_name = OS.get_keycode_string(final_event.get_keycode_with_modifiers())
+		
+		# make the UI not use this button input
+		me.get_viewport().set_input_as_handled()
+	
+	# mouse button presses
+	elif final_event is InputEventMouseButton and final_event.is_pressed():
+		# set a readable name
+		if final_event.button_index == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
+		elif final_event.button_index == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
+		elif final_event.button_index == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
+		else: key_name = \"Mouse \" + str(final_event.button_index)
+		
+		# make the UI not use this button input
+		me.get_viewport().set_input_as_handled()
+
+	else:
+		#try waiting again untill it is something that is correct
+		final_event = null
+
+# remove the overlay
+overlay.queue_free()
+
+# if you have a label and texture rect
+if target_label and rect_node:
+	# if the key to visual has this button 
+	if visual_map.has(key_name):
+		# if it does hide text and show that icon
+		target_label.text = \"\"
+		rect_node.texture = visual_map[key_name]
+	else:
+		# if not use the key name and the empty visual
+		target_label.text = \"  \" + key_name + \"  \"
+		# use a bigger texture if it is an bigger word
+		rect_node.texture = empty_visual if key_name.length() <= 4 else empty_visual_big
+
+# change the hbox seperation
+if target_hbox:
+	target_hbox.add_theme_constant_override(&\"separation\", config.row_spacing)
+
+
+
+
+# get the value to save
+var value_to_save: int = 0
+
+# set the value to save to the correct value
+if final_event is InputEventKey:
+	value_to_save = final_event.keycode
+elif final_event is InputEventMouseButton:
+	value_to_save = final_event.button_index
+
+# set the action to the new input
+SaveLoad.general_contents[\"Buttons\"][input] = value_to_save
+SaveLoad.save_general()
+
+# load the saved inputs
+SaveLoad.load_general()"
+_row_group_enabled = true
+sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_i0trc"), SubResource("Resource_pqgyx")])
+row_spacing = 200
+should_add_vertical_spacer = false
+vertical_spacer_size = 0.0
+horizontal_spacer_size = 0.0
+should_have_offset = true
+offset = Vector2(30, 0)
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_sqlye"]
 script = ExtResource("2_w13no")
 mode = 4
 in_fade_duration = 0.5
@@ -615,8 +3430,814 @@ text = "Back"
 _button_group_enabled = false
 send_to = NodePath("../start_Menu")
 _row_group_enabled = true
-sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_jq4vk"), SubResource("Resource_jq4vk")])
-row_spacing = 300
+sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_bu8qj"), SubResource("Resource_ly7bb")])
+row_spacing = 264
+vertical_spacer_size = 10.0
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_jq4vk"]
+script = ExtResource("2_w13no")
+mode = 1
+full_width = false
+text = "Up"
+font_size = 28
+_button_group_enabled = false
+should_add_vertical_spacer = false
+should_have_offset = true
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_rgr21"]
+script = ExtResource("2_w13no")
+mode = 1
+full_width = false
+text = "W"
+font_size = 17
+_button_group_enabled = false
+should_have_offset = true
+offset = Vector2(-1, 6)
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_kexv5"]
+load_path = "res://.godot/imported/button_skin_0004_square_key.png-8907e04bb75f6a9cfc100e49db0ee7f3.ctex"
+
+[sub_resource type="Resource" id="Resource_ay8iu"]
+script = ExtResource("2_w13no")
+mode = 2
+full_width = false
+_text_group_enabled = false
+_button_group_enabled = false
+_texture_group_enabled = true
+texture = SubResource("CompressedTexture2D_kexv5")
+texture_scale = Vector2(0.6, 0.6)
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_4ot2d"]
+script = ExtResource("2_w13no")
+mode = 6
+full_width = false
+_text_group_enabled = false
+_button_group_enabled = false
+_row_group_enabled = true
+sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_rgr21"), SubResource("Resource_ay8iu")])
+row_spacing = 0
+should_add_vertical_spacer = false
+should_add_horizontal_spacer = true
+horizontal_spacer_size = 250.0
+should_have_offset = true
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_oghqo"]
+script = ExtResource("2_w13no")
+mode = 5
+full_width = false
+_text_group_enabled = false
+ready_function = "# the input this searches for
+var input: StringName = &\"Dash\"
+var input_name: StringName = input
+var key_name: String
+var events
+
+
+# wait
+await ctx[0].get_tree().process_frame
+await ctx[0].get_tree().create_timer(1).timeout
+await ctx[0].get_tree().process_frame
+
+# get if there are input key(s)
+if not InputMap.has_action(input):
+	return
+
+# get  input key(s)
+events = InputMap.action_get_events(input)
+
+# if there are no input keys return
+if events.is_empty():
+	return
+
+# get the event that is connected
+var final_event = events[0]
+
+# keyboard
+if final_event is InputEventKey:
+	# get the keycode string
+	key_name = OS.get_keycode_string(final_event.keycode)
+
+	if key_name.is_empty():
+		# if that does not work get the PHYSICAL keycode string
+		key_name = OS.get_keycode_string(final_event.physical_keycode)
+
+# mouse
+elif final_event is InputEventMouseButton:
+	# set a readable name
+	if final_event.button_index == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
+	elif final_event.button_index == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
+	elif final_event.button_index == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
+	else: key_name = \"Mouse \" + str(final_event.button_index)
+
+
+
+# get this node
+var me = ctx[2]
+var config = ctx[1]
+# set this node as the initial node you should check
+var nodes_to_check = [me]
+
+# the visual for non texture buttons
+var empty_visual = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_key.png\")
+var empty_visual_big = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0003_wide_square_key.png\")
+
+
+# visuals for each key
+var visual_map = {
+	\"Up\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_u.png\"),
+	\"Down\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_d.png\"),
+	\"Left\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow.png\"),
+	\"Right\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_r.png\"),
+	\"Left Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_left_click.png\"),
+	\"Middle Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_click.png\"),
+	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\")
+}
+
+
+
+
+
+
+# the final label found
+var target_label_1: Label = null
+var target_label_2: Label = null
+# current amount of labels found
+var label_count = 0 
+# the final number of label in the index that is the one you search for
+var label_1_target_index = 1
+var label_2_target_index = 2
+
+# the found texture rect
+var rect_node: TextureRect = null
+
+# the final hbox found
+var target_hbox: HBoxContainer = null
+# current amount of hboxes found
+var hbox_count = 0 
+# the final number of hboxes in the index that is the one you search for
+var hbox_target_index = 1
+
+
+# keep searching untill all children are gone through
+while nodes_to_check.size() > 0:
+	#remove the current node from the nodes you should check
+	var current = nodes_to_check.pop_back()
+	
+	# if you found an label
+	if current is Label:
+		#increase label count
+		label_count += 1
+		# if you found the target number of labels
+		if label_count == label_1_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label_1 = current
+		# if you found the target number of labels: 2 electric boogaloo
+		if label_count == label_2_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label_2 = current
+	
+	# if the found is an HBOX
+	if current is HBoxContainer:
+		#increase HBOX count
+		hbox_count += 1
+		# if you found the target number of hboxes
+		if hbox_count == hbox_target_index:
+			# THIS IS THE GOOD hbox
+			target_hbox = current
+
+	# if you found an textureRect
+	elif current is TextureRect:
+		# this node is the texture rect
+		rect_node = current
+	
+	# also search all these node's children
+	nodes_to_check.append_array(current.get_children())
+
+
+
+
+#print(\"KEY NAME: \", key_name)
+#print(\"LABEL FOUND: \", target_label_1)
+#print(\"RECT FOUND: \", rect_node)
+
+# if you have a label and texture rect
+if target_label_1 and rect_node:
+	# if the key to visual has this button 
+	if visual_map.has(key_name):
+		# if it does hide text and show that icon
+		target_label_1.text = \"\"
+		rect_node.texture = visual_map[key_name]
+	else:
+		# if not use the key name and the empty visual
+		target_label_1.text = \"  \" + key_name + \"  \"
+		# use a bigger texture if it is an bigger word
+		rect_node.texture = empty_visual if key_name.length() <= 4 else empty_visual_big
+
+# set the input name
+if target_label_2:
+	target_label_2.text = input_name
+
+# change the hbox seperation
+if target_hbox:
+	target_hbox.add_theme_constant_override(&\"separation\", config.row_spacing)"
+pressed_function = "# the input this searches for
+var input: StringName = &\"Dash\"
+
+# get this node
+var me = ctx[2]
+var config = ctx[1]
+# set this node as the initial node you should check
+var nodes_to_check = [me]
+
+# the visual for non texture buttons
+var empty_visual = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_key.png\")
+var empty_visual_big = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0003_wide_square_key.png\")
+
+
+# visuals for each key
+var visual_map = {
+	\"Up\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_u.png\"),
+	\"Down\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_d.png\"),
+	\"Left\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow.png\"),
+	\"Right\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_r.png\"),
+	\"Left Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_left_click.png\"),
+	\"Middle Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_click.png\"),
+	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\")
+}
+
+
+# the final label found
+var target_label: Label = null
+# current amount of labels found
+var label_count = 0 
+# the final number of label in the index that is the one you search for
+var label_target_index = 1
+
+# the found texture rect
+var rect_node: TextureRect = null
+
+# the final hbox found
+var target_hbox: HBoxContainer = null
+# current amount of hboxes found
+var hbox_count = 0 
+# the final number of hboxes in the index that is the one you search for
+var hbox_target_index = 1
+
+
+# keep searching untill all children are gone through
+while nodes_to_check.size() > 0:
+	#remove the current node from the nodes you should check
+	var current = nodes_to_check.pop_back()
+	
+	# if you found an label
+	if current is Label:
+		#increase label count
+		label_count += 1
+		# if you found the target number of labels
+		if label_count == label_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label = current
+	
+	# if the found is an HBOX
+	if current is HBoxContainer:
+		#increase HBOX count
+		hbox_count += 1
+		# if you found the target number of hboxes
+		if hbox_count == hbox_target_index:
+			# THIS IS THE GOOD hbox
+			target_hbox = current
+
+	# if you found an textureRect
+	elif current is TextureRect:
+		# this node is the texture rect
+		rect_node = current
+	
+	# also search all these node's children
+	nodes_to_check.append_array(current.get_children())
+
+# change the label you found
+if target_label:
+	target_label.text = \"Press New Key\"
+
+# also change the textureRect you found
+if rect_node:
+	rect_node.texture = null
+
+# change the hbox seperation
+if target_hbox:
+	target_hbox.add_theme_constant_override(&\"separation\", config.row_spacing - 100)
+
+
+
+# first wait a small time
+await me.get_tree().create_timer(0.1).timeout
+
+# create a overlay that makes the other buttons not pressable
+var overlay = Control.new()
+me.get_tree().root.add_child(overlay)
+overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+overlay.mouse_filter = Control.MOUSE_FILTER_STOP
+
+# have the overlay get keyboard buttons
+overlay.focus_mode = Control.FOCUS_ALL 
+overlay.grab_focus()
+
+# the var that should get the event
+var final_event: InputEvent = null
+
+# the name that the key has (readable version)
+var key_name
+
+# keep looping untill the event is found
+while final_event == null:
+	# wait one frame to not crash by always asking the engine for new input
+	await me.get_tree().process_frame
+	# wait for input and set it
+	final_event = await overlay.gui_input 
+	
+	# normal button presses
+	if final_event is InputEventKey and final_event.is_pressed():
+		# get the name of the press
+		key_name = OS.get_keycode_string(final_event.get_keycode_with_modifiers())
+		
+		# make the UI not use this button input
+		me.get_viewport().set_input_as_handled()
+	
+	# mouse button presses
+	elif final_event is InputEventMouseButton and final_event.is_pressed():
+		# set a readable name
+		if final_event.button_index == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
+		elif final_event.button_index == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
+		elif final_event.button_index == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
+		else: key_name = \"Mouse \" + str(final_event.button_index)
+		
+		# make the UI not use this button input
+		me.get_viewport().set_input_as_handled()
+
+	else:
+		#try waiting again untill it is something that is correct
+		final_event = null
+
+# remove the overlay
+overlay.queue_free()
+
+# if you have a label and texture rect
+if target_label and rect_node:
+	# if the key to visual has this button 
+	if visual_map.has(key_name):
+		# if it does hide text and show that icon
+		target_label.text = \"\"
+		rect_node.texture = visual_map[key_name]
+	else:
+		# if not use the key name and the empty visual
+		target_label.text = \"  \" + key_name + \"  \"
+		# use a bigger texture if it is an bigger word
+		rect_node.texture = empty_visual if key_name.length() <= 4 else empty_visual_big
+
+# change the hbox seperation
+if target_hbox:
+	target_hbox.add_theme_constant_override(&\"separation\", config.row_spacing)
+
+
+
+
+# get the value to save
+var value_to_save: int = 0
+
+# set the value to save to the correct value
+if final_event is InputEventKey:
+	value_to_save = final_event.keycode
+elif final_event is InputEventMouseButton:
+	value_to_save = final_event.button_index
+
+# set the action to the new input
+SaveLoad.general_contents[\"Buttons\"][input] = value_to_save
+SaveLoad.save_general()
+
+# load the saved inputs
+SaveLoad.load_general()"
+_row_group_enabled = true
+sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_jq4vk"), SubResource("Resource_4ot2d")])
+row_spacing = 278
+should_add_vertical_spacer = false
+vertical_spacer_size = 0.0
+horizontal_spacer_size = 0.0
+should_have_offset = true
+offset = Vector2(-150, 0)
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_tiafu"]
+script = ExtResource("2_w13no")
+mode = 1
+full_width = false
+text = "Up"
+font_size = 28
+_button_group_enabled = false
+should_add_vertical_spacer = false
+should_have_offset = true
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_5iw2t"]
+script = ExtResource("2_w13no")
+mode = 1
+full_width = false
+text = "W"
+font_size = 17
+_button_group_enabled = false
+should_have_offset = true
+offset = Vector2(-1, 6)
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_n2ux7"]
+load_path = "res://.godot/imported/button_skin_0004_square_key.png-8907e04bb75f6a9cfc100e49db0ee7f3.ctex"
+
+[sub_resource type="Resource" id="Resource_fshbq"]
+script = ExtResource("2_w13no")
+mode = 2
+full_width = false
+_text_group_enabled = false
+_button_group_enabled = false
+_texture_group_enabled = true
+texture = SubResource("CompressedTexture2D_n2ux7")
+texture_scale = Vector2(0.6, 0.6)
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_vqsdn"]
+script = ExtResource("2_w13no")
+mode = 6
+full_width = false
+_text_group_enabled = false
+_button_group_enabled = false
+_row_group_enabled = true
+sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_5iw2t"), SubResource("Resource_fshbq")])
+row_spacing = 0
+should_add_vertical_spacer = false
+should_add_horizontal_spacer = true
+horizontal_spacer_size = 250.0
+should_have_offset = true
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_62oxb"]
+script = ExtResource("2_w13no")
+mode = 5
+full_width = false
+_text_group_enabled = false
+ready_function = "# the input this searches for
+var input: StringName = &\"ChangeCamera\"
+var input_name: StringName = \"Change Camera\"
+var key_name: String
+var events
+
+
+# wait
+await ctx[0].get_tree().process_frame
+await ctx[0].get_tree().create_timer(1).timeout
+await ctx[0].get_tree().process_frame
+
+# get if there are input key(s)
+if not InputMap.has_action(input):
+	return
+
+# get  input key(s)
+events = InputMap.action_get_events(input)
+
+# if there are no input keys return
+if events.is_empty():
+	return
+
+# get the event that is connected
+var final_event = events[0]
+
+# keyboard
+if final_event is InputEventKey:
+	# get the keycode string
+	key_name = OS.get_keycode_string(final_event.keycode)
+
+	if key_name.is_empty():
+		# if that does not work get the PHYSICAL keycode string
+		key_name = OS.get_keycode_string(final_event.physical_keycode)
+
+# mouse
+elif final_event is InputEventMouseButton:
+	# set a readable name
+	if final_event.button_index == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
+	elif final_event.button_index == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
+	elif final_event.button_index == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
+	else: key_name = \"Mouse \" + str(final_event.button_index)
+
+
+
+# get this node
+var me = ctx[2]
+var config = ctx[1]
+# set this node as the initial node you should check
+var nodes_to_check = [me]
+
+# the visual for non texture buttons
+var empty_visual = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_key.png\")
+var empty_visual_big = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0003_wide_square_key.png\")
+
+
+# visuals for each key
+var visual_map = {
+	\"Up\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_u.png\"),
+	\"Down\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_d.png\"),
+	\"Left\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow.png\"),
+	\"Right\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_r.png\"),
+	\"Left Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_left_click.png\"),
+	\"Middle Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_click.png\"),
+	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\")
+}
+
+
+
+
+
+
+# the final label found
+var target_label_1: Label = null
+var target_label_2: Label = null
+# current amount of labels found
+var label_count = 0 
+# the final number of label in the index that is the one you search for
+var label_1_target_index = 1
+var label_2_target_index = 2
+
+# the found texture rect
+var rect_node: TextureRect = null
+
+# the final hbox found
+var target_hbox: HBoxContainer = null
+# current amount of hboxes found
+var hbox_count = 0 
+# the final number of hboxes in the index that is the one you search for
+var hbox_target_index = 1
+
+
+# keep searching untill all children are gone through
+while nodes_to_check.size() > 0:
+	#remove the current node from the nodes you should check
+	var current = nodes_to_check.pop_back()
+	
+	# if you found an label
+	if current is Label:
+		#increase label count
+		label_count += 1
+		# if you found the target number of labels
+		if label_count == label_1_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label_1 = current
+		# if you found the target number of labels: 2 electric boogaloo
+		if label_count == label_2_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label_2 = current
+	
+	# if the found is an HBOX
+	if current is HBoxContainer:
+		#increase HBOX count
+		hbox_count += 1
+		# if you found the target number of hboxes
+		if hbox_count == hbox_target_index:
+			# THIS IS THE GOOD hbox
+			target_hbox = current
+
+	# if you found an textureRect
+	elif current is TextureRect:
+		# this node is the texture rect
+		rect_node = current
+	
+	# also search all these node's children
+	nodes_to_check.append_array(current.get_children())
+
+
+
+
+#print(\"KEY NAME: \", key_name)
+#print(\"LABEL FOUND: \", target_label_1)
+#print(\"RECT FOUND: \", rect_node)
+
+# if you have a label and texture rect
+if target_label_1 and rect_node:
+	# if the key to visual has this button 
+	if visual_map.has(key_name):
+		# if it does hide text and show that icon
+		target_label_1.text = \"\"
+		rect_node.texture = visual_map[key_name]
+	else:
+		# if not use the key name and the empty visual
+		target_label_1.text = \"  \" + key_name + \"  \"
+		# use a bigger texture if it is an bigger word
+		rect_node.texture = empty_visual if key_name.length() <= 4 else empty_visual_big
+
+# set the input name
+if target_label_2:
+	target_label_2.text = input_name
+
+# change the hbox seperation
+if target_hbox:
+	target_hbox.add_theme_constant_override(&\"separation\", config.row_spacing)"
+pressed_function = "# the input this searches for
+var input: StringName = &\"ChangeCamera\"
+
+# get this node
+var me = ctx[2]
+var config = ctx[1]
+# set this node as the initial node you should check
+var nodes_to_check = [me]
+
+# the visual for non texture buttons
+var empty_visual = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_key.png\")
+var empty_visual_big = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0003_wide_square_key.png\")
+
+
+# visuals for each key
+var visual_map = {
+	\"Up\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_u.png\"),
+	\"Down\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_d.png\"),
+	\"Left\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow.png\"),
+	\"Right\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_r.png\"),
+	\"Left Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_left_click.png\"),
+	\"Middle Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_click.png\"),
+	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\")
+}
+
+
+# the final label found
+var target_label: Label = null
+# current amount of labels found
+var label_count = 0 
+# the final number of label in the index that is the one you search for
+var label_target_index = 1
+
+# the found texture rect
+var rect_node: TextureRect = null
+
+# the final hbox found
+var target_hbox: HBoxContainer = null
+# current amount of hboxes found
+var hbox_count = 0 
+# the final number of hboxes in the index that is the one you search for
+var hbox_target_index = 1
+
+
+# keep searching untill all children are gone through
+while nodes_to_check.size() > 0:
+	#remove the current node from the nodes you should check
+	var current = nodes_to_check.pop_back()
+	
+	# if you found an label
+	if current is Label:
+		#increase label count
+		label_count += 1
+		# if you found the target number of labels
+		if label_count == label_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label = current
+	
+	# if the found is an HBOX
+	if current is HBoxContainer:
+		#increase HBOX count
+		hbox_count += 1
+		# if you found the target number of hboxes
+		if hbox_count == hbox_target_index:
+			# THIS IS THE GOOD hbox
+			target_hbox = current
+
+	# if you found an textureRect
+	elif current is TextureRect:
+		# this node is the texture rect
+		rect_node = current
+	
+	# also search all these node's children
+	nodes_to_check.append_array(current.get_children())
+
+# change the label you found
+if target_label:
+	target_label.text = \"Press New Key\"
+
+# also change the textureRect you found
+if rect_node:
+	rect_node.texture = null
+
+# change the hbox seperation
+if target_hbox:
+	target_hbox.add_theme_constant_override(&\"separation\", config.row_spacing - 100)
+
+
+
+# first wait a small time
+await me.get_tree().create_timer(0.1).timeout
+
+# create a overlay that makes the other buttons not pressable
+var overlay = Control.new()
+me.get_tree().root.add_child(overlay)
+overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+overlay.mouse_filter = Control.MOUSE_FILTER_STOP
+
+# have the overlay get keyboard buttons
+overlay.focus_mode = Control.FOCUS_ALL 
+overlay.grab_focus()
+
+# the var that should get the event
+var final_event: InputEvent = null
+
+# the name that the key has (readable version)
+var key_name
+
+# keep looping untill the event is found
+while final_event == null:
+	# wait one frame to not crash by always asking the engine for new input
+	await me.get_tree().process_frame
+	# wait for input and set it
+	final_event = await overlay.gui_input 
+	
+	# normal button presses
+	if final_event is InputEventKey and final_event.is_pressed():
+		# get the name of the press
+		key_name = OS.get_keycode_string(final_event.get_keycode_with_modifiers())
+		
+		# make the UI not use this button input
+		me.get_viewport().set_input_as_handled()
+	
+	# mouse button presses
+	elif final_event is InputEventMouseButton and final_event.is_pressed():
+		# set a readable name
+		if final_event.button_index == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
+		elif final_event.button_index == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
+		elif final_event.button_index == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
+		else: key_name = \"Mouse \" + str(final_event.button_index)
+		
+		# make the UI not use this button input
+		me.get_viewport().set_input_as_handled()
+
+	else:
+		#try waiting again untill it is something that is correct
+		final_event = null
+
+# remove the overlay
+overlay.queue_free()
+
+# if you have a label and texture rect
+if target_label and rect_node:
+	# if the key to visual has this button 
+	if visual_map.has(key_name):
+		# if it does hide text and show that icon
+		target_label.text = \"\"
+		rect_node.texture = visual_map[key_name]
+	else:
+		# if not use the key name and the empty visual
+		target_label.text = \"  \" + key_name + \"  \"
+		# use a bigger texture if it is an bigger word
+		rect_node.texture = empty_visual if key_name.length() <= 4 else empty_visual_big
+
+# change the hbox seperation
+if target_hbox:
+	target_hbox.add_theme_constant_override(&\"separation\", config.row_spacing)
+
+
+
+
+# get the value to save
+var value_to_save: int = 0
+
+# set the value to save to the correct value
+if final_event is InputEventKey:
+	value_to_save = final_event.keycode
+elif final_event is InputEventMouseButton:
+	value_to_save = final_event.button_index
+
+# set the action to the new input
+SaveLoad.general_contents[\"Buttons\"][input] = value_to_save
+SaveLoad.save_general()
+
+# load the saved inputs
+SaveLoad.load_general()"
+_row_group_enabled = true
+sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_tiafu"), SubResource("Resource_vqsdn")])
+row_spacing = 115
+should_add_vertical_spacer = false
+vertical_spacer_size = 0.0
+horizontal_spacer_size = 0.0
+should_have_offset = true
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_obp4u"]
+script = ExtResource("2_w13no")
+mode = 4
+in_fade_duration = 0.5
+out_fade_duration = 0.5
+_text_group_enabled = false
+text = "Back"
+_button_group_enabled = false
+send_to = NodePath("../start_Menu")
+_row_group_enabled = true
+sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_oghqo"), SubResource("Resource_62oxb")])
+row_spacing = 264
 vertical_spacer_size = 10.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
@@ -699,7 +4320,8 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_okqb8")
-initial_menu = NodePath("start_Menu")
+initial_menu = NodePath("options_menu")
+start_fade_in = true
 
 [node name="start_Menu" parent="." unique_id=726592690 instance=ExtResource("1_aw56r")]
 layout_mode = 1
@@ -721,7 +4343,7 @@ button_press_anim = SubResource("Resource_55gc4")
 [node name="keyboard_input_menu" parent="." unique_id=156141385 instance=ExtResource("1_aw56r")]
 visible = false
 layout_mode = 1
-visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_62inh"), SubResource("Resource_vllhe"), SubResource("Resource_om5fx"), SubResource("Resource_rgr21"), SubResource("Resource_rgr21"), SubResource("Resource_rgr21"), SubResource("Resource_rgr21"), SubResource("Resource_hqo3k")])
+visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_62inh"), SubResource("Resource_vllhe"), SubResource("Resource_om5fx"), SubResource("Resource_6pcm4"), SubResource("Resource_bs0jo"), SubResource("Resource_yhgsf"), SubResource("Resource_sqlye"), SubResource("Resource_obp4u"), SubResource("Resource_hqo3k")])
 button_press_anim = SubResource("Resource_55gc4")
 
 [node name="achievement_menu" parent="." unique_id=1311632692 instance=ExtResource("1_aw56r")]
