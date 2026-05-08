@@ -30,7 +30,6 @@ out_fade_duration = 0.0
 _text_group_enabled = false
 font_size = 30
 _button_group_enabled = false
-ready_function = null
 vertical_spacer_size = 80.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
@@ -40,7 +39,6 @@ mode = 2
 _text_group_enabled = false
 font_size = 30
 _button_group_enabled = false
-ready_function = null
 _texture_group_enabled = true
 texture = ExtResource("4_w13no")
 texture_scale = Vector2(0.95, 0.95)
@@ -52,7 +50,6 @@ script = ExtResource("2_w13no")
 text = "Start Game"
 font_size = 30
 send_to = NodePath("../play_menu")
-ready_function = null
 vertical_spacer_size = 25.0
 should_add_horizontal_spacer = true
 horizontal_spacer_size = 100.0
@@ -63,7 +60,6 @@ script = ExtResource("2_w13no")
 text = "Options"
 font_size = 30
 send_to = NodePath("../options_menu")
-ready_function = null
 vertical_spacer_size = 25.0
 should_add_horizontal_spacer = true
 horizontal_spacer_size = 100.0
@@ -73,7 +69,6 @@ metadata/_custom_type_script = "uid://54ijfc61lomj"
 script = ExtResource("2_w13no")
 text = "Achievements"
 font_size = 30
-ready_function = null
 vertical_spacer_size = 25.0
 should_add_horizontal_spacer = true
 horizontal_spacer_size = 100.0
@@ -83,7 +78,6 @@ metadata/_custom_type_script = "uid://54ijfc61lomj"
 script = ExtResource("2_w13no")
 text = "Extras"
 font_size = 30
-ready_function = null
 vertical_spacer_size = 25.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
@@ -92,7 +86,6 @@ script = ExtResource("2_w13no")
 text = "Quit Game"
 font_size = 30
 send_to = NodePath("../quit_menu")
-ready_function = null
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_55gc4"]
@@ -100,7 +93,6 @@ script = ExtResource("2_w13no")
 mode = 3
 _text_group_enabled = false
 _button_group_enabled = false
-ready_function = null
 _texture_group_enabled = true
 texture_scale = Vector2(0.5, 0.5)
 _anim_texture_group_enabled = true
@@ -113,7 +105,6 @@ in_fade_duration = 0.5
 out_fade_duration = 0.5
 text = "Back"
 send_to = NodePath("../start_Menu")
-ready_function = null
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_5pew3"]
@@ -123,7 +114,6 @@ in_fade_duration = 0.0
 out_fade_duration = 0.0
 _text_group_enabled = false
 _button_group_enabled = false
-ready_function = null
 vertical_spacer_size = 130.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
@@ -134,7 +124,6 @@ text = "Options"
 font_size = 48
 _button_group_enabled = false
 send_to = NodePath("../start_Menu")
-ready_function = null
 should_add_vertical_spacer = false
 vertical_spacer_size = 0.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
@@ -148,7 +137,6 @@ in_start_delay = 0.07
 out_start_delay = 0.07
 _text_group_enabled = false
 _button_group_enabled = false
-ready_function = null
 _texture_group_enabled = true
 texture_scale = Vector2(0.8, 0.8)
 _anim_texture_group_enabled = true
@@ -162,7 +150,6 @@ script = ExtResource("2_w13no")
 in_start_delay = 0.17
 out_start_delay = 0.17
 text = "Video"
-ready_function = null
 vertical_spacer_size = 55.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
@@ -172,7 +159,6 @@ in_start_delay = 0.17
 out_start_delay = 0.17
 text = "Keyboard"
 send_to = NodePath("../keyboard_input_menu")
-ready_function = null
 vertical_spacer_size = 500.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
@@ -182,7 +168,6 @@ in_fade_duration = 0.5
 out_fade_duration = 0.5
 text = "Back"
 send_to = NodePath("../start_Menu")
-ready_function = null
 should_add_vertical_spacer = false
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
@@ -193,7 +178,6 @@ in_fade_duration = 0.0
 out_fade_duration = 0.0
 _text_group_enabled = false
 _button_group_enabled = false
-ready_function = null
 vertical_spacer_size = 120.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
@@ -204,7 +188,6 @@ text = "Keyboard"
 font_size = 48
 _button_group_enabled = false
 send_to = NodePath("../start_Menu")
-ready_function = null
 should_add_vertical_spacer = false
 vertical_spacer_size = 0.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
@@ -218,7 +201,6 @@ in_start_delay = 0.07
 out_start_delay = 0.07
 _text_group_enabled = false
 _button_group_enabled = false
-ready_function = null
 _texture_group_enabled = true
 texture_scale = Vector2(0.8, 0.8)
 _anim_texture_group_enabled = true
@@ -235,7 +217,6 @@ full_width = false
 text = "Up"
 font_size = 28
 _button_group_enabled = false
-ready_function = null
 should_have_offset = true
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
@@ -246,7 +227,6 @@ full_width = false
 text = "W"
 font_size = 17
 _button_group_enabled = false
-ready_function = null
 should_have_offset = true
 offset = Vector2(-1, 6)
 metadata/_custom_type_script = "uid://54ijfc61lomj"
@@ -257,7 +237,6 @@ mode = 2
 full_width = false
 _text_group_enabled = false
 _button_group_enabled = false
-ready_function = null
 _texture_group_enabled = true
 texture = ExtResource("21_55gc4")
 texture_scale = Vector2(0.6, 0.6)
@@ -269,10 +248,10 @@ mode = 6
 full_width = false
 _text_group_enabled = false
 _button_group_enabled = false
-ready_function = null
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_kexv5"), SubResource("Resource_sqr72")])
 row_spacing = 0
+should_have_offset = true
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_jq4vk"]
@@ -282,8 +261,15 @@ full_width = false
 _text_group_enabled = false
 ready_function = "# the input this searches for
 var input: StringName = &\"Attack\"
+var input_name: StringName = input
 var key_name: String
 var events
+
+
+# wait
+await ctx[0].get_tree().process_frame
+await ctx[0].get_tree().create_timer(1).timeout
+await ctx[0].get_tree().process_frame
 
 # get if there are input key(s)
 if not InputMap.has_action(input):
@@ -401,11 +387,11 @@ while nodes_to_check.size() > 0:
 	nodes_to_check.append_array(current.get_children())
 
 
-await ctx[0].get_tree().create_timer(1).timeout
 
-print(\"KEY NAME: \", key_name)
-print(\"LABEL FOUND: \", target_label_1)
-print(\"RECT FOUND: \", rect_node)
+
+#print(\"KEY NAME: \", key_name)
+#print(\"LABEL FOUND: \", target_label_1)
+#print(\"RECT FOUND: \", rect_node)
 
 # if you have a label and texture rect
 if target_label_1 and rect_node:
@@ -422,12 +408,23 @@ if target_label_1 and rect_node:
 
 # set the input name
 if target_label_2:
-	target_label_2.text = input
+	target_label_2.text = input_name
 
 # change the hbox seperation
 if target_hbox:
-	target_hbox.add_theme_constant_override(&\"separation\", config.row_spacing)"
-pressed_function = "# get this node
+	target_hbox.add_theme_constant_override(&\"separation\", config.row_spacing)
+
+
+
+
+
+while true:
+	await ctx[0].get_tree().create_timer(5).timeout
+	print(InputMap.action_get_events(input))"
+pressed_function = "# the input this searches for
+var input: StringName = &\"Attack\"
+
+# get this node
 var me = ctx[2]
 var config = ctx[1]
 # set this node as the initial node you should check
@@ -546,6 +543,10 @@ while final_event == null:
 		
 		# make the UI not use this button input
 		me.get_viewport().set_input_as_handled()
+		
+		# get a clean final event
+		final_event = final_event.duplicate()
+		final_event.pressed = false
 	
 	# mouse button presses
 	elif final_event is InputEventMouseButton and final_event.is_pressed():
@@ -557,6 +558,15 @@ while final_event == null:
 		
 		# make the UI not use this button input
 		me.get_viewport().set_input_as_handled()
+		
+		
+		# get a clean final event
+		final_event = final_event.duplicate()
+		final_event.pressed = false
+		final_event.position = Vector2.ZERO
+		final_event.global_position = Vector2.ZERO
+		final_event.button_mask = 0
+		final_event.double_click = false
 
 	else:
 		#try waiting again untill it is something that is correct
@@ -580,7 +590,13 @@ if target_label and rect_node:
 
 # change the hbox seperation
 if target_hbox:
-	target_hbox.add_theme_constant_override(&\"separation\", config.row_spacing)"
+	target_hbox.add_theme_constant_override(&\"separation\", config.row_spacing)
+
+
+
+# set the action to the new input
+InputMap.action_erase_events(input)
+InputMap.action_add_event(input, final_event)"
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_saxcl"), SubResource("Resource_er0lx")])
 row_spacing = 350
@@ -598,7 +614,6 @@ _text_group_enabled = false
 text = "Back"
 _button_group_enabled = false
 send_to = NodePath("../start_Menu")
-ready_function = null
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_jq4vk"), SubResource("Resource_jq4vk")])
 row_spacing = 200
@@ -611,7 +626,6 @@ in_fade_duration = 0.5
 out_fade_duration = 0.5
 text = "Back"
 send_to = NodePath("../start_Menu")
-ready_function = null
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_ye08n"]
@@ -621,7 +635,6 @@ in_start_delay = 0.17
 out_start_delay = 0.17
 _text_group_enabled = false
 _button_group_enabled = false
-ready_function = null
 vertical_spacer_size = 360.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
@@ -634,7 +647,6 @@ in_start_delay = 0.07
 out_start_delay = 0.07
 _text_group_enabled = false
 _button_group_enabled = false
-ready_function = null
 _texture_group_enabled = true
 texture_scale = Vector2(0.55, 0.55)
 _anim_texture_group_enabled = true
@@ -649,7 +661,6 @@ mode = 1
 text = "Quit Game?"
 font_size = 37
 _button_group_enabled = false
-ready_function = null
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_vxt2s"]
@@ -657,7 +668,6 @@ script = ExtResource("2_w13no")
 in_start_delay = 0.17
 out_start_delay = 0.17
 text = "Yes"
-ready_function = null
 pressed_function = "# dissable all the buttons
 ctx[0].toggle_buttons(false)
 
@@ -677,7 +687,6 @@ in_start_delay = 0.17
 out_start_delay = 0.17
 text = "No"
 send_to = NodePath("../start_Menu")
-ready_function = null
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [node name="MenuHolder" type="Control" unique_id=1637527713 node_paths=PackedStringArray("initial_menu")]
@@ -693,7 +702,6 @@ script = ExtResource("1_okqb8")
 initial_menu = NodePath("start_Menu")
 
 [node name="start_Menu" parent="." unique_id=726592690 instance=ExtResource("1_aw56r")]
-visible = false
 layout_mode = 1
 visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_ayfdy"), SubResource("Resource_5puos"), SubResource("Resource_vxmfm"), SubResource("Resource_gge7p"), SubResource("Resource_mxu3d"), SubResource("Resource_4cth6"), SubResource("Resource_jeomw")])
 button_press_anim = SubResource("Resource_55gc4")
@@ -711,6 +719,7 @@ visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_5pew3"), SubResou
 button_press_anim = SubResource("Resource_55gc4")
 
 [node name="keyboard_input_menu" parent="." unique_id=156141385 instance=ExtResource("1_aw56r")]
+visible = false
 layout_mode = 1
 visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_62inh"), SubResource("Resource_vllhe"), SubResource("Resource_om5fx"), SubResource("Resource_rgr21"), SubResource("Resource_rgr21"), SubResource("Resource_rgr21"), SubResource("Resource_rgr21"), SubResource("Resource_hqo3k")])
 button_press_anim = SubResource("Resource_55gc4")
