@@ -20,7 +20,19 @@ var full_general_save_path: String
 ## the save that you have when there are no given new values (the backup) [br]
 ## This one is for the general game stuff like: settings
 var DEFAULT_GENERAL_SAVE: Dictionary = {
-	"cheese": true,
+	"Buttons": {
+		&"ZoomIn"       : MOUSE_BUTTON_WHEEL_UP   ,
+		&"ZoomOut"      : MOUSE_BUTTON_WHEEL_DOWN ,
+		&"ChangeCamera" : KEY_F1                  ,
+		&"MoveLeft"     : KEY_A                   ,
+		&"MoveRight"    : KEY_D                   ,
+		&"MoveForward"  : KEY_W                   ,
+		&"MoveBackward" : KEY_S                   ,
+		&"Attack"       : MOUSE_BUTTON_LEFT       ,
+		&"Jump"         : KEY_SPACE               ,
+		&"Dash"         : KEY_SHIFT               ,
+	},
+	
 }
 
 ## the save that you have when there are no given new values (the backup) [br]
@@ -133,6 +145,39 @@ func _load(path: String, loading_content: Dictionary) -> Dictionary:
 	
 	# return the new loaded values
 	return parsed
+
+
+
+
+## loads the buttons to the correct new code
+func _load_keys() -> void:
+	# get the buttons from the save dict
+	var buttons: Dictionary = general_contents["Buttons"]
+	
+	# go through every action
+	for action in buttons:
+		# get the input key
+		var input_key = buttons[action]
+		
+		# make a var for the event
+		var final_event: InputEvent
+		
+		# mouse buttons
+		if input_key >= MOUSE_BUTTON_LEFT and input_key <= MOUSE_BUTTON_WHEEL_RIGHT:
+			# make a new mouse event
+			var mouse_event := InputEventMouseButton.new()
+			mouse_event.button_index = input_key
+			final_event = mouse_event
+		
+		# keyboard keys
+		else:
+			var key_event := InputEventKey.new()
+			key_event.keycode = input_key
+			final_event = key_event
+		
+		# replace old binds
+		InputMap.action_erase_events(action)
+		InputMap.action_add_event(action, final_event)
 #endregion
 
 

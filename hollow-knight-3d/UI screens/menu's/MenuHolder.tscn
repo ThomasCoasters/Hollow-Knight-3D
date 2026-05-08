@@ -599,7 +599,7 @@ InputMap.action_erase_events(input)
 InputMap.action_add_event(input, final_event)"
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_saxcl"), SubResource("Resource_er0lx")])
-row_spacing = 350
+row_spacing = 250
 should_add_vertical_spacer = false
 vertical_spacer_size = 0.0
 horizontal_spacer_size = 0.0
@@ -616,7 +616,7 @@ _button_group_enabled = false
 send_to = NodePath("../start_Menu")
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_jq4vk"), SubResource("Resource_jq4vk")])
-row_spacing = 200
+row_spacing = 300
 vertical_spacer_size = 10.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 

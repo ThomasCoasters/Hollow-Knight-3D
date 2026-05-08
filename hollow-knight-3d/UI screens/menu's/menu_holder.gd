@@ -8,6 +8,8 @@ extends Control
 ## the menu that will start as active
 @export var initial_menu: Menu
 
+## if the opening anim should play on the starting
+@export var start_fade_in: bool = false
 
 
 func _ready() -> void:
@@ -15,7 +17,7 @@ func _ready() -> void:
 	_bind_menu_signals()
 	
 	# open the initial menu
-	open_menu(initial_menu, false)
+	open_menu(initial_menu, start_fade_in)
 
 
 ## hides all menus and shows the selected menu after
