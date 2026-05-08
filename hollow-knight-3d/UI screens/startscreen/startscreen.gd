@@ -1,5 +1,3 @@
-@tool
-
 ## the screen you will see when you start the game
 class_name startscreen
 extends Control

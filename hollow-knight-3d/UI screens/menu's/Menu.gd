@@ -1,5 +1,3 @@
-@tool
-
 ## a menu that is displayed in the startscreen or pausescreen
 class_name Menu
 extends Control

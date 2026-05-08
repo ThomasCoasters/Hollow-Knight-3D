@@ -1,5 +1,11 @@
 extends Node
 
+## if the save should be reset on start
+const RESET_ON_LOAD: bool = false
+
+
+
+
 ## the location from where everything is saved
 const start_save_location: String = "user://"
 
@@ -60,6 +66,12 @@ func _ready() -> void:
 	# set the general save path
 	full_general_save_path = start_save_location + general_save_name + save_type
 	
+	
+	# resets all saves when loading if that is turned on
+	if RESET_ON_LOAD:
+		reset_all_saves()
+	
+	
 	# load the general save
 	load_general()
 
@@ -77,6 +89,11 @@ func load_general() -> void:
 	
 	# set the loading contents given to the loaded values
 	general_contents.merge(loaded, true)
+	
+	# load the keys
+	_load_keys()
+
+
 #endregion
 
 #region slot save
@@ -156,8 +173,8 @@ func _load_keys() -> void:
 	
 	# go through every action
 	for action in buttons:
-		# get the input key
-		var input_key = buttons[action]
+		# get the input key (as an int)
+		var input_key = int(buttons[action])
 		
 		# make a var for the event
 		var final_event: InputEvent
@@ -165,19 +182,27 @@ func _load_keys() -> void:
 		# mouse buttons
 		if input_key >= MOUSE_BUTTON_LEFT and input_key <= MOUSE_BUTTON_WHEEL_RIGHT:
 			# make a new mouse event
-			var mouse_event := InputEventMouseButton.new()
-			mouse_event.button_index = input_key
+			var mouse_event: InputEventMouseButton = InputEventMouseButton.new()
+			# set the index for the event to the key
+			mouse_event.button_index = input_key as MouseButton
+			# set the final event to this mouse button event
 			final_event = mouse_event
 		
 		# keyboard keys
 		else:
-			var key_event := InputEventKey.new()
-			key_event.keycode = input_key
+			# create a new key event
+			var key_event: InputEventKey = InputEventKey.new()
+			# set the key to the new event
+			key_event.keycode = input_key as Key
+			# set the new event to the final event
 			final_event = key_event
 		
-		# replace old binds
-		InputMap.action_erase_events(action)
-		InputMap.action_add_event(action, final_event)
+		
+		# check if there is a final event
+		if final_event:
+			# replace old keybinds
+			InputMap.action_erase_events(action)
+			InputMap.action_add_event(action, final_event)
 #endregion
 
 

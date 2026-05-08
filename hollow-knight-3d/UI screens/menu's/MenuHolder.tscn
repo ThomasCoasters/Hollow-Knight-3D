@@ -543,10 +543,6 @@ while final_event == null:
 		
 		# make the UI not use this button input
 		me.get_viewport().set_input_as_handled()
-		
-		# get a clean final event
-		final_event = final_event.duplicate()
-		final_event.pressed = false
 	
 	# mouse button presses
 	elif final_event is InputEventMouseButton and final_event.is_pressed():
@@ -558,15 +554,6 @@ while final_event == null:
 		
 		# make the UI not use this button input
 		me.get_viewport().set_input_as_handled()
-		
-		
-		# get a clean final event
-		final_event = final_event.duplicate()
-		final_event.pressed = false
-		final_event.position = Vector2.ZERO
-		final_event.global_position = Vector2.ZERO
-		final_event.button_mask = 0
-		final_event.double_click = false
 
 	else:
 		#try waiting again untill it is something that is correct
@@ -594,9 +581,22 @@ if target_hbox:
 
 
 
+
+# get the value to save
+var value_to_save: int = 0
+
+# set the value to save to the correct value
+if final_event is InputEventKey:
+	value_to_save = final_event.keycode
+elif final_event is InputEventMouseButton:
+	value_to_save = final_event.button_index
+
 # set the action to the new input
-InputMap.action_erase_events(input)
-InputMap.action_add_event(input, final_event)"
+SaveLoad.general_contents[\"Buttons\"][input] = value_to_save
+SaveLoad.save_general()
+
+# load the saved inputs
+SaveLoad.load_general()"
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_saxcl"), SubResource("Resource_er0lx")])
 row_spacing = 250

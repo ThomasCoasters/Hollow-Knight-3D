@@ -1,5 +1,3 @@
-@tool
-
 ## the node that holds all of the menus
 class_name menu_holder
 extends Control
