@@ -144,7 +144,8 @@ enum Mode {
 @export_group("button settings")
 ## if this group is enabled IGNORE THIS VAR
 @export_custom(PROPERTY_HINT_GROUP_ENABLE, "") var _button_group_enabled: bool = true
-
+## offset that the hover visuals should have
+@export var hover_offset: Array[Vector2] = [Vector2(-40, -4), Vector2(40, -4)]
 ## the menu this will open when pressed
 @export var send_to: NodePath
 ## a lambda function that will run when the button is created.

@@ -18,6 +18,10 @@ signal menu_button_pressed(config: MenuConfigRecource, menu: Menu)
 ## settings for the animation when pressing a button
 @export var button_press_anim: MenuConfigRecource
 
+## settings for the animation that plays when the button is hovered[br]
+## plays on the side with an offset and other side fliped
+@export var button_hover_anim: MenuConfigRecource
+
 ## the max amount of columns this node can have
 @export var max_columns: int = 1
 
@@ -338,6 +342,9 @@ func _create_button_visual(config: MenuConfigRecource) -> Button:
 	# make the text visuals
 	_build_text_visual(button, config)
 	
+	# make the hover fx
+	_build_button_hover_anim(button, config)
+	
 	# change the button to have an invis bg
 	button = _build_invis_button_bg(button)
 	
@@ -490,6 +497,150 @@ func _build_invis_button_bg(button: Button) -> Button:
 
 
 
+## builds the hover animation visuals
+func _build_button_hover_anim(button: Button, config: MenuConfigRecource) -> void:
+	# check if there is no anim given
+	if button_hover_anim.anim_frames.is_empty():
+		# build nothing
+		return
+	
+	
+	
+	# store refrences to the sprites
+	var hover_sprites: Array[AnimatedSprite2D] = []
+	# also store wrappers
+	var hover_wrappers: Array[Control] = []
+	
+	
+	# updates the hover position of the hover wrapers
+	var update_hover_positions = func():
+		# wait one frame so layout is valid
+		await get_tree().process_frame
+		
+		# get the frame size
+		var frame_size := button_hover_anim.anim_frames[0].get_size()
+		frame_size *= button_hover_anim.texture_scale
+		
+		# update all sprites
+		for i in hover_sprites.size():
+			var sprite := hover_sprites[i]
+			
+			# LEFT
+			if i == 0:
+				sprite.position = Vector2(
+					config.hover_offset[i].x,
+					button.size.y / 2.0 + config.hover_offset[i].y
+				)
+			
+			# RIGHT
+			else:
+				sprite.position = Vector2(
+					button.size.x + config.hover_offset[i].x,
+					button.size.y / 2.0 + config.hover_offset[i].y
+				)
+			
+			# center properly
+			sprite.position -= frame_size / 2.0
+	
+	
+	
+	
+	
+	# create the hover visuals
+	for i in 2:
+		# create a wrapper
+		var wrapper := Control.new()
+		
+		# make the wrapper not steal inputs
+		wrapper.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		
+		# make the wraper full rect so positioning is correct
+		wrapper.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		
+		# create the sprite
+		var sprite := AnimatedSprite2D.new()
+		
+		# setup the sprite's frames
+		sprite.sprite_frames = _build_sprite_frames(button_hover_anim)
+		sprite.animation = "default"
+		
+		# set the scale
+		sprite.scale = button_hover_anim.texture_scale
+		
+		# flip the right animation
+		if i == 1:
+			sprite.flip_h = true
+		
+		# start invis and frame 0
+		sprite.frame = 0
+		sprite.stop()
+		sprite.visible = false
+		
+		# add the sprite
+		wrapper.add_child(sprite)
+		
+		# add the wrapper
+		button.add_child(wrapper)
+		
+		
+		update_hover_positions.call()
+		
+		# store the sprite
+		hover_sprites.append(sprite)
+		# also store wrapper
+		hover_wrappers.append(wrapper)
+	
+	
+	# runs when you hover the button
+	button.mouse_entered.connect(func():
+		# get the sprites
+		for sprite in hover_sprites:
+			# make visible
+			sprite.visible = true
+			
+			# play anim forward from corrent frame
+			sprite.play()
+	)
+	
+	
+	# runs when you un-hover the button
+	button.mouse_exited.connect(func():
+		# get every animation again
+		for sprite in hover_sprites:
+			# play the anim backwards from the current frame
+			sprite.play_backwards()
+	)
+	
+	
+	# get all the sprites
+	for sprite in hover_sprites:
+		# runs when the sprite's frame changes
+		sprite.frame_changed.connect(func():
+			# if the button is currently not hovered (anim is played in reverse)
+			if not button.is_hovered():
+				# check if the frame is the first one 0
+				if sprite.frame == 0:
+					# stop the anim
+					sprite.stop()
+					# make the sprite invis
+					sprite.visible = false
+		)
+	
+	# when the button is resized
+	button.resized.connect(func():
+		# update the hover positions
+		update_hover_positions.call()
+	)
+
+
+
+
+
+
+
+
+
+
 
 ## creates a container and populate it with sub-elements while having it work like a button
 func _create_button_row_visual(config: MenuConfigRecource) -> Button:
@@ -498,6 +649,9 @@ func _create_button_row_visual(config: MenuConfigRecource) -> Button:
 	
 	# make the text visuals
 	_build_text_visual(row_button, config)
+	
+	# make the hover fx
+	_build_button_hover_anim(row_button, config)
 	
 	# change the button to have an invis bg
 	row_button = _build_invis_button_bg(row_button)
@@ -586,6 +740,17 @@ func toggle_buttons(disable: bool) -> void:
 		
 		# if it is a button set the enable to the given value
 		button.disabled = disable
+
+
+
+
+
+
+
+
+
+
+
 
 
 
