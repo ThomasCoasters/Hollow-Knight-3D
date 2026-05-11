@@ -42,7 +42,6 @@ out_fade_duration = 0.0
 _text_group_enabled = false
 font_size = 30
 _button_group_enabled = false
-hover_offset = null
 vertical_spacer_size = 80.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
@@ -52,7 +51,6 @@ mode = 2
 _text_group_enabled = false
 font_size = 30
 _button_group_enabled = false
-hover_offset = null
 _texture_group_enabled = true
 texture = ExtResource("4_w13no")
 texture_scale = Vector2(0.95, 0.95)
@@ -107,7 +105,6 @@ script = ExtResource("2_w13no")
 mode = 3
 _text_group_enabled = false
 _button_group_enabled = false
-hover_offset = null
 _texture_group_enabled = true
 texture_scale = Vector2(0.5, 0.5)
 _anim_texture_group_enabled = true
@@ -142,7 +139,6 @@ in_fade_duration = 0.0
 out_fade_duration = 0.0
 _text_group_enabled = false
 _button_group_enabled = false
-hover_offset = null
 vertical_spacer_size = 130.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
@@ -152,7 +148,6 @@ mode = 1
 text = "Options"
 font_size = 48
 _button_group_enabled = false
-hover_offset = null
 send_to = NodePath("../start_Menu")
 should_add_vertical_spacer = false
 vertical_spacer_size = 0.0
@@ -167,7 +162,6 @@ in_start_delay = 0.07
 out_start_delay = 0.07
 _text_group_enabled = false
 _button_group_enabled = false
-hover_offset = null
 _texture_group_enabled = true
 texture_scale = Vector2(0.8, 0.8)
 _anim_texture_group_enabled = true
@@ -209,7 +203,6 @@ in_fade_duration = 0.0
 out_fade_duration = 0.0
 _text_group_enabled = false
 _button_group_enabled = false
-hover_offset = null
 vertical_spacer_size = 120.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
@@ -219,7 +212,6 @@ mode = 1
 text = "Keyboard"
 font_size = 48
 _button_group_enabled = false
-hover_offset = null
 send_to = NodePath("../start_Menu")
 should_add_vertical_spacer = false
 vertical_spacer_size = 0.0
@@ -234,7 +226,6 @@ in_start_delay = 0.07
 out_start_delay = 0.07
 _text_group_enabled = false
 _button_group_enabled = false
-hover_offset = null
 _texture_group_enabled = true
 texture_scale = Vector2(0.8, 0.8)
 _anim_texture_group_enabled = true
@@ -251,7 +242,6 @@ full_width = false
 text = "Up"
 font_size = 28
 _button_group_enabled = false
-hover_offset = null
 should_add_vertical_spacer = false
 should_have_offset = true
 metadata/_custom_type_script = "uid://54ijfc61lomj"
@@ -263,7 +253,6 @@ full_width = false
 text = "W"
 font_size = 17
 _button_group_enabled = false
-hover_offset = null
 should_have_offset = true
 offset = Vector2(-1, 6)
 metadata/_custom_type_script = "uid://54ijfc61lomj"
@@ -277,7 +266,6 @@ mode = 2
 full_width = false
 _text_group_enabled = false
 _button_group_enabled = false
-hover_offset = null
 _texture_group_enabled = true
 texture = SubResource("CompressedTexture2D_hqo3k")
 texture_scale = Vector2(0.6, 0.6)
@@ -289,7 +277,6 @@ mode = 6
 full_width = false
 _text_group_enabled = false
 _button_group_enabled = false
-hover_offset = null
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_qt6wr"), SubResource("Resource_wk02m")])
 row_spacing = 0
@@ -631,7 +618,7 @@ elif final_event is InputEventMouseButton:
 
 # set the action to the new input
 SaveLoad.general_contents[\"Buttons\"][input] = value_to_save
-SaveLoad.save_general()
+SaveLoad.save_general(false)
 
 # load the saved inputs
 SaveLoad.load_general()"
@@ -652,7 +639,6 @@ full_width = false
 text = "Up"
 font_size = 28
 _button_group_enabled = false
-hover_offset = null
 should_add_vertical_spacer = false
 should_have_offset = true
 metadata/_custom_type_script = "uid://54ijfc61lomj"
@@ -664,7 +650,6 @@ full_width = false
 text = "W"
 font_size = 17
 _button_group_enabled = false
-hover_offset = null
 should_have_offset = true
 offset = Vector2(-1, 6)
 metadata/_custom_type_script = "uid://54ijfc61lomj"
@@ -675,7 +660,6 @@ mode = 2
 full_width = false
 _text_group_enabled = false
 _button_group_enabled = false
-hover_offset = null
 _texture_group_enabled = true
 texture = ExtResource("21_55gc4")
 texture_scale = Vector2(0.6, 0.6)
@@ -687,7 +671,6 @@ mode = 6
 full_width = false
 _text_group_enabled = false
 _button_group_enabled = false
-hover_offset = null
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_kexv5"), SubResource("Resource_sqr72")])
 row_spacing = 0
@@ -1029,7 +1012,7 @@ elif final_event is InputEventMouseButton:
 
 # set the action to the new input
 SaveLoad.general_contents[\"Buttons\"][input] = value_to_save
-SaveLoad.save_general()
+SaveLoad.save_general(false)
 
 # load the saved inputs
 SaveLoad.load_general()"
@@ -1051,7 +1034,6 @@ out_fade_duration = 0.5
 _text_group_enabled = false
 text = "Back"
 _button_group_enabled = false
-hover_offset = null
 send_to = NodePath("../start_Menu")
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_adj7i"), SubResource("Resource_clipe")])
@@ -1066,7 +1048,6 @@ full_width = false
 text = "Up"
 font_size = 28
 _button_group_enabled = false
-hover_offset = null
 should_add_vertical_spacer = false
 should_have_offset = true
 metadata/_custom_type_script = "uid://54ijfc61lomj"
@@ -1078,7 +1059,6 @@ full_width = false
 text = "W"
 font_size = 17
 _button_group_enabled = false
-hover_offset = null
 should_have_offset = true
 offset = Vector2(-1, 6)
 metadata/_custom_type_script = "uid://54ijfc61lomj"
@@ -1092,7 +1072,6 @@ mode = 2
 full_width = false
 _text_group_enabled = false
 _button_group_enabled = false
-hover_offset = null
 _texture_group_enabled = true
 texture = SubResource("CompressedTexture2D_il87v")
 texture_scale = Vector2(0.6, 0.6)
@@ -1104,7 +1083,6 @@ mode = 6
 full_width = false
 _text_group_enabled = false
 _button_group_enabled = false
-hover_offset = null
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_itpb0"), SubResource("Resource_xquyn")])
 row_spacing = 0
@@ -1446,7 +1424,7 @@ elif final_event is InputEventMouseButton:
 
 # set the action to the new input
 SaveLoad.general_contents[\"Buttons\"][input] = value_to_save
-SaveLoad.save_general()
+SaveLoad.save_general(false)
 
 # load the saved inputs
 SaveLoad.load_general()"
@@ -1467,7 +1445,6 @@ full_width = false
 text = "Up"
 font_size = 28
 _button_group_enabled = false
-hover_offset = null
 should_add_vertical_spacer = false
 should_have_offset = true
 metadata/_custom_type_script = "uid://54ijfc61lomj"
@@ -1479,7 +1456,6 @@ full_width = false
 text = "W"
 font_size = 17
 _button_group_enabled = false
-hover_offset = null
 should_have_offset = true
 offset = Vector2(-1, 6)
 metadata/_custom_type_script = "uid://54ijfc61lomj"
@@ -1493,7 +1469,6 @@ mode = 2
 full_width = false
 _text_group_enabled = false
 _button_group_enabled = false
-hover_offset = null
 _texture_group_enabled = true
 texture = SubResource("CompressedTexture2D_nyj0u")
 texture_scale = Vector2(0.6, 0.6)
@@ -1505,7 +1480,6 @@ mode = 6
 full_width = false
 _text_group_enabled = false
 _button_group_enabled = false
-hover_offset = null
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_k0oey"), SubResource("Resource_phr7u")])
 row_spacing = 0
@@ -1847,7 +1821,7 @@ elif final_event is InputEventMouseButton:
 
 # set the action to the new input
 SaveLoad.general_contents[\"Buttons\"][input] = value_to_save
-SaveLoad.save_general()
+SaveLoad.save_general(false)
 
 # load the saved inputs
 SaveLoad.load_general()"
@@ -1869,7 +1843,6 @@ out_fade_duration = 0.5
 _text_group_enabled = false
 text = "Back"
 _button_group_enabled = false
-hover_offset = null
 send_to = NodePath("../start_Menu")
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_cbvuo"), SubResource("Resource_timi6")])
@@ -1884,7 +1857,6 @@ full_width = false
 text = "Up"
 font_size = 28
 _button_group_enabled = false
-hover_offset = null
 should_add_vertical_spacer = false
 should_have_offset = true
 metadata/_custom_type_script = "uid://54ijfc61lomj"
@@ -1896,7 +1868,6 @@ full_width = false
 text = "W"
 font_size = 17
 _button_group_enabled = false
-hover_offset = null
 should_have_offset = true
 offset = Vector2(-1, 6)
 metadata/_custom_type_script = "uid://54ijfc61lomj"
@@ -1910,7 +1881,6 @@ mode = 2
 full_width = false
 _text_group_enabled = false
 _button_group_enabled = false
-hover_offset = null
 _texture_group_enabled = true
 texture = SubResource("CompressedTexture2D_phr7u")
 texture_scale = Vector2(0.6, 0.6)
@@ -1922,7 +1892,6 @@ mode = 6
 full_width = false
 _text_group_enabled = false
 _button_group_enabled = false
-hover_offset = null
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_nyj0u"), SubResource("Resource_pmq4o")])
 row_spacing = 0
@@ -2264,7 +2233,7 @@ elif final_event is InputEventMouseButton:
 
 # set the action to the new input
 SaveLoad.general_contents[\"Buttons\"][input] = value_to_save
-SaveLoad.save_general()
+SaveLoad.save_general(false)
 
 # load the saved inputs
 SaveLoad.load_general()"
@@ -2285,7 +2254,6 @@ full_width = false
 text = "Up"
 font_size = 28
 _button_group_enabled = false
-hover_offset = null
 should_add_vertical_spacer = false
 should_have_offset = true
 metadata/_custom_type_script = "uid://54ijfc61lomj"
@@ -2297,7 +2265,6 @@ full_width = false
 text = "W"
 font_size = 17
 _button_group_enabled = false
-hover_offset = null
 should_have_offset = true
 offset = Vector2(-1, 6)
 metadata/_custom_type_script = "uid://54ijfc61lomj"
@@ -2311,7 +2278,6 @@ mode = 2
 full_width = false
 _text_group_enabled = false
 _button_group_enabled = false
-hover_offset = null
 _texture_group_enabled = true
 texture = SubResource("CompressedTexture2D_wuqwg")
 texture_scale = Vector2(0.6, 0.6)
@@ -2323,7 +2289,6 @@ mode = 6
 full_width = false
 _text_group_enabled = false
 _button_group_enabled = false
-hover_offset = null
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_os5ai"), SubResource("Resource_vpft0")])
 row_spacing = 0
@@ -2665,7 +2630,7 @@ elif final_event is InputEventMouseButton:
 
 # set the action to the new input
 SaveLoad.general_contents[\"Buttons\"][input] = value_to_save
-SaveLoad.save_general()
+SaveLoad.save_general(false)
 
 # load the saved inputs
 SaveLoad.load_general()"
@@ -2687,7 +2652,6 @@ out_fade_duration = 0.5
 _text_group_enabled = false
 text = "Back"
 _button_group_enabled = false
-hover_offset = null
 send_to = NodePath("../start_Menu")
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_4k48s"), SubResource("Resource_y78by")])
@@ -2702,7 +2666,6 @@ full_width = false
 text = "Up"
 font_size = 28
 _button_group_enabled = false
-hover_offset = null
 should_add_vertical_spacer = false
 should_have_offset = true
 metadata/_custom_type_script = "uid://54ijfc61lomj"
@@ -2714,7 +2677,6 @@ full_width = false
 text = "W"
 font_size = 17
 _button_group_enabled = false
-hover_offset = null
 should_have_offset = true
 offset = Vector2(-1, 6)
 metadata/_custom_type_script = "uid://54ijfc61lomj"
@@ -2728,7 +2690,6 @@ mode = 2
 full_width = false
 _text_group_enabled = false
 _button_group_enabled = false
-hover_offset = null
 _texture_group_enabled = true
 texture = SubResource("CompressedTexture2D_ay8iu")
 texture_scale = Vector2(0.6, 0.6)
@@ -2740,7 +2701,6 @@ mode = 6
 full_width = false
 _text_group_enabled = false
 _button_group_enabled = false
-hover_offset = null
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_ldbwr"), SubResource("Resource_yddqr")])
 row_spacing = 0
@@ -3082,7 +3042,7 @@ elif final_event is InputEventMouseButton:
 
 # set the action to the new input
 SaveLoad.general_contents[\"Buttons\"][input] = value_to_save
-SaveLoad.save_general()
+SaveLoad.save_general(false)
 
 # load the saved inputs
 SaveLoad.load_general()"
@@ -3103,7 +3063,6 @@ full_width = false
 text = "Up"
 font_size = 28
 _button_group_enabled = false
-hover_offset = null
 should_add_vertical_spacer = false
 should_have_offset = true
 metadata/_custom_type_script = "uid://54ijfc61lomj"
@@ -3115,7 +3074,6 @@ full_width = false
 text = "W"
 font_size = 17
 _button_group_enabled = false
-hover_offset = null
 should_have_offset = true
 offset = Vector2(-1, 6)
 metadata/_custom_type_script = "uid://54ijfc61lomj"
@@ -3129,7 +3087,6 @@ mode = 2
 full_width = false
 _text_group_enabled = false
 _button_group_enabled = false
-hover_offset = null
 _texture_group_enabled = true
 texture = SubResource("CompressedTexture2D_4ot2d")
 texture_scale = Vector2(0.6, 0.6)
@@ -3141,7 +3098,6 @@ mode = 6
 full_width = false
 _text_group_enabled = false
 _button_group_enabled = false
-hover_offset = null
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_ldxp8"), SubResource("Resource_gqyq8")])
 row_spacing = 0
@@ -3483,7 +3439,7 @@ elif final_event is InputEventMouseButton:
 
 # set the action to the new input
 SaveLoad.general_contents[\"Buttons\"][input] = value_to_save
-SaveLoad.save_general()
+SaveLoad.save_general(false)
 
 # load the saved inputs
 SaveLoad.load_general()"
@@ -3505,7 +3461,6 @@ out_fade_duration = 0.5
 _text_group_enabled = false
 text = "Back"
 _button_group_enabled = false
-hover_offset = null
 send_to = NodePath("../start_Menu")
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_bu8qj"), SubResource("Resource_ly7bb")])
@@ -3520,7 +3475,6 @@ full_width = false
 text = "Up"
 font_size = 28
 _button_group_enabled = false
-hover_offset = null
 should_add_vertical_spacer = false
 should_have_offset = true
 metadata/_custom_type_script = "uid://54ijfc61lomj"
@@ -3532,7 +3486,6 @@ full_width = false
 text = "W"
 font_size = 17
 _button_group_enabled = false
-hover_offset = null
 should_have_offset = true
 offset = Vector2(-1, 6)
 metadata/_custom_type_script = "uid://54ijfc61lomj"
@@ -3546,7 +3499,6 @@ mode = 2
 full_width = false
 _text_group_enabled = false
 _button_group_enabled = false
-hover_offset = null
 _texture_group_enabled = true
 texture = SubResource("CompressedTexture2D_kexv5")
 texture_scale = Vector2(0.6, 0.6)
@@ -3558,7 +3510,6 @@ mode = 6
 full_width = false
 _text_group_enabled = false
 _button_group_enabled = false
-hover_offset = null
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_rgr21"), SubResource("Resource_ay8iu")])
 row_spacing = 0
@@ -3900,7 +3851,7 @@ elif final_event is InputEventMouseButton:
 
 # set the action to the new input
 SaveLoad.general_contents[\"Buttons\"][input] = value_to_save
-SaveLoad.save_general()
+SaveLoad.save_general(false)
 
 # load the saved inputs
 SaveLoad.load_general()"
@@ -3921,7 +3872,6 @@ full_width = false
 text = "Up"
 font_size = 28
 _button_group_enabled = false
-hover_offset = null
 should_add_vertical_spacer = false
 should_have_offset = true
 metadata/_custom_type_script = "uid://54ijfc61lomj"
@@ -3933,7 +3883,6 @@ full_width = false
 text = "W"
 font_size = 17
 _button_group_enabled = false
-hover_offset = null
 should_have_offset = true
 offset = Vector2(-1, 6)
 metadata/_custom_type_script = "uid://54ijfc61lomj"
@@ -3947,7 +3896,6 @@ mode = 2
 full_width = false
 _text_group_enabled = false
 _button_group_enabled = false
-hover_offset = null
 _texture_group_enabled = true
 texture = SubResource("CompressedTexture2D_n2ux7")
 texture_scale = Vector2(0.6, 0.6)
@@ -3959,7 +3907,6 @@ mode = 6
 full_width = false
 _text_group_enabled = false
 _button_group_enabled = false
-hover_offset = null
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_5iw2t"), SubResource("Resource_fshbq")])
 row_spacing = 0
@@ -4301,7 +4248,7 @@ elif final_event is InputEventMouseButton:
 
 # set the action to the new input
 SaveLoad.general_contents[\"Buttons\"][input] = value_to_save
-SaveLoad.save_general()
+SaveLoad.save_general(false)
 
 # load the saved inputs
 SaveLoad.load_general()"
@@ -4322,7 +4269,6 @@ out_fade_duration = 0.5
 _text_group_enabled = false
 text = "Back"
 _button_group_enabled = false
-hover_offset = null
 send_to = NodePath("../start_Menu")
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_oghqo"), SubResource("Resource_62oxb")])
@@ -4333,7 +4279,6 @@ metadata/_custom_type_script = "uid://54ijfc61lomj"
 [sub_resource type="Resource" id="Resource_hqo3k"]
 script = ExtResource("2_w13no")
 text = "Back"
-hover_offset = null
 send_to = NodePath("../options_menu")
 should_add_vertical_spacer = false
 metadata/_custom_type_script = "uid://54ijfc61lomj"
@@ -4345,7 +4290,6 @@ in_start_delay = 0.17
 out_start_delay = 0.17
 _text_group_enabled = false
 _button_group_enabled = false
-hover_offset = null
 vertical_spacer_size = 360.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
@@ -4358,7 +4302,6 @@ in_start_delay = 0.07
 out_start_delay = 0.07
 _text_group_enabled = false
 _button_group_enabled = false
-hover_offset = null
 _texture_group_enabled = true
 texture_scale = Vector2(0.55, 0.55)
 _anim_texture_group_enabled = true
@@ -4373,7 +4316,6 @@ mode = 1
 text = "Quit Game?"
 font_size = 37
 _button_group_enabled = false
-hover_offset = null
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_vxt2s"]
@@ -4381,15 +4323,42 @@ script = ExtResource("2_w13no")
 in_start_delay = 0.17
 out_start_delay = 0.17
 text = "Yes"
-hover_offset = null
-pressed_function = "# dissable all the buttons
+pressed_function = "# get this node
+var me = ctx[2]
+
+# dissable all the buttons
 ctx[0].toggle_buttons(false)
+
+# track what signal is completed
+var state := {
+	\"save_done\": false,
+	\"transition_done\": false
+}
+
+# create listeners for when the signals are finished
+SaveLoad.save_exited.connect(func(_path):
+	state.save_done = true
+, CONNECT_ONE_SHOT)
+
+transition.on_transition_finished.connect(func():
+	state.transition_done = true
+, CONNECT_ONE_SHOT)
+
+
+# save the general settings
+SaveLoad.save_general()
 
 # play the transition
 transition.play_transition(false, true)
 
-# wait untill transition is finished
-await transition.on_transition_finished
+
+# wait until both signals are done
+while not state.save_done or not state.transition_done:
+	await me.get_tree().process_frame
+
+# wait a small extra amount to let the save animation finish
+await me.get_tree().create_timer(0.7).timeout
+
 
 # quit the game using the Menu
 ctx[0].get_tree().quit()"
@@ -4400,7 +4369,6 @@ script = ExtResource("2_w13no")
 in_start_delay = 0.17
 out_start_delay = 0.17
 text = "No"
-hover_offset = null
 send_to = NodePath("../start_Menu")
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
@@ -4414,8 +4382,7 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_okqb8")
-initial_menu = NodePath("options_menu")
-start_fade_in = true
+initial_menu = NodePath("start_Menu")
 
 [node name="start_Menu" parent="." unique_id=726592690 instance=ExtResource("1_aw56r")]
 layout_mode = 1

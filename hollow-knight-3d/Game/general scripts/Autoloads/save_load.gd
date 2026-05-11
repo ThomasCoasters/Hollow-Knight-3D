@@ -57,6 +57,21 @@ var current_game_contents: Dictionary = DEFAULT_GAME_SAVE.duplicate(true)
 
 
 
+
+
+
+## called when the save is finished
+signal save_finished(path: String)
+## called when something went wrong with saving
+signal save_failed(path: String)
+## calles when the saving is stoped by completion or error
+signal save_exited(path: String)
+
+
+## if the save is currently saving something (stop overlapping)
+var is_saving: bool = false
+
+
 func _ready() -> void:
 	# check if the "Saves" folder does not exists
 	if not DirAccess.dir_exists_absolute("user://Saves"):
@@ -78,8 +93,8 @@ func _ready() -> void:
 
 #region general
 ## saves the general game stuff but not the game's state
-func save_general() -> void:
-	_save(full_general_save_path, general_contents)
+func save_general(show_visual: bool = true) -> void:
+	_save(full_general_save_path, general_contents, show_visual)
 
 
 ## loads the general game stuff but not the game's state
@@ -123,15 +138,40 @@ func load_game_slot(slot_number: int) -> void:
 
 #region core
 ## save the given content to the given location
-func _save(path: String, save_contents: Dictionary) -> void:
+func _save(path: String, save_contents: Dictionary, show_visual: bool = true) -> void:
+	# stop overlapping saves
+	if is_saving:
+		await save_finished
+	
+	# play the saving animation if you should
+	if show_visual: transition.play_save_anim()
+	
+	# set that is currently saving
+	is_saving = true
+	
 	# get the file
 	var file = FileAccess.open(path, FileAccess.WRITE)
+	
+	# check if the file exists
+	if file == null:
+		# call the saved failed and stop saving
+		is_saving = false
+		save_failed.emit(path)
+		save_exited.emit(path)
+		return
+	
 	# get the data as an JSON string
 	var json_string: String = JSON.stringify(save_contents, "\t")
 	# store the values in the file as text
 	file.store_string(json_string)
 	# stop storing stuff in the file, so close it
 	file.close()
+	
+	
+	# stop the saving and emit the completion
+	is_saving = false
+	save_finished.emit(path)
+	save_exited.emit(path)
 
 
 ## loads the given content from the given path. [br]

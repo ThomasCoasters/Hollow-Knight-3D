@@ -7,6 +7,10 @@ signal on_transition_finished
 @onready var color_rect: ColorRect = $ColorRect
 ## the animation player that determines the visibility of the transition color rect
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
+## the animated sprite that plays animations for stuff like loading or saving
+@onready var textures: AnimatedSprite2D = %textures
+## the current animation for the texture
+var _current_tex_anim: StringName
 
 
 ## if the animation should fade to normal during after finishing fading in
@@ -21,6 +25,9 @@ func _ready() -> void:
 	color_rect.visible = false
 	# run the animation finished when the animation is finished
 	animation_player.animation_finished.connect(_on_animation_finished)
+	
+	# make the anim invis
+	textures.modulate.a = 0
 
 
 
@@ -67,3 +74,45 @@ func play_transition(in_and_out: bool = true, fade_in: bool = true) -> void:
 	# get the correct animation for this setting and play it
 	var anim: StringName = &"fade_to_black" if fade_in else &"fade_to_normal"
 	animation_player.play(anim)
+
+
+
+
+
+
+## plays the save anim untill the save is saving
+func play_save_anim() -> void:
+	# make the animation visible
+	textures.modulate.a = 1
+	
+	# start the save intro animation
+	textures.play(&"save_intro")
+	_current_tex_anim = &"save_intro"
+	
+	# wait untill the save is finished
+	await SaveLoad.save_exited
+	
+	# check if the current animation is the saving intro
+	if _current_tex_anim == &"save_intro":
+		# wait untill the animation is finished
+		await textures.animation_finished
+	
+	# set the current animation to the exit
+	textures.play(&"save_exit")
+	_current_tex_anim = &"save_exit"
+
+
+
+# ran when the animation for stuff like saving or loading is finished
+func _on_textures_animation_finished() -> void:
+	# check what the finished animation was
+	match _current_tex_anim:
+		# if it was the save into play the loop
+		&"save_intro":
+			# start the save looping animation
+			textures.play(&"save_pingpong")
+			_current_tex_anim = &"save_pingpong"
+		# if the finished anim is the exit hide the visual
+		&"save_exit":
+			# make invis
+			textures.modulate.a = 0
