@@ -131,6 +131,10 @@ func _create_visual(config: MenuConfigRecource) -> Control:
 		config.Mode.BUTTON_ROW:
 			control = _create_button_row_visual(config)
 		
+		# if the config is an slider
+		config.Mode.SLIDER:
+			control = _create_slider_visual(config)
+		
 		# if there is a NONE node just make a new control
 		config.Mode.NONE:
 			control = _create_empty_node(config)
@@ -417,12 +421,32 @@ func _create_row_visual(config: MenuConfigRecource) -> HBoxContainer:
 
 ## builds sub elements
 func _build_sub_elements(parent: Control, config: MenuConfigRecource) -> Control:
-	# add the sub elements
-	for sub_cfg in config.sub_configs:
-		# create element
-		var element = _create_visual(sub_cfg) # can make more rows inside this row
-		# add the element
+	# go through every sub config
+	for i in config.sub_configs.size():
+		# get the current sub config
+		var sub_cfg: MenuConfigRecource = config.sub_configs[i]
+		# create the visual
+		var element: Control = _create_visual(sub_cfg)
+		# add the visual
 		parent.add_child(element)
+		
+		
+		# get if this is the last one
+		var is_last: bool = i == config.sub_configs.size() - 1
+		
+		# if there should be an horizontal spacer and this is not the last visual add it
+		if sub_cfg.should_add_horizontal_spacer and not is_last:
+			# create the spacer
+			var spacer: Control = Control.new()
+			
+			# set spacer size
+			spacer.custom_minimum_size.x = sub_cfg.horizontal_spacer_size
+			# add the spacer
+			parent.add_child(spacer)
+			# add spacer to the spacer group
+			spacer.add_to_group(&"spacer")
+	
+	
 	
 	# return the parent back
 	return parent
@@ -634,14 +658,6 @@ func _build_button_hover_anim(button: Button, config: MenuConfigRecource) -> voi
 
 
 
-
-
-
-
-
-
-
-
 ## creates a container and populate it with sub-elements while having it work like a button
 func _create_button_row_visual(config: MenuConfigRecource) -> Button:
 	# create the row (button)
@@ -716,6 +732,148 @@ func _create_button_row_visual(config: MenuConfigRecource) -> Button:
 	
 	# return it
 	return row_button
+
+
+
+
+## creates a slider
+func _create_slider_visual(config: MenuConfigRecource) -> Control:
+	# a wrapper for the slider contents
+	var root: Control = Control.new()
+	root.add_to_group(&"wraper")
+	# set the wraper size to the given size for the slider
+	root.custom_minimum_size = config.slider_size
+	
+	# create the slider
+	var slider: HSlider = HSlider.new()
+	
+	# set the slider values (min max and staring value)
+	slider.min_value = config.slider_min
+	slider.max_value = config.slider_max
+	slider.value = config.slider_value
+	# make the slider full size
+	slider.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	
+	# make a empty visual for the slider
+	var empty: StyleBoxEmpty = StyleBoxEmpty.new()
+	# add the empty visual
+	slider.add_theme_stylebox_override("slider", empty)
+	slider.add_theme_stylebox_override("grabber_area", empty)
+	slider.add_theme_stylebox_override("grabber_area_highlight", empty)
+	# also make the grabber invis
+	slider.add_theme_icon_override("grabber", ImageTexture.create_from_image(Image.create(1,1,false,Image.FORMAT_RGBA8)))
+	slider.add_theme_icon_override("grabber_highlight", ImageTexture.create_from_image(Image.create(1,1,false,Image.FORMAT_RGBA8)))
+	
+	# add the slider to the wraper
+	root.add_child(slider)
+	
+	# create a line for the bg
+	var bg: Panel = Panel.new()
+	# create the visual for the bg
+	var bg_style := StyleBoxFlat.new()
+	bg_style.bg_color = config.slider_bg_color
+	
+	# set the rounded corners for the bg
+	bg_style.corner_radius_top_left = config.slider_corner_radius
+	bg_style.corner_radius_top_right = config.slider_corner_radius
+	bg_style.corner_radius_bottom_left = config.slider_corner_radius
+	bg_style.corner_radius_bottom_right = config.slider_corner_radius
+	
+	# add the visuals to the bg
+	bg.add_theme_stylebox_override("panel", bg_style)
+	# make the bg not take inputs
+	bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	
+	# set the size for the bg to be correct
+	bg.custom_minimum_size = Vector2(config.slider_size.x, config.slider_bar_height)
+	# set the position of the bg to be correct
+	bg.position = Vector2(0, (config.slider_size.y - config.slider_bar_height) / 2.0)
+	
+	# add the bg to the wraper
+	root.add_child(bg)
+	
+	# create the visual for the filled visual
+	var fill := Panel.new()
+	
+	# create the visual for the fill line
+	var fill_style := StyleBoxFlat.new()
+	fill_style.bg_color = config.slider_fill_color
+	# set the rounded corners
+	fill_style.corner_radius_top_left = config.slider_corner_radius
+	fill_style.corner_radius_top_right = config.slider_corner_radius
+	fill_style.corner_radius_bottom_left = config.slider_corner_radius
+	fill_style.corner_radius_bottom_right = config.slider_corner_radius
+	# add the visual to the fill
+	fill.add_theme_stylebox_override("panel", fill_style)
+	# make the fill not take up mouse inputs
+	fill.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	
+	# set the y size of the fill visual 
+	fill.custom_minimum_size.y = config.slider_bar_height
+	# set the position correct (already calculated before)
+	fill.position = bg.position
+	# add the fill to the wraper
+	root.add_child(fill)
+	
+	# create the pointer visual
+	var pointer := TextureRect.new()
+	# set the texture of the pointer visual
+	pointer.texture = config.texture
+	# set the pointer to be a good UI thing
+	pointer.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	pointer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	
+	# set the scale of the pointer
+	if pointer.texture:
+		pointer.custom_minimum_size = (pointer.texture.get_size() * config.texture_scale)
+	# rotate the pointer
+	pointer.rotation_degrees = config.texture_rotation
+	
+	# add the pointer to the wraper
+	root.add_child(pointer)
+	
+	
+	# func that updates the visuals
+	var update_slider_visuals = func():
+		# get the ratio of the inputted value
+		var ratio: float = (slider.value - slider.min_value) / (slider.max_value - slider.min_value)
+		# get the x size value
+		var x: float = ratio * config.slider_size.x if ratio > 0 else 0.025 * config.slider_size.x
+		
+		# set the size for the fill
+		fill.size.x = x
+		
+		# update the texture position
+		if pointer.texture:
+			# get the size of the pointer
+			var tex_size: Vector2 = (pointer.texture.get_size() * config.texture_scale)
+			
+			# set the position of the pointer
+			pointer.position = Vector2(x - tex_size.x / 2.0, bg.position.y - tex_size.y - 8) + config.texture_offset
+	
+	# update the visuals
+	update_slider_visuals.call()
+	
+	# what happens when the slider value changes
+	slider.value_changed.connect(func(value):
+		# update the visuals every time the slider value changed
+		update_slider_visuals.call()
+		
+		# run the function inputted in the slider
+		ScriptRunUtil.execute_multiline_code(config.slider_changed_function, [self, config, slider, value])
+	)
+	
+	
+	# run the ready func
+	ScriptRunUtil.execute_multiline_code(config.slider_ready_function, [self, config, slider])
+	
+	
+	# return the wraper
+	return root
+
+
+
+
 
 
 

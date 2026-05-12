@@ -18,6 +18,7 @@ enum Mode {
 	ROW,
 	BUTTON_ROW,
 	NONE,
+	SLIDER,
 }
 
 ## set what mode this is
@@ -43,6 +44,7 @@ enum Mode {
 				_anim_texture_group_enabled = false
 				_texture_group_enabled = false
 				_row_group_enabled = false
+				_slider_group_enabled = false
 			
 			# if this is plain text
 			Mode.TEXT:
@@ -53,6 +55,7 @@ enum Mode {
 				_texture_group_enabled = false
 				_anim_texture_group_enabled = false
 				_row_group_enabled = false
+				_slider_group_enabled = false
 			
 			# if this is a texture
 			Mode.TEXTURE:
@@ -63,6 +66,7 @@ enum Mode {
 				_button_group_enabled = false
 				_anim_texture_group_enabled = false
 				_row_group_enabled = false
+				_slider_group_enabled = false
 			
 			# if this is an animated texture
 			Mode.ANIMATED_TEXTURE:
@@ -73,6 +77,7 @@ enum Mode {
 				_text_group_enabled = false
 				_button_group_enabled = false
 				_row_group_enabled = false
+				_slider_group_enabled = false
 			
 			# if this in an row
 			Mode.ROW:
@@ -83,6 +88,7 @@ enum Mode {
 				_text_group_enabled = false
 				_button_group_enabled = false
 				_anim_texture_group_enabled = false
+				_slider_group_enabled = false
 			
 			# if this is an button row
 			Mode.BUTTON_ROW:
@@ -93,6 +99,19 @@ enum Mode {
 				_text_group_enabled = false
 				_texture_group_enabled = false
 				_anim_texture_group_enabled = false
+				_slider_group_enabled = false
+			
+			# if this is an slider
+			Mode.SLIDER:
+				# enable the silder and texture settings
+				_slider_group_enabled = true
+				_texture_group_enabled = true
+				# disable all other settings
+				_text_group_enabled = false
+				_button_group_enabled = false
+				_anim_texture_group_enabled = false
+				_row_group_enabled = false
+			
 			
 			# if it is just empty
 			Mode.NONE:
@@ -102,6 +121,7 @@ enum Mode {
 				_button_group_enabled = false
 				_anim_texture_group_enabled = false
 				_row_group_enabled = false
+				_slider_group_enabled = false
 
 
 
@@ -199,6 +219,48 @@ enum Mode {
 @export var sub_configs: Array[MenuConfigRecource] = []
 ## spacing between visuals in this row
 @export var row_spacing: int = 20
+
+## settings only for sliders
+@export_group("slider settings")
+## if this group is enabled IGNORE THIS VAR
+@export_custom(PROPERTY_HINT_GROUP_ENABLE, "") var _slider_group_enabled: bool = false
+## minimum value of the slider
+@export var slider_min: float = 0
+## max value of the slider
+@export var slider_max: float = 10
+## the starting value of the slider
+@export var slider_value: float = 10
+## the size of the slider
+@export var slider_size: Vector2 = Vector2(400, 40)
+## rotation the texture will have in degrees
+@export var texture_rotation: float = 0.0
+## offset texture will have from the center
+@export var texture_offset: Vector2 = Vector2.ZERO
+## bar bg color
+@export var slider_bg_color: Color = Color("8d8d8d")
+## bar fill color
+@export var slider_fill_color: Color = Color.WHITE
+## bar thickness
+@export var slider_bar_height: int = 4
+## rounded corner radius
+@export var slider_corner_radius: int = 2
+@export_subgroup("functions")
+## a lambda function that will run when the slider is created.
+##[br][br]
+## ScripRunUtil explanation:[br]
+## Executes a multiline string as code.[br]
+## code_string: is the raw GDscript code you want to run.[br]
+## context: The object the code can interact with (referenced as 'ctx' in the string).[br]
+## context is an array so if you only have 1 thing you still use ctx[0][br]
+@export_multiline var slider_ready_function: String = ""
+## a lambda function that will run when the slider is changed.
+##[br][br]
+## ScripRunUtil explanation:[br]
+## Executes a multiline string as code.[br]
+## code_string: is the raw GDscript code you want to run.[br]
+## context: The object the code can interact with (referenced as 'ctx' in the string).[br]
+## context is an array so if you only have 1 thing you still use ctx[0][br]
+@export_multiline var slider_changed_function: String = ""
 
 
 

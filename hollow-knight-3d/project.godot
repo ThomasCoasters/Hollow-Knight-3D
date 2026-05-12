@@ -25,7 +25,6 @@ Global="*uid://qjy8yke0x640"
 transition="*uid://c8sotovabwdkk"
 SaveLoad="*uid://chfmxffksq2ds"
 SceneLoader="*uid://civm45g6l6b2x"
-CursorSettings="*uid://bsa2m1qy4l7el"
 
 [display]
 
@@ -35,7 +34,7 @@ window/size/mode=3
 window/size/borderless=true
 window/stretch/mode="canvas_items"
 window/vsync/vsync_mode=2
-mouse_cursor/custom_image="uid://uqoxaau0sy57"
+mouse_cursor/custom_image="uid://xqsmti4l5pn0"
 
 [editor_plugins]
 
