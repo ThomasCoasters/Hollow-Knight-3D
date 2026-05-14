@@ -918,6 +918,10 @@ func _create_slider_visual(config: MenuConfigRecource) -> Control:
 	ScriptRunUtil.execute_multiline_code(config.slider_ready_function, [self, config, slider])
 	
 	
+	# add to the menu input array
+	menu_inputs.back().append(slider)
+	
+	
 	# return the wraper
 	return root
 
@@ -942,12 +946,16 @@ func _set_button_size_to_container(button: Button, hbox: HBoxContainer) -> void:
 ## dissables or enables all buttons
 func toggle_buttons(disable: bool) -> void:
 	# gets every child
-	for button: Control in VerticalVisualContainer.get_children():
-		# if it is not a button go to the next child
-		if not button is Button: continue
+	for control: Control in VerticalVisualContainer.get_children():
+		# if it is a button
+		if control is BaseButton:
+			# if it is a button set the enable to the given value
+			control.disabled = disable
 		
-		# if it is a button set the enable to the given value
-		button.disabled = disable
+		# if it is a slider
+		elif control is HSlider:
+			# set the editavle to the oppisite of disable
+			control.editable = not disable
 
 
 
@@ -1016,10 +1024,20 @@ func focus_first_input() -> void:
 		# also through every input in said row
 		for input in row:
 			# check if said input is valid
-			if is_instance_valid(input) and not input.disabled:
-				# give it focus and stop
-				input.grab_focus()
-				return
+			if not is_instance_valid(input):
+				continue
+			
+			# if it is button and dissabled continue
+			if input is BaseButton and input.disabled:
+				continue
+			
+			# it is is slider and not editable continue
+			if input is HSlider and not input.editable:
+				continue
+			
+			# give it focus and stop
+			input.grab_focus()
+			return
 
 
 

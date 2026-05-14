@@ -287,6 +287,63 @@ texture_offset = Vector2(0, 12)
 slider_bg_color = Color(0.41568628, 0.44313726, 0.50980395, 1)
 slider_fill_color = Color(0.9372549, 0.91764706, 0.92941177, 1)
 slider_bar_height = 2
+slider_ready_function = "# the setting this one should change
+var save_setting = \"Master\"
+
+
+
+
+# wait
+await ctx[0].get_tree().process_frame
+await ctx[0].get_tree().create_timer(1).timeout
+await ctx[0].get_tree().process_frame
+
+
+# get value
+var value = SaveLoad.general_contents[&\"Audio\"][save_setting]
+
+# get the row
+var row = ctx[2].get_parent().get_parent()
+var slider = ctx[2]
+
+# the final label found
+var target_label: Label = null
+# current amount of labels found
+var label_count = 0 
+# the final number of label in the index that is the one you search for
+var label_target_index = 1
+
+# get the nodes you should check
+var nodes_to_check = [row]
+
+# keep searching untill all children are gone through
+while nodes_to_check.size() > 0:
+	#remove the current node from the nodes you should check
+	var current = nodes_to_check.pop_back()
+	
+	# if you found an label
+	if current is Label:
+		#increase label count
+		label_count += 1
+		# if you found the target number of labels
+		if label_count == label_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label = current
+			# break when found
+			break
+	
+	# also search all these node's children
+	nodes_to_check.append_array(current.get_children())
+
+
+
+
+# change the label you found
+if target_label:
+	target_label.custom_minimum_size.x = 30
+	target_label.text = str(int(value))
+
+slider.value = int(value)"
 slider_changed_function = "# the setting this one should change
 var save_setting = \"Master\"
 
@@ -492,22 +549,41 @@ if events.is_empty():
 # get the event that is connected
 var final_event = events[0]
 
-# keyboard
+# KEYBOARD
 if final_event is InputEventKey:
-	# get the keycode string
 	key_name = OS.get_keycode_string(final_event.keycode)
-
 	if key_name.is_empty():
-		# if that does not work get the PHYSICAL keycode string
 		key_name = OS.get_keycode_string(final_event.physical_keycode)
 
-# mouse
+# MOUSE
 elif final_event is InputEventMouseButton:
-	# set a readable name
-	if final_event.button_index == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
-	elif final_event.button_index == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
-	elif final_event.button_index == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
-	else: key_name = \"Mouse \" + str(final_event.button_index)
+	match final_event.button_index:
+		MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
+		MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
+		MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
+		MOUSE_BUTTON_WHEEL_UP: key_name = \"Wheel Up\"
+		MOUSE_BUTTON_WHEEL_DOWN: key_name = \"Wheel Down\"
+		_: key_name = \"Mouse \" + str(final_event.button_index)
+
+# CONTROLLER
+elif final_event is InputEventJoypadButton:
+	match final_event.button_index:
+		JOY_BUTTON_A: key_name = \"Joy A\"
+		JOY_BUTTON_B: key_name = \"Joy B\"
+		JOY_BUTTON_X: key_name = \"Joy X\"
+		JOY_BUTTON_Y: key_name = \"Joy Y\"
+		JOY_BUTTON_LEFT_SHOULDER: key_name = \"LB\"
+		JOY_BUTTON_RIGHT_SHOULDER: key_name = \"RB\"
+		JOY_BUTTON_BACK: key_name = \"Joy -\"
+		JOY_BUTTON_START: key_name = \"Joy +\"
+		JOY_BUTTON_DPAD_UP: key_name = \"Joy D-Pad Up\"
+		JOY_BUTTON_DPAD_DOWN: key_name = \"Joy D-Pad Down\"
+		JOY_BUTTON_DPAD_LEFT: key_name = \"Joy D-Pad Left\"
+		JOY_BUTTON_DPAD_RIGHT: key_name = \"Joy D-Pad Right\"
+		JOY_BUTTON_TOUCHPAD: key_name = \"Joy Touchpad\"
+		17: key_name = \"Joy ZL\"
+		18: key_name = \"Joy ZR\"
+		_: key_name = \"Joy Button \" + str(final_event.button_index)
 
 
 
@@ -530,7 +606,24 @@ var visual_map = {
 	\"Right\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_r.png\"),
 	\"Left Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_left_click.png\"),
 	\"Middle Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_click.png\"),
-	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\")
+	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\"),
+	\"Wheel Up\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_up.png\"),
+	\"Wheel Down\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_down.png\"),
+	\"Joy A\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0021_A.png\"),        # Switch A / Xbox A / PS Cross
+	\"Joy B\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0020_B.png\"),        # Switch B / Xbox B / PS Circle
+	\"Joy X\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0023_X.png\"),        # Switch X / Xbox X / PS Square
+	\"Joy Y\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0022_Y.png\"),        # Switch Y / Xbox Y / PS Triangle
+	\"Joy L\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0019_xbone_LB.png\"),        # Switch L / Xbox LB / PS L1
+	\"Joy R\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0018_xbone_RB.png\"),        # Switch R / Xbox RB / PS R1
+	\"Joy ZL\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0017_xbone_LT.png\"),       # Switch ZL / Xbox LT / PS L2
+	\"Joy ZR\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0016_xbone_RT.png\"),       # Switch ZR / Xbox RT / PS R2
+	\"Joy -\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0015_xbone_view.png\"),        # Switch - / Xbox View (2 Cubes) / PS Share
+	\"Joy +\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0014_xbone_menu.png\"),        # Switch + / Xbox Menu (3 Lines) / PS Options
+	\"Joy D-Pad Up\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_up.png\"),
+	\"Joy D-Pad Down\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_down.png\"),
+	\"Joy D-Pad Left\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_l.png\"),
+	\"Joy D-Pad Right\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_r.png\"),
+	\"Joy Touchpad\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0001_ps4_touchpad_press.png\"), # PS4/5 Touchpad
 }
 
 
@@ -650,7 +743,24 @@ var visual_map = {
 	\"Right\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_r.png\"),
 	\"Left Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_left_click.png\"),
 	\"Middle Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_click.png\"),
-	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\")
+	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\"),
+	\"Wheel Up\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_up.png\"),
+	\"Wheel Down\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_down.png\"),
+	\"Joy A\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0021_A.png\"),        # Switch A / Xbox A / PS Cross
+	\"Joy B\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0020_B.png\"),        # Switch B / Xbox B / PS Circle
+	\"Joy X\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0023_X.png\"),        # Switch X / Xbox X / PS Square
+	\"Joy Y\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0022_Y.png\"),        # Switch Y / Xbox Y / PS Triangle
+	\"Joy L\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0019_xbone_LB.png\"),        # Switch L / Xbox LB / PS L1
+	\"Joy R\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0018_xbone_RB.png\"),        # Switch R / Xbox RB / PS R1
+	\"Joy ZL\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0017_xbone_LT.png\"),       # Switch ZL / Xbox LT / PS L2
+	\"Joy ZR\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0016_xbone_RT.png\"),       # Switch ZR / Xbox RT / PS R2
+	\"Joy -\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0015_xbone_view.png\"),        # Switch - / Xbox View (2 Cubes) / PS Share
+	\"Joy +\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0014_xbone_menu.png\"),        # Switch + / Xbox Menu (3 Lines) / PS Options
+	\"Joy D-Pad Up\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_up.png\"),
+	\"Joy D-Pad Down\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_down.png\"),
+	\"Joy D-Pad Left\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_l.png\"),
+	\"Joy D-Pad Right\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_r.png\"),
+	\"Joy Touchpad\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0001_ps4_touchpad_press.png\"), # PS4/5 Touchpad
 }
 
 
@@ -736,34 +846,46 @@ var final_event: InputEvent = null
 # the name that the key has (readable version)
 var key_name
 
-# keep looping untill the event is found
 while final_event == null:
-	# wait one frame to not crash by always asking the engine for new input
 	await me.get_tree().process_frame
-	# wait for input and set it
 	final_event = await overlay.gui_input 
 	
-	# normal button presses
 	if final_event is InputEventKey and final_event.is_pressed():
-		# get the name of the press
 		key_name = OS.get_keycode_string(final_event.get_keycode_with_modifiers())
-		
-		# make the UI not use this button input
 		me.get_viewport().set_input_as_handled()
 	
-	# mouse button presses
 	elif final_event is InputEventMouseButton and final_event.is_pressed():
-		# set a readable name
-		if final_event.button_index == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
-		elif final_event.button_index == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
-		elif final_event.button_index == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
-		else: key_name = \"Mouse \" + str(final_event.button_index)
-		
-		# make the UI not use this button input
+		# Use explicit integers to ensure \"Wheel Up/Down\" are caught correctly
+		var idx = final_event.button_index
+		if idx == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
+		elif idx == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
+		elif idx == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
+		elif idx == MOUSE_BUTTON_WHEEL_UP: key_name = \"Wheel Up\"
+		elif idx == MOUSE_BUTTON_WHEEL_DOWN: key_name = \"Wheel Down\"
+		else: key_name = \"Mouse \" + str(idx)
 		me.get_viewport().set_input_as_handled()
-
+	
+	elif final_event is InputEventJoypadButton and final_event.is_pressed():
+		match final_event.button_index:
+			JOY_BUTTON_A: key_name = \"Joy A\"
+			JOY_BUTTON_B: key_name = \"Joy B\"
+			JOY_BUTTON_X: key_name = \"Joy X\"
+			JOY_BUTTON_Y: key_name = \"Joy Y\"
+			JOY_BUTTON_LEFT_SHOULDER: key_name = \"LB\"
+			JOY_BUTTON_RIGHT_SHOULDER: key_name = \"RB\"
+			JOY_BUTTON_BACK: key_name = \"Joy -\"
+			JOY_BUTTON_START: key_name = \"Joy +\"
+			JOY_BUTTON_DPAD_UP: key_name = \"Joy D-Pad Up\"
+			JOY_BUTTON_DPAD_DOWN: key_name = \"Joy D-Pad Down\"
+			JOY_BUTTON_DPAD_LEFT: key_name = \"Joy D-Pad Left\"
+			JOY_BUTTON_DPAD_RIGHT: key_name = \"Joy D-Pad Right\"
+			JOY_BUTTON_TOUCHPAD: key_name = \"Joy Touchpad\"
+			# Standard mappings for triggers if handled as buttons
+			17: key_name = \"Joy ZL\" 
+			18: key_name = \"Joy ZR\"
+			_: key_name = \"Controller \" + str(final_event.button_index)
+		me.get_viewport().set_input_as_handled()
 	else:
-		#try waiting again untill it is something that is correct
 		final_event = null
 
 # remove the overlay
@@ -794,21 +916,18 @@ if holder and \"is_input_locked\" in holder:
 # get the value to save
 var value_to_save: int = 0
 
-# set the value to save to the correct value
-if final_event is InputEventKey:
-	value_to_save = final_event.keycode
-elif final_event is InputEventMouseButton:
-	value_to_save = final_event.button_index
+if final_event is InputEventMouseButton:
+	# Store Mouse as 1-99
+	value_to_save = final_event.button_index 
+elif final_event is InputEventJoypadButton:
+	# Store Controller as 100-999 (Index + 100)
+	value_to_save = final_event.button_index + 100
+elif final_event is InputEventKey:
+	# Store Keyboard as 1000+ (Keycode + 1000)
+	value_to_save = final_event.keycode + 1000
 
-# set the action to the new input
 SaveLoad.general_contents[\"Buttons\"][input] = value_to_save
-SaveLoad.save_general(false)
-
-# wait untill the save is done
-await SaveLoad.save_exited
-
-# load the saved inputs
-SaveLoad.load_general()"
+SaveLoad.save_general(false)"
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_4edy0"), SubResource("Resource_mk4j3")])
 row_spacing = 215
@@ -899,22 +1018,47 @@ if events.is_empty():
 # get the event that is connected
 var final_event = events[0]
 
-# keyboard
+# KEYBOARD
 if final_event is InputEventKey:
-	# get the keycode string
 	key_name = OS.get_keycode_string(final_event.keycode)
-
 	if key_name.is_empty():
-		# if that does not work get the PHYSICAL keycode string
 		key_name = OS.get_keycode_string(final_event.physical_keycode)
 
-# mouse
+# KEYBOARD
+if final_event is InputEventKey:
+	key_name = OS.get_keycode_string(final_event.keycode)
+	if key_name.is_empty():
+		key_name = OS.get_keycode_string(final_event.physical_keycode)
+
+# MOUSE
 elif final_event is InputEventMouseButton:
-	# set a readable name
-	if final_event.button_index == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
-	elif final_event.button_index == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
-	elif final_event.button_index == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
-	else: key_name = \"Mouse \" + str(final_event.button_index)
+	match final_event.button_index:
+		MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
+		MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
+		MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
+		MOUSE_BUTTON_WHEEL_UP: key_name = \"Wheel Up\"
+		MOUSE_BUTTON_WHEEL_DOWN: key_name = \"Wheel Down\"
+		_: key_name = \"Mouse \" + str(final_event.button_index)
+
+# CONTROLLER
+elif final_event is InputEventJoypadButton:
+	match final_event.button_index:
+		JOY_BUTTON_A: key_name = \"Joy A\"
+		JOY_BUTTON_B: key_name = \"Joy B\"
+		JOY_BUTTON_X: key_name = \"Joy X\"
+		JOY_BUTTON_Y: key_name = \"Joy Y\"
+		JOY_BUTTON_LEFT_SHOULDER: key_name = \"LB\"
+		JOY_BUTTON_RIGHT_SHOULDER: key_name = \"RB\"
+		JOY_BUTTON_BACK: key_name = \"Joy -\"
+		JOY_BUTTON_START: key_name = \"Joy +\"
+		JOY_BUTTON_DPAD_UP: key_name = \"Joy D-Pad Up\"
+		JOY_BUTTON_DPAD_DOWN: key_name = \"Joy D-Pad Down\"
+		JOY_BUTTON_DPAD_LEFT: key_name = \"Joy D-Pad Left\"
+		JOY_BUTTON_DPAD_RIGHT: key_name = \"Joy D-Pad Right\"
+		JOY_BUTTON_TOUCHPAD: key_name = \"Joy Touchpad\"
+		17: key_name = \"Joy ZL\"
+		18: key_name = \"Joy ZR\"
+		_: key_name = \"Joy Button \" + str(final_event.button_index)
 
 
 
@@ -937,7 +1081,24 @@ var visual_map = {
 	\"Right\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_r.png\"),
 	\"Left Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_left_click.png\"),
 	\"Middle Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_click.png\"),
-	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\")
+	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\"),
+	\"Wheel Up\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_up.png\"),
+	\"Wheel Down\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_down.png\"),
+	\"Joy A\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0021_A.png\"),        # Switch A / Xbox A / PS Cross
+	\"Joy B\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0020_B.png\"),        # Switch B / Xbox B / PS Circle
+	\"Joy X\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0023_X.png\"),        # Switch X / Xbox X / PS Square
+	\"Joy Y\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0022_Y.png\"),        # Switch Y / Xbox Y / PS Triangle
+	\"Joy L\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0019_xbone_LB.png\"),        # Switch L / Xbox LB / PS L1
+	\"Joy R\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0018_xbone_RB.png\"),        # Switch R / Xbox RB / PS R1
+	\"Joy ZL\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0017_xbone_LT.png\"),       # Switch ZL / Xbox LT / PS L2
+	\"Joy ZR\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0016_xbone_RT.png\"),       # Switch ZR / Xbox RT / PS R2
+	\"Joy -\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0015_xbone_view.png\"),        # Switch - / Xbox View (2 Cubes) / PS Share
+	\"Joy +\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0014_xbone_menu.png\"),        # Switch + / Xbox Menu (3 Lines) / PS Options
+	\"Joy D-Pad Up\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_up.png\"),
+	\"Joy D-Pad Down\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_down.png\"),
+	\"Joy D-Pad Left\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_l.png\"),
+	\"Joy D-Pad Right\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_r.png\"),
+	\"Joy Touchpad\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0001_ps4_touchpad_press.png\"), # PS4/5 Touchpad
 }
 
 
@@ -1057,7 +1218,24 @@ var visual_map = {
 	\"Right\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_r.png\"),
 	\"Left Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_left_click.png\"),
 	\"Middle Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_click.png\"),
-	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\")
+	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\"),
+	\"Wheel Up\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_up.png\"),
+	\"Wheel Down\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_down.png\"),
+	\"Joy A\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0021_A.png\"),        # Switch A / Xbox A / PS Cross
+	\"Joy B\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0020_B.png\"),        # Switch B / Xbox B / PS Circle
+	\"Joy X\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0023_X.png\"),        # Switch X / Xbox X / PS Square
+	\"Joy Y\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0022_Y.png\"),        # Switch Y / Xbox Y / PS Triangle
+	\"Joy L\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0019_xbone_LB.png\"),        # Switch L / Xbox LB / PS L1
+	\"Joy R\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0018_xbone_RB.png\"),        # Switch R / Xbox RB / PS R1
+	\"Joy ZL\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0017_xbone_LT.png\"),       # Switch ZL / Xbox LT / PS L2
+	\"Joy ZR\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0016_xbone_RT.png\"),       # Switch ZR / Xbox RT / PS R2
+	\"Joy -\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0015_xbone_view.png\"),        # Switch - / Xbox View (2 Cubes) / PS Share
+	\"Joy +\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0014_xbone_menu.png\"),        # Switch + / Xbox Menu (3 Lines) / PS Options
+	\"Joy D-Pad Up\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_up.png\"),
+	\"Joy D-Pad Down\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_down.png\"),
+	\"Joy D-Pad Left\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_l.png\"),
+	\"Joy D-Pad Right\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_r.png\"),
+	\"Joy Touchpad\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0001_ps4_touchpad_press.png\"), # PS4/5 Touchpad
 }
 
 
@@ -1143,34 +1321,46 @@ var final_event: InputEvent = null
 # the name that the key has (readable version)
 var key_name
 
-# keep looping untill the event is found
 while final_event == null:
-	# wait one frame to not crash by always asking the engine for new input
 	await me.get_tree().process_frame
-	# wait for input and set it
 	final_event = await overlay.gui_input 
 	
-	# normal button presses
 	if final_event is InputEventKey and final_event.is_pressed():
-		# get the name of the press
 		key_name = OS.get_keycode_string(final_event.get_keycode_with_modifiers())
-		
-		# make the UI not use this button input
 		me.get_viewport().set_input_as_handled()
 	
-	# mouse button presses
 	elif final_event is InputEventMouseButton and final_event.is_pressed():
-		# set a readable name
-		if final_event.button_index == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
-		elif final_event.button_index == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
-		elif final_event.button_index == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
-		else: key_name = \"Mouse \" + str(final_event.button_index)
-		
-		# make the UI not use this button input
+		# Use explicit integers to ensure \"Wheel Up/Down\" are caught correctly
+		var idx = final_event.button_index
+		if idx == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
+		elif idx == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
+		elif idx == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
+		elif idx == MOUSE_BUTTON_WHEEL_UP: key_name = \"Wheel Up\"
+		elif idx == MOUSE_BUTTON_WHEEL_DOWN: key_name = \"Wheel Down\"
+		else: key_name = \"Mouse \" + str(idx)
 		me.get_viewport().set_input_as_handled()
-
+	
+	elif final_event is InputEventJoypadButton and final_event.is_pressed():
+		match final_event.button_index:
+			JOY_BUTTON_A: key_name = \"Joy A\"
+			JOY_BUTTON_B: key_name = \"Joy B\"
+			JOY_BUTTON_X: key_name = \"Joy X\"
+			JOY_BUTTON_Y: key_name = \"Joy Y\"
+			JOY_BUTTON_LEFT_SHOULDER: key_name = \"LB\"
+			JOY_BUTTON_RIGHT_SHOULDER: key_name = \"RB\"
+			JOY_BUTTON_BACK: key_name = \"Joy -\"
+			JOY_BUTTON_START: key_name = \"Joy +\"
+			JOY_BUTTON_DPAD_UP: key_name = \"Joy D-Pad Up\"
+			JOY_BUTTON_DPAD_DOWN: key_name = \"Joy D-Pad Down\"
+			JOY_BUTTON_DPAD_LEFT: key_name = \"Joy D-Pad Left\"
+			JOY_BUTTON_DPAD_RIGHT: key_name = \"Joy D-Pad Right\"
+			JOY_BUTTON_TOUCHPAD: key_name = \"Joy Touchpad\"
+			# Standard mappings for triggers if handled as buttons
+			17: key_name = \"Joy ZL\" 
+			18: key_name = \"Joy ZR\"
+			_: key_name = \"Controller \" + str(final_event.button_index)
+		me.get_viewport().set_input_as_handled()
 	else:
-		#try waiting again untill it is something that is correct
 		final_event = null
 
 # remove the overlay
@@ -1197,25 +1387,21 @@ if target_hbox:
 if holder and \"is_input_locked\" in holder:
 	holder.is_input_locked = false
 
-
 # get the value to save
 var value_to_save: int = 0
 
-# set the value to save to the correct value
-if final_event is InputEventKey:
-	value_to_save = final_event.keycode
-elif final_event is InputEventMouseButton:
-	value_to_save = final_event.button_index
+if final_event is InputEventMouseButton:
+	# Store Mouse as 1-99
+	value_to_save = final_event.button_index 
+elif final_event is InputEventJoypadButton:
+	# Store Controller as 100-999 (Index + 100)
+	value_to_save = final_event.button_index + 100
+elif final_event is InputEventKey:
+	# Store Keyboard as 1000+ (Keycode + 1000)
+	value_to_save = final_event.keycode + 1000
 
-# set the action to the new input
 SaveLoad.general_contents[\"Buttons\"][input] = value_to_save
-SaveLoad.save_general(false)
-
-# wait untill the save is done
-await SaveLoad.save_exited
-
-# load the saved inputs
-SaveLoad.load_general()"
+SaveLoad.save_general(false)"
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_saxcl"), SubResource("Resource_er0lx")])
 row_spacing = 297
@@ -1324,22 +1510,41 @@ if events.is_empty():
 # get the event that is connected
 var final_event = events[0]
 
-# keyboard
+# KEYBOARD
 if final_event is InputEventKey:
-	# get the keycode string
 	key_name = OS.get_keycode_string(final_event.keycode)
-
 	if key_name.is_empty():
-		# if that does not work get the PHYSICAL keycode string
 		key_name = OS.get_keycode_string(final_event.physical_keycode)
 
-# mouse
+# MOUSE
 elif final_event is InputEventMouseButton:
-	# set a readable name
-	if final_event.button_index == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
-	elif final_event.button_index == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
-	elif final_event.button_index == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
-	else: key_name = \"Mouse \" + str(final_event.button_index)
+	match final_event.button_index:
+		MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
+		MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
+		MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
+		MOUSE_BUTTON_WHEEL_UP: key_name = \"Wheel Up\"
+		MOUSE_BUTTON_WHEEL_DOWN: key_name = \"Wheel Down\"
+		_: key_name = \"Mouse \" + str(final_event.button_index)
+
+# CONTROLLER
+elif final_event is InputEventJoypadButton:
+	match final_event.button_index:
+		JOY_BUTTON_A: key_name = \"Joy A\"
+		JOY_BUTTON_B: key_name = \"Joy B\"
+		JOY_BUTTON_X: key_name = \"Joy X\"
+		JOY_BUTTON_Y: key_name = \"Joy Y\"
+		JOY_BUTTON_LEFT_SHOULDER: key_name = \"LB\"
+		JOY_BUTTON_RIGHT_SHOULDER: key_name = \"RB\"
+		JOY_BUTTON_BACK: key_name = \"Joy -\"
+		JOY_BUTTON_START: key_name = \"Joy +\"
+		JOY_BUTTON_DPAD_UP: key_name = \"Joy D-Pad Up\"
+		JOY_BUTTON_DPAD_DOWN: key_name = \"Joy D-Pad Down\"
+		JOY_BUTTON_DPAD_LEFT: key_name = \"Joy D-Pad Left\"
+		JOY_BUTTON_DPAD_RIGHT: key_name = \"Joy D-Pad Right\"
+		JOY_BUTTON_TOUCHPAD: key_name = \"Joy Touchpad\"
+		17: key_name = \"Joy ZL\"
+		18: key_name = \"Joy ZR\"
+		_: key_name = \"Joy Button \" + str(final_event.button_index)
 
 
 
@@ -1362,7 +1567,24 @@ var visual_map = {
 	\"Right\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_r.png\"),
 	\"Left Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_left_click.png\"),
 	\"Middle Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_click.png\"),
-	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\")
+	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\"),
+	\"Wheel Up\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_up.png\"),
+	\"Wheel Down\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_down.png\"),
+	\"Joy A\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0021_A.png\"),        # Switch A / Xbox A / PS Cross
+	\"Joy B\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0020_B.png\"),        # Switch B / Xbox B / PS Circle
+	\"Joy X\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0023_X.png\"),        # Switch X / Xbox X / PS Square
+	\"Joy Y\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0022_Y.png\"),        # Switch Y / Xbox Y / PS Triangle
+	\"Joy L\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0019_xbone_LB.png\"),        # Switch L / Xbox LB / PS L1
+	\"Joy R\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0018_xbone_RB.png\"),        # Switch R / Xbox RB / PS R1
+	\"Joy ZL\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0017_xbone_LT.png\"),       # Switch ZL / Xbox LT / PS L2
+	\"Joy ZR\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0016_xbone_RT.png\"),       # Switch ZR / Xbox RT / PS R2
+	\"Joy -\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0015_xbone_view.png\"),        # Switch - / Xbox View (2 Cubes) / PS Share
+	\"Joy +\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0014_xbone_menu.png\"),        # Switch + / Xbox Menu (3 Lines) / PS Options
+	\"Joy D-Pad Up\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_up.png\"),
+	\"Joy D-Pad Down\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_down.png\"),
+	\"Joy D-Pad Left\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_l.png\"),
+	\"Joy D-Pad Right\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_r.png\"),
+	\"Joy Touchpad\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0001_ps4_touchpad_press.png\"), # PS4/5 Touchpad
 }
 
 
@@ -1482,7 +1704,24 @@ var visual_map = {
 	\"Right\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_r.png\"),
 	\"Left Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_left_click.png\"),
 	\"Middle Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_click.png\"),
-	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\")
+	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\"),
+	\"Wheel Up\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_up.png\"),
+	\"Wheel Down\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_down.png\"),
+	\"Joy A\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0021_A.png\"),        # Switch A / Xbox A / PS Cross
+	\"Joy B\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0020_B.png\"),        # Switch B / Xbox B / PS Circle
+	\"Joy X\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0023_X.png\"),        # Switch X / Xbox X / PS Square
+	\"Joy Y\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0022_Y.png\"),        # Switch Y / Xbox Y / PS Triangle
+	\"Joy L\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0019_xbone_LB.png\"),        # Switch L / Xbox LB / PS L1
+	\"Joy R\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0018_xbone_RB.png\"),        # Switch R / Xbox RB / PS R1
+	\"Joy ZL\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0017_xbone_LT.png\"),       # Switch ZL / Xbox LT / PS L2
+	\"Joy ZR\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0016_xbone_RT.png\"),       # Switch ZR / Xbox RT / PS R2
+	\"Joy -\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0015_xbone_view.png\"),        # Switch - / Xbox View (2 Cubes) / PS Share
+	\"Joy +\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0014_xbone_menu.png\"),        # Switch + / Xbox Menu (3 Lines) / PS Options
+	\"Joy D-Pad Up\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_up.png\"),
+	\"Joy D-Pad Down\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_down.png\"),
+	\"Joy D-Pad Left\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_l.png\"),
+	\"Joy D-Pad Right\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_r.png\"),
+	\"Joy Touchpad\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0001_ps4_touchpad_press.png\"), # PS4/5 Touchpad
 }
 
 
@@ -1568,34 +1807,46 @@ var final_event: InputEvent = null
 # the name that the key has (readable version)
 var key_name
 
-# keep looping untill the event is found
 while final_event == null:
-	# wait one frame to not crash by always asking the engine for new input
 	await me.get_tree().process_frame
-	# wait for input and set it
 	final_event = await overlay.gui_input 
 	
-	# normal button presses
 	if final_event is InputEventKey and final_event.is_pressed():
-		# get the name of the press
 		key_name = OS.get_keycode_string(final_event.get_keycode_with_modifiers())
-		
-		# make the UI not use this button input
 		me.get_viewport().set_input_as_handled()
 	
-	# mouse button presses
 	elif final_event is InputEventMouseButton and final_event.is_pressed():
-		# set a readable name
-		if final_event.button_index == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
-		elif final_event.button_index == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
-		elif final_event.button_index == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
-		else: key_name = \"Mouse \" + str(final_event.button_index)
-		
-		# make the UI not use this button input
+		# Use explicit integers to ensure \"Wheel Up/Down\" are caught correctly
+		var idx = final_event.button_index
+		if idx == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
+		elif idx == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
+		elif idx == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
+		elif idx == MOUSE_BUTTON_WHEEL_UP: key_name = \"Wheel Up\"
+		elif idx == MOUSE_BUTTON_WHEEL_DOWN: key_name = \"Wheel Down\"
+		else: key_name = \"Mouse \" + str(idx)
 		me.get_viewport().set_input_as_handled()
-
+	
+	elif final_event is InputEventJoypadButton and final_event.is_pressed():
+		match final_event.button_index:
+			JOY_BUTTON_A: key_name = \"Joy A\"
+			JOY_BUTTON_B: key_name = \"Joy B\"
+			JOY_BUTTON_X: key_name = \"Joy X\"
+			JOY_BUTTON_Y: key_name = \"Joy Y\"
+			JOY_BUTTON_LEFT_SHOULDER: key_name = \"LB\"
+			JOY_BUTTON_RIGHT_SHOULDER: key_name = \"RB\"
+			JOY_BUTTON_BACK: key_name = \"Joy -\"
+			JOY_BUTTON_START: key_name = \"Joy +\"
+			JOY_BUTTON_DPAD_UP: key_name = \"Joy D-Pad Up\"
+			JOY_BUTTON_DPAD_DOWN: key_name = \"Joy D-Pad Down\"
+			JOY_BUTTON_DPAD_LEFT: key_name = \"Joy D-Pad Left\"
+			JOY_BUTTON_DPAD_RIGHT: key_name = \"Joy D-Pad Right\"
+			JOY_BUTTON_TOUCHPAD: key_name = \"Joy Touchpad\"
+			# Standard mappings for triggers if handled as buttons
+			17: key_name = \"Joy ZL\" 
+			18: key_name = \"Joy ZR\"
+			_: key_name = \"Controller \" + str(final_event.button_index)
+		me.get_viewport().set_input_as_handled()
 	else:
-		#try waiting again untill it is something that is correct
 		final_event = null
 
 # remove the overlay
@@ -1626,21 +1877,18 @@ if holder and \"is_input_locked\" in holder:
 # get the value to save
 var value_to_save: int = 0
 
-# set the value to save to the correct value
-if final_event is InputEventKey:
-	value_to_save = final_event.keycode
-elif final_event is InputEventMouseButton:
-	value_to_save = final_event.button_index
+if final_event is InputEventMouseButton:
+	# Store Mouse as 1-99
+	value_to_save = final_event.button_index 
+elif final_event is InputEventJoypadButton:
+	# Store Controller as 100-999 (Index + 100)
+	value_to_save = final_event.button_index + 100
+elif final_event is InputEventKey:
+	# Store Keyboard as 1000+ (Keycode + 1000)
+	value_to_save = final_event.keycode + 1000
 
-# set the action to the new input
 SaveLoad.general_contents[\"Buttons\"][input] = value_to_save
-SaveLoad.save_general(false)
-
-# wait untill the save is done
-await SaveLoad.save_exited
-
-# load the saved inputs
-SaveLoad.load_general()"
+SaveLoad.save_general(false)"
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_sced3"), SubResource("Resource_ce16e")])
 row_spacing = 283
@@ -1734,22 +1982,41 @@ if events.is_empty():
 # get the event that is connected
 var final_event = events[0]
 
-# keyboard
+# KEYBOARD
 if final_event is InputEventKey:
-	# get the keycode string
 	key_name = OS.get_keycode_string(final_event.keycode)
-
 	if key_name.is_empty():
-		# if that does not work get the PHYSICAL keycode string
 		key_name = OS.get_keycode_string(final_event.physical_keycode)
 
-# mouse
+# MOUSE
 elif final_event is InputEventMouseButton:
-	# set a readable name
-	if final_event.button_index == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
-	elif final_event.button_index == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
-	elif final_event.button_index == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
-	else: key_name = \"Mouse \" + str(final_event.button_index)
+	match final_event.button_index:
+		MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
+		MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
+		MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
+		MOUSE_BUTTON_WHEEL_UP: key_name = \"Wheel Up\"
+		MOUSE_BUTTON_WHEEL_DOWN: key_name = \"Wheel Down\"
+		_: key_name = \"Mouse \" + str(final_event.button_index)
+
+# CONTROLLER
+elif final_event is InputEventJoypadButton:
+	match final_event.button_index:
+		JOY_BUTTON_A: key_name = \"Joy A\"
+		JOY_BUTTON_B: key_name = \"Joy B\"
+		JOY_BUTTON_X: key_name = \"Joy X\"
+		JOY_BUTTON_Y: key_name = \"Joy Y\"
+		JOY_BUTTON_LEFT_SHOULDER: key_name = \"LB\"
+		JOY_BUTTON_RIGHT_SHOULDER: key_name = \"RB\"
+		JOY_BUTTON_BACK: key_name = \"Joy -\"
+		JOY_BUTTON_START: key_name = \"Joy +\"
+		JOY_BUTTON_DPAD_UP: key_name = \"Joy D-Pad Up\"
+		JOY_BUTTON_DPAD_DOWN: key_name = \"Joy D-Pad Down\"
+		JOY_BUTTON_DPAD_LEFT: key_name = \"Joy D-Pad Left\"
+		JOY_BUTTON_DPAD_RIGHT: key_name = \"Joy D-Pad Right\"
+		JOY_BUTTON_TOUCHPAD: key_name = \"Joy Touchpad\"
+		17: key_name = \"Joy ZL\"
+		18: key_name = \"Joy ZR\"
+		_: key_name = \"Joy Button \" + str(final_event.button_index)
 
 
 
@@ -1772,7 +2039,24 @@ var visual_map = {
 	\"Right\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_r.png\"),
 	\"Left Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_left_click.png\"),
 	\"Middle Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_click.png\"),
-	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\")
+	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\"),
+	\"Wheel Up\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_up.png\"),
+	\"Wheel Down\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_down.png\"),
+	\"Joy A\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0021_A.png\"),        # Switch A / Xbox A / PS Cross
+	\"Joy B\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0020_B.png\"),        # Switch B / Xbox B / PS Circle
+	\"Joy X\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0023_X.png\"),        # Switch X / Xbox X / PS Square
+	\"Joy Y\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0022_Y.png\"),        # Switch Y / Xbox Y / PS Triangle
+	\"Joy L\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0019_xbone_LB.png\"),        # Switch L / Xbox LB / PS L1
+	\"Joy R\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0018_xbone_RB.png\"),        # Switch R / Xbox RB / PS R1
+	\"Joy ZL\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0017_xbone_LT.png\"),       # Switch ZL / Xbox LT / PS L2
+	\"Joy ZR\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0016_xbone_RT.png\"),       # Switch ZR / Xbox RT / PS R2
+	\"Joy -\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0015_xbone_view.png\"),        # Switch - / Xbox View (2 Cubes) / PS Share
+	\"Joy +\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0014_xbone_menu.png\"),        # Switch + / Xbox Menu (3 Lines) / PS Options
+	\"Joy D-Pad Up\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_up.png\"),
+	\"Joy D-Pad Down\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_down.png\"),
+	\"Joy D-Pad Left\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_l.png\"),
+	\"Joy D-Pad Right\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_r.png\"),
+	\"Joy Touchpad\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0001_ps4_touchpad_press.png\"), # PS4/5 Touchpad
 }
 
 
@@ -1892,7 +2176,24 @@ var visual_map = {
 	\"Right\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_r.png\"),
 	\"Left Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_left_click.png\"),
 	\"Middle Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_click.png\"),
-	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\")
+	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\"),
+	\"Wheel Up\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_up.png\"),
+	\"Wheel Down\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_down.png\"),
+	\"Joy A\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0021_A.png\"),        # Switch A / Xbox A / PS Cross
+	\"Joy B\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0020_B.png\"),        # Switch B / Xbox B / PS Circle
+	\"Joy X\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0023_X.png\"),        # Switch X / Xbox X / PS Square
+	\"Joy Y\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0022_Y.png\"),        # Switch Y / Xbox Y / PS Triangle
+	\"Joy L\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0019_xbone_LB.png\"),        # Switch L / Xbox LB / PS L1
+	\"Joy R\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0018_xbone_RB.png\"),        # Switch R / Xbox RB / PS R1
+	\"Joy ZL\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0017_xbone_LT.png\"),       # Switch ZL / Xbox LT / PS L2
+	\"Joy ZR\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0016_xbone_RT.png\"),       # Switch ZR / Xbox RT / PS R2
+	\"Joy -\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0015_xbone_view.png\"),        # Switch - / Xbox View (2 Cubes) / PS Share
+	\"Joy +\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0014_xbone_menu.png\"),        # Switch + / Xbox Menu (3 Lines) / PS Options
+	\"Joy D-Pad Up\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_up.png\"),
+	\"Joy D-Pad Down\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_down.png\"),
+	\"Joy D-Pad Left\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_l.png\"),
+	\"Joy D-Pad Right\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_r.png\"),
+	\"Joy Touchpad\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0001_ps4_touchpad_press.png\"), # PS4/5 Touchpad
 }
 
 
@@ -1978,34 +2279,46 @@ var final_event: InputEvent = null
 # the name that the key has (readable version)
 var key_name
 
-# keep looping untill the event is found
 while final_event == null:
-	# wait one frame to not crash by always asking the engine for new input
 	await me.get_tree().process_frame
-	# wait for input and set it
 	final_event = await overlay.gui_input 
 	
-	# normal button presses
 	if final_event is InputEventKey and final_event.is_pressed():
-		# get the name of the press
 		key_name = OS.get_keycode_string(final_event.get_keycode_with_modifiers())
-		
-		# make the UI not use this button input
 		me.get_viewport().set_input_as_handled()
 	
-	# mouse button presses
 	elif final_event is InputEventMouseButton and final_event.is_pressed():
-		# set a readable name
-		if final_event.button_index == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
-		elif final_event.button_index == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
-		elif final_event.button_index == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
-		else: key_name = \"Mouse \" + str(final_event.button_index)
-		
-		# make the UI not use this button input
+		# Use explicit integers to ensure \"Wheel Up/Down\" are caught correctly
+		var idx = final_event.button_index
+		if idx == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
+		elif idx == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
+		elif idx == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
+		elif idx == MOUSE_BUTTON_WHEEL_UP: key_name = \"Wheel Up\"
+		elif idx == MOUSE_BUTTON_WHEEL_DOWN: key_name = \"Wheel Down\"
+		else: key_name = \"Mouse \" + str(idx)
 		me.get_viewport().set_input_as_handled()
-
+	
+	elif final_event is InputEventJoypadButton and final_event.is_pressed():
+		match final_event.button_index:
+			JOY_BUTTON_A: key_name = \"Joy A\"
+			JOY_BUTTON_B: key_name = \"Joy B\"
+			JOY_BUTTON_X: key_name = \"Joy X\"
+			JOY_BUTTON_Y: key_name = \"Joy Y\"
+			JOY_BUTTON_LEFT_SHOULDER: key_name = \"LB\"
+			JOY_BUTTON_RIGHT_SHOULDER: key_name = \"RB\"
+			JOY_BUTTON_BACK: key_name = \"Joy -\"
+			JOY_BUTTON_START: key_name = \"Joy +\"
+			JOY_BUTTON_DPAD_UP: key_name = \"Joy D-Pad Up\"
+			JOY_BUTTON_DPAD_DOWN: key_name = \"Joy D-Pad Down\"
+			JOY_BUTTON_DPAD_LEFT: key_name = \"Joy D-Pad Left\"
+			JOY_BUTTON_DPAD_RIGHT: key_name = \"Joy D-Pad Right\"
+			JOY_BUTTON_TOUCHPAD: key_name = \"Joy Touchpad\"
+			# Standard mappings for triggers if handled as buttons
+			17: key_name = \"Joy ZL\" 
+			18: key_name = \"Joy ZR\"
+			_: key_name = \"Controller \" + str(final_event.button_index)
+		me.get_viewport().set_input_as_handled()
 	else:
-		#try waiting again untill it is something that is correct
 		final_event = null
 
 # remove the overlay
@@ -2036,21 +2349,18 @@ if holder and \"is_input_locked\" in holder:
 # get the value to save
 var value_to_save: int = 0
 
-# set the value to save to the correct value
-if final_event is InputEventKey:
-	value_to_save = final_event.keycode
-elif final_event is InputEventMouseButton:
-	value_to_save = final_event.button_index
+if final_event is InputEventMouseButton:
+	# Store Mouse as 1-99
+	value_to_save = final_event.button_index 
+elif final_event is InputEventJoypadButton:
+	# Store Controller as 100-999 (Index + 100)
+	value_to_save = final_event.button_index + 100
+elif final_event is InputEventKey:
+	# Store Keyboard as 1000+ (Keycode + 1000)
+	value_to_save = final_event.keycode + 1000
 
-# set the action to the new input
 SaveLoad.general_contents[\"Buttons\"][input] = value_to_save
-SaveLoad.save_general(false)
-
-# wait untill the save is done
-await SaveLoad.save_exited
-
-# load the saved inputs
-SaveLoad.load_general()"
+SaveLoad.save_general(false)"
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_po4x5"), SubResource("Resource_5jsrr")])
 row_spacing = 266
@@ -2159,22 +2469,41 @@ if events.is_empty():
 # get the event that is connected
 var final_event = events[0]
 
-# keyboard
+# KEYBOARD
 if final_event is InputEventKey:
-	# get the keycode string
 	key_name = OS.get_keycode_string(final_event.keycode)
-
 	if key_name.is_empty():
-		# if that does not work get the PHYSICAL keycode string
 		key_name = OS.get_keycode_string(final_event.physical_keycode)
 
-# mouse
+# MOUSE
 elif final_event is InputEventMouseButton:
-	# set a readable name
-	if final_event.button_index == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
-	elif final_event.button_index == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
-	elif final_event.button_index == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
-	else: key_name = \"Mouse \" + str(final_event.button_index)
+	match final_event.button_index:
+		MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
+		MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
+		MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
+		MOUSE_BUTTON_WHEEL_UP: key_name = \"Wheel Up\"
+		MOUSE_BUTTON_WHEEL_DOWN: key_name = \"Wheel Down\"
+		_: key_name = \"Mouse \" + str(final_event.button_index)
+
+# CONTROLLER
+elif final_event is InputEventJoypadButton:
+	match final_event.button_index:
+		JOY_BUTTON_A: key_name = \"Joy A\"
+		JOY_BUTTON_B: key_name = \"Joy B\"
+		JOY_BUTTON_X: key_name = \"Joy X\"
+		JOY_BUTTON_Y: key_name = \"Joy Y\"
+		JOY_BUTTON_LEFT_SHOULDER: key_name = \"LB\"
+		JOY_BUTTON_RIGHT_SHOULDER: key_name = \"RB\"
+		JOY_BUTTON_BACK: key_name = \"Joy -\"
+		JOY_BUTTON_START: key_name = \"Joy +\"
+		JOY_BUTTON_DPAD_UP: key_name = \"Joy D-Pad Up\"
+		JOY_BUTTON_DPAD_DOWN: key_name = \"Joy D-Pad Down\"
+		JOY_BUTTON_DPAD_LEFT: key_name = \"Joy D-Pad Left\"
+		JOY_BUTTON_DPAD_RIGHT: key_name = \"Joy D-Pad Right\"
+		JOY_BUTTON_TOUCHPAD: key_name = \"Joy Touchpad\"
+		17: key_name = \"Joy ZL\"
+		18: key_name = \"Joy ZR\"
+		_: key_name = \"Joy Button \" + str(final_event.button_index)
 
 
 
@@ -2197,7 +2526,24 @@ var visual_map = {
 	\"Right\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_r.png\"),
 	\"Left Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_left_click.png\"),
 	\"Middle Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_click.png\"),
-	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\")
+	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\"),
+	\"Wheel Up\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_up.png\"),
+	\"Wheel Down\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_down.png\"),
+	\"Joy A\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0021_A.png\"),        # Switch A / Xbox A / PS Cross
+	\"Joy B\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0020_B.png\"),        # Switch B / Xbox B / PS Circle
+	\"Joy X\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0023_X.png\"),        # Switch X / Xbox X / PS Square
+	\"Joy Y\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0022_Y.png\"),        # Switch Y / Xbox Y / PS Triangle
+	\"Joy L\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0019_xbone_LB.png\"),        # Switch L / Xbox LB / PS L1
+	\"Joy R\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0018_xbone_RB.png\"),        # Switch R / Xbox RB / PS R1
+	\"Joy ZL\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0017_xbone_LT.png\"),       # Switch ZL / Xbox LT / PS L2
+	\"Joy ZR\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0016_xbone_RT.png\"),       # Switch ZR / Xbox RT / PS R2
+	\"Joy -\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0015_xbone_view.png\"),        # Switch - / Xbox View (2 Cubes) / PS Share
+	\"Joy +\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0014_xbone_menu.png\"),        # Switch + / Xbox Menu (3 Lines) / PS Options
+	\"Joy D-Pad Up\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_up.png\"),
+	\"Joy D-Pad Down\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_down.png\"),
+	\"Joy D-Pad Left\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_l.png\"),
+	\"Joy D-Pad Right\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_r.png\"),
+	\"Joy Touchpad\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0001_ps4_touchpad_press.png\"), # PS4/5 Touchpad
 }
 
 
@@ -2317,7 +2663,24 @@ var visual_map = {
 	\"Right\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_r.png\"),
 	\"Left Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_left_click.png\"),
 	\"Middle Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_click.png\"),
-	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\")
+	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\"),
+	\"Wheel Up\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_up.png\"),
+	\"Wheel Down\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_down.png\"),
+	\"Joy A\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0021_A.png\"),        # Switch A / Xbox A / PS Cross
+	\"Joy B\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0020_B.png\"),        # Switch B / Xbox B / PS Circle
+	\"Joy X\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0023_X.png\"),        # Switch X / Xbox X / PS Square
+	\"Joy Y\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0022_Y.png\"),        # Switch Y / Xbox Y / PS Triangle
+	\"Joy L\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0019_xbone_LB.png\"),        # Switch L / Xbox LB / PS L1
+	\"Joy R\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0018_xbone_RB.png\"),        # Switch R / Xbox RB / PS R1
+	\"Joy ZL\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0017_xbone_LT.png\"),       # Switch ZL / Xbox LT / PS L2
+	\"Joy ZR\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0016_xbone_RT.png\"),       # Switch ZR / Xbox RT / PS R2
+	\"Joy -\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0015_xbone_view.png\"),        # Switch - / Xbox View (2 Cubes) / PS Share
+	\"Joy +\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0014_xbone_menu.png\"),        # Switch + / Xbox Menu (3 Lines) / PS Options
+	\"Joy D-Pad Up\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_up.png\"),
+	\"Joy D-Pad Down\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_down.png\"),
+	\"Joy D-Pad Left\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_l.png\"),
+	\"Joy D-Pad Right\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_r.png\"),
+	\"Joy Touchpad\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0001_ps4_touchpad_press.png\"), # PS4/5 Touchpad
 }
 
 
@@ -2403,34 +2766,46 @@ var final_event: InputEvent = null
 # the name that the key has (readable version)
 var key_name
 
-# keep looping untill the event is found
 while final_event == null:
-	# wait one frame to not crash by always asking the engine for new input
 	await me.get_tree().process_frame
-	# wait for input and set it
 	final_event = await overlay.gui_input 
 	
-	# normal button presses
 	if final_event is InputEventKey and final_event.is_pressed():
-		# get the name of the press
 		key_name = OS.get_keycode_string(final_event.get_keycode_with_modifiers())
-		
-		# make the UI not use this button input
 		me.get_viewport().set_input_as_handled()
 	
-	# mouse button presses
 	elif final_event is InputEventMouseButton and final_event.is_pressed():
-		# set a readable name
-		if final_event.button_index == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
-		elif final_event.button_index == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
-		elif final_event.button_index == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
-		else: key_name = \"Mouse \" + str(final_event.button_index)
-		
-		# make the UI not use this button input
+		# Use explicit integers to ensure \"Wheel Up/Down\" are caught correctly
+		var idx = final_event.button_index
+		if idx == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
+		elif idx == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
+		elif idx == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
+		elif idx == MOUSE_BUTTON_WHEEL_UP: key_name = \"Wheel Up\"
+		elif idx == MOUSE_BUTTON_WHEEL_DOWN: key_name = \"Wheel Down\"
+		else: key_name = \"Mouse \" + str(idx)
 		me.get_viewport().set_input_as_handled()
-
+	
+	elif final_event is InputEventJoypadButton and final_event.is_pressed():
+		match final_event.button_index:
+			JOY_BUTTON_A: key_name = \"Joy A\"
+			JOY_BUTTON_B: key_name = \"Joy B\"
+			JOY_BUTTON_X: key_name = \"Joy X\"
+			JOY_BUTTON_Y: key_name = \"Joy Y\"
+			JOY_BUTTON_LEFT_SHOULDER: key_name = \"LB\"
+			JOY_BUTTON_RIGHT_SHOULDER: key_name = \"RB\"
+			JOY_BUTTON_BACK: key_name = \"Joy -\"
+			JOY_BUTTON_START: key_name = \"Joy +\"
+			JOY_BUTTON_DPAD_UP: key_name = \"Joy D-Pad Up\"
+			JOY_BUTTON_DPAD_DOWN: key_name = \"Joy D-Pad Down\"
+			JOY_BUTTON_DPAD_LEFT: key_name = \"Joy D-Pad Left\"
+			JOY_BUTTON_DPAD_RIGHT: key_name = \"Joy D-Pad Right\"
+			JOY_BUTTON_TOUCHPAD: key_name = \"Joy Touchpad\"
+			# Standard mappings for triggers if handled as buttons
+			17: key_name = \"Joy ZL\" 
+			18: key_name = \"Joy ZR\"
+			_: key_name = \"Controller \" + str(final_event.button_index)
+		me.get_viewport().set_input_as_handled()
 	else:
-		#try waiting again untill it is something that is correct
 		final_event = null
 
 # remove the overlay
@@ -2461,21 +2836,18 @@ if holder and \"is_input_locked\" in holder:
 # get the value to save
 var value_to_save: int = 0
 
-# set the value to save to the correct value
-if final_event is InputEventKey:
-	value_to_save = final_event.keycode
-elif final_event is InputEventMouseButton:
-	value_to_save = final_event.button_index
+if final_event is InputEventMouseButton:
+	# Store Mouse as 1-99
+	value_to_save = final_event.button_index 
+elif final_event is InputEventJoypadButton:
+	# Store Controller as 100-999 (Index + 100)
+	value_to_save = final_event.button_index + 100
+elif final_event is InputEventKey:
+	# Store Keyboard as 1000+ (Keycode + 1000)
+	value_to_save = final_event.keycode + 1000
 
-# set the action to the new input
 SaveLoad.general_contents[\"Buttons\"][input] = value_to_save
-SaveLoad.save_general(false)
-
-# wait untill the save is done
-await SaveLoad.save_exited
-
-# load the saved inputs
-SaveLoad.load_general()"
+SaveLoad.save_general(false)"
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_il87v"), SubResource("Resource_osvu0")])
 row_spacing = 280
@@ -2569,22 +2941,41 @@ if events.is_empty():
 # get the event that is connected
 var final_event = events[0]
 
-# keyboard
+# KEYBOARD
 if final_event is InputEventKey:
-	# get the keycode string
 	key_name = OS.get_keycode_string(final_event.keycode)
-
 	if key_name.is_empty():
-		# if that does not work get the PHYSICAL keycode string
 		key_name = OS.get_keycode_string(final_event.physical_keycode)
 
-# mouse
+# MOUSE
 elif final_event is InputEventMouseButton:
-	# set a readable name
-	if final_event.button_index == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
-	elif final_event.button_index == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
-	elif final_event.button_index == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
-	else: key_name = \"Mouse \" + str(final_event.button_index)
+	match final_event.button_index:
+		MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
+		MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
+		MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
+		MOUSE_BUTTON_WHEEL_UP: key_name = \"Wheel Up\"
+		MOUSE_BUTTON_WHEEL_DOWN: key_name = \"Wheel Down\"
+		_: key_name = \"Mouse \" + str(final_event.button_index)
+
+# CONTROLLER
+elif final_event is InputEventJoypadButton:
+	match final_event.button_index:
+		JOY_BUTTON_A: key_name = \"Joy A\"
+		JOY_BUTTON_B: key_name = \"Joy B\"
+		JOY_BUTTON_X: key_name = \"Joy X\"
+		JOY_BUTTON_Y: key_name = \"Joy Y\"
+		JOY_BUTTON_LEFT_SHOULDER: key_name = \"LB\"
+		JOY_BUTTON_RIGHT_SHOULDER: key_name = \"RB\"
+		JOY_BUTTON_BACK: key_name = \"Joy -\"
+		JOY_BUTTON_START: key_name = \"Joy +\"
+		JOY_BUTTON_DPAD_UP: key_name = \"Joy D-Pad Up\"
+		JOY_BUTTON_DPAD_DOWN: key_name = \"Joy D-Pad Down\"
+		JOY_BUTTON_DPAD_LEFT: key_name = \"Joy D-Pad Left\"
+		JOY_BUTTON_DPAD_RIGHT: key_name = \"Joy D-Pad Right\"
+		JOY_BUTTON_TOUCHPAD: key_name = \"Joy Touchpad\"
+		17: key_name = \"Joy ZL\"
+		18: key_name = \"Joy ZR\"
+		_: key_name = \"Joy Button \" + str(final_event.button_index)
 
 
 
@@ -2607,7 +2998,24 @@ var visual_map = {
 	\"Right\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_r.png\"),
 	\"Left Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_left_click.png\"),
 	\"Middle Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_click.png\"),
-	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\")
+	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\"),
+	\"Wheel Up\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_up.png\"),
+	\"Wheel Down\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_down.png\"),
+	\"Joy A\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0021_A.png\"),        # Switch A / Xbox A / PS Cross
+	\"Joy B\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0020_B.png\"),        # Switch B / Xbox B / PS Circle
+	\"Joy X\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0023_X.png\"),        # Switch X / Xbox X / PS Square
+	\"Joy Y\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0022_Y.png\"),        # Switch Y / Xbox Y / PS Triangle
+	\"Joy L\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0019_xbone_LB.png\"),        # Switch L / Xbox LB / PS L1
+	\"Joy R\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0018_xbone_RB.png\"),        # Switch R / Xbox RB / PS R1
+	\"Joy ZL\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0017_xbone_LT.png\"),       # Switch ZL / Xbox LT / PS L2
+	\"Joy ZR\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0016_xbone_RT.png\"),       # Switch ZR / Xbox RT / PS R2
+	\"Joy -\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0015_xbone_view.png\"),        # Switch - / Xbox View (2 Cubes) / PS Share
+	\"Joy +\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0014_xbone_menu.png\"),        # Switch + / Xbox Menu (3 Lines) / PS Options
+	\"Joy D-Pad Up\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_up.png\"),
+	\"Joy D-Pad Down\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_down.png\"),
+	\"Joy D-Pad Left\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_l.png\"),
+	\"Joy D-Pad Right\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_r.png\"),
+	\"Joy Touchpad\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0001_ps4_touchpad_press.png\"), # PS4/5 Touchpad
 }
 
 
@@ -2727,7 +3135,24 @@ var visual_map = {
 	\"Right\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_r.png\"),
 	\"Left Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_left_click.png\"),
 	\"Middle Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_click.png\"),
-	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\")
+	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\"),
+	\"Wheel Up\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_up.png\"),
+	\"Wheel Down\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_down.png\"),
+	\"Joy A\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0021_A.png\"),        # Switch A / Xbox A / PS Cross
+	\"Joy B\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0020_B.png\"),        # Switch B / Xbox B / PS Circle
+	\"Joy X\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0023_X.png\"),        # Switch X / Xbox X / PS Square
+	\"Joy Y\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0022_Y.png\"),        # Switch Y / Xbox Y / PS Triangle
+	\"Joy L\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0019_xbone_LB.png\"),        # Switch L / Xbox LB / PS L1
+	\"Joy R\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0018_xbone_RB.png\"),        # Switch R / Xbox RB / PS R1
+	\"Joy ZL\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0017_xbone_LT.png\"),       # Switch ZL / Xbox LT / PS L2
+	\"Joy ZR\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0016_xbone_RT.png\"),       # Switch ZR / Xbox RT / PS R2
+	\"Joy -\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0015_xbone_view.png\"),        # Switch - / Xbox View (2 Cubes) / PS Share
+	\"Joy +\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0014_xbone_menu.png\"),        # Switch + / Xbox Menu (3 Lines) / PS Options
+	\"Joy D-Pad Up\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_up.png\"),
+	\"Joy D-Pad Down\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_down.png\"),
+	\"Joy D-Pad Left\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_l.png\"),
+	\"Joy D-Pad Right\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_r.png\"),
+	\"Joy Touchpad\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0001_ps4_touchpad_press.png\"), # PS4/5 Touchpad
 }
 
 
@@ -2813,34 +3238,46 @@ var final_event: InputEvent = null
 # the name that the key has (readable version)
 var key_name
 
-# keep looping untill the event is found
 while final_event == null:
-	# wait one frame to not crash by always asking the engine for new input
 	await me.get_tree().process_frame
-	# wait for input and set it
 	final_event = await overlay.gui_input 
 	
-	# normal button presses
 	if final_event is InputEventKey and final_event.is_pressed():
-		# get the name of the press
 		key_name = OS.get_keycode_string(final_event.get_keycode_with_modifiers())
-		
-		# make the UI not use this button input
 		me.get_viewport().set_input_as_handled()
 	
-	# mouse button presses
 	elif final_event is InputEventMouseButton and final_event.is_pressed():
-		# set a readable name
-		if final_event.button_index == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
-		elif final_event.button_index == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
-		elif final_event.button_index == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
-		else: key_name = \"Mouse \" + str(final_event.button_index)
-		
-		# make the UI not use this button input
+		# Use explicit integers to ensure \"Wheel Up/Down\" are caught correctly
+		var idx = final_event.button_index
+		if idx == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
+		elif idx == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
+		elif idx == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
+		elif idx == MOUSE_BUTTON_WHEEL_UP: key_name = \"Wheel Up\"
+		elif idx == MOUSE_BUTTON_WHEEL_DOWN: key_name = \"Wheel Down\"
+		else: key_name = \"Mouse \" + str(idx)
 		me.get_viewport().set_input_as_handled()
-
+	
+	elif final_event is InputEventJoypadButton and final_event.is_pressed():
+		match final_event.button_index:
+			JOY_BUTTON_A: key_name = \"Joy A\"
+			JOY_BUTTON_B: key_name = \"Joy B\"
+			JOY_BUTTON_X: key_name = \"Joy X\"
+			JOY_BUTTON_Y: key_name = \"Joy Y\"
+			JOY_BUTTON_LEFT_SHOULDER: key_name = \"LB\"
+			JOY_BUTTON_RIGHT_SHOULDER: key_name = \"RB\"
+			JOY_BUTTON_BACK: key_name = \"Joy -\"
+			JOY_BUTTON_START: key_name = \"Joy +\"
+			JOY_BUTTON_DPAD_UP: key_name = \"Joy D-Pad Up\"
+			JOY_BUTTON_DPAD_DOWN: key_name = \"Joy D-Pad Down\"
+			JOY_BUTTON_DPAD_LEFT: key_name = \"Joy D-Pad Left\"
+			JOY_BUTTON_DPAD_RIGHT: key_name = \"Joy D-Pad Right\"
+			JOY_BUTTON_TOUCHPAD: key_name = \"Joy Touchpad\"
+			# Standard mappings for triggers if handled as buttons
+			17: key_name = \"Joy ZL\" 
+			18: key_name = \"Joy ZR\"
+			_: key_name = \"Controller \" + str(final_event.button_index)
+		me.get_viewport().set_input_as_handled()
 	else:
-		#try waiting again untill it is something that is correct
 		final_event = null
 
 # remove the overlay
@@ -2871,21 +3308,18 @@ if holder and \"is_input_locked\" in holder:
 # get the value to save
 var value_to_save: int = 0
 
-# set the value to save to the correct value
-if final_event is InputEventKey:
-	value_to_save = final_event.keycode
-elif final_event is InputEventMouseButton:
-	value_to_save = final_event.button_index
+if final_event is InputEventMouseButton:
+	# Store Mouse as 1-99
+	value_to_save = final_event.button_index 
+elif final_event is InputEventJoypadButton:
+	# Store Controller as 100-999 (Index + 100)
+	value_to_save = final_event.button_index + 100
+elif final_event is InputEventKey:
+	# Store Keyboard as 1000+ (Keycode + 1000)
+	value_to_save = final_event.keycode + 1000
 
-# set the action to the new input
 SaveLoad.general_contents[\"Buttons\"][input] = value_to_save
-SaveLoad.save_general(false)
-
-# wait untill the save is done
-await SaveLoad.save_exited
-
-# load the saved inputs
-SaveLoad.load_general()"
+SaveLoad.save_general(false)"
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_pi22a"), SubResource("Resource_r71db")])
 row_spacing = 228
@@ -2994,22 +3428,41 @@ if events.is_empty():
 # get the event that is connected
 var final_event = events[0]
 
-# keyboard
+# KEYBOARD
 if final_event is InputEventKey:
-	# get the keycode string
 	key_name = OS.get_keycode_string(final_event.keycode)
-
 	if key_name.is_empty():
-		# if that does not work get the PHYSICAL keycode string
 		key_name = OS.get_keycode_string(final_event.physical_keycode)
 
-# mouse
+# MOUSE
 elif final_event is InputEventMouseButton:
-	# set a readable name
-	if final_event.button_index == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
-	elif final_event.button_index == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
-	elif final_event.button_index == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
-	else: key_name = \"Mouse \" + str(final_event.button_index)
+	match final_event.button_index:
+		MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
+		MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
+		MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
+		MOUSE_BUTTON_WHEEL_UP: key_name = \"Wheel Up\"
+		MOUSE_BUTTON_WHEEL_DOWN: key_name = \"Wheel Down\"
+		_: key_name = \"Mouse \" + str(final_event.button_index)
+
+# CONTROLLER
+elif final_event is InputEventJoypadButton:
+	match final_event.button_index:
+		JOY_BUTTON_A: key_name = \"Joy A\"
+		JOY_BUTTON_B: key_name = \"Joy B\"
+		JOY_BUTTON_X: key_name = \"Joy X\"
+		JOY_BUTTON_Y: key_name = \"Joy Y\"
+		JOY_BUTTON_LEFT_SHOULDER: key_name = \"LB\"
+		JOY_BUTTON_RIGHT_SHOULDER: key_name = \"RB\"
+		JOY_BUTTON_BACK: key_name = \"Joy -\"
+		JOY_BUTTON_START: key_name = \"Joy +\"
+		JOY_BUTTON_DPAD_UP: key_name = \"Joy D-Pad Up\"
+		JOY_BUTTON_DPAD_DOWN: key_name = \"Joy D-Pad Down\"
+		JOY_BUTTON_DPAD_LEFT: key_name = \"Joy D-Pad Left\"
+		JOY_BUTTON_DPAD_RIGHT: key_name = \"Joy D-Pad Right\"
+		JOY_BUTTON_TOUCHPAD: key_name = \"Joy Touchpad\"
+		17: key_name = \"Joy ZL\"
+		18: key_name = \"Joy ZR\"
+		_: key_name = \"Joy Button \" + str(final_event.button_index)
 
 
 
@@ -3032,7 +3485,24 @@ var visual_map = {
 	\"Right\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_r.png\"),
 	\"Left Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_left_click.png\"),
 	\"Middle Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_click.png\"),
-	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\")
+	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\"),
+	\"Wheel Up\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_up.png\"),
+	\"Wheel Down\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_down.png\"),
+	\"Joy A\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0021_A.png\"),        # Switch A / Xbox A / PS Cross
+	\"Joy B\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0020_B.png\"),        # Switch B / Xbox B / PS Circle
+	\"Joy X\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0023_X.png\"),        # Switch X / Xbox X / PS Square
+	\"Joy Y\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0022_Y.png\"),        # Switch Y / Xbox Y / PS Triangle
+	\"Joy L\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0019_xbone_LB.png\"),        # Switch L / Xbox LB / PS L1
+	\"Joy R\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0018_xbone_RB.png\"),        # Switch R / Xbox RB / PS R1
+	\"Joy ZL\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0017_xbone_LT.png\"),       # Switch ZL / Xbox LT / PS L2
+	\"Joy ZR\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0016_xbone_RT.png\"),       # Switch ZR / Xbox RT / PS R2
+	\"Joy -\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0015_xbone_view.png\"),        # Switch - / Xbox View (2 Cubes) / PS Share
+	\"Joy +\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0014_xbone_menu.png\"),        # Switch + / Xbox Menu (3 Lines) / PS Options
+	\"Joy D-Pad Up\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_up.png\"),
+	\"Joy D-Pad Down\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_down.png\"),
+	\"Joy D-Pad Left\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_l.png\"),
+	\"Joy D-Pad Right\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_r.png\"),
+	\"Joy Touchpad\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0001_ps4_touchpad_press.png\"), # PS4/5 Touchpad
 }
 
 
@@ -3152,7 +3622,24 @@ var visual_map = {
 	\"Right\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_r.png\"),
 	\"Left Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_left_click.png\"),
 	\"Middle Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_click.png\"),
-	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\")
+	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\"),
+	\"Wheel Up\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_up.png\"),
+	\"Wheel Down\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_down.png\"),
+	\"Joy A\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0021_A.png\"),        # Switch A / Xbox A / PS Cross
+	\"Joy B\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0020_B.png\"),        # Switch B / Xbox B / PS Circle
+	\"Joy X\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0023_X.png\"),        # Switch X / Xbox X / PS Square
+	\"Joy Y\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0022_Y.png\"),        # Switch Y / Xbox Y / PS Triangle
+	\"Joy L\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0019_xbone_LB.png\"),        # Switch L / Xbox LB / PS L1
+	\"Joy R\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0018_xbone_RB.png\"),        # Switch R / Xbox RB / PS R1
+	\"Joy ZL\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0017_xbone_LT.png\"),       # Switch ZL / Xbox LT / PS L2
+	\"Joy ZR\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0016_xbone_RT.png\"),       # Switch ZR / Xbox RT / PS R2
+	\"Joy -\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0015_xbone_view.png\"),        # Switch - / Xbox View (2 Cubes) / PS Share
+	\"Joy +\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0014_xbone_menu.png\"),        # Switch + / Xbox Menu (3 Lines) / PS Options
+	\"Joy D-Pad Up\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_up.png\"),
+	\"Joy D-Pad Down\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_down.png\"),
+	\"Joy D-Pad Left\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_l.png\"),
+	\"Joy D-Pad Right\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_r.png\"),
+	\"Joy Touchpad\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0001_ps4_touchpad_press.png\"), # PS4/5 Touchpad
 }
 
 
@@ -3238,34 +3725,46 @@ var final_event: InputEvent = null
 # the name that the key has (readable version)
 var key_name
 
-# keep looping untill the event is found
 while final_event == null:
-	# wait one frame to not crash by always asking the engine for new input
 	await me.get_tree().process_frame
-	# wait for input and set it
 	final_event = await overlay.gui_input 
 	
-	# normal button presses
 	if final_event is InputEventKey and final_event.is_pressed():
-		# get the name of the press
 		key_name = OS.get_keycode_string(final_event.get_keycode_with_modifiers())
-		
-		# make the UI not use this button input
 		me.get_viewport().set_input_as_handled()
 	
-	# mouse button presses
 	elif final_event is InputEventMouseButton and final_event.is_pressed():
-		# set a readable name
-		if final_event.button_index == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
-		elif final_event.button_index == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
-		elif final_event.button_index == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
-		else: key_name = \"Mouse \" + str(final_event.button_index)
-		
-		# make the UI not use this button input
+		# Use explicit integers to ensure \"Wheel Up/Down\" are caught correctly
+		var idx = final_event.button_index
+		if idx == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
+		elif idx == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
+		elif idx == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
+		elif idx == MOUSE_BUTTON_WHEEL_UP: key_name = \"Wheel Up\"
+		elif idx == MOUSE_BUTTON_WHEEL_DOWN: key_name = \"Wheel Down\"
+		else: key_name = \"Mouse \" + str(idx)
 		me.get_viewport().set_input_as_handled()
-
+	
+	elif final_event is InputEventJoypadButton and final_event.is_pressed():
+		match final_event.button_index:
+			JOY_BUTTON_A: key_name = \"Joy A\"
+			JOY_BUTTON_B: key_name = \"Joy B\"
+			JOY_BUTTON_X: key_name = \"Joy X\"
+			JOY_BUTTON_Y: key_name = \"Joy Y\"
+			JOY_BUTTON_LEFT_SHOULDER: key_name = \"LB\"
+			JOY_BUTTON_RIGHT_SHOULDER: key_name = \"RB\"
+			JOY_BUTTON_BACK: key_name = \"Joy -\"
+			JOY_BUTTON_START: key_name = \"Joy +\"
+			JOY_BUTTON_DPAD_UP: key_name = \"Joy D-Pad Up\"
+			JOY_BUTTON_DPAD_DOWN: key_name = \"Joy D-Pad Down\"
+			JOY_BUTTON_DPAD_LEFT: key_name = \"Joy D-Pad Left\"
+			JOY_BUTTON_DPAD_RIGHT: key_name = \"Joy D-Pad Right\"
+			JOY_BUTTON_TOUCHPAD: key_name = \"Joy Touchpad\"
+			# Standard mappings for triggers if handled as buttons
+			17: key_name = \"Joy ZL\" 
+			18: key_name = \"Joy ZR\"
+			_: key_name = \"Controller \" + str(final_event.button_index)
+		me.get_viewport().set_input_as_handled()
 	else:
-		#try waiting again untill it is something that is correct
 		final_event = null
 
 # remove the overlay
@@ -3292,25 +3791,21 @@ if target_hbox:
 if holder and \"is_input_locked\" in holder:
 	holder.is_input_locked = false
 
-
 # get the value to save
 var value_to_save: int = 0
 
-# set the value to save to the correct value
-if final_event is InputEventKey:
-	value_to_save = final_event.keycode
-elif final_event is InputEventMouseButton:
-	value_to_save = final_event.button_index
+if final_event is InputEventMouseButton:
+	# Store Mouse as 1-99
+	value_to_save = final_event.button_index 
+elif final_event is InputEventJoypadButton:
+	# Store Controller as 100-999 (Index + 100)
+	value_to_save = final_event.button_index + 100
+elif final_event is InputEventKey:
+	# Store Keyboard as 1000+ (Keycode + 1000)
+	value_to_save = final_event.keycode + 1000
 
-# set the action to the new input
 SaveLoad.general_contents[\"Buttons\"][input] = value_to_save
-SaveLoad.save_general(false)
-
-# wait untill the save is done
-await SaveLoad.save_exited
-
-# load the saved inputs
-SaveLoad.load_general()"
+SaveLoad.save_general(false)"
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_wuqwg"), SubResource("Resource_kxmd3")])
 row_spacing = 250
@@ -3404,22 +3899,47 @@ if events.is_empty():
 # get the event that is connected
 var final_event = events[0]
 
-# keyboard
+# KEYBOARD
 if final_event is InputEventKey:
-	# get the keycode string
 	key_name = OS.get_keycode_string(final_event.keycode)
-
 	if key_name.is_empty():
-		# if that does not work get the PHYSICAL keycode string
 		key_name = OS.get_keycode_string(final_event.physical_keycode)
 
-# mouse
+# KEYBOARD
+if final_event is InputEventKey:
+	key_name = OS.get_keycode_string(final_event.keycode)
+	if key_name.is_empty():
+		key_name = OS.get_keycode_string(final_event.physical_keycode)
+
+# MOUSE
 elif final_event is InputEventMouseButton:
-	# set a readable name
-	if final_event.button_index == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
-	elif final_event.button_index == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
-	elif final_event.button_index == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
-	else: key_name = \"Mouse \" + str(final_event.button_index)
+	match final_event.button_index:
+		MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
+		MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
+		MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
+		MOUSE_BUTTON_WHEEL_UP: key_name = \"Wheel Up\"
+		MOUSE_BUTTON_WHEEL_DOWN: key_name = \"Wheel Down\"
+		_: key_name = \"Mouse \" + str(final_event.button_index)
+
+# CONTROLLER
+elif final_event is InputEventJoypadButton:
+	match final_event.button_index:
+		JOY_BUTTON_A: key_name = \"Joy A\"
+		JOY_BUTTON_B: key_name = \"Joy B\"
+		JOY_BUTTON_X: key_name = \"Joy X\"
+		JOY_BUTTON_Y: key_name = \"Joy Y\"
+		JOY_BUTTON_LEFT_SHOULDER: key_name = \"LB\"
+		JOY_BUTTON_RIGHT_SHOULDER: key_name = \"RB\"
+		JOY_BUTTON_BACK: key_name = \"Joy -\"
+		JOY_BUTTON_START: key_name = \"Joy +\"
+		JOY_BUTTON_DPAD_UP: key_name = \"Joy D-Pad Up\"
+		JOY_BUTTON_DPAD_DOWN: key_name = \"Joy D-Pad Down\"
+		JOY_BUTTON_DPAD_LEFT: key_name = \"Joy D-Pad Left\"
+		JOY_BUTTON_DPAD_RIGHT: key_name = \"Joy D-Pad Right\"
+		JOY_BUTTON_TOUCHPAD: key_name = \"Joy Touchpad\"
+		17: key_name = \"Joy ZL\"
+		18: key_name = \"Joy ZR\"
+		_: key_name = \"Joy Button \" + str(final_event.button_index)
 
 
 
@@ -3442,7 +3962,24 @@ var visual_map = {
 	\"Right\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_r.png\"),
 	\"Left Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_left_click.png\"),
 	\"Middle Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_click.png\"),
-	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\")
+	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\"),
+	\"Wheel Up\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_up.png\"),
+	\"Wheel Down\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_down.png\"),
+	\"Joy A\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0021_A.png\"),        # Switch A / Xbox A / PS Cross
+	\"Joy B\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0020_B.png\"),        # Switch B / Xbox B / PS Circle
+	\"Joy X\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0023_X.png\"),        # Switch X / Xbox X / PS Square
+	\"Joy Y\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0022_Y.png\"),        # Switch Y / Xbox Y / PS Triangle
+	\"Joy L\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0019_xbone_LB.png\"),        # Switch L / Xbox LB / PS L1
+	\"Joy R\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0018_xbone_RB.png\"),        # Switch R / Xbox RB / PS R1
+	\"Joy ZL\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0017_xbone_LT.png\"),       # Switch ZL / Xbox LT / PS L2
+	\"Joy ZR\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0016_xbone_RT.png\"),       # Switch ZR / Xbox RT / PS R2
+	\"Joy -\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0015_xbone_view.png\"),        # Switch - / Xbox View (2 Cubes) / PS Share
+	\"Joy +\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0014_xbone_menu.png\"),        # Switch + / Xbox Menu (3 Lines) / PS Options
+	\"Joy D-Pad Up\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_up.png\"),
+	\"Joy D-Pad Down\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_down.png\"),
+	\"Joy D-Pad Left\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_l.png\"),
+	\"Joy D-Pad Right\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_r.png\"),
+	\"Joy Touchpad\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0001_ps4_touchpad_press.png\"), # PS4/5 Touchpad
 }
 
 
@@ -3562,7 +4099,24 @@ var visual_map = {
 	\"Right\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_r.png\"),
 	\"Left Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_left_click.png\"),
 	\"Middle Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_click.png\"),
-	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\")
+	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\"),
+	\"Wheel Up\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_up.png\"),
+	\"Wheel Down\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_down.png\"),
+	\"Joy A\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0021_A.png\"),        # Switch A / Xbox A / PS Cross
+	\"Joy B\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0020_B.png\"),        # Switch B / Xbox B / PS Circle
+	\"Joy X\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0023_X.png\"),        # Switch X / Xbox X / PS Square
+	\"Joy Y\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0022_Y.png\"),        # Switch Y / Xbox Y / PS Triangle
+	\"Joy L\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0019_xbone_LB.png\"),        # Switch L / Xbox LB / PS L1
+	\"Joy R\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0018_xbone_RB.png\"),        # Switch R / Xbox RB / PS R1
+	\"Joy ZL\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0017_xbone_LT.png\"),       # Switch ZL / Xbox LT / PS L2
+	\"Joy ZR\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0016_xbone_RT.png\"),       # Switch ZR / Xbox RT / PS R2
+	\"Joy -\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0015_xbone_view.png\"),        # Switch - / Xbox View (2 Cubes) / PS Share
+	\"Joy +\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0014_xbone_menu.png\"),        # Switch + / Xbox Menu (3 Lines) / PS Options
+	\"Joy D-Pad Up\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_up.png\"),
+	\"Joy D-Pad Down\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_down.png\"),
+	\"Joy D-Pad Left\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_l.png\"),
+	\"Joy D-Pad Right\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_r.png\"),
+	\"Joy Touchpad\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0001_ps4_touchpad_press.png\"), # PS4/5 Touchpad
 }
 
 
@@ -3648,34 +4202,46 @@ var final_event: InputEvent = null
 # the name that the key has (readable version)
 var key_name
 
-# keep looping untill the event is found
 while final_event == null:
-	# wait one frame to not crash by always asking the engine for new input
 	await me.get_tree().process_frame
-	# wait for input and set it
 	final_event = await overlay.gui_input 
 	
-	# normal button presses
 	if final_event is InputEventKey and final_event.is_pressed():
-		# get the name of the press
 		key_name = OS.get_keycode_string(final_event.get_keycode_with_modifiers())
-		
-		# make the UI not use this button input
 		me.get_viewport().set_input_as_handled()
 	
-	# mouse button presses
 	elif final_event is InputEventMouseButton and final_event.is_pressed():
-		# set a readable name
-		if final_event.button_index == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
-		elif final_event.button_index == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
-		elif final_event.button_index == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
-		else: key_name = \"Mouse \" + str(final_event.button_index)
-		
-		# make the UI not use this button input
+		# Use explicit integers to ensure \"Wheel Up/Down\" are caught correctly
+		var idx = final_event.button_index
+		if idx == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
+		elif idx == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
+		elif idx == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
+		elif idx == MOUSE_BUTTON_WHEEL_UP: key_name = \"Wheel Up\"
+		elif idx == MOUSE_BUTTON_WHEEL_DOWN: key_name = \"Wheel Down\"
+		else: key_name = \"Mouse \" + str(idx)
 		me.get_viewport().set_input_as_handled()
-
+	
+	elif final_event is InputEventJoypadButton and final_event.is_pressed():
+		match final_event.button_index:
+			JOY_BUTTON_A: key_name = \"Joy A\"
+			JOY_BUTTON_B: key_name = \"Joy B\"
+			JOY_BUTTON_X: key_name = \"Joy X\"
+			JOY_BUTTON_Y: key_name = \"Joy Y\"
+			JOY_BUTTON_LEFT_SHOULDER: key_name = \"LB\"
+			JOY_BUTTON_RIGHT_SHOULDER: key_name = \"RB\"
+			JOY_BUTTON_BACK: key_name = \"Joy -\"
+			JOY_BUTTON_START: key_name = \"Joy +\"
+			JOY_BUTTON_DPAD_UP: key_name = \"Joy D-Pad Up\"
+			JOY_BUTTON_DPAD_DOWN: key_name = \"Joy D-Pad Down\"
+			JOY_BUTTON_DPAD_LEFT: key_name = \"Joy D-Pad Left\"
+			JOY_BUTTON_DPAD_RIGHT: key_name = \"Joy D-Pad Right\"
+			JOY_BUTTON_TOUCHPAD: key_name = \"Joy Touchpad\"
+			# Standard mappings for triggers if handled as buttons
+			17: key_name = \"Joy ZL\" 
+			18: key_name = \"Joy ZR\"
+			_: key_name = \"Controller \" + str(final_event.button_index)
+		me.get_viewport().set_input_as_handled()
 	else:
-		#try waiting again untill it is something that is correct
 		final_event = null
 
 # remove the overlay
@@ -3706,21 +4272,18 @@ if holder and \"is_input_locked\" in holder:
 # get the value to save
 var value_to_save: int = 0
 
-# set the value to save to the correct value
-if final_event is InputEventKey:
-	value_to_save = final_event.keycode
-elif final_event is InputEventMouseButton:
-	value_to_save = final_event.button_index
+if final_event is InputEventMouseButton:
+	# Store Mouse as 1-99
+	value_to_save = final_event.button_index 
+elif final_event is InputEventJoypadButton:
+	# Store Controller as 100-999 (Index + 100)
+	value_to_save = final_event.button_index + 100
+elif final_event is InputEventKey:
+	# Store Keyboard as 1000+ (Keycode + 1000)
+	value_to_save = final_event.keycode + 1000
 
-# set the action to the new input
 SaveLoad.general_contents[\"Buttons\"][input] = value_to_save
-SaveLoad.save_general(false)
-
-# wait untill the save is done
-await SaveLoad.save_exited
-
-# load the saved inputs
-SaveLoad.load_general()"
+SaveLoad.save_general(false)"
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_i0trc"), SubResource("Resource_pqgyx")])
 row_spacing = 200
@@ -3829,22 +4392,47 @@ if events.is_empty():
 # get the event that is connected
 var final_event = events[0]
 
-# keyboard
+# KEYBOARD
 if final_event is InputEventKey:
-	# get the keycode string
 	key_name = OS.get_keycode_string(final_event.keycode)
-
 	if key_name.is_empty():
-		# if that does not work get the PHYSICAL keycode string
 		key_name = OS.get_keycode_string(final_event.physical_keycode)
 
-# mouse
+# KEYBOARD
+if final_event is InputEventKey:
+	key_name = OS.get_keycode_string(final_event.keycode)
+	if key_name.is_empty():
+		key_name = OS.get_keycode_string(final_event.physical_keycode)
+
+# MOUSE
 elif final_event is InputEventMouseButton:
-	# set a readable name
-	if final_event.button_index == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
-	elif final_event.button_index == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
-	elif final_event.button_index == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
-	else: key_name = \"Mouse \" + str(final_event.button_index)
+	match final_event.button_index:
+		MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
+		MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
+		MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
+		MOUSE_BUTTON_WHEEL_UP: key_name = \"Wheel Up\"
+		MOUSE_BUTTON_WHEEL_DOWN: key_name = \"Wheel Down\"
+		_: key_name = \"Mouse \" + str(final_event.button_index)
+
+# CONTROLLER
+elif final_event is InputEventJoypadButton:
+	match final_event.button_index:
+		JOY_BUTTON_A: key_name = \"Joy A\"
+		JOY_BUTTON_B: key_name = \"Joy B\"
+		JOY_BUTTON_X: key_name = \"Joy X\"
+		JOY_BUTTON_Y: key_name = \"Joy Y\"
+		JOY_BUTTON_LEFT_SHOULDER: key_name = \"LB\"
+		JOY_BUTTON_RIGHT_SHOULDER: key_name = \"RB\"
+		JOY_BUTTON_BACK: key_name = \"Joy -\"
+		JOY_BUTTON_START: key_name = \"Joy +\"
+		JOY_BUTTON_DPAD_UP: key_name = \"Joy D-Pad Up\"
+		JOY_BUTTON_DPAD_DOWN: key_name = \"Joy D-Pad Down\"
+		JOY_BUTTON_DPAD_LEFT: key_name = \"Joy D-Pad Left\"
+		JOY_BUTTON_DPAD_RIGHT: key_name = \"Joy D-Pad Right\"
+		JOY_BUTTON_TOUCHPAD: key_name = \"Joy Touchpad\"
+		17: key_name = \"Joy ZL\"
+		18: key_name = \"Joy ZR\"
+		_: key_name = \"Joy Button \" + str(final_event.button_index)
 
 
 
@@ -3867,9 +4455,25 @@ var visual_map = {
 	\"Right\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_r.png\"),
 	\"Left Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_left_click.png\"),
 	\"Middle Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_click.png\"),
-	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\")
+	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\"),
+	\"Wheel Up\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_up.png\"),
+	\"Wheel Down\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_down.png\"),
+	\"Joy A\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0021_A.png\"),        # Switch A / Xbox A / PS Cross
+	\"Joy B\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0020_B.png\"),        # Switch B / Xbox B / PS Circle
+	\"Joy X\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0023_X.png\"),        # Switch X / Xbox X / PS Square
+	\"Joy Y\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0022_Y.png\"),        # Switch Y / Xbox Y / PS Triangle
+	\"Joy L\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0019_xbone_LB.png\"),        # Switch L / Xbox LB / PS L1
+	\"Joy R\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0018_xbone_RB.png\"),        # Switch R / Xbox RB / PS R1
+	\"Joy ZL\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0017_xbone_LT.png\"),       # Switch ZL / Xbox LT / PS L2
+	\"Joy ZR\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0016_xbone_RT.png\"),       # Switch ZR / Xbox RT / PS R2
+	\"Joy -\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0015_xbone_view.png\"),        # Switch - / Xbox View (2 Cubes) / PS Share
+	\"Joy +\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0014_xbone_menu.png\"),        # Switch + / Xbox Menu (3 Lines) / PS Options
+	\"Joy D-Pad Up\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_up.png\"),
+	\"Joy D-Pad Down\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_down.png\"),
+	\"Joy D-Pad Left\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_l.png\"),
+	\"Joy D-Pad Right\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_r.png\"),
+	\"Joy Touchpad\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0001_ps4_touchpad_press.png\"), # PS4/5 Touchpad
 }
-
 
 
 
@@ -3987,7 +4591,24 @@ var visual_map = {
 	\"Right\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_r.png\"),
 	\"Left Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_left_click.png\"),
 	\"Middle Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_click.png\"),
-	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\")
+	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\"),
+	\"Wheel Up\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_up.png\"),
+	\"Wheel Down\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_down.png\"),
+	\"Joy A\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0021_A.png\"),        # Switch A / Xbox A / PS Cross
+	\"Joy B\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0020_B.png\"),        # Switch B / Xbox B / PS Circle
+	\"Joy X\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0023_X.png\"),        # Switch X / Xbox X / PS Square
+	\"Joy Y\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0022_Y.png\"),        # Switch Y / Xbox Y / PS Triangle
+	\"Joy L\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0019_xbone_LB.png\"),        # Switch L / Xbox LB / PS L1
+	\"Joy R\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0018_xbone_RB.png\"),        # Switch R / Xbox RB / PS R1
+	\"Joy ZL\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0017_xbone_LT.png\"),       # Switch ZL / Xbox LT / PS L2
+	\"Joy ZR\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0016_xbone_RT.png\"),       # Switch ZR / Xbox RT / PS R2
+	\"Joy -\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0015_xbone_view.png\"),        # Switch - / Xbox View (2 Cubes) / PS Share
+	\"Joy +\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0014_xbone_menu.png\"),        # Switch + / Xbox Menu (3 Lines) / PS Options
+	\"Joy D-Pad Up\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_up.png\"),
+	\"Joy D-Pad Down\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_down.png\"),
+	\"Joy D-Pad Left\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_l.png\"),
+	\"Joy D-Pad Right\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_r.png\"),
+	\"Joy Touchpad\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0001_ps4_touchpad_press.png\"), # PS4/5 Touchpad
 }
 
 
@@ -4073,34 +4694,46 @@ var final_event: InputEvent = null
 # the name that the key has (readable version)
 var key_name
 
-# keep looping untill the event is found
 while final_event == null:
-	# wait one frame to not crash by always asking the engine for new input
 	await me.get_tree().process_frame
-	# wait for input and set it
 	final_event = await overlay.gui_input 
 	
-	# normal button presses
 	if final_event is InputEventKey and final_event.is_pressed():
-		# get the name of the press
 		key_name = OS.get_keycode_string(final_event.get_keycode_with_modifiers())
-		
-		# make the UI not use this button input
 		me.get_viewport().set_input_as_handled()
 	
-	# mouse button presses
 	elif final_event is InputEventMouseButton and final_event.is_pressed():
-		# set a readable name
-		if final_event.button_index == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
-		elif final_event.button_index == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
-		elif final_event.button_index == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
-		else: key_name = \"Mouse \" + str(final_event.button_index)
-		
-		# make the UI not use this button input
+		# Use explicit integers to ensure \"Wheel Up/Down\" are caught correctly
+		var idx = final_event.button_index
+		if idx == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
+		elif idx == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
+		elif idx == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
+		elif idx == MOUSE_BUTTON_WHEEL_UP: key_name = \"Wheel Up\"
+		elif idx == MOUSE_BUTTON_WHEEL_DOWN: key_name = \"Wheel Down\"
+		else: key_name = \"Mouse \" + str(idx)
 		me.get_viewport().set_input_as_handled()
-
+	
+	elif final_event is InputEventJoypadButton and final_event.is_pressed():
+		match final_event.button_index:
+			JOY_BUTTON_A: key_name = \"Joy A\"
+			JOY_BUTTON_B: key_name = \"Joy B\"
+			JOY_BUTTON_X: key_name = \"Joy X\"
+			JOY_BUTTON_Y: key_name = \"Joy Y\"
+			JOY_BUTTON_LEFT_SHOULDER: key_name = \"LB\"
+			JOY_BUTTON_RIGHT_SHOULDER: key_name = \"RB\"
+			JOY_BUTTON_BACK: key_name = \"Joy -\"
+			JOY_BUTTON_START: key_name = \"Joy +\"
+			JOY_BUTTON_DPAD_UP: key_name = \"Joy D-Pad Up\"
+			JOY_BUTTON_DPAD_DOWN: key_name = \"Joy D-Pad Down\"
+			JOY_BUTTON_DPAD_LEFT: key_name = \"Joy D-Pad Left\"
+			JOY_BUTTON_DPAD_RIGHT: key_name = \"Joy D-Pad Right\"
+			JOY_BUTTON_TOUCHPAD: key_name = \"Joy Touchpad\"
+			# Standard mappings for triggers if handled as buttons
+			17: key_name = \"Joy ZL\" 
+			18: key_name = \"Joy ZR\"
+			_: key_name = \"Controller \" + str(final_event.button_index)
+		me.get_viewport().set_input_as_handled()
 	else:
-		#try waiting again untill it is something that is correct
 		final_event = null
 
 # remove the overlay
@@ -4131,18 +4764,18 @@ if holder and \"is_input_locked\" in holder:
 # get the value to save
 var value_to_save: int = 0
 
-# set the value to save to the correct value
-if final_event is InputEventKey:
-	value_to_save = final_event.keycode
-elif final_event is InputEventMouseButton:
-	value_to_save = final_event.button_index
+if final_event is InputEventMouseButton:
+	# Store Mouse as 1-99
+	value_to_save = final_event.button_index 
+elif final_event is InputEventJoypadButton:
+	# Store Controller as 100-999 (Index + 100)
+	value_to_save = final_event.button_index + 100
+elif final_event is InputEventKey:
+	# Store Keyboard as 1000+ (Keycode + 1000)
+	value_to_save = final_event.keycode + 1000
 
-# set the action to the new input
 SaveLoad.general_contents[\"Buttons\"][input] = value_to_save
-SaveLoad.save_general(false)
-
-# load the saved inputs
-SaveLoad.load_general()"
+SaveLoad.save_general(false)"
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_jq4vk"), SubResource("Resource_4ot2d")])
 row_spacing = 278
@@ -4236,22 +4869,41 @@ if events.is_empty():
 # get the event that is connected
 var final_event = events[0]
 
-# keyboard
+# KEYBOARD
 if final_event is InputEventKey:
-	# get the keycode string
 	key_name = OS.get_keycode_string(final_event.keycode)
-
 	if key_name.is_empty():
-		# if that does not work get the PHYSICAL keycode string
 		key_name = OS.get_keycode_string(final_event.physical_keycode)
 
-# mouse
+# MOUSE
 elif final_event is InputEventMouseButton:
-	# set a readable name
-	if final_event.button_index == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
-	elif final_event.button_index == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
-	elif final_event.button_index == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
-	else: key_name = \"Mouse \" + str(final_event.button_index)
+	match final_event.button_index:
+		MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
+		MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
+		MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
+		MOUSE_BUTTON_WHEEL_UP: key_name = \"Wheel Up\"
+		MOUSE_BUTTON_WHEEL_DOWN: key_name = \"Wheel Down\"
+		_: key_name = \"Mouse \" + str(final_event.button_index)
+
+# CONTROLLER
+elif final_event is InputEventJoypadButton:
+	match final_event.button_index:
+		JOY_BUTTON_A: key_name = \"Joy A\"
+		JOY_BUTTON_B: key_name = \"Joy B\"
+		JOY_BUTTON_X: key_name = \"Joy X\"
+		JOY_BUTTON_Y: key_name = \"Joy Y\"
+		JOY_BUTTON_LEFT_SHOULDER: key_name = \"LB\"
+		JOY_BUTTON_RIGHT_SHOULDER: key_name = \"RB\"
+		JOY_BUTTON_BACK: key_name = \"Joy -\"
+		JOY_BUTTON_START: key_name = \"Joy +\"
+		JOY_BUTTON_DPAD_UP: key_name = \"Joy D-Pad Up\"
+		JOY_BUTTON_DPAD_DOWN: key_name = \"Joy D-Pad Down\"
+		JOY_BUTTON_DPAD_LEFT: key_name = \"Joy D-Pad Left\"
+		JOY_BUTTON_DPAD_RIGHT: key_name = \"Joy D-Pad Right\"
+		JOY_BUTTON_TOUCHPAD: key_name = \"Joy Touchpad\"
+		17: key_name = \"Joy ZL\"
+		18: key_name = \"Joy ZR\"
+		_: key_name = \"Joy Button \" + str(final_event.button_index)
 
 
 
@@ -4274,7 +4926,24 @@ var visual_map = {
 	\"Right\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_r.png\"),
 	\"Left Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_left_click.png\"),
 	\"Middle Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_click.png\"),
-	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\")
+	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\"),
+	\"Wheel Up\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_up.png\"),
+	\"Wheel Down\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_down.png\"),
+	\"Joy A\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0021_A.png\"),        # Switch A / Xbox A / PS Cross
+	\"Joy B\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0020_B.png\"),        # Switch B / Xbox B / PS Circle
+	\"Joy X\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0023_X.png\"),        # Switch X / Xbox X / PS Square
+	\"Joy Y\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0022_Y.png\"),        # Switch Y / Xbox Y / PS Triangle
+	\"Joy L\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0019_xbone_LB.png\"),        # Switch L / Xbox LB / PS L1
+	\"Joy R\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0018_xbone_RB.png\"),        # Switch R / Xbox RB / PS R1
+	\"Joy ZL\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0017_xbone_LT.png\"),       # Switch ZL / Xbox LT / PS L2
+	\"Joy ZR\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0016_xbone_RT.png\"),       # Switch ZR / Xbox RT / PS R2
+	\"Joy -\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0015_xbone_view.png\"),        # Switch - / Xbox View (2 Cubes) / PS Share
+	\"Joy +\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0014_xbone_menu.png\"),        # Switch + / Xbox Menu (3 Lines) / PS Options
+	\"Joy D-Pad Up\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_up.png\"),
+	\"Joy D-Pad Down\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_down.png\"),
+	\"Joy D-Pad Left\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_l.png\"),
+	\"Joy D-Pad Right\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_r.png\"),
+	\"Joy Touchpad\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0001_ps4_touchpad_press.png\"), # PS4/5 Touchpad
 }
 
 
@@ -4394,7 +5063,24 @@ var visual_map = {
 	\"Right\": preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_arrow_r.png\"),
 	\"Left Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_left_click.png\"),
 	\"Middle Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_click.png\"),
-	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\")
+	\"Right Mouse Button\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_right_click.png\"),
+	\"Wheel Up\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_up.png\"),
+	\"Wheel Down\": preload(\"res://UI screens/menu's/visuals/button_controll/button_mouse_middle_down.png\"),
+	\"Joy A\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0021_A.png\"),        # Switch A / Xbox A / PS Cross
+	\"Joy B\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0020_B.png\"),        # Switch B / Xbox B / PS Circle
+	\"Joy X\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0023_X.png\"),        # Switch X / Xbox X / PS Square
+	\"Joy Y\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0022_Y.png\"),        # Switch Y / Xbox Y / PS Triangle
+	\"Joy L\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0019_xbone_LB.png\"),        # Switch L / Xbox LB / PS L1
+	\"Joy R\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0018_xbone_RB.png\"),        # Switch R / Xbox RB / PS R1
+	\"Joy ZL\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0017_xbone_LT.png\"),       # Switch ZL / Xbox LT / PS L2
+	\"Joy ZR\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0016_xbone_RT.png\"),       # Switch ZR / Xbox RT / PS R2
+	\"Joy -\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0015_xbone_view.png\"),        # Switch - / Xbox View (2 Cubes) / PS Share
+	\"Joy +\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0014_xbone_menu.png\"),        # Switch + / Xbox Menu (3 Lines) / PS Options
+	\"Joy D-Pad Up\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_up.png\"),
+	\"Joy D-Pad Down\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_down.png\"),
+	\"Joy D-Pad Left\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_l.png\"),
+	\"Joy D-Pad Right\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0006_xbox360_r.png\"),
+	\"Joy Touchpad\": preload(\"res://UI screens/menu's/visuals/button_controll/controller_button_skins_0001_ps4_touchpad_press.png\"), # PS4/5 Touchpad
 }
 
 
@@ -4480,34 +5166,46 @@ var final_event: InputEvent = null
 # the name that the key has (readable version)
 var key_name
 
-# keep looping untill the event is found
 while final_event == null:
-	# wait one frame to not crash by always asking the engine for new input
 	await me.get_tree().process_frame
-	# wait for input and set it
 	final_event = await overlay.gui_input 
 	
-	# normal button presses
 	if final_event is InputEventKey and final_event.is_pressed():
-		# get the name of the press
 		key_name = OS.get_keycode_string(final_event.get_keycode_with_modifiers())
-		
-		# make the UI not use this button input
 		me.get_viewport().set_input_as_handled()
 	
-	# mouse button presses
 	elif final_event is InputEventMouseButton and final_event.is_pressed():
-		# set a readable name
-		if final_event.button_index == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
-		elif final_event.button_index == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
-		elif final_event.button_index == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
-		else: key_name = \"Mouse \" + str(final_event.button_index)
-		
-		# make the UI not use this button input
+		# Use explicit integers to ensure \"Wheel Up/Down\" are caught correctly
+		var idx = final_event.button_index
+		if idx == MOUSE_BUTTON_LEFT: key_name = \"Left Mouse Button\"
+		elif idx == MOUSE_BUTTON_RIGHT: key_name = \"Right Mouse Button\"
+		elif idx == MOUSE_BUTTON_MIDDLE: key_name = \"Middle Mouse Button\"
+		elif idx == MOUSE_BUTTON_WHEEL_UP: key_name = \"Wheel Up\"
+		elif idx == MOUSE_BUTTON_WHEEL_DOWN: key_name = \"Wheel Down\"
+		else: key_name = \"Mouse \" + str(idx)
 		me.get_viewport().set_input_as_handled()
-
+	
+	elif final_event is InputEventJoypadButton and final_event.is_pressed():
+		match final_event.button_index:
+			JOY_BUTTON_A: key_name = \"Joy A\"
+			JOY_BUTTON_B: key_name = \"Joy B\"
+			JOY_BUTTON_X: key_name = \"Joy X\"
+			JOY_BUTTON_Y: key_name = \"Joy Y\"
+			JOY_BUTTON_LEFT_SHOULDER: key_name = \"LB\"
+			JOY_BUTTON_RIGHT_SHOULDER: key_name = \"RB\"
+			JOY_BUTTON_BACK: key_name = \"Joy -\"
+			JOY_BUTTON_START: key_name = \"Joy +\"
+			JOY_BUTTON_DPAD_UP: key_name = \"Joy D-Pad Up\"
+			JOY_BUTTON_DPAD_DOWN: key_name = \"Joy D-Pad Down\"
+			JOY_BUTTON_DPAD_LEFT: key_name = \"Joy D-Pad Left\"
+			JOY_BUTTON_DPAD_RIGHT: key_name = \"Joy D-Pad Right\"
+			JOY_BUTTON_TOUCHPAD: key_name = \"Joy Touchpad\"
+			# Standard mappings for triggers if handled as buttons
+			17: key_name = \"Joy ZL\" 
+			18: key_name = \"Joy ZR\"
+			_: key_name = \"Controller \" + str(final_event.button_index)
+		me.get_viewport().set_input_as_handled()
 	else:
-		#try waiting again untill it is something that is correct
 		final_event = null
 
 # remove the overlay
@@ -4538,18 +5236,18 @@ if holder and \"is_input_locked\" in holder:
 # get the value to save
 var value_to_save: int = 0
 
-# set the value to save to the correct value
-if final_event is InputEventKey:
-	value_to_save = final_event.keycode
-elif final_event is InputEventMouseButton:
-	value_to_save = final_event.button_index
+if final_event is InputEventMouseButton:
+	# Store Mouse as 1-99
+	value_to_save = final_event.button_index 
+elif final_event is InputEventJoypadButton:
+	# Store Controller as 100-999 (Index + 100)
+	value_to_save = final_event.button_index + 100
+elif final_event is InputEventKey:
+	# Store Keyboard as 1000+ (Keycode + 1000)
+	value_to_save = final_event.keycode + 1000
 
-# set the action to the new input
 SaveLoad.general_contents[\"Buttons\"][input] = value_to_save
-SaveLoad.save_general(false)
-
-# load the saved inputs
-SaveLoad.load_general()"
+SaveLoad.save_general(false)"
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_tiafu"), SubResource("Resource_vqsdn")])
 row_spacing = 115

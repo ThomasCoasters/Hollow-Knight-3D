@@ -314,7 +314,7 @@ func _input(event: InputEvent) -> void:
 		return
 	
 	# check if the input is a controller / keyboard up or down action
-	if event.is_action_pressed("ui_up") or event.is_action_pressed("ui_down"):
+	if event.is_action_pressed("ui_up") or event.is_action_pressed("ui_down") or event.is_action_pressed("ui_left") or event.is_action_pressed("ui_right"):
 		# you currently are using keyboard nav so enable that
 		keyboard_navigation_enabled = true
 		

@@ -27,23 +27,22 @@ var full_general_save_path: String
 ## This one is for the general game stuff like: settings
 var DEFAULT_GENERAL_SAVE: Dictionary = {
 	&"Buttons": {
-		&"ZoomIn"       : MOUSE_BUTTON_WHEEL_UP   ,
-		&"ZoomOut"      : MOUSE_BUTTON_WHEEL_DOWN ,
-		&"ChangeCamera" : KEY_F1                  ,
-		&"MoveLeft"     : KEY_A                   ,
-		&"MoveRight"    : KEY_D                   ,
-		&"MoveForward"  : KEY_W                   ,
-		&"MoveBackward" : KEY_S                   ,
-		&"Attack"       : MOUSE_BUTTON_LEFT       ,
-		&"Jump"         : KEY_SPACE               ,
-		&"Dash"         : KEY_SHIFT               ,
+		&"ZoomIn"       : MOUSE_BUTTON_WHEEL_UP,   # 4 (Mouse 1-99)
+		&"ZoomOut"      : MOUSE_BUTTON_WHEEL_DOWN, # 5 (Mouse 1-99)
+		&"ChangeCamera" : KEY_F1 + 1000,           # Keyboard range 1000+
+		&"MoveLeft"     : KEY_A + 1000,
+		&"MoveRight"    : KEY_D + 1000,
+		&"MoveForward"  : KEY_W + 1000,
+		&"MoveBackward" : KEY_S + 1000,
+		&"Attack"       : MOUSE_BUTTON_LEFT,       # 1 (Mouse 1-99)
+		&"Jump"         : KEY_SPACE + 1000,
+		&"Dash"         : KEY_SHIFT + 1000,
 	},
 	&"Audio": {
 		&"Master": 10,
 		&"SFX"   : 10,
 		&"Music" : 10,
 	}
-	
 }
 
 ## the save that you have when there are no given new values (the backup) [br]
@@ -216,33 +215,32 @@ func _load(path: String, loading_content: Dictionary) -> Dictionary:
 
 ## loads the buttons to the correct new code
 func _load_keys() -> void:
-	# get the buttons from the save dict
+	# get every button
 	var buttons: Dictionary = general_contents[&"Buttons"]
 	
-	# go through every action
+	# go through every action in the buttons
 	for action in buttons:
-		# get the input key (as an int)
-		var input_key = int(buttons[action])
+		# get the value of the new action
+		var val = int(buttons[action])
+		# refrence for the final event
+		var final_event: InputEvent = null
 		
-		# make a var for the event
-		var final_event: InputEvent
-		
-		# mouse buttons
-		if input_key >= MOUSE_BUTTON_LEFT and input_key <= MOUSE_BUTTON_WHEEL_RIGHT:
-			# make a new mouse event
-			var mouse_event: InputEventMouseButton = InputEventMouseButton.new()
-			# set the index for the event to the key
-			mouse_event.button_index = input_key as MouseButton
-			# set the final event to this mouse button event
+		# 1-99: mouse buttons
+		if val > 0 and val < 100:
+			var mouse_event = InputEventMouseButton.new()
+			mouse_event.button_index = val as MouseButton
 			final_event = mouse_event
-		
-		# keyboard keys
-		else:
-			# create a new key event
-			var key_event: InputEventKey = InputEventKey.new()
-			# set the key to the new event
-			key_event.keycode = input_key as Key
-			# set the new event to the final event
+			
+		# 100-999: Controller buttons
+		elif val >= 100 and val < 1000:
+			var joy_event = InputEventJoypadButton.new()
+			joy_event.button_index = (val - 100) as JoyButton
+			final_event = joy_event
+			
+		# 1000+: Keyboard buttons
+		elif val >= 1000:
+			var key_event = InputEventKey.new()
+			key_event.keycode = (val - 1000) as Key
 			final_event = key_event
 		
 		
@@ -265,8 +263,8 @@ func _load_audio() -> void:
 		if AudioUtil.bus_exists(audio_key):
 			# get the bus index
 			var bus_index: int = AudioServer.get_bus_index(audio_key)
-			# get the new volume (3 × x)
-			var volume: int = 3 * audio[audio_key]
+			# get the new volume (3 × (x - 10)
+			var volume: int = 3 * (audio[audio_key] - 10)
 			# set the bus volume to the new correct one
 			AudioServer.set_bus_volume_db(bus_index, volume)
 #endregion
