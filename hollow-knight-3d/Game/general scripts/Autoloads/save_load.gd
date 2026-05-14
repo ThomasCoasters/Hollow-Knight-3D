@@ -26,7 +26,7 @@ var full_general_save_path: String
 ## the save that you have when there are no given new values (the backup) [br]
 ## This one is for the general game stuff like: settings
 var DEFAULT_GENERAL_SAVE: Dictionary = {
-	"Buttons": {
+	&"Buttons": {
 		&"ZoomIn"       : MOUSE_BUTTON_WHEEL_UP   ,
 		&"ZoomOut"      : MOUSE_BUTTON_WHEEL_DOWN ,
 		&"ChangeCamera" : KEY_F1                  ,
@@ -38,6 +38,11 @@ var DEFAULT_GENERAL_SAVE: Dictionary = {
 		&"Jump"         : KEY_SPACE               ,
 		&"Dash"         : KEY_SHIFT               ,
 	},
+	&"Audio": {
+		&"Master": 10,
+		&"SFX"   : 10,
+		&"Music" : 10,
+	}
 	
 }
 
@@ -91,6 +96,7 @@ func _ready() -> void:
 	load_general()
 
 
+
 #region general
 ## saves the general game stuff but not the game's state
 func save_general(show_visual: bool = true) -> void:
@@ -107,6 +113,8 @@ func load_general() -> void:
 	
 	# load the keys
 	_load_keys()
+	# load the audio
+	_load_audio()
 
 
 #endregion
@@ -209,7 +217,7 @@ func _load(path: String, loading_content: Dictionary) -> Dictionary:
 ## loads the buttons to the correct new code
 func _load_keys() -> void:
 	# get the buttons from the save dict
-	var buttons: Dictionary = general_contents["Buttons"]
+	var buttons: Dictionary = general_contents[&"Buttons"]
 	
 	# go through every action
 	for action in buttons:
@@ -243,6 +251,24 @@ func _load_keys() -> void:
 			# replace old keybinds
 			InputMap.action_erase_events(action)
 			InputMap.action_add_event(action, final_event)
+
+
+
+## loads the audio to the new loaded value
+func _load_audio() -> void:
+	# get the audio settings from the save dict
+	var audio: Dictionary = general_contents[&"Audio"]
+	
+	# go through every audio setting
+	for audio_key in audio:
+		# check if that bus exists
+		if AudioUtil.bus_exists(audio_key):
+			# get the bus index
+			var bus_index: int = AudioServer.get_bus_index(audio_key)
+			# get the new volume (3 × x)
+			var volume: int = 3 * audio[audio_key]
+			# set the bus volume to the new correct one
+			AudioServer.set_bus_volume_db(bus_index, volume)
 #endregion
 
 
