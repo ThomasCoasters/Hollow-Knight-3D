@@ -629,6 +629,14 @@ var config = ctx[1]
 # set this node as the initial node you should check
 var nodes_to_check = [me]
 
+# get the menu holder
+var holder = ctx[0].get_parent()
+# set the menu holder input locked to true
+if holder and \"is_input_locked\" in holder:
+	holder.is_input_locked = true
+
+
+
 # the visual for non texture buttons
 var empty_visual = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_key.png\")
 var empty_visual_big = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0003_wide_square_key.png\")
@@ -778,7 +786,9 @@ if target_label and rect_node:
 if target_hbox:
 	target_hbox.add_theme_constant_override(&\"separation\", config.row_spacing)
 
-
+# release input lock
+if holder and \"is_input_locked\" in holder:
+	holder.is_input_locked = false
 
 
 # get the value to save
@@ -1026,6 +1036,14 @@ var config = ctx[1]
 # set this node as the initial node you should check
 var nodes_to_check = [me]
 
+
+# get the menu holder
+var holder = ctx[0].get_parent()
+# set the menu holder input locked to true
+if holder and \"is_input_locked\" in holder:
+	holder.is_input_locked = true
+
+
 # the visual for non texture buttons
 var empty_visual = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_key.png\")
 var empty_visual_big = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0003_wide_square_key.png\")
@@ -1175,7 +1193,9 @@ if target_label and rect_node:
 if target_hbox:
 	target_hbox.add_theme_constant_override(&\"separation\", config.row_spacing)
 
-
+# release input lock
+if holder and \"is_input_locked\" in holder:
+	holder.is_input_locked = false
 
 
 # get the value to save
@@ -1441,6 +1461,14 @@ var config = ctx[1]
 # set this node as the initial node you should check
 var nodes_to_check = [me]
 
+
+# get the menu holder
+var holder = ctx[0].get_parent()
+# set the menu holder input locked to true
+if holder and \"is_input_locked\" in holder:
+	holder.is_input_locked = true
+
+
 # the visual for non texture buttons
 var empty_visual = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_key.png\")
 var empty_visual_big = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0003_wide_square_key.png\")
@@ -1590,7 +1618,9 @@ if target_label and rect_node:
 if target_hbox:
 	target_hbox.add_theme_constant_override(&\"separation\", config.row_spacing)
 
-
+# release input lock
+if holder and \"is_input_locked\" in holder:
+	holder.is_input_locked = false
 
 
 # get the value to save
@@ -1841,6 +1871,14 @@ var config = ctx[1]
 # set this node as the initial node you should check
 var nodes_to_check = [me]
 
+
+# get the menu holder
+var holder = ctx[0].get_parent()
+# set the menu holder input locked to true
+if holder and \"is_input_locked\" in holder:
+	holder.is_input_locked = true
+
+
 # the visual for non texture buttons
 var empty_visual = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_key.png\")
 var empty_visual_big = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0003_wide_square_key.png\")
@@ -1990,7 +2028,9 @@ if target_label and rect_node:
 if target_hbox:
 	target_hbox.add_theme_constant_override(&\"separation\", config.row_spacing)
 
-
+# release input lock
+if holder and \"is_input_locked\" in holder:
+	holder.is_input_locked = false
 
 
 # get the value to save
@@ -2256,6 +2296,14 @@ var config = ctx[1]
 # set this node as the initial node you should check
 var nodes_to_check = [me]
 
+
+# get the menu holder
+var holder = ctx[0].get_parent()
+# set the menu holder input locked to true
+if holder and \"is_input_locked\" in holder:
+	holder.is_input_locked = true
+
+
 # the visual for non texture buttons
 var empty_visual = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_key.png\")
 var empty_visual_big = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0003_wide_square_key.png\")
@@ -2405,7 +2453,9 @@ if target_label and rect_node:
 if target_hbox:
 	target_hbox.add_theme_constant_override(&\"separation\", config.row_spacing)
 
-
+# release input lock
+if holder and \"is_input_locked\" in holder:
+	holder.is_input_locked = false
 
 
 # get the value to save
@@ -2656,6 +2706,14 @@ var config = ctx[1]
 # set this node as the initial node you should check
 var nodes_to_check = [me]
 
+
+# get the menu holder
+var holder = ctx[0].get_parent()
+# set the menu holder input locked to true
+if holder and \"is_input_locked\" in holder:
+	holder.is_input_locked = true
+
+
 # the visual for non texture buttons
 var empty_visual = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_key.png\")
 var empty_visual_big = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0003_wide_square_key.png\")
@@ -2805,7 +2863,9 @@ if target_label and rect_node:
 if target_hbox:
 	target_hbox.add_theme_constant_override(&\"separation\", config.row_spacing)
 
-
+# release input lock
+if holder and \"is_input_locked\" in holder:
+	holder.is_input_locked = false
 
 
 # get the value to save
@@ -3071,6 +3131,14 @@ var config = ctx[1]
 # set this node as the initial node you should check
 var nodes_to_check = [me]
 
+
+# get the menu holder
+var holder = ctx[0].get_parent()
+# set the menu holder input locked to true
+if holder and \"is_input_locked\" in holder:
+	holder.is_input_locked = true
+
+
 # the visual for non texture buttons
 var empty_visual = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_key.png\")
 var empty_visual_big = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0003_wide_square_key.png\")
@@ -3220,7 +3288,9 @@ if target_label and rect_node:
 if target_hbox:
 	target_hbox.add_theme_constant_override(&\"separation\", config.row_spacing)
 
-
+# release input lock
+if holder and \"is_input_locked\" in holder:
+	holder.is_input_locked = false
 
 
 # get the value to save
@@ -3471,6 +3541,14 @@ var config = ctx[1]
 # set this node as the initial node you should check
 var nodes_to_check = [me]
 
+
+# get the menu holder
+var holder = ctx[0].get_parent()
+# set the menu holder input locked to true
+if holder and \"is_input_locked\" in holder:
+	holder.is_input_locked = true
+
+
 # the visual for non texture buttons
 var empty_visual = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_key.png\")
 var empty_visual_big = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0003_wide_square_key.png\")
@@ -3621,7 +3699,9 @@ if target_hbox:
 	target_hbox.add_theme_constant_override(&\"separation\", config.row_spacing)
 
 
-
+# release input lock
+if holder and \"is_input_locked\" in holder:
+	holder.is_input_locked = false
 
 # get the value to save
 var value_to_save: int = 0
@@ -3886,6 +3966,14 @@ var config = ctx[1]
 # set this node as the initial node you should check
 var nodes_to_check = [me]
 
+
+# get the menu holder
+var holder = ctx[0].get_parent()
+# set the menu holder input locked to true
+if holder and \"is_input_locked\" in holder:
+	holder.is_input_locked = true
+
+
 # the visual for non texture buttons
 var empty_visual = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_key.png\")
 var empty_visual_big = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0003_wide_square_key.png\")
@@ -4035,7 +4123,9 @@ if target_label and rect_node:
 if target_hbox:
 	target_hbox.add_theme_constant_override(&\"separation\", config.row_spacing)
 
-
+# release input lock
+if holder and \"is_input_locked\" in holder:
+	holder.is_input_locked = false
 
 
 # get the value to save
@@ -4283,6 +4373,14 @@ var config = ctx[1]
 # set this node as the initial node you should check
 var nodes_to_check = [me]
 
+
+# get the menu holder
+var holder = ctx[0].get_parent()
+# set the menu holder input locked to true
+if holder and \"is_input_locked\" in holder:
+	holder.is_input_locked = true
+
+
 # the visual for non texture buttons
 var empty_visual = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_key.png\")
 var empty_visual_big = preload(\"res://UI screens/menu's/visuals/button_controll/button_skin_0003_wide_square_key.png\")
@@ -4432,7 +4530,9 @@ if target_label and rect_node:
 if target_hbox:
 	target_hbox.add_theme_constant_override(&\"separation\", config.row_spacing)
 
-
+# release input lock
+if holder and \"is_input_locked\" in holder:
+	holder.is_input_locked = false
 
 
 # get the value to save

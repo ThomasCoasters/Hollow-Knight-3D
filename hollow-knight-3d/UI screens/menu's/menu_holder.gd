@@ -9,6 +9,22 @@ extends Control
 ## if the opening anim should play on the starting
 @export var start_fade_in: bool = false
 
+## if the keyboard currently uses navigation or not
+var keyboard_navigation_enabled: bool = false
+
+## how many pixels the mouse must move before showing again
+const MOUSE_SHOW_DISTANCE: float = 10.0
+
+## last mouse position
+var last_mouse_position: Vector2
+
+## how far the mouse moved while hidden
+var hidden_mouse_distance: float = 0.0
+
+## if the input is locked currently
+var is_input_locked: bool = false
+
+
 
 func _ready() -> void:
 	# bind all the menu signals
@@ -16,6 +32,8 @@ func _ready() -> void:
 	
 	# open the initial menu
 	open_menu(initial_menu, start_fade_in)
+
+
 
 
 ## hides all menus and shows the selected menu after
@@ -41,7 +59,13 @@ func open_menu(new_menu: Menu, fade_in_out: bool = true) -> void:
 		if fade_in_out:
 			# fade the new menu in
 			await _animate_menu_fade(new_menu, true)
-
+	
+	# restore the keyboard nav if that is used to open this button
+	if keyboard_navigation_enabled:
+		# wait one frame
+		await get_tree().process_frame
+		# give focus to the first input
+		new_menu.focus_first_input()
 
 
 
@@ -251,3 +275,65 @@ func _get_all_visual_nodes(parent: Node) -> Array[Control]:
 	
 	# return the found items
 	return found
+
+
+
+
+
+func _input(event: InputEvent) -> void:
+	# stop if the input is locked
+	if is_input_locked: return
+	
+	# check if this is mouse movement
+	if event is InputEventMouseMotion:
+		# only do stuff when the mouse is hidden
+		if Input.mouse_mode == Input.MOUSE_MODE_HIDDEN:
+			# add moved distance
+			hidden_mouse_distance += event.relative.length()
+			
+			# check if enough movement has happened
+			if hidden_mouse_distance >= MOUSE_SHOW_DISTANCE:
+				print("AAAA")
+				# make the mouse visible
+				Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+				# reset thhe distance
+				hidden_mouse_distance = 0.0
+				# dissable keyboard nav
+				keyboard_navigation_enabled = false
+				
+				# get the current input that has focus
+				var focus_owner: Control = get_viewport().gui_get_focus_owner()
+				if focus_owner:
+					# release the focus form the current input that has focus
+					focus_owner.release_focus()
+	
+	
+	
+	# only check further stuff when the event is a key thes is pressed
+	if not event.is_pressed():
+		return
+	
+	# check if the input is a controller / keyboard up or down action
+	if event.is_action_pressed("ui_up") or event.is_action_pressed("ui_down"):
+		# you currently are using keyboard nav so enable that
+		keyboard_navigation_enabled = true
+		
+		# hide the mouse
+		Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
+		
+		# reset the mouse movement count
+		hidden_mouse_distance = 0.0
+		
+		# get the current menu
+		var current_menu: Menu = _get_current_menu()
+		
+		# if there currently is no current menu return
+		if not current_menu: return
+		
+		# if no button in THIS menu has focus
+		if not current_menu.contains_focus_input():
+			# give focus to the first input
+			current_menu.focus_first_input()
+			
+			# stop godot from navigating to the next button
+			get_viewport().set_input_as_handled()

@@ -25,6 +25,9 @@ signal menu_button_pressed(config: MenuConfigRecource, menu: Menu)
 ## the max amount of columns this node can have
 @export var max_columns: int = 1
 
+## the input nodes this menu has
+var menu_inputs: Array[Array] = []
+
 
 func _ready() -> void:
 	# get a refrence for the current row
@@ -32,15 +35,16 @@ func _ready() -> void:
 	# get amount of objects in this row
 	var object_row_count: int = 1
 	
+	# add a anitional empty row to start tracking the menu inputs
+	menu_inputs.clear()
+	
 	# go through every visual and build them
 	for visual in visuals:
-		# get a refrence to the built visual
-		var made_visual: Control = _create_visual(visual)
 		
 		# if this visual is full width
 		if visual.full_width:
-			# directly add it to the main VBox
-			VerticalVisualContainer.add_child(made_visual)
+			# start a new array for the menu inputs
+			menu_inputs.append([])
 			# reset the current row and obj row count
 			current_row = null
 			object_row_count = 1
@@ -52,6 +56,9 @@ func _ready() -> void:
 			
 			# if we currently are not in a row OR the columns 
 			if current_row == null or object_row_count > max_columns:
+				# start a new array for the menu inputs
+				menu_inputs.append([])
+				
 				# create a new HBoxcontainer
 				current_row = HBoxContainer.new()
 				
@@ -64,8 +71,16 @@ func _ready() -> void:
 				object_row_count = 1
 			
 			
-			
-			
+		# get a refrence to the built visual
+		var made_visual: Control = _create_visual(visual)
+		
+		# if this visual is full width
+		if visual.full_width:
+			# directly add it to the main VBox
+			VerticalVisualContainer.add_child(made_visual)
+		
+		# if it is not full width
+		else:
 			# if relevant add a horizontal spacer
 			if visual.should_add_horizontal_spacer and object_row_count != max_columns:
 				# create the spacer
@@ -97,7 +112,11 @@ func _ready() -> void:
 			VerticalVisualContainer.add_child(spacer)
 			# also add it to a spacer group
 			spacer.add_to_group(&"spacer")
-
+	
+	
+	
+	# setup the keyboard nav
+	_setup_keyboard_navigation()
 
 
 ## creates the visuals for the given menu config
@@ -353,6 +372,9 @@ func _create_button_visual(config: MenuConfigRecource) -> Button:
 	button = _build_invis_button_bg(button)
 	
 	
+	
+	# add to the menu input array
+	menu_inputs.back().append(button)
 	
 	# set the size to be the smallest possible (not full width of the screen)
 	button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
@@ -615,8 +637,10 @@ func _build_button_hover_anim(button: Button, config: MenuConfigRecource) -> voi
 		hover_wrappers.append(wrapper)
 	
 	
-	# runs when you hover the button
-	button.mouse_entered.connect(func():
+	
+	
+	# a function for when the hover should be shown
+	var show_hover = func():
 		# get the sprites
 		for sprite in hover_sprites:
 			# make visible
@@ -624,15 +648,39 @@ func _build_button_hover_anim(button: Button, config: MenuConfigRecource) -> voi
 			
 			# play anim forward from corrent frame
 			sprite.play()
-	)
 	
-	
-	# runs when you un-hover the button
-	button.mouse_exited.connect(func():
+	# a function for when the hover visual should be hidden
+	var hide_hover = func():
 		# get every animation again
 		for sprite in hover_sprites:
 			# play the anim backwards from the current frame
 			sprite.play_backwards()
+	
+	
+	
+	# runs when you hover/focus the button
+	button.focus_entered.connect(show_hover)
+	button.mouse_entered.connect(func():
+		# if the button already has focus no need to start all these things
+		if button.has_focus(): return
+		
+		# make this button get the focus
+		button.grab_focus()
+		# make the visuals appear
+		show_hover.call()
+	)
+	
+	
+	# runs when you un-hover/un-focus the button
+	button.focus_exited.connect(hide_hover)
+	button.mouse_exited.connect(func():
+		# if not have focus do nothing
+		if not button.has_focus(): return
+		
+		# play the animation
+		hide_hover.call()
+		# also stop button from having focus
+		button.release_focus()
 	)
 	
 	
@@ -641,7 +689,7 @@ func _build_button_hover_anim(button: Button, config: MenuConfigRecource) -> voi
 		# runs when the sprite's frame changes
 		sprite.frame_changed.connect(func():
 			# if the button is currently not hovered (anim is played in reverse)
-			if not button.is_hovered():
+			if not button.is_hovered() and not button.has_focus():
 				# check if the frame is the first one 0
 				if sprite.frame == 0:
 					# stop the anim
@@ -685,6 +733,8 @@ func _create_button_row_visual(config: MenuConfigRecource) -> Button:
 	# add the sub elements
 	hbox = _build_sub_elements(hbox, config)
 	
+	# add to the menu input array
+	menu_inputs.back().append(row_button)
 	
 	# add the hbox
 	row_button.add_child(hbox)
@@ -907,7 +957,69 @@ func toggle_buttons(disable: bool) -> void:
 
 
 
+## setups the keyboard navigation for inputs
+func _setup_keyboard_navigation() -> void:
+	# remove empty rows
+	menu_inputs = menu_inputs.filter(func(row): return not row.is_empty())
+	
+	# if there are no contents return
+	if menu_inputs.is_empty(): return
+	
+	# go through every row in the menu inputs
+	for row in menu_inputs.size():
+		# go through every content in the given row
+		for content in menu_inputs[row].size():
+			# get the current control node
+			var current: Control = menu_inputs[row][content]
+			# make the current control node focus all things
+			current.focus_mode = Control.FOCUS_ALL
+			
+			
+			# find the row above/below the current control
+			var up_row_idx = wrapi(row - 1, 0, menu_inputs.size())
+			var down_row_idx = wrapi(row + 1, 0, menu_inputs.size())
+			
+			# only target nodes on the same column above or below this one
+			var target_up = menu_inputs[up_row_idx][min(content, menu_inputs[up_row_idx].size() - 1)]
+			var target_down = menu_inputs[down_row_idx][min(content, menu_inputs[down_row_idx].size() - 1)]
+			
+			# set the top and bottom neighbours
+			current.focus_neighbor_top = current.get_path_to(target_up)
+			current.focus_neighbor_bottom = current.get_path_to(target_down)
+			
+			
+			
+			# check if this row has only one control
+			if menu_inputs[row].size() == 1:
+				# this is a full width button so no side nodes
+				# get the current nodes path
+				var self_path: NodePath = current.get_path()
+				# set the neighbours left and right to itself (so nothing happens)
+				current.focus_neighbor_left = self_path
+				current.focus_neighbor_right = self_path
+			else:
+				# this control is in a row
+				# get thhe left / right control in this row
+				var left_idx = wrapi(content - 1, 0, menu_inputs[row].size())
+				var right_idx = wrapi(content + 1, 0, menu_inputs[row].size())
+				
+				# get the left / right neighbors
+				current.focus_neighbor_left = current.get_path_to(menu_inputs[row][left_idx])
+				current.focus_neighbor_right = current.get_path_to(menu_inputs[row][right_idx])
 
+
+
+## haves thhe first input grab focus
+func focus_first_input() -> void:
+	# go through every row in the menu inputs
+	for row in menu_inputs:
+		# also through every input in said row
+		for input in row:
+			# check if said input is valid
+			if is_instance_valid(input) and not input.disabled:
+				# give it focus and stop
+				input.grab_focus()
+				return
 
 
 
@@ -933,3 +1045,16 @@ func _apply_offset_if_needed(control: Control, config: MenuConfigRecource) -> Ma
 	# add the given node to the wraper and return the wraper
 	wraper.add_child(control)
 	return wraper
+
+
+## returns wether or not this menu has any focus inputs
+func contains_focus_input() -> bool:
+	# go through every row in the menu inputs
+	for row in menu_inputs:
+		# go through every input in said row
+		for input in row:
+			# if said input has focus return true
+			if input.has_focus(): return true
+	
+	# if none had focus return false
+	return false
