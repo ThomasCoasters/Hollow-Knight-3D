@@ -341,15 +341,15 @@ func _build_sprite_frames(config: MenuConfigRecource) -> SpriteFrames:
 	# set the FPS but it can't go beneath 1
 	var anim_fps: float = max(config.fps, 1.0)
 	# set the fps off the animation
-	frames.set_animation_speed("default", anim_fps)
+	frames.set_animation_speed(&"default", anim_fps)
 	
 	# add every texture to the animation
 	for tex in config.anim_frames:
 		# add it as an frame
-		frames.add_frame("default", tex)
+		frames.add_frame(&"default", tex)
 	
 	# set if it should loop
-	frames.set_animation_loop("default", config.loop)
+	frames.set_animation_loop(&"default", config.loop)
 	
 	# return the spriteframes
 	return frames
@@ -805,12 +805,12 @@ func _create_slider_visual(config: MenuConfigRecource) -> Control:
 	# make a empty visual for the slider
 	var empty: StyleBoxEmpty = StyleBoxEmpty.new()
 	# add the empty visual
-	slider.add_theme_stylebox_override("slider", empty)
-	slider.add_theme_stylebox_override("grabber_area", empty)
-	slider.add_theme_stylebox_override("grabber_area_highlight", empty)
+	slider.add_theme_stylebox_override(&"slider", empty)
+	slider.add_theme_stylebox_override(&"grabber_area", empty)
+	slider.add_theme_stylebox_override(&"grabber_area_highlight", empty)
 	# also make the grabber invis
-	slider.add_theme_icon_override("grabber", ImageTexture.create_from_image(Image.create(1,1,false,Image.FORMAT_RGBA8)))
-	slider.add_theme_icon_override("grabber_highlight", ImageTexture.create_from_image(Image.create(1,1,false,Image.FORMAT_RGBA8)))
+	slider.add_theme_icon_override(&"grabber", ImageTexture.create_from_image(Image.create(1,1,false,Image.FORMAT_RGBA8)))
+	slider.add_theme_icon_override(&"grabber_highlight", ImageTexture.create_from_image(Image.create(1,1,false,Image.FORMAT_RGBA8)))
 	
 	# add the slider to the wraper
 	root.add_child(slider)
@@ -828,7 +828,7 @@ func _create_slider_visual(config: MenuConfigRecource) -> Control:
 	bg_style.corner_radius_bottom_right = config.slider_corner_radius
 	
 	# add the visuals to the bg
-	bg.add_theme_stylebox_override("panel", bg_style)
+	bg.add_theme_stylebox_override(&"panel", bg_style)
 	# make the bg not take inputs
 	bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	
@@ -852,7 +852,7 @@ func _create_slider_visual(config: MenuConfigRecource) -> Control:
 	fill_style.corner_radius_bottom_left = config.slider_corner_radius
 	fill_style.corner_radius_bottom_right = config.slider_corner_radius
 	# add the visual to the fill
-	fill.add_theme_stylebox_override("panel", fill_style)
+	fill.add_theme_stylebox_override(&"panel", fill_style)
 	# make the fill not take up mouse inputs
 	fill.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	
@@ -1054,9 +1054,9 @@ func _apply_offset_if_needed(control: Control, config: MenuConfigRecource) -> Ma
 	
 	# set the wrapper offset
 	@warning_ignore("narrowing_conversion")
-	wraper.add_theme_constant_override("margin_left", config.offset.x)
+	wraper.add_theme_constant_override(&"margin_left", config.offset.x)
 	@warning_ignore("narrowing_conversion")
-	wraper.add_theme_constant_override("margin_top", config.offset.y)
+	wraper.add_theme_constant_override(&"margin_top", config.offset.y)
 	
 	# add the wraper to the wraper group
 	wraper.add_to_group(&"wraper")

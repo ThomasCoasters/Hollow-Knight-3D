@@ -120,7 +120,7 @@ func _animate_menu_fade(menu: Menu, fading_in: bool) -> void:
 			# if the sprite exists
 			if sprite:
 				# calculate duration based on frames
-				var frame_count = sprite.sprite_frames.get_frame_count("default")
+				var frame_count = sprite.sprite_frames.get_frame_count(&"default")
 				duration = (1.0 / max(config.fps, 0.001)) * frame_count
 				
 				# force visible
@@ -313,7 +313,7 @@ func _input(event: InputEvent) -> void:
 		return
 	
 	# check if the input is a controller / keyboard up or down action
-	if event.is_action_pressed("ui_up") or event.is_action_pressed("ui_down") or event.is_action_pressed("ui_left") or event.is_action_pressed("ui_right"):
+	if event.is_action_pressed(&"ui_up") or event.is_action_pressed(&"ui_down") or event.is_action_pressed(&"ui_left") or event.is_action_pressed(&"ui_right"):
 		# you currently are using keyboard nav so enable that
 		keyboard_navigation_enabled = true
 		
