@@ -366,7 +366,7 @@ func _create_button_visual(config: MenuConfigRecource) -> Button:
 	_build_text_visual(button, config)
 	
 	# make the hover fx
-	_build_button_hover_anim(button, config)
+	_build_hover_anim(button, config)
 	
 	# change the button to have an invis bg
 	button = _build_invis_button_bg(button)
@@ -544,7 +544,7 @@ func _build_invis_button_bg(button: Button) -> Button:
 
 
 ## builds the hover animation visuals
-func _build_button_hover_anim(button: Button, config: MenuConfigRecource) -> void:
+func _build_hover_anim(control: Control, config: MenuConfigRecource) -> void:
 	# check if there is no anim given
 	if button_hover_anim.anim_frames.is_empty():
 		# build nothing
@@ -575,14 +575,14 @@ func _build_button_hover_anim(button: Button, config: MenuConfigRecource) -> voi
 			if i == 0:
 				sprite.position = Vector2(
 					config.hover_offset[i].x,
-					button.size.y / 2.0 + config.hover_offset[i].y
+					control.size.y / 2.0 + config.hover_offset[i].y
 				)
 			
 			# RIGHT
 			else:
 				sprite.position = Vector2(
-					button.size.x + config.hover_offset[i].x,
-					button.size.y / 2.0 + config.hover_offset[i].y
+					control.size.x + config.hover_offset[i].x,
+					control.size.y / 2.0 + config.hover_offset[i].y
 				)
 			
 			# center properly
@@ -626,7 +626,7 @@ func _build_button_hover_anim(button: Button, config: MenuConfigRecource) -> voi
 		wrapper.add_child(sprite)
 		
 		# add the wrapper
-		button.add_child(wrapper)
+		control.add_child(wrapper)
 		
 		
 		update_hover_positions.call()
@@ -637,7 +637,8 @@ func _build_button_hover_anim(button: Button, config: MenuConfigRecource) -> voi
 		hover_wrappers.append(wrapper)
 	
 	
-	
+	# tracker for the hover state
+	var hover_state: bool = false
 	
 	# a function for when the hover should be shown
 	var show_hover = func():
@@ -658,29 +659,35 @@ func _build_button_hover_anim(button: Button, config: MenuConfigRecource) -> voi
 	
 	
 	
-	# runs when you hover/focus the button
-	button.focus_entered.connect(show_hover)
-	button.mouse_entered.connect(func():
-		# if the button already has focus no need to start all these things
-		if button.has_focus(): return
+	# runs when you hover/focus the control
+	control.focus_entered.connect(show_hover)
+	control.mouse_entered.connect(func():
+		# if the control already has focus no need to start all these things
+		if control.has_focus(): return
 		
-		# make this button get the focus
-		button.grab_focus()
+		# hover has occured
+		hover_state = true
+		
+		# make this control get the focus
+		control.grab_focus()
 		# make the visuals appear
 		show_hover.call()
 	)
 	
 	
-	# runs when you un-hover/un-focus the button
-	button.focus_exited.connect(hide_hover)
-	button.mouse_exited.connect(func():
+	# runs when you un-hover/un-focus the control
+	control.focus_exited.connect(hide_hover)
+	control.mouse_exited.connect(func():
 		# if not have focus do nothing
-		if not button.has_focus(): return
+		if not control.has_focus(): return
+		
+		#hover has stopped
+		hover_state = false
 		
 		# play the animation
 		hide_hover.call()
-		# also stop button from having focus
-		button.release_focus()
+		# also stop control from having focus
+		control.release_focus()
 	)
 	
 	
@@ -688,8 +695,8 @@ func _build_button_hover_anim(button: Button, config: MenuConfigRecource) -> voi
 	for sprite in hover_sprites:
 		# runs when the sprite's frame changes
 		sprite.frame_changed.connect(func():
-			# if the button is currently not hovered (anim is played in reverse)
-			if not button.is_hovered() and not button.has_focus():
+			# if the control is currently not hovered (anim is played in reverse)
+			if not hover_state and not control.has_focus():
 				# check if the frame is the first one 0
 				if sprite.frame == 0:
 					# stop the anim
@@ -698,8 +705,8 @@ func _build_button_hover_anim(button: Button, config: MenuConfigRecource) -> voi
 					sprite.visible = false
 		)
 	
-	# when the button is resized
-	button.resized.connect(func():
+	# when the control is resized
+	control.resized.connect(func():
 		# update the hover positions
 		update_hover_positions.call()
 	)
@@ -715,7 +722,7 @@ func _create_button_row_visual(config: MenuConfigRecource) -> Button:
 	_build_text_visual(row_button, config)
 	
 	# make the hover fx
-	_build_button_hover_anim(row_button, config)
+	_build_hover_anim(row_button, config)
 	
 	# change the button to have an invis bg
 	row_button = _build_invis_button_bg(row_button)
@@ -910,16 +917,19 @@ func _create_slider_visual(config: MenuConfigRecource) -> Control:
 		update_slider_visuals.call()
 		
 		# run the function inputted in the slider
-		ScriptRunUtil.execute_multiline_code(config.slider_changed_function, [self, config, slider, value])
+		ScriptRunUtil.execute_multiline_code(config.pressed_function, [self, config, slider, value])
 	)
 	
 	
 	# run the ready func
-	ScriptRunUtil.execute_multiline_code(config.slider_ready_function, [self, config, slider])
+	ScriptRunUtil.execute_multiline_code(config.ready_function, [self, config, slider])
 	
 	
 	# add to the menu input array
 	menu_inputs.back().append(slider)
+	
+	# give the slider hover visuals
+	_build_hover_anim(slider, config)
 	
 	
 	# return the wraper

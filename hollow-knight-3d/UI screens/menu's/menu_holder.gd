@@ -293,7 +293,6 @@ func _input(event: InputEvent) -> void:
 			
 			# check if enough movement has happened
 			if hidden_mouse_distance >= MOUSE_SHOW_DISTANCE:
-				print("AAAA")
 				# make the mouse visible
 				Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 				# reset thhe distance

@@ -276,18 +276,8 @@ metadata/_custom_type_script = "uid://54ijfc61lomj"
 script = ExtResource("2_w13no")
 mode = 7
 _text_group_enabled = false
-_button_group_enabled = false
-_texture_group_enabled = true
-texture = ExtResource("25_62inh")
-texture_scale = Vector2(0.9, 0.55)
-_slider_group_enabled = true
-slider_size = Vector2(200, 40)
-texture_rotation = -90.0
-texture_offset = Vector2(0, 12)
-slider_bg_color = Color(0.41568628, 0.44313726, 0.50980395, 1)
-slider_fill_color = Color(0.9372549, 0.91764706, 0.92941177, 1)
-slider_bar_height = 2
-slider_ready_function = "# the setting this one should change
+hover_offset = Array[Vector2]([Vector2(-580, -4), Vector2(120, -4)])
+ready_function = "# the setting this one should change
 var save_setting = \"Master\"
 
 
@@ -344,7 +334,7 @@ if target_label:
 	target_label.text = str(int(value))
 
 slider.value = int(value)"
-slider_changed_function = "# the setting this one should change
+pressed_function = "# the setting this one should change
 var save_setting = \"Master\"
 
 
@@ -398,6 +388,16 @@ await SaveLoad.save_exited
 
 # load the saved inputs
 SaveLoad.load_general()"
+_texture_group_enabled = true
+texture = ExtResource("25_62inh")
+texture_scale = Vector2(0.9, 0.55)
+_slider_group_enabled = true
+slider_size = Vector2(200, 40)
+texture_rotation = -90.0
+texture_offset = Vector2(0, 12)
+slider_bg_color = Color(0.41568628, 0.44313726, 0.50980395, 1)
+slider_fill_color = Color(0.9372549, 0.91764706, 0.92941177, 1)
+slider_bar_height = 2
 should_add_horizontal_spacer = true
 horizontal_spacer_size = 60.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"

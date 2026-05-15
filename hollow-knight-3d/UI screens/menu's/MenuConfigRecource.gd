@@ -103,12 +103,12 @@ enum Mode {
 			
 			# if this is an slider
 			Mode.SLIDER:
-				# enable the silder and texture settings
+				# enable the silder, button and texture settings
 				_slider_group_enabled = true
 				_texture_group_enabled = true
+				_button_group_enabled = true
 				# disable all other settings
 				_text_group_enabled = false
-				_button_group_enabled = false
 				_anim_texture_group_enabled = false
 				_row_group_enabled = false
 			
@@ -166,9 +166,9 @@ enum Mode {
 @export_custom(PROPERTY_HINT_GROUP_ENABLE, "") var _button_group_enabled: bool = true
 ## offset that the hover visuals should have
 @export var hover_offset: Array[Vector2] = [Vector2(-40, -4), Vector2(40, -4)]
-## the menu this will open when pressed
+## the menu this will open when pressed a button is pressed
 @export var send_to: NodePath
-## a lambda function that will run when the button is created.
+## a lambda function that will run when the button / slider is created.
 ##[br][br]
 ## ScripRunUtil explanation:[br]
 ## Executes a multiline string as code.[br]
@@ -176,7 +176,8 @@ enum Mode {
 ## context: The object the code can interact with (referenced as 'ctx' in the string).[br]
 ## context is an array so if you only have 1 thing you still use ctx[0][br]
 @export_multiline var ready_function: String = ""
-## a lambda function that will run when the button is pressed.
+## a lambda function that will run when the button is pressed.[br]
+## if this is a slider it will be ran when the value is changed.
 ##[br][br]
 ## ScripRunUtil explanation:[br]
 ## Executes a multiline string as code.[br]
@@ -244,23 +245,6 @@ enum Mode {
 @export var slider_bar_height: int = 4
 ## rounded corner radius
 @export var slider_corner_radius: int = 2
-@export_subgroup("functions")
-## a lambda function that will run when the slider is created.
-##[br][br]
-## ScripRunUtil explanation:[br]
-## Executes a multiline string as code.[br]
-## code_string: is the raw GDscript code you want to run.[br]
-## context: The object the code can interact with (referenced as 'ctx' in the string).[br]
-## context is an array so if you only have 1 thing you still use ctx[0][br]
-@export_multiline var slider_ready_function: String = ""
-## a lambda function that will run when the slider is changed.
-##[br][br]
-## ScripRunUtil explanation:[br]
-## Executes a multiline string as code.[br]
-## code_string: is the raw GDscript code you want to run.[br]
-## context: The object the code can interact with (referenced as 'ctx' in the string).[br]
-## context is an array so if you only have 1 thing you still use ctx[0][br]
-@export_multiline var slider_changed_function: String = ""
 
 
 
