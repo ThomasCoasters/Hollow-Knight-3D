@@ -211,7 +211,7 @@ in_start_delay = 0.17
 out_start_delay = 0.17
 text = "Keyboard"
 send_to = NodePath("../keyboard_input_menu")
-vertical_spacer_size = 500.0
+vertical_spacer_size = 400.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_nssm8"]
@@ -380,14 +380,7 @@ if target_label:
 
 
 # set the action to the new input
-SaveLoad.general_contents[\"Audio\"][save_setting] = value
-SaveLoad.save_general(false)
-
-# wait untill the save is done
-await SaveLoad.save_exited
-
-# load the saved inputs
-SaveLoad.load_general()"
+SaveLoad.general_contents[\"Audio\"][save_setting] = value"
 _texture_group_enabled = true
 texture = ExtResource("25_62inh")
 texture_scale = Vector2(0.9, 0.55)
@@ -420,10 +413,329 @@ sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_2880r"), SubR
 row_spacing = 0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
+[sub_resource type="Resource" id="Resource_mjqis"]
+script = ExtResource("2_w13no")
+mode = 1
+text = "Master Volume: "
+font_size = 30
+_button_group_enabled = false
+should_add_horizontal_spacer = true
+horizontal_spacer_size = 250.0
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_1pen8"]
+load_path = "res://.godot/imported/MenuSliderHandle.png-644eae2268663e104e16c0cc201de1df.ctex"
+
+[sub_resource type="Resource" id="Resource_fx3hy"]
+script = ExtResource("2_w13no")
+mode = 7
+_text_group_enabled = false
+hover_offset = Array[Vector2]([Vector2(-580, -4), Vector2(120, -4)])
+ready_function = "# the setting this one should change
+var save_setting = \"SFX\"
+
+
+
+
+# wait
+await ctx[0].get_tree().process_frame
+await ctx[0].get_tree().create_timer(1).timeout
+await ctx[0].get_tree().process_frame
+
+
+# get value
+var value = SaveLoad.general_contents[&\"Audio\"][save_setting]
+
+# get the row
+var row = ctx[2].get_parent().get_parent()
+var slider = ctx[2]
+
+# the final label found
+var target_label: Label = null
+# current amount of labels found
+var label_count = 0 
+# the final number of label in the index that is the one you search for
+var label_target_index = 1
+
+# get the nodes you should check
+var nodes_to_check = [row]
+
+# keep searching untill all children are gone through
+while nodes_to_check.size() > 0:
+	#remove the current node from the nodes you should check
+	var current = nodes_to_check.pop_back()
+	
+	# if you found an label
+	if current is Label:
+		#increase label count
+		label_count += 1
+		# if you found the target number of labels
+		if label_count == label_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label = current
+			# break when found
+			break
+	
+	# also search all these node's children
+	nodes_to_check.append_array(current.get_children())
+
+
+
+
+# change the label you found
+if target_label:
+	target_label.custom_minimum_size.x = 30
+	target_label.text = str(int(value))
+
+slider.value = int(value)"
+pressed_function = "# the setting this one should change
+var save_setting = \"SFX\"
+
+
+# get the row
+var row = ctx[2].get_parent().get_parent()
+# get the new value
+var value = int(ctx[3])
+
+# the final label found
+var target_label: Label = null
+# current amount of labels found
+var label_count = 0 
+# the final number of label in the index that is the one you search for
+var label_target_index = 1
+
+# get the nodes you should check
+var nodes_to_check = [row]
+
+# keep searching untill all children are gone through
+while nodes_to_check.size() > 0:
+	#remove the current node from the nodes you should check
+	var current = nodes_to_check.pop_back()
+	
+	# if you found an label
+	if current is Label:
+		#increase label count
+		label_count += 1
+		# if you found the target number of labels
+		if label_count == label_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label = current
+			# break when found
+			break
+	
+	# also search all these node's children
+	nodes_to_check.append_array(current.get_children())
+
+# change the label you found
+if target_label:
+	target_label.text = str(int(value))
+
+
+
+
+# set the action to the new input
+SaveLoad.general_contents[\"Audio\"][save_setting] = value
+"
+_texture_group_enabled = true
+texture = SubResource("CompressedTexture2D_1pen8")
+texture_scale = Vector2(0.9, 0.55)
+_slider_group_enabled = true
+slider_size = Vector2(200, 40)
+texture_rotation = -90.0
+texture_offset = Vector2(0, 12)
+slider_bg_color = Color(0.41568628, 0.44313726, 0.50980395, 1)
+slider_fill_color = Color(0.9372549, 0.91764706, 0.92941177, 1)
+slider_bar_height = 2
+should_add_horizontal_spacer = true
+horizontal_spacer_size = 60.0
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_c3ex2"]
+script = ExtResource("2_w13no")
+mode = 1
+text = "10"
+font_size = 20
+_button_group_enabled = false
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_hab3u"]
+script = ExtResource("2_w13no")
+mode = 4
+_text_group_enabled = false
+_button_group_enabled = false
+_row_group_enabled = true
+sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_mjqis"), SubResource("Resource_fx3hy"), SubResource("Resource_c3ex2")])
+row_spacing = 0
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_6fskk"]
+script = ExtResource("2_w13no")
+mode = 1
+text = "Master Volume: "
+font_size = 30
+_button_group_enabled = false
+should_add_horizontal_spacer = true
+horizontal_spacer_size = 250.0
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_g46vr"]
+load_path = "res://.godot/imported/MenuSliderHandle.png-644eae2268663e104e16c0cc201de1df.ctex"
+
+[sub_resource type="Resource" id="Resource_h7vh8"]
+script = ExtResource("2_w13no")
+mode = 7
+_text_group_enabled = false
+hover_offset = Array[Vector2]([Vector2(-580, -4), Vector2(120, -4)])
+ready_function = "# the setting this one should change
+var save_setting = \"Music\"
+
+
+
+
+# wait
+await ctx[0].get_tree().process_frame
+await ctx[0].get_tree().create_timer(1).timeout
+await ctx[0].get_tree().process_frame
+
+
+# get value
+var value = SaveLoad.general_contents[&\"Audio\"][save_setting]
+
+# get the row
+var row = ctx[2].get_parent().get_parent()
+var slider = ctx[2]
+
+# the final label found
+var target_label: Label = null
+# current amount of labels found
+var label_count = 0 
+# the final number of label in the index that is the one you search for
+var label_target_index = 1
+
+# get the nodes you should check
+var nodes_to_check = [row]
+
+# keep searching untill all children are gone through
+while nodes_to_check.size() > 0:
+	#remove the current node from the nodes you should check
+	var current = nodes_to_check.pop_back()
+	
+	# if you found an label
+	if current is Label:
+		#increase label count
+		label_count += 1
+		# if you found the target number of labels
+		if label_count == label_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label = current
+			# break when found
+			break
+	
+	# also search all these node's children
+	nodes_to_check.append_array(current.get_children())
+
+
+
+
+# change the label you found
+if target_label:
+	target_label.custom_minimum_size.x = 30
+	target_label.text = str(int(value))
+
+slider.value = int(value)"
+pressed_function = "# the setting this one should change
+var save_setting = \"Music\"
+
+
+# get the row
+var row = ctx[2].get_parent().get_parent()
+# get the new value
+var value = int(ctx[3])
+
+# the final label found
+var target_label: Label = null
+# current amount of labels found
+var label_count = 0 
+# the final number of label in the index that is the one you search for
+var label_target_index = 1
+
+# get the nodes you should check
+var nodes_to_check = [row]
+
+# keep searching untill all children are gone through
+while nodes_to_check.size() > 0:
+	#remove the current node from the nodes you should check
+	var current = nodes_to_check.pop_back()
+	
+	# if you found an label
+	if current is Label:
+		#increase label count
+		label_count += 1
+		# if you found the target number of labels
+		if label_count == label_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label = current
+			# break when found
+			break
+	
+	# also search all these node's children
+	nodes_to_check.append_array(current.get_children())
+
+# change the label you found
+if target_label:
+	target_label.text = str(int(value))
+
+
+
+
+# set the action to the new input
+SaveLoad.general_contents[\"Audio\"][save_setting] = value
+"
+_texture_group_enabled = true
+texture = SubResource("CompressedTexture2D_g46vr")
+texture_scale = Vector2(0.9, 0.55)
+_slider_group_enabled = true
+slider_size = Vector2(200, 40)
+texture_rotation = -90.0
+texture_offset = Vector2(0, 12)
+slider_bg_color = Color(0.41568628, 0.44313726, 0.50980395, 1)
+slider_fill_color = Color(0.9372549, 0.91764706, 0.92941177, 1)
+slider_bar_height = 2
+should_add_horizontal_spacer = true
+horizontal_spacer_size = 60.0
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_d1ibi"]
+script = ExtResource("2_w13no")
+mode = 1
+text = "10"
+font_size = 20
+_button_group_enabled = false
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_mv06r"]
+script = ExtResource("2_w13no")
+mode = 4
+_text_group_enabled = false
+_button_group_enabled = false
+_row_group_enabled = true
+sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_6fskk"), SubResource("Resource_h7vh8"), SubResource("Resource_d1ibi")])
+row_spacing = 0
+vertical_spacer_size = 420.0
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
 [sub_resource type="Resource" id="Resource_hqo3k"]
 script = ExtResource("2_w13no")
 text = "Back"
 send_to = NodePath("../options_menu")
+pressed_function = "# save the contents
+SaveLoad.save_general()
+
+# wait untill the save is done
+await SaveLoad.save_exited
+
+# load the saved inputs
+SaveLoad.load_general()"
 should_add_vertical_spacer = false
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
@@ -926,8 +1238,7 @@ elif final_event is InputEventKey:
 	# Store Keyboard as 1000+ (Keycode + 1000)
 	value_to_save = final_event.keycode + 1000
 
-SaveLoad.general_contents[\"Buttons\"][input] = value_to_save
-SaveLoad.save_general(false)"
+SaveLoad.general_contents[\"Buttons\"][input] = value_to_save"
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_4edy0"), SubResource("Resource_mk4j3")])
 row_spacing = 215
@@ -1400,8 +1711,7 @@ elif final_event is InputEventKey:
 	# Store Keyboard as 1000+ (Keycode + 1000)
 	value_to_save = final_event.keycode + 1000
 
-SaveLoad.general_contents[\"Buttons\"][input] = value_to_save
-SaveLoad.save_general(false)"
+SaveLoad.general_contents[\"Buttons\"][input] = value_to_save"
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_saxcl"), SubResource("Resource_er0lx")])
 row_spacing = 297
@@ -1887,8 +2197,7 @@ elif final_event is InputEventKey:
 	# Store Keyboard as 1000+ (Keycode + 1000)
 	value_to_save = final_event.keycode + 1000
 
-SaveLoad.general_contents[\"Buttons\"][input] = value_to_save
-SaveLoad.save_general(false)"
+SaveLoad.general_contents[\"Buttons\"][input] = value_to_save"
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_sced3"), SubResource("Resource_ce16e")])
 row_spacing = 283
@@ -2359,8 +2668,7 @@ elif final_event is InputEventKey:
 	# Store Keyboard as 1000+ (Keycode + 1000)
 	value_to_save = final_event.keycode + 1000
 
-SaveLoad.general_contents[\"Buttons\"][input] = value_to_save
-SaveLoad.save_general(false)"
+SaveLoad.general_contents[\"Buttons\"][input] = value_to_save"
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_po4x5"), SubResource("Resource_5jsrr")])
 row_spacing = 266
@@ -2846,8 +3154,7 @@ elif final_event is InputEventKey:
 	# Store Keyboard as 1000+ (Keycode + 1000)
 	value_to_save = final_event.keycode + 1000
 
-SaveLoad.general_contents[\"Buttons\"][input] = value_to_save
-SaveLoad.save_general(false)"
+SaveLoad.general_contents[\"Buttons\"][input] = value_to_save"
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_il87v"), SubResource("Resource_osvu0")])
 row_spacing = 280
@@ -3318,8 +3625,7 @@ elif final_event is InputEventKey:
 	# Store Keyboard as 1000+ (Keycode + 1000)
 	value_to_save = final_event.keycode + 1000
 
-SaveLoad.general_contents[\"Buttons\"][input] = value_to_save
-SaveLoad.save_general(false)"
+SaveLoad.general_contents[\"Buttons\"][input] = value_to_save"
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_pi22a"), SubResource("Resource_r71db")])
 row_spacing = 228
@@ -3805,7 +4111,7 @@ elif final_event is InputEventKey:
 	value_to_save = final_event.keycode + 1000
 
 SaveLoad.general_contents[\"Buttons\"][input] = value_to_save
-SaveLoad.save_general(false)"
+"
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_wuqwg"), SubResource("Resource_kxmd3")])
 row_spacing = 250
@@ -4282,8 +4588,7 @@ elif final_event is InputEventKey:
 	# Store Keyboard as 1000+ (Keycode + 1000)
 	value_to_save = final_event.keycode + 1000
 
-SaveLoad.general_contents[\"Buttons\"][input] = value_to_save
-SaveLoad.save_general(false)"
+SaveLoad.general_contents[\"Buttons\"][input] = value_to_save"
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_i0trc"), SubResource("Resource_pqgyx")])
 row_spacing = 200
@@ -4774,8 +5079,7 @@ elif final_event is InputEventKey:
 	# Store Keyboard as 1000+ (Keycode + 1000)
 	value_to_save = final_event.keycode + 1000
 
-SaveLoad.general_contents[\"Buttons\"][input] = value_to_save
-SaveLoad.save_general(false)"
+SaveLoad.general_contents[\"Buttons\"][input] = value_to_save"
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_jq4vk"), SubResource("Resource_4ot2d")])
 row_spacing = 278
@@ -5246,8 +5550,7 @@ elif final_event is InputEventKey:
 	# Store Keyboard as 1000+ (Keycode + 1000)
 	value_to_save = final_event.keycode + 1000
 
-SaveLoad.general_contents[\"Buttons\"][input] = value_to_save
-SaveLoad.save_general(false)"
+SaveLoad.general_contents[\"Buttons\"][input] = value_to_save"
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_tiafu"), SubResource("Resource_vqsdn")])
 row_spacing = 115
@@ -5318,39 +5621,7 @@ var me = ctx[2]
 # dissable all the buttons
 ctx[0].toggle_buttons(false)
 
-# track what signal is completed
-var state := {
-	\"save_done\": false,
-	\"transition_done\": false
-}
-
-# create listeners for when the signals are finished
-SaveLoad.save_exited.connect(func(_path):
-	state.save_done = true
-, CONNECT_ONE_SHOT)
-
-transition.on_transition_finished.connect(func():
-	state.transition_done = true
-, CONNECT_ONE_SHOT)
-
-
-# save the general settings
-SaveLoad.save_general()
-
-# play the transition
-transition.play_transition(false, true)
-
-
-# wait until both signals are done
-while not state.save_done or not state.transition_done:
-	await me.get_tree().process_frame
-
-# wait a small extra amount to let the save animation finish
-await me.get_tree().create_timer(0.7).timeout
-
-
-# quit the game using the Menu
-ctx[0].get_tree().quit()"
+SaveLoad._notification(Node.NOTIFICATION_WM_CLOSE_REQUEST)"
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_rmu4f"]
@@ -5395,7 +5666,7 @@ button_hover_anim = SubResource("Resource_n2ux7")
 
 [node name="audio_option_menu" parent="." unique_id=1720989228 instance=ExtResource("1_aw56r")]
 layout_mode = 1
-visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_rr8xp"), SubResource("Resource_su4du"), SubResource("Resource_xujg8"), SubResource("Resource_7qefg"), SubResource("Resource_hqo3k")])
+visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_rr8xp"), SubResource("Resource_su4du"), SubResource("Resource_xujg8"), SubResource("Resource_7qefg"), SubResource("Resource_hab3u"), SubResource("Resource_mv06r"), SubResource("Resource_hqo3k")])
 button_press_anim = SubResource("Resource_55gc4")
 button_hover_anim = SubResource("Resource_n2ux7")
 

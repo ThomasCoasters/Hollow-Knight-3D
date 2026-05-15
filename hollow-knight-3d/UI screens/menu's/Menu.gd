@@ -637,9 +637,6 @@ func _build_hover_anim(control: Control, config: MenuConfigRecource) -> void:
 		hover_wrappers.append(wrapper)
 	
 	
-	# tracker for the hover state
-	var hover_state: bool = false
-	
 	# a function for when the hover should be shown
 	var show_hover = func():
 		# get the sprites
@@ -665,9 +662,6 @@ func _build_hover_anim(control: Control, config: MenuConfigRecource) -> void:
 		# if the control already has focus no need to start all these things
 		if control.has_focus(): return
 		
-		# hover has occured
-		hover_state = true
-		
 		# make this control get the focus
 		control.grab_focus()
 		# make the visuals appear
@@ -681,9 +675,6 @@ func _build_hover_anim(control: Control, config: MenuConfigRecource) -> void:
 		# if not have focus do nothing
 		if not control.has_focus(): return
 		
-		#hover has stopped
-		hover_state = false
-		
 		# play the animation
 		hide_hover.call()
 		# also stop control from having focus
@@ -696,7 +687,7 @@ func _build_hover_anim(control: Control, config: MenuConfigRecource) -> void:
 		# runs when the sprite's frame changes
 		sprite.frame_changed.connect(func():
 			# if the control is currently not hovered (anim is played in reverse)
-			if not hover_state and not control.has_focus():
+			if not control.has_focus():
 				# check if the frame is the first one 0
 				if sprite.frame == 0:
 					# stop the anim

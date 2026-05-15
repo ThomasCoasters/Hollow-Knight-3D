@@ -77,6 +77,10 @@ var is_saving: bool = false
 
 
 func _ready() -> void:
+	# make the game not be able to be exited without saving first
+	get_tree().auto_accept_quit = false
+	
+	
 	# check if the "Saves" folder does not exists
 	if not DirAccess.dir_exists_absolute("user://Saves"):
 		# create that folder
@@ -324,4 +328,44 @@ func reset_game_slot(slot_number: int) -> void:
 	save_game_slot(slot_number)
 
 
+#endregion
+
+#region quitting game
+## runs when this node gets a notification
+func _notification(what: int) -> void:
+	# if you want to close the game
+	# first save the game and play the transition
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		# get a refrence of if the save is done and the transition is done
+		var state := {
+			"save_done": false,
+			"transition_done": false
+		}
+		
+		# create listeners for when the signals are finished
+		save_exited.connect(func(_path):
+			state.save_done = true
+		, CONNECT_ONE_SHOT)
+		transition.on_transition_finished.connect(func():
+			state.transition_done = true
+		, CONNECT_ONE_SHOT)
+		
+		
+		# save the general settings
+		SaveLoad.save_general()
+		
+		# play the transition
+		transition.play_transition(false, true)
+		
+		
+		# wait until both signals are done
+		while not state.save_done or not state.transition_done:
+			await get_tree().process_frame
+		
+		# wait a small extra amount to let the save animation finish
+		await get_tree().create_timer(0.7).timeout
+		
+		
+		# quit the game
+		get_tree().quit()
 #endregion
