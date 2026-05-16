@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Hollow Knight 3D"
-run/main_scene="uid://cemqmf3cucx37"
+run/main_scene="uid://c8j1cqx3matxr"
 config/features=PackedStringArray("4.6", "Forward Plus")
 run/max_fps=200
 

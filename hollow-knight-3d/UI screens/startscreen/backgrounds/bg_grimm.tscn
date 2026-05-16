@@ -162,7 +162,7 @@ process_material = SubResource("ParticleProcessMaterial_ygo7h")
 
 [node name="line circle" type="GPUParticles2D" parent="." unique_id=290654600]
 position = Vector2(914, 1090)
-amount = 150
+amount = 110
 texture = SubResource("GradientTexture2D_xgiwj")
 lifetime = 4.0
 preprocess = 3.0

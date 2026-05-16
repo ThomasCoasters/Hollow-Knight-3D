@@ -4,8 +4,10 @@ extends Control
 
 
 
-## the node that renders the backgrounds
-@onready var bg_renderer: TextureRect = %"BG_Renderer"
+## the node that renders the backgrounds in the front
+@onready var bg_back: TextureRect = %"BG_Back"
+## the node that renders the backgrounds in the back
+@onready var bg_front: TextureRect = %"BG_Front"
 
 ## the node that contains all the bg stuff
 @onready var BG: Control = %BG
@@ -24,7 +26,8 @@ var _og_cursor_img: Image
 ## the scale of the custom cursor
 @export var cursor_scale: float = 0.85
 
-
+## tween for the fading bg
+var bg_tween: Tween
 
 
 func _ready() -> void:
@@ -42,14 +45,47 @@ func _ready() -> void:
 		# make the bg
 		var bg_scene: SubViewport = bg_packed.instantiate()
 		BG.add_child(bg_scene)
+		# set the name to the key name
+		bg_scene.name = bg_key
 		
 		# if this bg is the current bg set the bg as the texture of the bg_renderer
 		if bg_key == current_bg:
 			# create the viewport texture
-			bg_renderer.texture = bg_scene.get_texture()
+			bg_front.texture = bg_scene.get_texture()
+			set_bg_visual(bg_key)
 
 
-
+## sets the bg to the given value
+func set_bg_visual(BG_name: String) -> void:
+	# find the child with the given name in thhe BG node
+	var bg: SubViewport = BG.get_node_or_null(BG_name)
+	
+	# if it does not exist give error and return
+	if not bg:
+		push_error("BG given does not exist: " + BG_name)
+		return
+	
+	await RenderingServer.frame_post_draw
+	
+	# move current texture to back
+	bg_back.texture = bg_front.texture
+	
+	# set new texture on front renderer
+	bg_front.texture = bg.get_texture()
+	
+	# start invis
+	bg_front.modulate.a = 0.0
+	
+	# delete tween if running
+	if bg_tween:
+		bg_tween.kill()
+	
+	# create tween + setup
+	bg_tween = create_tween()
+	bg_tween.set_parallel(true)
+	
+	# tween the front to front and back to back
+	bg_tween.tween_property(bg_front, "modulate:a", 1.0, 0.5)
 
 
 

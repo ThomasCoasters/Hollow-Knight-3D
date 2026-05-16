@@ -33,7 +33,13 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="BG_Renderer" type="TextureRect" parent="BG" unique_id=2143459802]
+[node name="BG_Back" type="TextureRect" parent="BG" unique_id=2087663004]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="BG_Front" type="TextureRect" parent="BG" unique_id=2143459802]
 unique_name_in_owner = true
 layout_mode = 0
 offset_right = 40.0
