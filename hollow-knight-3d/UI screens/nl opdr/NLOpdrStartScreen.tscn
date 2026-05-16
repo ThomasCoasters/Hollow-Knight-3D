@@ -1,13 +1,13 @@
-[gd_scene format=3 uid="uid://cemqmf3cucx37"]
+[gd_scene format=3 uid="uid://c8j1cqx3matxr"]
 
-[ext_resource type="Script" uid="uid://cjfetp0m4f6qu" path="res://UI screens/startscreen/startscreen.gd" id="1_pnmaq"]
-[ext_resource type="PackedScene" uid="uid://ncsw5lug3l31" path="res://UI screens/startscreen/backgrounds/bg_classic.tscn" id="2_sghvg"]
-[ext_resource type="PackedScene" uid="uid://c1uvefmffankc" path="res://UI screens/startscreen/backgrounds/bg_grimm.tscn" id="3_cqc7b"]
-[ext_resource type="PackedScene" uid="uid://b6dmgkp6yl2f7" path="res://UI screens/menu's/MenuHolder.tscn" id="3_sslgb"]
-[ext_resource type="Shader" uid="uid://bqsp0gxewtc55" path="res://Game/general shaders/bloom.gdshader" id="5_cqc7b"]
+[ext_resource type="Script" uid="uid://cjfetp0m4f6qu" path="res://UI screens/startscreen/startscreen.gd" id="1_7kwew"]
+[ext_resource type="PackedScene" uid="uid://ncsw5lug3l31" path="res://UI screens/startscreen/backgrounds/bg_classic.tscn" id="2_uqtpl"]
+[ext_resource type="PackedScene" uid="uid://c1uvefmffankc" path="res://UI screens/startscreen/backgrounds/bg_grimm.tscn" id="3_wknr3"]
+[ext_resource type="PackedScene" uid="uid://dnqxd1uye2kle" path="res://UI screens/nl opdr/NLMenuHolder.tscn" id="4_7kwew"]
+[ext_resource type="Shader" uid="uid://bqsp0gxewtc55" path="res://Game/general shaders/bloom.gdshader" id="5_s58k1"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_f5uuf"]
-shader = ExtResource("5_cqc7b")
+shader = ExtResource("5_s58k1")
 shader_parameter/bloom_spread = 2.000000095
 shader_parameter/bloom_intensity = 0.2000000095
 
@@ -18,12 +18,11 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_pnmaq")
+script = ExtResource("1_7kwew")
 backgrounds = Dictionary[StringName, PackedScene]({
-&"Classic": ExtResource("2_sghvg"),
-&"Grimm": ExtResource("3_cqc7b")
+&"Classic": ExtResource("2_uqtpl"),
+&"Grimm": ExtResource("3_wknr3")
 })
-current_bg = &"Grimm"
 
 [node name="BG" type="Control" parent="." unique_id=2122249080]
 unique_name_in_owner = true
@@ -52,7 +51,7 @@ alignment = 1
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer" unique_id=1397178170]
 layout_mode = 2
 
-[node name="MenuHolder" parent="HBoxContainer/VBoxContainer" unique_id=1637527713 instance=ExtResource("3_sslgb")]
+[node name="MenuHolder" parent="HBoxContainer/VBoxContainer" unique_id=1637527713 instance=ExtResource("4_7kwew")]
 layout_mode = 2
 
 [node name="bloomFX" type="ColorRect" parent="." unique_id=1821615834]
