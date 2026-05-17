@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://ncsw5lug3l31"]
 
-[ext_resource type="Shader" uid="uid://dpv0fwsgbrm3h" path="res://UI screens/startscreen/backgrounds/bg_classic.gdshader" id="1_nx5yy"]
+[ext_resource type="Shader" uid="uid://bv0ggrgvtsibh" path="res://UI screens/startscreen/backgrounds/main_bg.gdshader" id="1_nx5yy"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_nx5yy"]
 shader = ExtResource("1_nx5yy")
@@ -11,6 +11,13 @@ shader_parameter/softness = 30.0
 shader_parameter/stretch = Vector2(1.1, 0.4)
 shader_parameter/rotation = 0.19
 shader_parameter/offset = Vector2(0.48, 0.5)
+shader_parameter/ray_color = Color(1, 0.85, 0.6, 0.2)
+shader_parameter/ray_intensity = 0.0
+shader_parameter/ray_pulse_speed = 0.0
+shader_parameter/ray_pulse_range = 0.0
+shader_parameter/bottom_extent = 0.0
+shader_parameter/bottom_softness = 0.0
+shader_parameter/bottom_color = Color(0.01, 0.02, 0.05, 1)
 
 [sub_resource type="Gradient" id="Gradient_pu3r3"]
 offsets = PackedFloat32Array(0, 0.6170799, 1)
@@ -28,6 +35,12 @@ point_count = 4
 
 [sub_resource type="CurveTexture" id="CurveTexture_5s5f0"]
 curve = SubResource("Curve_xgiwj")
+
+[sub_resource type="Gradient" id="Gradient_aesus"]
+colors = PackedColorArray(1, 1, 1, 0.19607843, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_xb1wh"]
+gradient = SubResource("Gradient_aesus")
 
 [sub_resource type="Curve" id="Curve_ygo7h"]
 _limits = [-200.0, 200.0, 0.0, 1.0]
@@ -50,6 +63,7 @@ linear_accel_max = 1.2999977
 linear_accel_curve = SubResource("CurveTexture_wcvlp")
 scale_min = 0.19999999
 scale_max = 0.39999998
+color_initial_ramp = SubResource("GradientTexture1D_xb1wh")
 alpha_curve = SubResource("CurveTexture_5s5f0")
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_nx5yy"]
@@ -70,6 +84,7 @@ linear_accel_min = 0.99999774
 linear_accel_max = 1.2999977
 linear_accel_curve = SubResource("CurveTexture_wcvlp")
 scale_min = 0.59999996
+color_initial_ramp = SubResource("GradientTexture1D_xb1wh")
 alpha_curve = SubResource("CurveTexture_5s5f0")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_1p7w8"]
@@ -85,6 +100,7 @@ linear_accel_max = 1.2999977
 linear_accel_curve = SubResource("CurveTexture_wcvlp")
 scale_min = 0.19999999
 scale_max = 0.39999998
+color_initial_ramp = SubResource("GradientTexture1D_xb1wh")
 alpha_curve = SubResource("CurveTexture_5s5f0")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_nx5yy"]
@@ -99,6 +115,7 @@ linear_accel_min = 0.99999774
 linear_accel_max = 1.2999977
 linear_accel_curve = SubResource("CurveTexture_wcvlp")
 scale_min = 0.59999996
+color_initial_ramp = SubResource("GradientTexture1D_xb1wh")
 alpha_curve = SubResource("CurveTexture_5s5f0")
 
 [node name="BgClassic" type="SubViewport" unique_id=1121228147]

@@ -1,0 +1,89 @@
+[gd_scene format=3 uid="uid://cxluuc228fiou"]
+
+[ext_resource type="Shader" uid="uid://bv0ggrgvtsibh" path="res://UI screens/startscreen/backgrounds/main_bg.gdshader" id="1_efyey"]
+[ext_resource type="Texture2D" uid="uid://bkwdr4tj8ofsp" path="res://UI screens/startscreen/backgrounds/beam_inverted.png" id="2_umkof"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_umkof"]
+shader = ExtResource("1_efyey")
+shader_parameter/center_color = Color(0.16654319, 0.37696436, 0.56548053, 1)
+shader_parameter/edge_color = Color(0.015686275, 0, 0.03137255, 1)
+shader_parameter/radius = 0.05
+shader_parameter/softness = 13.0
+shader_parameter/stretch = Vector2(1.1, 0.6)
+shader_parameter/rotation = 0.055
+shader_parameter/offset = Vector2(0.48, 0.995)
+shader_parameter/ray_texture = ExtResource("2_umkof")
+shader_parameter/ray_color = Color(0.8670983, 0.92545116, 0.9820673, 0.21176471)
+shader_parameter/ray_intensity = 4.00000019
+shader_parameter/ray_pulse_speed = 0.0
+shader_parameter/ray_pulse_range = 0.0
+shader_parameter/bottom_extent = 0.0
+shader_parameter/bottom_softness = 0.0
+shader_parameter/bottom_color = Color(0.42277306, 0.67032033, 0.89289016, 1)
+
+[sub_resource type="Gradient" id="Gradient_umkof"]
+offsets = PackedFloat32Array(0.35602096, 0.9162304, 1)
+colors = PackedColorArray(0.39449063, 0.6118465, 0.8583811, 1, 0.26318246, 0.4849859, 0.73175544, 0, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_aesus"]
+gradient = SubResource("Gradient_umkof")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 0.15)
+
+[sub_resource type="Curve" id="Curve_xb1wh"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.3, 1), 0.0, 0.0, 0, 0, Vector2(0.7, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_i0yk0"]
+curve = SubResource("Curve_xb1wh")
+
+[sub_resource type="Gradient" id="Gradient_aesus"]
+colors = PackedColorArray(1, 1, 1, 0.19607843, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_xb1wh"]
+gradient = SubResource("Gradient_aesus")
+
+[sub_resource type="Curve" id="Curve_lgdks"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.2, 1), 0.0, 0.0, 0, 0, Vector2(0.8, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_n1isb"]
+curve = SubResource("Curve_lgdks")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_uogc2"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(1000, 600, 1)
+direction = Vector3(0, -1, 0)
+spread = 15.0
+initial_velocity_min = 30.0
+initial_velocity_max = 90.0
+gravity = Vector3(0, 0, 0)
+linear_accel_min = 0.99999774
+linear_accel_max = 0.99999774
+scale_min = 0.099999994
+scale_max = 0.75
+scale_curve = SubResource("CurveTexture_n1isb")
+color_initial_ramp = SubResource("GradientTexture1D_xb1wh")
+alpha_curve = SubResource("CurveTexture_i0yk0")
+
+[node name="BgLifeblood" type="SubViewport" unique_id=201870859]
+size = Vector2i(1920, 1080)
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=49394173]
+material = SubResource("ShaderMaterial_umkof")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Bg Circle" type="GPUParticles2D" parent="." unique_id=1733839961]
+position = Vector2(939, 565)
+amount = 170
+texture = SubResource("GradientTexture2D_aesus")
+lifetime = 4.0
+preprocess = 2.0
+randomness = 1.0
+process_material = SubResource("ParticleProcessMaterial_uogc2")

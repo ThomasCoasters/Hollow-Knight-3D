@@ -352,23 +352,23 @@ var value = int(ctx[3])
 
 var boek = {
 	1: \"Alles wat er was\",
-	2: \"Het gouden ei\",
-	3: \"Erebos\",
-	4: \"Reinaert de Vos\",
+	3: \"Het gouden ei\",
+	4: \"Erebos\",
+	2: \"Reinaert de Vos\",
 }
 
 var bg = {
 	1: \"Classic\",
-	2: \"Classic\",
-	3: \"Grimm\",
+	3: \"Godmaster\",
 	4: \"Grimm\",
+	2: \"Lifeblood\",
 }
 
 var img = {
 	1: preload(\"uid://cv1dwfa6fqprv\"),
-	2: preload(\"uid://c05u4i8tpb6o0\"),
-	3: preload(\"uid://betoqcigelcvc\"),
-	4: preload(\"uid://b7j2i1v05clai\"),
+	3: preload(\"uid://c05u4i8tpb6o0\"),
+	4: preload(\"uid://betoqcigelcvc\"),
+	2: preload(\"uid://b7j2i1v05clai\"),
 }
 
 # the final label found
@@ -460,9 +460,9 @@ text = "Verder"
 send_to = NodePath("../alles")
 pressed_function = "var send = {
 	1: \"../alles\",
-	2: \"../goud\",
-	3: \"../ere\",
-	4: \"../rei\",
+	3: \"../goud\",
+	4: \"../ere\",
+	2: \"../rei\",
 }
 
 

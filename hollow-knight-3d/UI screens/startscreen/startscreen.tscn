@@ -4,7 +4,9 @@
 [ext_resource type="PackedScene" uid="uid://ncsw5lug3l31" path="res://UI screens/startscreen/backgrounds/bg_classic.tscn" id="2_sghvg"]
 [ext_resource type="PackedScene" uid="uid://c1uvefmffankc" path="res://UI screens/startscreen/backgrounds/bg_grimm.tscn" id="3_cqc7b"]
 [ext_resource type="PackedScene" uid="uid://b6dmgkp6yl2f7" path="res://UI screens/menu's/MenuHolder.tscn" id="3_sslgb"]
+[ext_resource type="PackedScene" uid="uid://c3b473vr63gb2" path="res://UI screens/startscreen/backgrounds/bg_godmaster.tscn" id="4_jl24l"]
 [ext_resource type="Shader" uid="uid://bqsp0gxewtc55" path="res://Game/general shaders/bloom.gdshader" id="5_cqc7b"]
+[ext_resource type="PackedScene" uid="uid://cxluuc228fiou" path="res://UI screens/startscreen/backgrounds/bg_lifeblood.tscn" id="5_fghhc"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_f5uuf"]
 shader = ExtResource("5_cqc7b")
@@ -21,9 +23,11 @@ grow_vertical = 2
 script = ExtResource("1_pnmaq")
 backgrounds = Dictionary[StringName, PackedScene]({
 &"Classic": ExtResource("2_sghvg"),
-&"Grimm": ExtResource("3_cqc7b")
+&"Godmaster": ExtResource("4_jl24l"),
+&"Grimm": ExtResource("3_cqc7b"),
+&"Lifeblood": ExtResource("5_fghhc")
 })
-current_bg = &"Grimm"
+current_bg = &"Lifeblood"
 
 [node name="BG" type="Control" parent="." unique_id=2122249080]
 unique_name_in_owner = true

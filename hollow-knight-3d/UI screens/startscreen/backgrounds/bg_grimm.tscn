@@ -1,26 +1,30 @@
 [gd_scene format=3 uid="uid://c1uvefmffankc"]
 
-[ext_resource type="Shader" uid="uid://ccavui8cn7xly" path="res://UI screens/startscreen/backgrounds/bg_grimm.gdshader" id="1_f65dr"]
+[ext_resource type="Shader" uid="uid://bv0ggrgvtsibh" path="res://UI screens/startscreen/backgrounds/main_bg.gdshader" id="1_f65dr"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5s5f0"]
 shader = ExtResource("1_f65dr")
 shader_parameter/center_color = Color(0.21960784, 0.08627451, 0.12941177, 1)
 shader_parameter/edge_color = Color(0.015686275, 0, 0.03137255, 1)
-shader_parameter/bottom_color = Color(0.38431373, 0.14117648, 0.19607843, 1)
 shader_parameter/radius = 0.05
 shader_parameter/softness = 12.0
 shader_parameter/stretch = Vector2(1.1, 0.6)
 shader_parameter/rotation = 0.055
 shader_parameter/offset = Vector2(0.48, 0.88)
+shader_parameter/ray_color = Color(1, 0.85, 0.6, 0.2)
+shader_parameter/ray_intensity = 0.0
+shader_parameter/ray_pulse_speed = 0.0
+shader_parameter/ray_pulse_range = 0.0
 shader_parameter/bottom_extent = 0.0
 shader_parameter/bottom_softness = 0.446000021185
+shader_parameter/bottom_color = Color(0.38431373, 0.14117648, 0.19607843, 1)
 
-[sub_resource type="Gradient" id="Gradient_wd073"]
+[sub_resource type="Gradient" id="Gradient_xgiwj"]
 offsets = PackedFloat32Array(0.35340315, 0.9162304, 1)
 colors = PackedColorArray(0.8745098, 0.22745098, 0.2627451, 1, 0.8745098, 0.22745098, 0.2627451, 0, 1, 1, 1, 0)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_f65dr"]
-gradient = SubResource("Gradient_wd073")
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ygo7h"]
+gradient = SubResource("Gradient_xgiwj")
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(0.5, 0.15)
@@ -29,7 +33,7 @@ fill_to = Vector2(0.5, 0.15)
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.29855072, 1), 0.0, 0.0, 0, 0, Vector2(0.7043478, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 4
 
-[sub_resource type="CurveTexture" id="CurveTexture_5s5f0"]
+[sub_resource type="CurveTexture" id="CurveTexture_e2ah7"]
 curve = SubResource("Curve_xgiwj")
 
 [sub_resource type="Curve" id="Curve_ygo7h"]
@@ -37,7 +41,7 @@ _limits = [-200.0, 200.0, 0.0, 1.0]
 _data = [Vector2(0, 100), 0.0, 0.0, 0, 0, Vector2(0.3, 0), 0.0, 0.0, 0, 0, Vector2(0.6, 0), 0.0, 0.0, 0, 0, Vector2(1, 50), 0.0, 0.0, 0, 0]
 point_count = 4
 
-[sub_resource type="CurveTexture" id="CurveTexture_wcvlp"]
+[sub_resource type="CurveTexture" id="CurveTexture_bfsv5"]
 curve = SubResource("Curve_ygo7h")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_e2ah7"]
@@ -51,16 +55,34 @@ initial_velocity_max = 8.0
 gravity = Vector3(0, -10, 0)
 linear_accel_min = 0.99999774
 linear_accel_max = 1.2999977
-linear_accel_curve = SubResource("CurveTexture_wcvlp")
+linear_accel_curve = SubResource("CurveTexture_bfsv5")
 scale_min = 0.59999996
-alpha_curve = SubResource("CurveTexture_5s5f0")
+alpha_curve = SubResource("CurveTexture_e2ah7")
+
+[sub_resource type="Gradient" id="Gradient_f65dr"]
+offsets = PackedFloat32Array(0.35340315, 0.9162304, 1)
+colors = PackedColorArray(0.8745098, 0.22745098, 0.2627451, 1, 0.8745098, 0.22745098, 0.2627451, 0, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_f65dr"]
+gradient = SubResource("Gradient_f65dr")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 0.15)
 
 [sub_resource type="Curve" id="Curve_f65dr"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.299, 0.5), 0.0, 0.0, 0, 0, Vector2(0.704, 0.5), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 4
 
-[sub_resource type="CurveTexture" id="CurveTexture_xgiwj"]
+[sub_resource type="CurveTexture" id="CurveTexture_rnlcq"]
 curve = SubResource("Curve_f65dr")
+
+[sub_resource type="Curve" id="Curve_1sm2p"]
+_limits = [-200.0, 200.0, 0.0, 1.0]
+_data = [Vector2(0, 100), 0.0, 0.0, 0, 0, Vector2(0.1, 0), 0.0, 0.0, 0, 0, Vector2(0.2, 0), 0.0, 0.0, 0, 0, Vector2(0.7, 200), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_vx8wg"]
+curve = SubResource("Curve_1sm2p")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ygo7h"]
 particle_flag_disable_z = true
@@ -73,17 +95,17 @@ initial_velocity_max = 10.0
 gravity = Vector3(0, -10, 0)
 linear_accel_min = 0.99999774
 linear_accel_max = 1.2999977
-linear_accel_curve = SubResource("CurveTexture_wcvlp")
+linear_accel_curve = SubResource("CurveTexture_vx8wg")
 scale_min = 0.099999994
 scale_max = 0.29999998
-alpha_curve = SubResource("CurveTexture_xgiwj")
+alpha_curve = SubResource("CurveTexture_rnlcq")
 
-[sub_resource type="Gradient" id="Gradient_f65dr"]
+[sub_resource type="Gradient" id="Gradient_30jqb"]
 offsets = PackedFloat32Array(0.32984293, 0.960733, 1)
 colors = PackedColorArray(0.8745098, 0.22745098, 0.2627451, 1, 0.2714388, 0.033522725, 0.01832346, 0, 1, 1, 1, 0)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_xgiwj"]
-gradient = SubResource("Gradient_f65dr")
+gradient = SubResource("Gradient_30jqb")
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(0.5, 0.15)
@@ -92,7 +114,7 @@ fill_to = Vector2(0.5, 0.15)
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.7, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 3
 
-[sub_resource type="CurveTexture" id="CurveTexture_bfsv5"]
+[sub_resource type="CurveTexture" id="CurveTexture_0vpr8"]
 curve = SubResource("Curve_e2ah7")
 
 [sub_resource type="Curve" id="Curve_rnlcq"]
@@ -125,10 +147,10 @@ initial_velocity_max = 300.0
 gravity = Vector3(0, -15, 0)
 linear_accel_min = 0.99999774
 linear_accel_max = 1.2999977
-linear_accel_curve = SubResource("CurveTexture_wcvlp")
+linear_accel_curve = SubResource("CurveTexture_vx8wg")
 scale_min = 0.79999995
 scale_curve = SubResource("CurveXYZTexture_5xgjd")
-alpha_curve = SubResource("CurveTexture_bfsv5")
+alpha_curve = SubResource("CurveTexture_0vpr8")
 
 [node name="BgGrimm" type="SubViewport" unique_id=194469605]
 size = Vector2i(1920, 1080)
@@ -143,7 +165,7 @@ grow_vertical = 2
 
 [node name="Big Circle" type="GPUParticles2D" parent="." unique_id=495845493]
 position = Vector2(953, 733)
-texture = SubResource("GradientTexture2D_f65dr")
+texture = SubResource("GradientTexture2D_ygo7h")
 lifetime = 7.0
 preprocess = 2.0
 randomness = 0.2

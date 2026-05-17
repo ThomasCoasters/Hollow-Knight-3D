@@ -1,0 +1,156 @@
+[gd_scene format=3 uid="uid://c3b473vr63gb2"]
+
+[ext_resource type="Shader" uid="uid://bv0ggrgvtsibh" path="res://UI screens/startscreen/backgrounds/main_bg.gdshader" id="1_fm876"]
+[ext_resource type="Texture2D" uid="uid://d362mnikk4n6u" path="res://UI screens/startscreen/backgrounds/beam.png" id="2_xy406"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_x3hqf"]
+shader = ExtResource("1_fm876")
+shader_parameter/center_color = Color(0.9999996, 0.8004693, 0.45103103, 1)
+shader_parameter/edge_color = Color(0.015686275, 0, 0.03137255, 1)
+shader_parameter/radius = 0.01
+shader_parameter/softness = 105.0
+shader_parameter/stretch = Vector2(1.1, 0.6)
+shader_parameter/rotation = 0.055
+shader_parameter/offset = Vector2(0.48, -0.465)
+shader_parameter/ray_texture = ExtResource("2_xy406")
+shader_parameter/ray_color = Color(1, 1, 1, 0.23529412)
+shader_parameter/ray_intensity = 3.0000001425
+shader_parameter/ray_pulse_speed = 0.800000038
+shader_parameter/ray_pulse_range = 0.2000000095
+shader_parameter/bottom_extent = 0.0
+shader_parameter/bottom_softness = 0.0
+shader_parameter/bottom_color = Color(0.38431373, 0.14117648, 0.19607843, 1)
+
+[sub_resource type="Gradient" id="Gradient_xy406"]
+offsets = PackedFloat32Array(0.35602096, 0.9162304, 1)
+colors = PackedColorArray(0.90959805, 0.74823487, 0.48368812, 1, 0.8636424, 0.69025433, 0.39982942, 0, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_qksrm"]
+gradient = SubResource("Gradient_xy406")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 0.15)
+
+[sub_resource type="Curve" id="Curve_636y4"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.4, 1), 0.0, 0.0, 0, 0, Vector2(0.6, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_636y4"]
+curve = SubResource("Curve_636y4")
+
+[sub_resource type="Gradient" id="Gradient_aesus"]
+colors = PackedColorArray(1, 1, 1, 0.19607843, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_xb1wh"]
+gradient = SubResource("Gradient_aesus")
+
+[sub_resource type="Curve" id="Curve_1sm2p"]
+_limits = [-200.0, 200.0, 0.0, 1.0]
+_data = [Vector2(0, 100), 0.0, 0.0, 0, 0, Vector2(0.1, 0), 0.0, 0.0, 0, 0, Vector2(0.2, 0), 0.0, 0.0, 0, 0, Vector2(0.7, 200), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_vx8wg"]
+curve = SubResource("Curve_1sm2p")
+
+[sub_resource type="Curve" id="Curve_xy406"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.2, 1), 0.0, 0.0, 0, 0, Vector2(0.45, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_abwkx"]
+curve = SubResource("Curve_xy406")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_abwkx"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(800, 600, 1)
+direction = Vector3(0, -1, 0)
+spread = 5.0
+initial_velocity_min = 30.0
+initial_velocity_max = 70.0
+gravity = Vector3(0, 0, 0)
+linear_accel_min = 0.99999774
+linear_accel_max = 1.2999977
+linear_accel_curve = SubResource("CurveTexture_vx8wg")
+scale_min = 0.29999998
+scale_max = 0.75
+scale_curve = SubResource("CurveTexture_abwkx")
+color_initial_ramp = SubResource("GradientTexture1D_xb1wh")
+alpha_curve = SubResource("CurveTexture_636y4")
+
+[sub_resource type="Gradient" id="Gradient_qksrm"]
+offsets = PackedFloat32Array(0.35602096, 0.9162304, 1)
+colors = PackedColorArray(0.96349853, 0.8738923, 0.73278505, 1, 0.9231826, 0.7717607, 0.52590424, 0, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_636y4"]
+gradient = SubResource("Gradient_qksrm")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 0.15)
+
+[sub_resource type="Curve" id="Curve_48511"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.4, 1), 0.0, 0.0, 0, 0, Vector2(0.6, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_vpibe"]
+curve = SubResource("Curve_48511")
+
+[sub_resource type="Curve" id="Curve_vpibe"]
+_limits = [-200.0, 200.0, 0.0, 1.0]
+_data = [Vector2(0.4, 0), 0.0, 0.0, 0, 0, Vector2(1, 300), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_1sm2p"]
+curve = SubResource("Curve_vpibe")
+
+[sub_resource type="Curve" id="Curve_w7qe0"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.2, 1), 0.0, 0.0, 0, 0, Vector2(0.45, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_qksrm"]
+curve = SubResource("Curve_w7qe0")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_vx8wg"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(1000, 400, 1)
+direction = Vector3(0, -1, 0)
+spread = 5.0
+initial_velocity_min = 600.0
+initial_velocity_max = 600.0
+gravity = Vector3(0, 0, 0)
+linear_accel_min = 0.99999774
+linear_accel_max = 1.2999977
+linear_accel_curve = SubResource("CurveTexture_1sm2p")
+scale_min = 1.8
+scale_max = 2.2
+scale_curve = SubResource("CurveTexture_qksrm")
+alpha_curve = SubResource("CurveTexture_vpibe")
+
+[node name="BgGodmaster" type="SubViewport" unique_id=936207872]
+size = Vector2i(1920, 1080)
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1882857485]
+material = SubResource("ShaderMaterial_x3hqf")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Bg Circle" type="GPUParticles2D" parent="." unique_id=2078854217]
+position = Vector2(939, 565)
+amount = 100
+texture = SubResource("GradientTexture2D_qksrm")
+lifetime = 2.0
+preprocess = 2.0
+randomness = 1.0
+process_material = SubResource("ParticleProcessMaterial_abwkx")
+
+[node name="Big Circle" type="GPUParticles2D" parent="." unique_id=1847169989]
+position = Vector2(939, 948)
+amount = 2
+texture = SubResource("GradientTexture2D_636y4")
+lifetime = 4.0
+preprocess = 2.0
+randomness = 1.0
+process_material = SubResource("ParticleProcessMaterial_vx8wg")
