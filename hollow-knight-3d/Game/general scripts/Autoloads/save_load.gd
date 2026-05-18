@@ -42,7 +42,11 @@ var DEFAULT_GENERAL_SAVE: Dictionary = {
 		&"Master": 10,
 		&"SFX"   : 10,
 		&"Music" : 10,
-	}
+	},
+	
+	&"Extras": {
+		&"Background": &"Classic",
+	},
 }
 
 ## the save that you have when there are no given new values (the backup) [br]

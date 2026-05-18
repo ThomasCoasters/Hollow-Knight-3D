@@ -5,7 +5,7 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_x3hqf"]
 shader = ExtResource("1_fm876")
-shader_parameter/center_color = Color(0.9999996, 0.8004693, 0.45103103, 1)
+shader_parameter/center_color = Color(0.70827276, 0.56370395, 0.3115491, 1)
 shader_parameter/edge_color = Color(0.015686275, 0, 0.03137255, 1)
 shader_parameter/radius = 0.01
 shader_parameter/softness = 105.0

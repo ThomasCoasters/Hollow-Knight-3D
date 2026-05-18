@@ -17,7 +17,7 @@ extends Control
 @export var backgrounds: Dictionary[StringName, PackedScene]
 
 ## current bg
-@export var current_bg: StringName = &"Classic"
+var current_bg: StringName
 
 ## cursor image
 @export var cursor_img: Texture2D = preload("uid://xqsmti4l5pn0")
@@ -36,6 +36,10 @@ func _ready() -> void:
 	# set the cursor img with a new scale
 	_set_cursor_scale(cursor_scale)
 	
+	
+	# set the current bg to the saved value
+	current_bg = SaveLoad.general_contents[&"Extras"][&"Background"]
+	print(current_bg, SaveLoad.general_contents[&"Extras"][&"Background"])
 	
 	# add all the bg(s) to the bg node
 	for bg_key in backgrounds:
@@ -86,7 +90,17 @@ func set_bg_visual(BG_name: String) -> void:
 	
 	# tween the front to front and back to back
 	bg_tween.tween_property(bg_front, "modulate:a", 1.0, 0.5)
+	
+	# set the new BG to the current one
+	current_bg = BG_name
+	
+	print(current_bg, SaveLoad.general_contents[&"Extras"][&"Background"])
 
+
+## gets the current bg visual name
+func get_bg_visual() -> StringName:
+	# just return the current bg
+	return current_bg
 
 
 

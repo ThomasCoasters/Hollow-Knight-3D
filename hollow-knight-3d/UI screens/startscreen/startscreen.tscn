@@ -27,7 +27,7 @@ backgrounds = Dictionary[StringName, PackedScene]({
 &"Grimm": ExtResource("3_cqc7b"),
 &"Lifeblood": ExtResource("5_fghhc")
 })
-current_bg = &"Lifeblood"
+current_bg = &"Grimm"
 
 [node name="BG" type="Control" parent="." unique_id=2122249080]
 unique_name_in_owner = true

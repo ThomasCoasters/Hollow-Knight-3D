@@ -91,6 +91,7 @@ metadata/_custom_type_script = "uid://54ijfc61lomj"
 script = ExtResource("2_w13no")
 text = "Extras"
 font_size = 30
+send_to = NodePath("../extra_menu")
 vertical_spacer_size = 25.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
@@ -131,6 +132,14 @@ in_fade_duration = 0.5
 out_fade_duration = 0.5
 text = "Back"
 send_to = NodePath("../start_Menu")
+pressed_function = "# save the contents
+SaveLoad.save_general()
+
+# wait untill the save is done
+await SaveLoad.save_exited
+
+# load the saved inputs
+SaveLoad.load_general()"
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_4gulv"]
@@ -5575,6 +5584,159 @@ row_spacing = 264
 vertical_spacer_size = 285.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
+[sub_resource type="Resource" id="Resource_4vc23"]
+script = ExtResource("2_w13no")
+mode = 1
+text = "Extras"
+font_size = 48
+_button_group_enabled = false
+send_to = NodePath("../start_Menu")
+should_add_vertical_spacer = false
+vertical_spacer_size = 0.0
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_1pen8"]
+script = ExtResource("2_w13no")
+mode = 1
+text = "Background:"
+_button_group_enabled = false
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_g46vr"]
+script = ExtResource("2_w13no")
+mode = 1
+text = "Classic"
+_button_group_enabled = false
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_50pfd"]
+script = ExtResource("2_w13no")
+mode = 5
+_text_group_enabled = false
+hover_offset = Array[Vector2]([Vector2(-100, -4), Vector2(140, -4)])
+ready_function = "
+# wait
+await ctx[0].get_tree().process_frame
+await ctx[0].get_tree().create_timer(1).timeout
+await ctx[0].get_tree().process_frame
+
+
+
+
+
+
+# get this node
+var me = ctx[2]
+# set this node as the initial node you should check
+var nodes_to_check = [me]
+
+# get the startscreen
+var root = ctx[0].get_tree().root
+var screen = root.get_node_or_null(\"startscreen\")
+
+
+
+# the final label found
+var target_label: Label = null
+# current amount of labels found
+var label_count = 0 
+# the final number of label in the index that is the one you search for
+var label_target_index = 1
+
+
+
+# keep searching untill all children are gone through
+while nodes_to_check.size() > 0:
+	#remove the current node from the nodes you should check
+	var current = nodes_to_check.pop_back()
+	
+	# if you found an label
+	if current is Label:
+		#increase label count
+		label_count += 1
+		# if you found the target number of labels
+		if label_count == label_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label = current
+	
+	# also search all these node's children
+	nodes_to_check.append_array(current.get_children())
+
+
+
+
+
+# set the input name
+if target_label:
+	target_label.custom_minimum_size.x = 300
+	target_label.text = screen.get_bg_visual()"
+pressed_function = "
+# get array of the bgs
+var bg_names =[\"Classic\", \"Lifeblood\", \"Grimm\", \"Godmaster\"]
+
+
+
+# get this node
+var me = ctx[2]
+
+# get the startscreen
+var root = ctx[0].get_tree().root
+var screen = root.get_node_or_null(\"startscreen\")
+
+# set this node as the initial node you should check
+var nodes_to_check = [me]
+
+# get the next bg index
+var next_bg_index = (bg_names.find(screen.get_bg_visual()) + 1) % bg_names.size()
+
+
+# the final label found
+var target_label: Label = null
+# current amount of labels found
+var label_count = 0 
+# the final number of label in the index that is the one you search for
+var label_target_index = 1
+
+
+
+# keep searching untill all children are gone through
+while nodes_to_check.size() > 0:
+	#remove the current node from the nodes you should check
+	var current = nodes_to_check.pop_back()
+	
+	# if you found an label
+	if current is Label:
+		#increase label count
+		label_count += 1
+		# if you found the target number of labels
+		if label_count == label_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label = current
+	
+	# also search all these node's children
+	nodes_to_check.append_array(current.get_children())
+
+
+
+
+# get the next bg's name
+var next_bg_name = bg_names[next_bg_index]
+
+# set the startscreen to the new bg
+screen.set_bg_visual(next_bg_name)
+
+# set the saved setting to the new one
+SaveLoad.general_contents[&\"Extras\"][&\"Background\"] = next_bg_name
+
+
+# set the input name
+if target_label:
+	target_label.text = next_bg_name"
+_row_group_enabled = true
+sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_1pen8"), SubResource("Resource_g46vr")])
+row_spacing = 300
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
 [sub_resource type="Resource" id="Resource_ye08n"]
 script = ExtResource("2_w13no")
 mode = 6
@@ -5687,7 +5849,7 @@ button_hover_anim = SubResource("Resource_n2ux7")
 [node name="extra_menu" parent="." unique_id=2036755983 instance=ExtResource("1_aw56r")]
 visible = false
 layout_mode = 1
-visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_uqghw")])
+visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_rr8xp"), SubResource("Resource_4vc23"), SubResource("Resource_om5fx"), SubResource("Resource_50pfd"), SubResource("Resource_uqghw")])
 button_press_anim = SubResource("Resource_55gc4")
 button_hover_anim = SubResource("Resource_n2ux7")
 
