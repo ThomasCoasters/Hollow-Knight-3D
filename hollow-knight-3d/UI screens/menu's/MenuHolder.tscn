@@ -21,19 +21,32 @@
 [ext_resource type="Texture2D" uid="uid://ds5p14a0bhott" path="res://UI screens/menu's/visuals/pause fleur/pause-fleur-006.png" id="11_p17pv"]
 [ext_resource type="Texture2D" uid="uid://dm2j71ymahdpx" path="res://UI screens/menu's/visuals/pause fleur/pause-fleur-007.png" id="12_50hpd"]
 [ext_resource type="Texture2D" uid="uid://drt8s834fri8l" path="res://UI screens/menu's/visuals/Empty.png" id="13_jeomw"]
+[ext_resource type="Texture2D" uid="uid://ccfj38xwt4chv" path="res://UI screens/menu's/visuals/profile/profile_fleur0000.png" id="13_wk02m"]
 [ext_resource type="Texture2D" uid="uid://nd7wcq4qgpcl" path="res://UI screens/menu's/visuals/hover pointer/main_menu_pointer_anim0000.png" id="14_62inh"]
+[ext_resource type="Texture2D" uid="uid://c5atpkptgdr41" path="res://UI screens/menu's/visuals/profile/profile_fleur0001.png" id="14_mk4j3"]
+[ext_resource type="Texture2D" uid="uid://bb8xuajs1itlv" path="res://UI screens/menu's/visuals/profile/profile_fleur0002.png" id="15_adj7i"]
 [ext_resource type="Texture2D" uid="uid://c2tleq3ao7buy" path="res://UI screens/menu's/visuals/hover pointer/main_menu_pointer_anim0001.png" id="15_vllhe"]
+[ext_resource type="Texture2D" uid="uid://cninrxf67rlr3" path="res://UI screens/menu's/visuals/profile/profile_fleur0003.png" id="16_clipe"]
 [ext_resource type="Texture2D" uid="uid://cu88v63anv8o1" path="res://UI screens/menu's/visuals/hover pointer/main_menu_pointer_anim0002.png" id="16_om5fx"]
 [ext_resource type="Texture2D" uid="uid://c2y2vfghk4vfg" path="res://UI screens/menu's/visuals/hover pointer/main_menu_pointer_anim0003.png" id="17_saxcl"]
+[ext_resource type="Texture2D" uid="uid://g7g0sba4xny7" path="res://UI screens/menu's/visuals/profile/profile_fleur0004.png" id="17_sced3"]
+[ext_resource type="Texture2D" uid="uid://x4fu22jrnmv4" path="res://UI screens/menu's/visuals/profile/profile_fleur0005.png" id="18_itpb0"]
 [ext_resource type="Texture2D" uid="uid://bh1ahaqv1ph2d" path="res://UI screens/menu's/visuals/hover pointer/main_menu_pointer_anim0004.png" id="18_jq4vk"]
+[ext_resource type="Texture2D" uid="uid://dtyr7vyk2jv6w" path="res://UI screens/menu's/visuals/profile/profile_fleur0006.png" id="19_il87v"]
 [ext_resource type="Texture2D" uid="uid://ds2mn0c1fmxod" path="res://UI screens/menu's/visuals/hover pointer/main_menu_pointer_anim0005.png" id="19_rgr21"]
 [ext_resource type="Texture2D" uid="uid://dl0jy5lmlniif" path="res://UI screens/menu's/visuals/hover pointer/main_menu_pointer_anim0006.png" id="20_kexv5"]
+[ext_resource type="Texture2D" uid="uid://dgrin2534pb3o" path="res://UI screens/menu's/visuals/profile/profile_fleur0007.png" id="20_xquyn"]
 [ext_resource type="Texture2D" uid="uid://c4t2e0g8d50xm" path="res://UI screens/menu's/visuals/button_controll/button_skin_0004_square_key.png" id="21_55gc4"]
+[ext_resource type="Texture2D" uid="uid://w5hvbhwtecu7" path="res://UI screens/menu's/visuals/profile/profile_fleur0008.png" id="21_ce16e"]
 [ext_resource type="Texture2D" uid="uid://c2dlowhyq8a8f" path="res://UI screens/menu's/visuals/hover pointer/main_menu_pointer_anim0007.png" id="21_sqr72"]
+[ext_resource type="Texture2D" uid="uid://uum6r1kfgo8d" path="res://UI screens/menu's/visuals/profile/profile_fleur0009.png" id="22_6pcm4"]
 [ext_resource type="Texture2D" uid="uid://dxjri3gun6dhb" path="res://UI screens/menu's/visuals/hover pointer/main_menu_pointer_anim0008.png" id="22_er0lx"]
 [ext_resource type="Texture2D" uid="uid://dluq4g6gu8iio" path="res://UI screens/menu's/visuals/hover pointer/main_menu_pointer_anim0009.png" id="23_4edy0"]
+[ext_resource type="Texture2D" uid="uid://bkcvv76gs21ap" path="res://UI screens/menu's/visuals/profile/profile_fleur0010.png" id="23_cbvuo"]
+[ext_resource type="Texture2D" uid="uid://b4g6y5bkl6kp" path="res://UI screens/menu's/visuals/profile/profile_fleur0011.png" id="24_po4x5"]
 [ext_resource type="Texture2D" uid="uid://iekfw8e2blw1" path="res://UI screens/menu's/visuals/hover pointer/main_menu_pointer_anim0010.png" id="24_qt6wr"]
 [ext_resource type="Texture2D" uid="uid://brllgc7rppnu0" path="res://UI screens/menu's/visuals/MenuSliderHandle.png" id="25_62inh"]
+[ext_resource type="Texture2D" uid="uid://c60toitxmaul1" path="res://UI screens/menu's/visuals/profile/profile_fleur0012.png" id="25_k0oey"]
 
 [sub_resource type="Resource" id="Resource_ayfdy"]
 script = ExtResource("2_w13no")
@@ -95,11 +108,12 @@ send_to = NodePath("../extra_menu")
 vertical_spacer_size = 25.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
-[sub_resource type="Resource" id="Resource_jeomw"]
+[sub_resource type="Resource" id="Resource_7s2bj"]
 script = ExtResource("2_w13no")
 text = "Quit Game"
 font_size = 30
 send_to = NodePath("../quit_menu")
+vertical_spacer_size = 120.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_55gc4"]
@@ -126,7 +140,94 @@ anim_frames = Array[Texture2D]([ExtResource("13_jeomw"), ExtResource("14_62inh")
 fps = 40.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
-[sub_resource type="Resource" id="Resource_uqghw"]
+[sub_resource type="Resource" id="Resource_jeomw"]
+script = ExtResource("2_w13no")
+mode = 6
+in_fade_duration = 0.0
+out_fade_duration = 0.0
+_text_group_enabled = false
+text = "Quit Game"
+font_size = 30
+_button_group_enabled = false
+send_to = NodePath("../quit_menu")
+vertical_spacer_size = 120.0
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_k4wwd"]
+script = ExtResource("2_w13no")
+mode = 1
+text = "Select profile"
+font_size = 48
+_button_group_enabled = false
+send_to = NodePath("../start_Menu")
+should_add_vertical_spacer = false
+vertical_spacer_size = 0.0
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_wspli"]
+script = ExtResource("2_w13no")
+mode = 3
+in_fade_duration = 0.27
+out_fade_duration = 0.27
+in_start_delay = 0.07
+out_start_delay = 0.07
+_text_group_enabled = false
+_button_group_enabled = false
+_texture_group_enabled = true
+texture_scale = Vector2(0.8, 0.8)
+_anim_texture_group_enabled = true
+anim_frames = Array[Texture2D]([ExtResource("6_rmu4f"), ExtResource("6_0j5pn"), ExtResource("7_rmu4f"), ExtResource("8_ye08n"), ExtResource("9_vxt2s"), ExtResource("10_2jqgy"), ExtResource("11_p17pv"), ExtResource("12_50hpd")])
+fps = 30.0
+vertical_spacer_size = 50.0
+horizontal_spacer_size = 0.0
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_mf0eo"]
+script = ExtResource("2_w13no")
+mode = 3
+_text_group_enabled = false
+_button_group_enabled = false
+_texture_group_enabled = true
+_anim_texture_group_enabled = true
+anim_frames = Array[Texture2D]([ExtResource("13_wk02m"), ExtResource("14_mk4j3"), ExtResource("15_adj7i"), ExtResource("16_clipe"), ExtResource("17_sced3"), ExtResource("18_itpb0"), ExtResource("19_il87v"), ExtResource("20_xquyn"), ExtResource("21_ce16e"), ExtResource("22_6pcm4"), ExtResource("23_cbvuo"), ExtResource("24_po4x5"), ExtResource("25_k0oey")])
+fps = 60.0
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_c2gy6"]
+script = ExtResource("2_w13no")
+mode = 1
+text = "1."
+font_size = 50
+_button_group_enabled = false
+should_have_offset = true
+offset = Vector2(-1550, 50)
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_gg8iy"]
+script = ExtResource("2_w13no")
+mode = 5
+_text_group_enabled = false
+_row_group_enabled = true
+sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_mf0eo"), SubResource("Resource_c2gy6")])
+row_spacing = 0
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_qnj6i"]
+script = ExtResource("2_w13no")
+text = "Clear Save"
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_aasxr"]
+script = ExtResource("2_w13no")
+mode = 4
+_text_group_enabled = false
+_button_group_enabled = false
+_row_group_enabled = true
+sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_gg8iy"), SubResource("Resource_qnj6i")])
+row_spacing = 150
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_0v2a5"]
 script = ExtResource("2_w13no")
 in_fade_duration = 0.5
 out_fade_duration = 0.5
@@ -5907,6 +6008,22 @@ row_spacing = 264
 vertical_spacer_size = 285.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
+[sub_resource type="Resource" id="Resource_uqghw"]
+script = ExtResource("2_w13no")
+in_fade_duration = 0.5
+out_fade_duration = 0.5
+text = "Back"
+send_to = NodePath("../start_Menu")
+pressed_function = "# save the contents
+SaveLoad.save_general()
+
+# wait untill the save is done
+await SaveLoad.save_exited
+
+# load the saved inputs
+SaveLoad.load_general()"
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
 [sub_resource type="Resource" id="Resource_4vc23"]
 script = ExtResource("2_w13no")
 mode = 1
@@ -6128,14 +6245,14 @@ initial_menu = NodePath("start_Menu")
 
 [node name="start_Menu" parent="." unique_id=726592690 instance=ExtResource("1_aw56r")]
 layout_mode = 1
-visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_ayfdy"), SubResource("Resource_5puos"), SubResource("Resource_vxmfm"), SubResource("Resource_gge7p"), SubResource("Resource_mxu3d"), SubResource("Resource_4cth6"), SubResource("Resource_jeomw")])
+visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_ayfdy"), SubResource("Resource_5puos"), SubResource("Resource_vxmfm"), SubResource("Resource_gge7p"), SubResource("Resource_mxu3d"), SubResource("Resource_4cth6"), SubResource("Resource_7s2bj")])
 button_press_anim = SubResource("Resource_55gc4")
 button_hover_anim = SubResource("Resource_n2ux7")
 
 [node name="play_menu" parent="." unique_id=2038750279 instance=ExtResource("1_aw56r")]
 visible = false
 layout_mode = 1
-visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_uqghw")])
+visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_jeomw"), SubResource("Resource_k4wwd"), SubResource("Resource_wspli"), SubResource("Resource_aasxr"), SubResource("Resource_0v2a5")])
 button_press_anim = SubResource("Resource_55gc4")
 button_hover_anim = SubResource("Resource_n2ux7")
 

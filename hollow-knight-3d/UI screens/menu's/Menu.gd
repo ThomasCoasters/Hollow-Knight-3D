@@ -252,6 +252,9 @@ func _create_animated_texture_visual(config: MenuConfigRecource) -> Control:
 	#set the wraper horizontal size flags
 	wraper.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	
+	# make the wrapper not steal mouse inputs
+	wraper.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	
 	# add the wraper to the wraper group
 	wraper.add_to_group(&"wraper")
 	
@@ -738,6 +741,10 @@ func _create_button_row_visual(config: MenuConfigRecource) -> Button:
 	row_button.add_child(hbox)
 	
 	
+	# add the row button to wraper group
+	row_button.add_to_group(&"wraper")
+	
+	
 	
 	# add the animnation when pressing the button.
 	# also get the result
@@ -1051,6 +1058,9 @@ func _apply_offset_if_needed(control: Control, config: MenuConfigRecource) -> Ma
 	
 	# create a wrapper
 	var wraper: MarginContainer = MarginContainer.new()
+	
+	# make the wrapper not steal mouse inputs
+	wraper.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	
 	# set the wrapper offset
 	@warning_ignore("narrowing_conversion")
