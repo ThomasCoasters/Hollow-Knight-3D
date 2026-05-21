@@ -142,23 +142,6 @@ await SaveLoad.save_exited
 SaveLoad.load_general()"
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
-[sub_resource type="Resource" id="Resource_4gulv"]
-script = ExtResource("2_w13no")
-mode = 7
-_text_group_enabled = false
-_button_group_enabled = false
-_texture_group_enabled = true
-texture = ExtResource("25_62inh")
-texture_scale = Vector2(0.9, 0.55)
-_slider_group_enabled = true
-slider_size = Vector2(200, 40)
-texture_rotation = -90.0
-texture_offset = Vector2(0, 12)
-slider_bg_color = Color(0.41568628, 0.44313726, 0.50980395, 1)
-slider_fill_color = Color(0.9372549, 0.91764706, 0.92941177, 1)
-slider_bar_height = 3
-metadata/_custom_type_script = "uid://54ijfc61lomj"
-
 [sub_resource type="Resource" id="Resource_5pew3"]
 script = ExtResource("2_w13no")
 mode = 6
@@ -211,6 +194,7 @@ script = ExtResource("2_w13no")
 in_start_delay = 0.17
 out_start_delay = 0.17
 text = "Video"
+send_to = NodePath("../video_option_menu")
 vertical_spacer_size = 55.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
@@ -748,20 +732,10 @@ SaveLoad.load_general()"
 should_add_vertical_spacer = false
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
-[sub_resource type="Resource" id="Resource_62inh"]
-script = ExtResource("2_w13no")
-mode = 6
-in_fade_duration = 0.0
-out_fade_duration = 0.0
-_text_group_enabled = false
-_button_group_enabled = false
-vertical_spacer_size = 120.0
-metadata/_custom_type_script = "uid://54ijfc61lomj"
-
-[sub_resource type="Resource" id="Resource_vllhe"]
+[sub_resource type="Resource" id="Resource_4gulv"]
 script = ExtResource("2_w13no")
 mode = 1
-text = "Keyboard"
+text = "Video"
 font_size = 48
 _button_group_enabled = false
 send_to = NodePath("../start_Menu")
@@ -785,6 +759,355 @@ anim_frames = Array[Texture2D]([ExtResource("6_rmu4f"), ExtResource("6_0j5pn"), 
 fps = 30.0
 vertical_spacer_size = 50.0
 horizontal_spacer_size = 0.0
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_dpofx"]
+script = ExtResource("2_w13no")
+mode = 1
+text = "Vsync Enabled:"
+_button_group_enabled = false
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_g46vr"]
+script = ExtResource("2_w13no")
+mode = 1
+text = "Classic"
+_button_group_enabled = false
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_50pfd"]
+script = ExtResource("2_w13no")
+mode = 5
+_text_group_enabled = false
+hover_offset = Array[Vector2]([Vector2(-100, -4), Vector2(140, -4)])
+ready_function = "# the setting that would change
+var main_setting_type = &\"Video\"
+var change_setting = &\"VSyncEnabled\"
+
+
+# get array of the bgs
+var options ={
+	\"On\": true,
+	\"Off\": false,
+}
+
+
+
+
+# wait
+await ctx[0].get_tree().process_frame
+await ctx[0].get_tree().create_timer(1).timeout
+await ctx[0].get_tree().process_frame
+
+
+
+
+
+
+# get this node
+var me = ctx[2]
+# set this node as the initial node you should check
+var nodes_to_check = [me]
+
+
+
+# the final label found
+var target_label: Label = null
+# current amount of labels found
+var label_count = 0 
+# the final number of label in the index that is the one you search for
+var label_target_index = 1
+
+
+
+# keep searching untill all children are gone through
+while nodes_to_check.size() > 0:
+	#remove the current node from the nodes you should check
+	var current = nodes_to_check.pop_back()
+	
+	# if you found an label
+	if current is Label:
+		#increase label count
+		label_count += 1
+		# if you found the target number of labels
+		if label_count == label_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label = current
+	
+	# also search all these node's children
+	nodes_to_check.append_array(current.get_children())
+
+
+
+
+
+# set the input name
+if target_label:
+	target_label.custom_minimum_size.x = 100
+	target_label.text = options.find_key(SaveLoad.general_contents[main_setting_type][change_setting])"
+pressed_function = "# the setting that would change
+var main_setting_type = &\"Video\"
+var change_setting = &\"VSyncEnabled\"
+
+
+
+# get array of the bgs
+var options ={
+	\"On\": true,
+	\"Off\": false,
+}
+
+
+# get this node
+var me = ctx[2]
+
+# get the startscreen
+var root = ctx[0].get_tree().root
+var screen = root.get_node_or_null(\"startscreen\")
+
+# set this node as the initial node you should check
+var nodes_to_check = [me]
+
+
+
+# the final label found
+var target_label: Label = null
+# current amount of labels found
+var label_count = 0 
+# the final number of label in the index that is the one you search for
+var label_target_index = 1
+
+
+
+# keep searching untill all children are gone through
+while nodes_to_check.size() > 0:
+	#remove the current node from the nodes you should check
+	var current = nodes_to_check.pop_back()
+	
+	# if you found an label
+	if current is Label:
+		#increase label count
+		label_count += 1
+		# if you found the target number of labels
+		if label_count == label_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label = current
+	
+	# also search all these node's children
+	nodes_to_check.append_array(current.get_children())
+
+
+
+
+# get the next options index
+var keys_array = options.keys()
+keys_array.sort()
+var idx = keys_array.find(target_label.text)
+var next_idx = (idx + 1) % keys_array.size()
+var next_option = keys_array[next_idx]
+
+SaveLoad.general_contents[main_setting_type][change_setting] = options[next_option]
+
+
+# set the input name
+if target_label:
+	target_label.text = next_option"
+_row_group_enabled = true
+sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_dpofx"), SubResource("Resource_g46vr")])
+row_spacing = 300
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_epcit"]
+script = ExtResource("2_w13no")
+mode = 1
+text = "Max FPS:"
+_button_group_enabled = false
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_f5sey"]
+script = ExtResource("2_w13no")
+mode = 5
+_text_group_enabled = false
+hover_offset = Array[Vector2]([Vector2(-100, -4), Vector2(140, -4)])
+ready_function = "# the setting that would change
+var main_setting_type = &\"Video\"
+var change_setting = &\"MaxFPS\"
+
+
+
+# get array of the bgs
+var options ={
+	\"Unlimited\": 0,
+	\"30\": 30,
+	\"60\": 60,
+	\"140\": 140,
+	\"165\": 165,
+}
+
+
+
+
+# wait
+await ctx[0].get_tree().process_frame
+await ctx[0].get_tree().create_timer(1).timeout
+await ctx[0].get_tree().process_frame
+
+
+
+
+
+
+# get this node
+var me = ctx[2]
+# set this node as the initial node you should check
+var nodes_to_check = [me]
+
+
+
+# the final label found
+var target_label: Label = null
+# current amount of labels found
+var label_count = 0 
+# the final number of label in the index that is the one you search for
+var label_target_index = 1
+
+
+
+# keep searching untill all children are gone through
+while nodes_to_check.size() > 0:
+	#remove the current node from the nodes you should check
+	var current = nodes_to_check.pop_back()
+	
+	# if you found an label
+	if current is Label:
+		#increase label count
+		label_count += 1
+		# if you found the target number of labels
+		if label_count == label_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label = current
+	
+	# also search all these node's children
+	nodes_to_check.append_array(current.get_children())
+
+
+
+
+
+# set the input name
+if target_label:
+	target_label.custom_minimum_size.x = 350
+	target_label.text = str(options.find_key(SaveLoad.general_contents[main_setting_type][change_setting]))"
+pressed_function = "# the setting that would change
+var main_setting_type = &\"Video\"
+var change_setting = &\"MaxFPS\"
+
+
+
+# get array of the bgs
+var options ={
+	\"Unlimited\": 0,
+	\"30\": 30,
+	\"60\": 60,
+	\"140\": 140,
+	\"165\": 165,
+}
+
+
+# get this node
+var me = ctx[2]
+
+# get the startscreen
+var root = ctx[0].get_tree().root
+var screen = root.get_node_or_null(\"startscreen\")
+
+# set this node as the initial node you should check
+var nodes_to_check = [me]
+
+
+
+# the final label found
+var target_label: Label = null
+# current amount of labels found
+var label_count = 0 
+# the final number of label in the index that is the one you search for
+var label_target_index = 1
+
+
+
+# keep searching untill all children are gone through
+while nodes_to_check.size() > 0:
+	#remove the current node from the nodes you should check
+	var current = nodes_to_check.pop_back()
+	
+	# if you found an label
+	if current is Label:
+		#increase label count
+		label_count += 1
+		# if you found the target number of labels
+		if label_count == label_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label = current
+	
+	# also search all these node's children
+	nodes_to_check.append_array(current.get_children())
+
+
+
+
+# get the next options index
+var keys_array = options.keys()
+keys_array.sort()
+var idx = keys_array.find(target_label.text)
+var next_idx = (idx + 1) % keys_array.size()
+var next_option = keys_array[next_idx]
+
+SaveLoad.general_contents[main_setting_type][change_setting] = options[next_option]
+
+
+# set the input name
+if target_label:
+	target_label.text = next_option"
+_row_group_enabled = true
+sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_epcit"), SubResource("Resource_g46vr")])
+row_spacing = 350
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_n0cm6"]
+script = ExtResource("2_w13no")
+in_fade_duration = 0.5
+out_fade_duration = 0.5
+text = "Back"
+send_to = NodePath("../options_menu")
+pressed_function = "# save the contents
+SaveLoad.save_general()
+
+# wait untill the save is done
+await SaveLoad.save_exited
+
+# load the saved inputs
+SaveLoad.load_general()"
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_62inh"]
+script = ExtResource("2_w13no")
+mode = 6
+in_fade_duration = 0.0
+out_fade_duration = 0.0
+_text_group_enabled = false
+_button_group_enabled = false
+vertical_spacer_size = 120.0
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_vllhe"]
+script = ExtResource("2_w13no")
+mode = 1
+text = "Keyboard"
+font_size = 48
+_button_group_enabled = false
+send_to = NodePath("../start_Menu")
+should_add_vertical_spacer = false
+vertical_spacer_size = 0.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_4edy0"]
@@ -5602,14 +5925,7 @@ text = "Background:"
 _button_group_enabled = false
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
-[sub_resource type="Resource" id="Resource_g46vr"]
-script = ExtResource("2_w13no")
-mode = 1
-text = "Classic"
-_button_group_enabled = false
-metadata/_custom_type_script = "uid://54ijfc61lomj"
-
-[sub_resource type="Resource" id="Resource_50pfd"]
+[sub_resource type="Resource" id="Resource_rl7yl"]
 script = ExtResource("2_w13no")
 mode = 5
 _text_group_enabled = false
@@ -5670,10 +5986,8 @@ while nodes_to_check.size() > 0:
 if target_label:
 	target_label.custom_minimum_size.x = 300
 	target_label.text = screen.get_bg_visual()"
-pressed_function = "
-# get array of the bgs
+pressed_function = "# get array of the bgs
 var bg_names =[\"Classic\", \"Lifeblood\", \"Grimm\", \"Godmaster\"]
-
 
 
 # get this node
@@ -5731,7 +6045,13 @@ SaveLoad.general_contents[&\"Extras\"][&\"Background\"] = next_bg_name
 
 # set the input name
 if target_label:
-	target_label.text = next_bg_name"
+	target_label.text = next_bg_name
+
+
+
+
+# load the values
+SaveLoad._load_video()"
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_1pen8"), SubResource("Resource_g46vr")])
 row_spacing = 300
@@ -5815,7 +6135,7 @@ button_hover_anim = SubResource("Resource_n2ux7")
 [node name="play_menu" parent="." unique_id=2038750279 instance=ExtResource("1_aw56r")]
 visible = false
 layout_mode = 1
-visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_uqghw"), SubResource("Resource_4gulv")])
+visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_uqghw")])
 button_press_anim = SubResource("Resource_55gc4")
 button_hover_anim = SubResource("Resource_n2ux7")
 
@@ -5827,8 +6147,16 @@ button_press_anim = SubResource("Resource_55gc4")
 button_hover_anim = SubResource("Resource_n2ux7")
 
 [node name="audio_option_menu" parent="." unique_id=1720989228 instance=ExtResource("1_aw56r")]
+visible = false
 layout_mode = 1
 visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_rr8xp"), SubResource("Resource_su4du"), SubResource("Resource_xujg8"), SubResource("Resource_7qefg"), SubResource("Resource_hab3u"), SubResource("Resource_mv06r"), SubResource("Resource_hqo3k")])
+button_press_anim = SubResource("Resource_55gc4")
+button_hover_anim = SubResource("Resource_n2ux7")
+
+[node name="video_option_menu" parent="." unique_id=577510484 instance=ExtResource("1_aw56r")]
+visible = false
+layout_mode = 1
+visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_rr8xp"), SubResource("Resource_4gulv"), SubResource("Resource_om5fx"), SubResource("Resource_50pfd"), SubResource("Resource_f5sey"), SubResource("Resource_n0cm6")])
 button_press_anim = SubResource("Resource_55gc4")
 button_hover_anim = SubResource("Resource_n2ux7")
 
@@ -5849,7 +6177,7 @@ button_hover_anim = SubResource("Resource_n2ux7")
 [node name="extra_menu" parent="." unique_id=2036755983 instance=ExtResource("1_aw56r")]
 visible = false
 layout_mode = 1
-visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_rr8xp"), SubResource("Resource_4vc23"), SubResource("Resource_om5fx"), SubResource("Resource_50pfd"), SubResource("Resource_uqghw")])
+visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_rr8xp"), SubResource("Resource_4vc23"), SubResource("Resource_om5fx"), SubResource("Resource_rl7yl"), SubResource("Resource_uqghw")])
 button_press_anim = SubResource("Resource_55gc4")
 button_hover_anim = SubResource("Resource_n2ux7")
 

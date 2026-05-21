@@ -106,6 +106,7 @@ colors = PackedColorArray(0.8745098, 0.22745098, 0.2627451, 1, 0.2714388, 0.0335
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_xgiwj"]
 gradient = SubResource("Gradient_30jqb")
+width = 18
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(0.5, 0.15)
@@ -116,23 +117,6 @@ point_count = 3
 
 [sub_resource type="CurveTexture" id="CurveTexture_0vpr8"]
 curve = SubResource("Curve_e2ah7")
-
-[sub_resource type="Curve" id="Curve_rnlcq"]
-_data = [Vector2(0, 0.2), 0.0, 0.0, 0, 0, Vector2(1, 0.2), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="Curve" id="Curve_30jqb"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="Curve" id="Curve_0vpr8"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_5xgjd"]
-curve_x = SubResource("Curve_rnlcq")
-curve_y = SubResource("Curve_30jqb")
-curve_z = SubResource("Curve_0vpr8")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_w81rx"]
 particle_flag_disable_z = true
@@ -149,7 +133,6 @@ linear_accel_min = 0.99999774
 linear_accel_max = 1.2999977
 linear_accel_curve = SubResource("CurveTexture_vx8wg")
 scale_min = 0.79999995
-scale_curve = SubResource("CurveXYZTexture_5xgjd")
 alpha_curve = SubResource("CurveTexture_0vpr8")
 
 [node name="BgGrimm" type="SubViewport" unique_id=194469605]

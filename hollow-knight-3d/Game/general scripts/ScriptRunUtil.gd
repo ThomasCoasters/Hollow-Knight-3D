@@ -9,6 +9,17 @@ static func execute_multiline_code(code_string: String, context: Array = [null])
 	if code_string.strip_edges() == "" || code_string == null:
 		return
 	
+	# the function name that should run and all the settings (like input and output)
+	var func_call: String = "func run(_ctx: Array):"
+	
+	
+	# get if the code contains a "ctx"
+	if code_string.contains("ctx"):
+		# make the function include the ctx var
+		func_call = "func run(ctx: Array):"
+	
+	
+	
 	# create a new GDscript to run the function
 	var script = GDScript.new()
 	
@@ -19,8 +30,7 @@ static func execute_multiline_code(code_string: String, context: Array = [null])
 	script.source_code = ("
 extends RefCounted
 \n
-\n
-func run(ctx: Array):
+\n" + func_call + "
 \n" + code_string.indent("\t"))
 	
 	# reload the script to check if there is an error

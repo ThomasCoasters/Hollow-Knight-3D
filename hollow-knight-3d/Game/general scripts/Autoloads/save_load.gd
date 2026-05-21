@@ -47,6 +47,11 @@ var DEFAULT_GENERAL_SAVE: Dictionary = {
 	&"Extras": {
 		&"Background": &"Classic",
 	},
+	
+	&"Video": {
+		&"VSyncEnabled": true,
+		&"MaxFPS": 0,
+	},
 }
 
 ## the save that you have when there are no given new values (the backup) [br]
@@ -116,12 +121,14 @@ func load_general() -> void:
 	var loaded: Dictionary = _load(full_general_save_path, general_contents)
 	
 	# set the loading contents given to the loaded values
-	general_contents.merge(loaded, true)
+	general_contents = deep_merge(DEFAULT_GENERAL_SAVE.duplicate(true), loaded)
 	
 	# load the keys
 	_load_keys()
 	# load the audio
 	_load_audio()
+	# load the video settings
+	_load_video()
 
 
 #endregion
@@ -145,7 +152,7 @@ func load_game_slot(slot_number: int) -> void:
 	var loaded: Dictionary = _load(load_path, current_game_contents)
 	
 	# set the loading contents given to the loaded values
-	current_game_contents.merge(loaded, true)
+	current_game_contents = deep_merge(DEFAULT_GAME_SAVE.duplicate(true), loaded)
 
 #endregion
 
@@ -187,6 +194,7 @@ func _save(path: String, save_contents: Dictionary, show_visual: bool = true) ->
 	is_saving = false
 	save_finished.emit(path)
 	save_exited.emit(path)
+
 
 
 ## loads the given content from the given path. [br]
@@ -275,6 +283,40 @@ func _load_audio() -> void:
 			var volume: int = 3 * (audio[audio_key] - 10)
 			# set the bus volume to the new correct one
 			AudioServer.set_bus_volume_db(bus_index, volume)
+
+## loads the video settings
+func _load_video() -> void:
+	# get the video settings from the save dict
+	var video: Dictionary = general_contents[&"Video"]
+	
+	# go through every video setting
+	for video_key in video:
+		# get what the current key is and change settings correctly
+		match video_key:
+			&"VSyncEnabled":
+				# check if it should be enabled or dissabled
+				if general_contents[&"Video"][&"VSyncEnabled"]:
+					DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_ENABLED)
+				else:
+					DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
+
+
+## deeply meges the saved and the existing dict
+func deep_merge(target: Dictionary, source: Dictionary) -> Dictionary:
+	# get the key in the source
+	for key in source:
+		# if it has a key and the source and target are dicts
+		# deep merge that
+		if (target.has(key) and target[key] is Dictionary and source[key] is Dictionary):
+			deep_merge(target[key], source[key])
+		
+		# if not set the target to the source
+		else:
+			target[key] = source[key]
+	
+	# return the target
+	return target
+
 #endregion
 
 

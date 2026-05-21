@@ -39,7 +39,6 @@ func _ready() -> void:
 	
 	# set the current bg to the saved value
 	current_bg = SaveLoad.general_contents[&"Extras"][&"Background"]
-	print(current_bg, SaveLoad.general_contents[&"Extras"][&"Background"])
 	
 	# add all the bg(s) to the bg node
 	for bg_key in backgrounds:
@@ -93,8 +92,6 @@ func set_bg_visual(BG_name: String) -> void:
 	
 	# set the new BG to the current one
 	current_bg = BG_name
-	
-	print(current_bg, SaveLoad.general_contents[&"Extras"][&"Background"])
 
 
 ## gets the current bg visual name
