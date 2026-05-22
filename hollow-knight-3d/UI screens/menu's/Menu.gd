@@ -280,6 +280,9 @@ func _create_animated_texture_visual(config: MenuConfigRecource) -> Control:
 	# add the spite to the wraper
 	wraper.add_child(sprite)
 	
+	# add to a group so you can find this thing
+	sprite.add_to_group(&"menu_animated_texture")
+	
 	# return the wraper
 	return wraper
 
@@ -525,6 +528,10 @@ func _build_button_press_anim(button: Button):
 		button.add_child(wraper)
 	
 	
+	# add to a group so you can find this
+	sprite.add_to_group(&"press_anim")
+	
+	
 	# return the updated button and the sprite
 	return [button, sprite]
 
@@ -698,12 +705,18 @@ func _build_hover_anim(control: Control, config: MenuConfigRecource) -> void:
 					# make the sprite invis
 					sprite.visible = false
 		)
+		
+		# add to a group so you can find this
+		sprite.add_to_group(&"hover_anim")
 	
 	# when the control is resized
 	control.resized.connect(func():
 		# update the hover positions
 		update_hover_positions.call()
 	)
+	
+	
+	
 
 
 

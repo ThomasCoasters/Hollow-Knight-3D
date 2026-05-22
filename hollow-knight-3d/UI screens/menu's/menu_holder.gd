@@ -112,13 +112,19 @@ func _animate_menu_fade(menu: Menu, fading_in: bool) -> void:
 		var duration: float
 		
 		
-		# if the item is an animated texture
-		if config.mode == config.Mode.ANIMATED_TEXTURE:
-			# find the AnimatedSprite2D inside the wraper
-			var sprite: AnimatedSprite2D = item.get_child(0) as AnimatedSprite2D
+		# get the animated textures in this item
+		var sprites: Array[Node] = item.find_children("*", "AnimatedSprite2D", true, false)
+		
+		# if there is a sprite in the itme
+		if not sprites.is_empty():
 			
-			# if the sprite exists
-			if sprite:
+			
+			# go through them all
+			for sprite: AnimatedSprite2D in sprites:
+				# only affect actual menu animated textures
+				if not sprite.is_in_group(&"menu_animated_texture"):
+					continue
+				
 				# calculate duration based on frames
 				var frame_count = sprite.sprite_frames.get_frame_count(&"default")
 				duration = (1.0 / max(config.fps, 0.001)) * frame_count
@@ -131,15 +137,10 @@ func _animate_menu_fade(menu: Menu, fading_in: bool) -> void:
 				
 				# sets the max time to the highest untill now
 				max_time = max(max_time, delay + duration)
-				
-				
-				# continue so that the normal animation stuff does not trigger
-				continue
 		
-		# if the item is no animated texture
-		else:
-			# calculate the duration just by the values
-			duration = config.in_fade_duration if fading_in else config.out_fade_duration
+		
+		# calculate the duration just by the values
+		duration = config.in_fade_duration if fading_in else config.out_fade_duration
 		
 		# sets the max time to the highest untill now
 		max_time = max(max_time, delay + duration)
@@ -220,18 +221,19 @@ func _show_menu(menu: Menu) -> void:
 
 ## resets all animated textures in this menu
 func _reset_animated_textures(menu: Menu) -> void:
-	# get every item
-	for item in menu.VerticalVisualContainer.get_children():
-		#check if it is not an spacer
-		if item.is_in_group(&"spacer"): continue
+	# all the sprites that are in this menu
+	var sprites: Array[Node] = menu.find_children("*", "AnimatedSprite2D", true, false)
+	
+	# reset all the sprites
+	for sprite: AnimatedSprite2D in sprites:
+		# check if the sprite is a menu animated texture
+		if not sprite.is_in_group(&"menu_animated_texture"):
+			continue
 		
-		# If this item has a child that is an AnimatedSprite2D
-		if item.get_child_count() > 0 and item.get_child(0) is AnimatedSprite2D:
-			# get that AnimatedSprite2D
-			var sprite: AnimatedSprite2D = item.get_child(0)
-			# stop the animation and reset it
-			sprite.stop()
-			sprite.frame = 0
+		# stop anim and set to frame 0 and play again
+		sprite.stop()
+		sprite.frame = 0
+		sprite.play()
 
 
 ## runs when a menu button is pressed

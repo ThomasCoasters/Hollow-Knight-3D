@@ -207,6 +207,8 @@ metadata/_custom_type_script = "uid://54ijfc61lomj"
 script = ExtResource("2_w13no")
 mode = 5
 _text_group_enabled = false
+ready_function = "var save_number: int = 1"
+pressed_function = "var save_number: int = 1"
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_mf0eo"), SubResource("Resource_c2gy6")])
 row_spacing = 0
