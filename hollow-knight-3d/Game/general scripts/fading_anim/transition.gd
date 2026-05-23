@@ -19,6 +19,11 @@ var fade_in_out: bool = false
 ## if the anim is currently active
 static var fading: bool = false 
 
+## the scale the saving anim should be at
+@export var save_scale: float = 0.8
+## the scale the loading amin should be at
+@export var load_scale: float = 1.0
+
 
 func _ready() -> void:
 	# on start make the color rect invis
@@ -84,6 +89,8 @@ func play_transition(in_and_out: bool = true, fade_in: bool = true) -> void:
 func play_save_anim() -> void:
 	# make the animation visible
 	textures.modulate.a = 1
+	# make correct scale
+	textures.scale = Vector2(save_scale, save_scale)
 	
 	# start the save intro animation
 	textures.play(&"save_intro")
@@ -101,6 +108,33 @@ func play_save_anim() -> void:
 	textures.play(&"save_exit")
 	_current_tex_anim = &"save_exit"
 
+
+## plays the loading anim until the load is done loading
+func play_load_loading_anim() -> void:
+	# make a tween for the fade in / fade out
+	var tween: Tween = create_tween()
+	
+	# make the animation start invisible
+	textures.modulate.a = 0
+	# make correct scale
+	textures.scale = Vector2(load_scale, load_scale)
+	
+	# make it fade to visible
+	tween = TweenUtils.create_usable_tween(self, textures, "modulate:a", 1.0, 0.25, tween)
+	
+	# start the save intro animation
+	textures.play(&"loading")
+	_current_tex_anim = &"loading"
+	
+	# wait untill the save is finished
+	await SaveLoad.load_exited
+	
+	# wait untill the tween is done
+	if tween and tween.is_running():
+		await tween.finished
+	
+	# make fade to invis
+	tween = TweenUtils.create_usable_tween(self, textures, "modulate:a", 0.0, 0.25, tween)
 
 
 # ran when the animation for stuff like saving or loading is finished

@@ -1,16 +1,14 @@
 [gd_scene format=3 uid="uid://cb6bjlgn0xuvj"]
 
+[ext_resource type="Script" uid="uid://bivj7vhup2gkw" path="res://Game/main_scene/map_holder.gd" id="1_2n2lt"]
 [ext_resource type="PackedScene" uid="uid://d3xjiln4t2312" path="res://player/player.tscn" id="1_vnr7s"]
-[ext_resource type="PackedScene" uid="uid://67die22qqpu7" path="res://map/testing stuff/testing_map.tscn" id="2_370x3"]
 
 [node name="MapHolder" type="Node" unique_id=440683381]
+script = ExtResource("1_2n2lt")
 
-[node name="Player" type="Node" parent="." unique_id=840974669]
+[node name="PlayerHolder" type="Node" parent="." unique_id=840974669]
 
-[node name="Node3D" parent="Player" unique_id=2083664876 instance=ExtResource("1_vnr7s")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.1691604, 0)
+[node name="Player" parent="PlayerHolder" unique_id=2083664876 instance=ExtResource("1_vnr7s")]
 
-[node name="map" type="Node3D" parent="." unique_id=1961616167]
-
-[node name="TestingMap" parent="map" unique_id=1518694753 instance=ExtResource("2_370x3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.33205196, 0)
+[node name="MapContainer" type="Node3D" parent="." unique_id=1961616167]
+unique_name_in_owner = true

@@ -38,7 +38,7 @@ func _change_visual_mana(new_amount: int) -> void:
 	Mana_HUD.current_mana = new_amount
 
 
-func _input(event: InputEvent) -> void:
+func _input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("Attack"):
 		add_mana(11)
 	

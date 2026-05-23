@@ -135,6 +135,7 @@ func instantiate_scene(path: String) -> Node:
 
 
 
+
 ## waits untill a specified scene is loaded[br]
 ## to use await this func
 func wait_for_scene(path: String) -> void:

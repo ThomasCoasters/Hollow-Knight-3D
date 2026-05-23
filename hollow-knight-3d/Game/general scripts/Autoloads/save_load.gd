@@ -23,6 +23,11 @@ const save_type: String = ".json"
 var full_general_save_path: String
 
 
+## the current save file
+var current_slot: int = -1
+
+
+
 ## the save that you have when there are no given new values (the backup) [br]
 ## This one is for the general game stuff like: settings
 var DEFAULT_GENERAL_SAVE: Dictionary = {
@@ -57,7 +62,11 @@ var DEFAULT_GENERAL_SAVE: Dictionary = {
 ## the save that you have when there are no given new values (the backup) [br]
 ## this one is for the game itself like: health, current location
 var DEFAULT_GAME_SAVE: Dictionary = {
-	"dawgh": 1,
+	&"Location": {
+		&"Area": &"KingsPass",
+		&"current_map": "res://map/testing stuff/testing_map.tscn",
+		&"player_position": Vector3.ZERO,
+	},
 }
 
 
@@ -79,6 +88,11 @@ signal save_finished(path: String)
 signal save_failed(path: String)
 ## calles when the saving is stoped by completion or error
 signal save_exited(path: String)
+
+## called when the load is finished
+signal load_finished(path: String)
+## called when the loading is stoped by completion or error
+signal load_exited(path: String)
 
 
 ## if the save is currently saving something (stop overlapping)
@@ -118,7 +132,7 @@ func save_general(show_visual: bool = true) -> void:
 ## loads the general game stuff but not the game's state
 func load_general() -> void:
 	# actually load it and get the value
-	var loaded: Dictionary = _load(full_general_save_path, general_contents)
+	var loaded: Dictionary = await _load(full_general_save_path, general_contents)
 	
 	# set the loading contents given to the loaded values
 	general_contents = deep_merge(DEFAULT_GENERAL_SAVE.duplicate(true), loaded)
@@ -145,11 +159,14 @@ func save_game_slot(slot_number: int) -> void:
 
 ## loads the game's state for the given slot. But not the general stuff
 func load_game_slot(slot_number: int) -> void:
+	# set the current save slot to the new slot number
+	current_slot = slot_number
+	
 	# get the path
 	var load_path: String = start_save_location + slot_save_name + str(slot_number) + save_type
 	
 	# actually load it and get the value
-	var loaded: Dictionary = _load(load_path, current_game_contents)
+	var loaded: Dictionary = await _load(load_path, current_game_contents)
 	
 	# set the loading contents given to the loaded values
 	current_game_contents = deep_merge(DEFAULT_GAME_SAVE.duplicate(true), loaded)
@@ -199,11 +216,18 @@ func _save(path: String, save_contents: Dictionary, show_visual: bool = true) ->
 
 ## loads the given content from the given path. [br]
 ## when there is no content there uses the given "loading_content" value to make a new save there
-func _load(path: String, loading_content: Dictionary) -> Dictionary:
+func _load(path: String, loading_content: Dictionary, show_visual: bool = true) -> Dictionary:
+	# play the loading animation if you should
+	if show_visual: transition.play_load_loading_anim()
+	
 	# check if there even is a save in the given location
 	if not FileAccess.file_exists(path):
 		# if there is no save there create a new one and stop
-		_save(path, loading_content)
+		await _save(path, loading_content, false)
+		
+		# emit exit and exit
+		load_exited.emit(path)
+		
 		return loading_content
 	
 	# get the given path's save file
@@ -219,9 +243,16 @@ func _load(path: String, loading_content: Dictionary) -> Dictionary:
 	# safety check
 	if not parsed or typeof(parsed) != TYPE_DICTIONARY:
 		# if it is corrupted reset it
-		_save(path, loading_content)
+		await _save(path, loading_content, false)
+		
+		# emit exit and exit
+		load_exited.emit(path)
 		return loading_content
 	
+	
+	# emit exit and finished
+	load_exited.emit(path)
+	load_finished.emit(path)
 	
 	# return the new loaded values
 	return parsed
@@ -317,6 +348,14 @@ func deep_merge(target: Dictionary, source: Dictionary) -> Dictionary:
 	# return the target
 	return target
 
+
+## returns true if the given save slot exists
+func save_slot_exists(slot_number: int) -> bool:
+	# get the save path
+	var save_path: String = (start_save_location + slot_save_name + str(slot_number) + save_type)
+	
+	# check if the file exists
+	return FileAccess.file_exists(save_path)
 #endregion
 
 
@@ -366,6 +405,7 @@ func reset_general_save() -> void:
 	save_general()
 
 
+## resets the save slot
 func reset_game_slot(slot_number: int) -> void:
 	# set the current values to the default values
 	current_game_contents = DEFAULT_GAME_SAVE.duplicate(true)
@@ -373,6 +413,58 @@ func reset_game_slot(slot_number: int) -> void:
 	# save the reset
 	save_game_slot(slot_number)
 
+
+## deletes the save slot
+func delete_save_slot(slot_number: int) -> void:
+	# check if the file exists
+	if not save_slot_exists(slot_number): return
+	
+	# get the file
+	var save_path: String = (start_save_location + slot_save_name + str(slot_number) + save_type)
+	
+	# remove the save file
+	DirAccess.remove_absolute(save_path)
+
+
+## gets a value from a save slot without loading the slot
+func get_slot_value(slot_number: int, keys: Array) -> Variant:
+	# get the save path
+	var load_path := start_save_location + slot_save_name + str(slot_number) + save_type
+	
+	# check if slot exists
+	if not FileAccess.file_exists(load_path):
+		return null
+	
+	# open file
+	var file := FileAccess.open(load_path, FileAccess.READ)
+	
+	# check if file exists
+	if file == null:
+		return null
+	
+	# read
+	var content := file.get_as_text()
+	file.close()
+	
+	# parse
+	var parsed = JSON.parse_string(content)
+	
+	# check if valid
+	if typeof(parsed) != TYPE_DICTIONARY:
+		return null
+	
+	# go through current values
+	var current = parsed
+	for key in keys:
+		# if it is a dict and has the key you search for
+		if current is Dictionary and current.has(key):
+			current = current[key]
+		else:
+			# if not return null
+			return null
+	
+	# return the current value found
+	return current
 
 #endregion
 

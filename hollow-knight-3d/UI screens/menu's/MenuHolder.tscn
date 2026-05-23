@@ -203,20 +203,268 @@ should_have_offset = true
 offset = Vector2(-1550, 50)
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
+[sub_resource type="Resource" id="Resource_pm3mi"]
+script = ExtResource("2_w13no")
+mode = 2
+full_width = false
+_text_group_enabled = false
+text = "SAASDASSDA"
+_button_group_enabled = false
+_texture_group_enabled = true
+should_add_vertical_spacer = false
+should_have_offset = true
+offset = Vector2(-850, 8)
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
 [sub_resource type="Resource" id="Resource_gg8iy"]
 script = ExtResource("2_w13no")
 mode = 5
 _text_group_enabled = false
-ready_function = "var save_number: int = 1"
-pressed_function = "var save_number: int = 1"
+ready_function = "var save_number: int = 1
+
+
+
+# texture per area name
+var area_visual = {
+	&\"KingsPass\": preload(\"uid://d4c4jrywlxaw5\")
+}
+
+
+await ctx[0].get_tree().process_frame
+await ctx[0].get_tree().create_timer(1).timeout
+await ctx[0].get_tree().process_frame
+
+# get meeeeeeeeeeeee
+var me = ctx[2]
+
+# the final label found
+var target_label: Label = null
+# current amount of labels found
+var label_count = 0 
+# the final number of label in the index that is the one you search for
+var label_target_index = 1
+
+
+# the final label found
+var target_tex: TextureRect = null
+# current amount of labels found
+var tex_count = 0 
+# the final number of label in the index that is the one you search for
+var tex_target_index = 1
+
+var nodes_to_check = [me]
+
+
+# keep searching untill all children are gone through
+while nodes_to_check.size() > 0:
+	#remove the current node from the nodes you should check
+	var current = nodes_to_check.pop_back()
+	
+	# if you found an label
+	if current is Label:
+		#increase label count
+		label_count += 1
+		# if you found the target number of labels
+		if label_count == label_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label = current
+
+	if current is TextureRect:
+		tex_count += 1
+		if tex_count == tex_target_index:
+			target_tex = current
+	
+	# also search all these node's children
+	nodes_to_check.append_array(current.get_children())
+
+
+
+if target_label:
+	target_label.z_index = 1
+	if SaveLoad.save_slot_exists(save_number):
+		target_label.text = str(save_number) + \".\"
+		if target_tex: target_tex.visible = true
+	else:
+		target_label.text = \"                                               Create New\"
+		if target_tex: target_tex.visible = false
+
+if target_tex:
+	var area = SaveLoad.get_slot_value(1, [&\"Location\", &\"Area\"])
+	if area == null:
+		area = SaveLoad.DEFAULT_GAME_SAVE[&\"Location\"][&\"Area\"]
+	
+	target_tex.texture = area_visual[area]
+	
+		
+"
+pressed_function = "# the save slot of this node
+var save_number: int = 1
+
+# get meeeeeeeeeeeee
+var me = ctx[2]
+
+
+# the final label found
+var target_label: Label = null
+# current amount of labels found
+var label_count = 0 
+# the final number of label in the index that is the one you search for
+var label_target_index = 1
+
+
+# the final label found
+var target_tex: TextureRect = null
+# current amount of labels found
+var tex_count = 0 
+# the final number of label in the index that is the one you search for
+var tex_target_index = 1
+
+var nodes_to_check = [me]
+
+
+# keep searching untill all children are gone through
+while nodes_to_check.size() > 0:
+	#remove the current node from the nodes you should check
+	var current = nodes_to_check.pop_back()
+	
+	# if you found an label
+	if current is Label:
+		#increase label count
+		label_count += 1
+		# if you found the target number of labels
+		if label_count == label_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label = current
+
+	if current is TextureRect:
+		tex_count += 1
+		if tex_count == tex_target_index:
+			target_tex = current
+	
+	# also search all these node's children
+	nodes_to_check.append_array(current.get_children())
+
+
+if target_label:
+	if target_label.text == str(save_number) + \".\":
+		# set the current save slot
+		SaveLoad.current_slot = save_number
+		
+		# get a refrence of if the save is done and the transition is done
+		var state := {
+			\"load_done\": false,
+			\"transition_done\": false
+		}
+		
+		# create listeners for when the signals are finished
+		SaveLoad.load_exited.connect(func(_path):
+			state.load_done = true
+		, CONNECT_ONE_SHOT)
+		transition.on_transition_finished.connect(func():
+			state.transition_done = true
+		, CONNECT_ONE_SHOT)
+
+
+		# load the save slot
+		SaveLoad.load_game_slot(save_number)
+		
+		# play the transition
+		transition.play_transition(false, true)
+
+
+		# wait until both signals are done
+		while not state.load_done or not state.transition_done:
+			await me.get_tree().process_frame
+
+
+		me.get_tree().change_scene_to_file(\"res://Game/main_scene/map_holder.tscn\")
+
+		transition.play_transition(false, false)
+
+		return
+
+
+	target_label.text = str(save_number) + \".\"
+	if target_tex: target_tex.visible = true
+"
 _row_group_enabled = true
-sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_mf0eo"), SubResource("Resource_c2gy6")])
+sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_mf0eo"), SubResource("Resource_c2gy6"), SubResource("Resource_pm3mi")])
 row_spacing = 0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_qnj6i"]
 script = ExtResource("2_w13no")
 text = "Clear Save"
+ready_function = "# get meeeeeeeeeeeee
+var me = ctx[2]
+
+me.custom_minimum_size.x = 300"
+pressed_function = "# the save slot of this node
+var save_number: int = 1
+
+# get meeeeeeeeeeeee
+var me = ctx[2]
+
+if me.text == \"Clear Save\":
+	me.text = \"Are You Sure?\"
+	return
+else:
+	me.text = \"Clear Save\"
+	SaveLoad.delete_save_slot(save_number)
+
+
+
+
+# the final label found
+var target_label: Label = null
+# current amount of labels found
+var label_count = 0 
+# the final number of label in the index that is the one you search for
+var label_target_index = 1
+
+# the final label found
+var target_tex: TextureRect = null
+# current amount of labels found
+var tex_count = 0 
+# the final number of label in the index that is the one you search for
+var tex_target_index = 1
+
+var nodes_to_check = [me.get_parent()]
+
+
+
+# keep searching untill all children are gone through
+while nodes_to_check.size() > 0:
+	#remove the current node from the nodes you should check
+	var current = nodes_to_check.pop_back()
+	
+	# if you found an label
+	if current is Label:
+		#increase label count
+		label_count += 1
+		# if you found the target number of labels
+		if label_count == label_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label = current
+
+	if current is TextureRect:
+		tex_count += 1
+		if tex_count == tex_target_index:
+			target_tex = current
+	
+	# also search all these node's children
+	nodes_to_check.append_array(current.get_children())
+
+
+if target_label:
+	if SaveLoad.save_slot_exists(save_number):
+		target_label.text = str(save_number) + \".\"
+		if target_tex: target_tex.visible = true
+	else:
+		target_label.text = \"                                               Create New\"
+		if target_tex: target_tex.visible = false
+		return"
+should_add_vertical_spacer = false
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_aasxr"]
@@ -227,6 +475,1012 @@ _button_group_enabled = false
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_gg8iy"), SubResource("Resource_qnj6i")])
 row_spacing = 150
+vertical_spacer_size = 55.0
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_mk4j3"]
+load_path = "res://.godot/imported/profile_fleur0000.png-5c53012a73f909021f4f85cd1d1d8528.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_adj7i"]
+load_path = "res://.godot/imported/profile_fleur0001.png-a237c14498deae92f70f24abca326043.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_clipe"]
+load_path = "res://.godot/imported/profile_fleur0002.png-ed4061365f19a87acc470e36c74ad0dc.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_sced3"]
+load_path = "res://.godot/imported/profile_fleur0003.png-0bff65e75e666f3758e389625000fd27.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_itpb0"]
+load_path = "res://.godot/imported/profile_fleur0004.png-3a4073ffcbcbe837b8f2daad4808dd44.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_xquyn"]
+load_path = "res://.godot/imported/profile_fleur0005.png-b64de10814a6f743e4be991a80496e43.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ce16e"]
+load_path = "res://.godot/imported/profile_fleur0006.png-c7e47df03b791fea1bf84153964e2589.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_6pcm4"]
+load_path = "res://.godot/imported/profile_fleur0007.png-b8a694fe54fee7d448ad80f8dd0d5d0e.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_cbvuo"]
+load_path = "res://.godot/imported/profile_fleur0008.png-586037b31c006a2d6a8ae60bf6b11c94.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_po4x5"]
+load_path = "res://.godot/imported/profile_fleur0009.png-92509952b81535d99672c43f7ef4d33d.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_k0oey"]
+load_path = "res://.godot/imported/profile_fleur0010.png-fbc43c14a6788fb6e20f28215d8f6bbd.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_5jsrr"]
+load_path = "res://.godot/imported/profile_fleur0011.png-e145c2c9b2e6b0f2792353e6306bf5c4.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_timi6"]
+load_path = "res://.godot/imported/profile_fleur0012.png-448396f2732cf0a1523a688a1b3385b1.ctex"
+
+[sub_resource type="Resource" id="Resource_fbfvk"]
+script = ExtResource("2_w13no")
+mode = 3
+_text_group_enabled = false
+_button_group_enabled = false
+_texture_group_enabled = true
+_anim_texture_group_enabled = true
+anim_frames = Array[Texture2D]([SubResource("CompressedTexture2D_mk4j3"), SubResource("CompressedTexture2D_adj7i"), SubResource("CompressedTexture2D_clipe"), SubResource("CompressedTexture2D_sced3"), SubResource("CompressedTexture2D_itpb0"), SubResource("CompressedTexture2D_xquyn"), SubResource("CompressedTexture2D_ce16e"), SubResource("CompressedTexture2D_6pcm4"), SubResource("CompressedTexture2D_cbvuo"), SubResource("CompressedTexture2D_po4x5"), SubResource("CompressedTexture2D_k0oey"), SubResource("CompressedTexture2D_5jsrr"), SubResource("CompressedTexture2D_timi6")])
+fps = 60.0
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_riley"]
+script = ExtResource("2_w13no")
+mode = 1
+text = "1."
+font_size = 50
+_button_group_enabled = false
+should_have_offset = true
+offset = Vector2(-1550, 50)
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_anjk0"]
+script = ExtResource("2_w13no")
+mode = 2
+full_width = false
+_text_group_enabled = false
+text = "SAASDASSDA"
+_button_group_enabled = false
+_texture_group_enabled = true
+should_add_vertical_spacer = false
+should_have_offset = true
+offset = Vector2(-850, 8)
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_6bsox"]
+script = ExtResource("2_w13no")
+mode = 5
+_text_group_enabled = false
+ready_function = "var save_number: int = 2
+
+
+
+# texture per area name
+var area_visual = {
+	&\"KingsPass\": preload(\"uid://d4c4jrywlxaw5\")
+}
+
+
+await ctx[0].get_tree().process_frame
+await ctx[0].get_tree().create_timer(1).timeout
+await ctx[0].get_tree().process_frame
+
+# get meeeeeeeeeeeee
+var me = ctx[2]
+
+# the final label found
+var target_label: Label = null
+# current amount of labels found
+var label_count = 0 
+# the final number of label in the index that is the one you search for
+var label_target_index = 1
+
+
+# the final label found
+var target_tex: TextureRect = null
+# current amount of labels found
+var tex_count = 0 
+# the final number of label in the index that is the one you search for
+var tex_target_index = 1
+
+var nodes_to_check = [me]
+
+
+# keep searching untill all children are gone through
+while nodes_to_check.size() > 0:
+	#remove the current node from the nodes you should check
+	var current = nodes_to_check.pop_back()
+	
+	# if you found an label
+	if current is Label:
+		#increase label count
+		label_count += 1
+		# if you found the target number of labels
+		if label_count == label_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label = current
+
+	if current is TextureRect:
+		tex_count += 1
+		if tex_count == tex_target_index:
+			target_tex = current
+	
+	# also search all these node's children
+	nodes_to_check.append_array(current.get_children())
+
+
+
+if target_label:
+	target_label.z_index = 1
+	if SaveLoad.save_slot_exists(save_number):
+		target_label.text = str(save_number) + \".\"
+		if target_tex: target_tex.visible = true
+	else:
+		target_label.text = \"                                               Create New\"
+		if target_tex: target_tex.visible = false
+
+if target_tex:
+	var area = SaveLoad.get_slot_value(1, [&\"Location\", &\"Area\"])
+	if area == null:
+		area = SaveLoad.DEFAULT_GAME_SAVE[&\"Location\"][&\"Area\"]
+	
+	target_tex.texture = area_visual[area]
+	
+		
+"
+pressed_function = "# the save slot of this node
+var save_number: int = 2
+
+# get meeeeeeeeeeeee
+var me = ctx[2]
+
+
+# the final label found
+var target_label: Label = null
+# current amount of labels found
+var label_count = 0 
+# the final number of label in the index that is the one you search for
+var label_target_index = 1
+
+
+# the final label found
+var target_tex: TextureRect = null
+# current amount of labels found
+var tex_count = 0 
+# the final number of label in the index that is the one you search for
+var tex_target_index = 1
+
+var nodes_to_check = [me]
+
+
+# keep searching untill all children are gone through
+while nodes_to_check.size() > 0:
+	#remove the current node from the nodes you should check
+	var current = nodes_to_check.pop_back()
+	
+	# if you found an label
+	if current is Label:
+		#increase label count
+		label_count += 1
+		# if you found the target number of labels
+		if label_count == label_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label = current
+
+	if current is TextureRect:
+		tex_count += 1
+		if tex_count == tex_target_index:
+			target_tex = current
+	
+	# also search all these node's children
+	nodes_to_check.append_array(current.get_children())
+
+
+if target_label:
+	if target_label.text == str(save_number) + \".\":
+		# set the current save slot
+		SaveLoad.current_slot = save_number
+		
+		# get a refrence of if the save is done and the transition is done
+		var state := {
+			\"load_done\": false,
+			\"transition_done\": false
+		}
+		
+		# create listeners for when the signals are finished
+		SaveLoad.load_exited.connect(func(_path):
+			state.load_done = true
+		, CONNECT_ONE_SHOT)
+		transition.on_transition_finished.connect(func():
+			state.transition_done = true
+		, CONNECT_ONE_SHOT)
+
+
+		# load the save slot
+		SaveLoad.load_game_slot(save_number)
+		
+		# play the transition
+		transition.play_transition(false, true)
+
+
+		# wait until both signals are done
+		while not state.load_done or not state.transition_done:
+			await me.get_tree().process_frame
+
+
+		me.get_tree().change_scene_to_file(\"res://Game/main_scene/map_holder.tscn\")
+
+		transition.play_transition(false, false)
+
+		return
+
+
+	target_label.text = str(save_number) + \".\"
+	if target_tex: target_tex.visible = true
+"
+_row_group_enabled = true
+sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_fbfvk"), SubResource("Resource_riley"), SubResource("Resource_anjk0")])
+row_spacing = 0
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_vob64"]
+script = ExtResource("2_w13no")
+text = "Clear Save"
+ready_function = "# get meeeeeeeeeeeee
+var me = ctx[2]
+
+me.custom_minimum_size.x = 300"
+pressed_function = "# the save slot of this node
+var save_number: int = 2
+
+# get meeeeeeeeeeeee
+var me = ctx[2]
+
+if me.text == \"Clear Save\":
+	me.text = \"Are You Sure?\"
+	return
+else:
+	me.text = \"Clear Save\"
+	SaveLoad.delete_save_slot(save_number)
+
+
+
+
+# the final label found
+var target_label: Label = null
+# current amount of labels found
+var label_count = 0 
+# the final number of label in the index that is the one you search for
+var label_target_index = 1
+
+# the final label found
+var target_tex: TextureRect = null
+# current amount of labels found
+var tex_count = 0 
+# the final number of label in the index that is the one you search for
+var tex_target_index = 1
+
+var nodes_to_check = [me.get_parent()]
+
+
+
+# keep searching untill all children are gone through
+while nodes_to_check.size() > 0:
+	#remove the current node from the nodes you should check
+	var current = nodes_to_check.pop_back()
+	
+	# if you found an label
+	if current is Label:
+		#increase label count
+		label_count += 1
+		# if you found the target number of labels
+		if label_count == label_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label = current
+
+	if current is TextureRect:
+		tex_count += 1
+		if tex_count == tex_target_index:
+			target_tex = current
+	
+	# also search all these node's children
+	nodes_to_check.append_array(current.get_children())
+
+
+if target_label:
+	if SaveLoad.save_slot_exists(save_number):
+		target_label.text = str(save_number) + \".\"
+		if target_tex: target_tex.visible = true
+	else:
+		target_label.text = \"                                               Create New\"
+		if target_tex: target_tex.visible = false
+		return"
+should_add_vertical_spacer = false
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_5qh3i"]
+script = ExtResource("2_w13no")
+mode = 4
+_text_group_enabled = false
+_button_group_enabled = false
+_row_group_enabled = true
+sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_6bsox"), SubResource("Resource_vob64")])
+row_spacing = 150
+vertical_spacer_size = 55.0
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_kxba6"]
+load_path = "res://.godot/imported/profile_fleur0000.png-5c53012a73f909021f4f85cd1d1d8528.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ceho6"]
+load_path = "res://.godot/imported/profile_fleur0001.png-a237c14498deae92f70f24abca326043.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_7eb4q"]
+load_path = "res://.godot/imported/profile_fleur0002.png-ed4061365f19a87acc470e36c74ad0dc.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_e0hlu"]
+load_path = "res://.godot/imported/profile_fleur0003.png-0bff65e75e666f3758e389625000fd27.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_eo4d0"]
+load_path = "res://.godot/imported/profile_fleur0004.png-3a4073ffcbcbe837b8f2daad4808dd44.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_gesrj"]
+load_path = "res://.godot/imported/profile_fleur0005.png-b64de10814a6f743e4be991a80496e43.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_eqbts"]
+load_path = "res://.godot/imported/profile_fleur0006.png-c7e47df03b791fea1bf84153964e2589.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_3vi3l"]
+load_path = "res://.godot/imported/profile_fleur0007.png-b8a694fe54fee7d448ad80f8dd0d5d0e.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_oeaj2"]
+load_path = "res://.godot/imported/profile_fleur0008.png-586037b31c006a2d6a8ae60bf6b11c94.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ygyv8"]
+load_path = "res://.godot/imported/profile_fleur0009.png-92509952b81535d99672c43f7ef4d33d.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_btk3c"]
+load_path = "res://.godot/imported/profile_fleur0010.png-fbc43c14a6788fb6e20f28215d8f6bbd.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_unum8"]
+load_path = "res://.godot/imported/profile_fleur0011.png-e145c2c9b2e6b0f2792353e6306bf5c4.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ddy6n"]
+load_path = "res://.godot/imported/profile_fleur0012.png-448396f2732cf0a1523a688a1b3385b1.ctex"
+
+[sub_resource type="Resource" id="Resource_u4vp8"]
+script = ExtResource("2_w13no")
+mode = 3
+_text_group_enabled = false
+_button_group_enabled = false
+_texture_group_enabled = true
+_anim_texture_group_enabled = true
+anim_frames = Array[Texture2D]([SubResource("CompressedTexture2D_kxba6"), SubResource("CompressedTexture2D_ceho6"), SubResource("CompressedTexture2D_7eb4q"), SubResource("CompressedTexture2D_e0hlu"), SubResource("CompressedTexture2D_eo4d0"), SubResource("CompressedTexture2D_gesrj"), SubResource("CompressedTexture2D_eqbts"), SubResource("CompressedTexture2D_3vi3l"), SubResource("CompressedTexture2D_oeaj2"), SubResource("CompressedTexture2D_ygyv8"), SubResource("CompressedTexture2D_btk3c"), SubResource("CompressedTexture2D_unum8"), SubResource("CompressedTexture2D_ddy6n")])
+fps = 60.0
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_1vh0d"]
+script = ExtResource("2_w13no")
+mode = 1
+text = "1."
+font_size = 50
+_button_group_enabled = false
+should_have_offset = true
+offset = Vector2(-1550, 50)
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_hawgy"]
+script = ExtResource("2_w13no")
+mode = 2
+full_width = false
+_text_group_enabled = false
+text = "SAASDASSDA"
+_button_group_enabled = false
+_texture_group_enabled = true
+should_add_vertical_spacer = false
+should_have_offset = true
+offset = Vector2(-850, 8)
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_rq06s"]
+script = ExtResource("2_w13no")
+mode = 5
+_text_group_enabled = false
+ready_function = "var save_number: int = 3
+
+
+
+# texture per area name
+var area_visual = {
+	&\"KingsPass\": preload(\"uid://d4c4jrywlxaw5\")
+}
+
+
+await ctx[0].get_tree().process_frame
+await ctx[0].get_tree().create_timer(1).timeout
+await ctx[0].get_tree().process_frame
+
+# get meeeeeeeeeeeee
+var me = ctx[2]
+
+# the final label found
+var target_label: Label = null
+# current amount of labels found
+var label_count = 0 
+# the final number of label in the index that is the one you search for
+var label_target_index = 1
+
+
+# the final label found
+var target_tex: TextureRect = null
+# current amount of labels found
+var tex_count = 0 
+# the final number of label in the index that is the one you search for
+var tex_target_index = 1
+
+var nodes_to_check = [me]
+
+
+# keep searching untill all children are gone through
+while nodes_to_check.size() > 0:
+	#remove the current node from the nodes you should check
+	var current = nodes_to_check.pop_back()
+	
+	# if you found an label
+	if current is Label:
+		#increase label count
+		label_count += 1
+		# if you found the target number of labels
+		if label_count == label_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label = current
+
+	if current is TextureRect:
+		tex_count += 1
+		if tex_count == tex_target_index:
+			target_tex = current
+	
+	# also search all these node's children
+	nodes_to_check.append_array(current.get_children())
+
+
+
+if target_label:
+	target_label.z_index = 1
+	if SaveLoad.save_slot_exists(save_number):
+		target_label.text = str(save_number) + \".\"
+		if target_tex: target_tex.visible = true
+	else:
+		target_label.text = \"                                               Create New\"
+		if target_tex: target_tex.visible = false
+
+if target_tex:
+	var area = SaveLoad.get_slot_value(1, [&\"Location\", &\"Area\"])
+	if area == null:
+		area = SaveLoad.DEFAULT_GAME_SAVE[&\"Location\"][&\"Area\"]
+	
+	target_tex.texture = area_visual[area]
+	
+		
+"
+pressed_function = "# the save slot of this node
+var save_number: int = 3
+
+# get meeeeeeeeeeeee
+var me = ctx[2]
+
+
+# the final label found
+var target_label: Label = null
+# current amount of labels found
+var label_count = 0 
+# the final number of label in the index that is the one you search for
+var label_target_index = 1
+
+
+# the final label found
+var target_tex: TextureRect = null
+# current amount of labels found
+var tex_count = 0 
+# the final number of label in the index that is the one you search for
+var tex_target_index = 1
+
+var nodes_to_check = [me]
+
+
+# keep searching untill all children are gone through
+while nodes_to_check.size() > 0:
+	#remove the current node from the nodes you should check
+	var current = nodes_to_check.pop_back()
+	
+	# if you found an label
+	if current is Label:
+		#increase label count
+		label_count += 1
+		# if you found the target number of labels
+		if label_count == label_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label = current
+
+	if current is TextureRect:
+		tex_count += 1
+		if tex_count == tex_target_index:
+			target_tex = current
+	
+	# also search all these node's children
+	nodes_to_check.append_array(current.get_children())
+
+
+if target_label:
+	if target_label.text == str(save_number) + \".\":
+		# set the current save slot
+		SaveLoad.current_slot = save_number
+		
+		# get a refrence of if the save is done and the transition is done
+		var state := {
+			\"load_done\": false,
+			\"transition_done\": false
+		}
+		
+		# create listeners for when the signals are finished
+		SaveLoad.load_exited.connect(func(_path):
+			state.load_done = true
+		, CONNECT_ONE_SHOT)
+		transition.on_transition_finished.connect(func():
+			state.transition_done = true
+		, CONNECT_ONE_SHOT)
+
+
+		# load the save slot
+		SaveLoad.load_game_slot(save_number)
+		
+		# play the transition
+		transition.play_transition(false, true)
+
+
+		# wait until both signals are done
+		while not state.load_done or not state.transition_done:
+			await me.get_tree().process_frame
+
+
+		me.get_tree().change_scene_to_file(\"res://Game/main_scene/map_holder.tscn\")
+
+		transition.play_transition(false, false)
+
+		return
+
+
+	target_label.text = str(save_number) + \".\"
+	if target_tex: target_tex.visible = true
+"
+_row_group_enabled = true
+sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_u4vp8"), SubResource("Resource_1vh0d"), SubResource("Resource_hawgy")])
+row_spacing = 0
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_yj6st"]
+script = ExtResource("2_w13no")
+text = "Clear Save"
+ready_function = "# get meeeeeeeeeeeee
+var me = ctx[2]
+
+me.custom_minimum_size.x = 300"
+pressed_function = "# the save slot of this node
+var save_number: int = 3
+
+# get meeeeeeeeeeeee
+var me = ctx[2]
+
+if me.text == \"Clear Save\":
+	me.text = \"Are You Sure?\"
+	return
+else:
+	me.text = \"Clear Save\"
+	SaveLoad.delete_save_slot(save_number)
+
+
+
+
+# the final label found
+var target_label: Label = null
+# current amount of labels found
+var label_count = 0 
+# the final number of label in the index that is the one you search for
+var label_target_index = 1
+
+# the final label found
+var target_tex: TextureRect = null
+# current amount of labels found
+var tex_count = 0 
+# the final number of label in the index that is the one you search for
+var tex_target_index = 1
+
+var nodes_to_check = [me.get_parent()]
+
+
+
+# keep searching untill all children are gone through
+while nodes_to_check.size() > 0:
+	#remove the current node from the nodes you should check
+	var current = nodes_to_check.pop_back()
+	
+	# if you found an label
+	if current is Label:
+		#increase label count
+		label_count += 1
+		# if you found the target number of labels
+		if label_count == label_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label = current
+
+	if current is TextureRect:
+		tex_count += 1
+		if tex_count == tex_target_index:
+			target_tex = current
+	
+	# also search all these node's children
+	nodes_to_check.append_array(current.get_children())
+
+
+if target_label:
+	if SaveLoad.save_slot_exists(save_number):
+		target_label.text = str(save_number) + \".\"
+		if target_tex: target_tex.visible = true
+	else:
+		target_label.text = \"                                               Create New\"
+		if target_tex: target_tex.visible = false
+		return"
+should_add_vertical_spacer = false
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_tdayq"]
+script = ExtResource("2_w13no")
+mode = 4
+_text_group_enabled = false
+_button_group_enabled = false
+_row_group_enabled = true
+sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_rq06s"), SubResource("Resource_yj6st")])
+row_spacing = 150
+vertical_spacer_size = 55.0
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_anxw8"]
+load_path = "res://.godot/imported/profile_fleur0000.png-5c53012a73f909021f4f85cd1d1d8528.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_j7xy0"]
+load_path = "res://.godot/imported/profile_fleur0001.png-a237c14498deae92f70f24abca326043.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_gcrmy"]
+load_path = "res://.godot/imported/profile_fleur0002.png-ed4061365f19a87acc470e36c74ad0dc.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_jtbeu"]
+load_path = "res://.godot/imported/profile_fleur0003.png-0bff65e75e666f3758e389625000fd27.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_tpgn8"]
+load_path = "res://.godot/imported/profile_fleur0004.png-3a4073ffcbcbe837b8f2daad4808dd44.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_dxut3"]
+load_path = "res://.godot/imported/profile_fleur0005.png-b64de10814a6f743e4be991a80496e43.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_in610"]
+load_path = "res://.godot/imported/profile_fleur0006.png-c7e47df03b791fea1bf84153964e2589.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_smfyf"]
+load_path = "res://.godot/imported/profile_fleur0007.png-b8a694fe54fee7d448ad80f8dd0d5d0e.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_t3s1i"]
+load_path = "res://.godot/imported/profile_fleur0008.png-586037b31c006a2d6a8ae60bf6b11c94.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_05mjj"]
+load_path = "res://.godot/imported/profile_fleur0009.png-92509952b81535d99672c43f7ef4d33d.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_5abng"]
+load_path = "res://.godot/imported/profile_fleur0010.png-fbc43c14a6788fb6e20f28215d8f6bbd.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_b058m"]
+load_path = "res://.godot/imported/profile_fleur0011.png-e145c2c9b2e6b0f2792353e6306bf5c4.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_66746"]
+load_path = "res://.godot/imported/profile_fleur0012.png-448396f2732cf0a1523a688a1b3385b1.ctex"
+
+[sub_resource type="Resource" id="Resource_j582q"]
+script = ExtResource("2_w13no")
+mode = 3
+_text_group_enabled = false
+_button_group_enabled = false
+_texture_group_enabled = true
+_anim_texture_group_enabled = true
+anim_frames = Array[Texture2D]([SubResource("CompressedTexture2D_anxw8"), SubResource("CompressedTexture2D_j7xy0"), SubResource("CompressedTexture2D_gcrmy"), SubResource("CompressedTexture2D_jtbeu"), SubResource("CompressedTexture2D_tpgn8"), SubResource("CompressedTexture2D_dxut3"), SubResource("CompressedTexture2D_in610"), SubResource("CompressedTexture2D_smfyf"), SubResource("CompressedTexture2D_t3s1i"), SubResource("CompressedTexture2D_05mjj"), SubResource("CompressedTexture2D_5abng"), SubResource("CompressedTexture2D_b058m"), SubResource("CompressedTexture2D_66746")])
+fps = 60.0
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_hoy1g"]
+script = ExtResource("2_w13no")
+mode = 1
+text = "1."
+font_size = 50
+_button_group_enabled = false
+should_have_offset = true
+offset = Vector2(-1550, 50)
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_5rc7a"]
+script = ExtResource("2_w13no")
+mode = 2
+full_width = false
+_text_group_enabled = false
+text = "SAASDASSDA"
+_button_group_enabled = false
+_texture_group_enabled = true
+should_add_vertical_spacer = false
+should_have_offset = true
+offset = Vector2(-850, 8)
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_xsqww"]
+script = ExtResource("2_w13no")
+mode = 5
+_text_group_enabled = false
+ready_function = "var save_number: int = 4
+
+
+
+# texture per area name
+var area_visual = {
+	&\"KingsPass\": preload(\"uid://d4c4jrywlxaw5\")
+}
+
+
+await ctx[0].get_tree().process_frame
+await ctx[0].get_tree().create_timer(1).timeout
+await ctx[0].get_tree().process_frame
+
+# get meeeeeeeeeeeee
+var me = ctx[2]
+
+# the final label found
+var target_label: Label = null
+# current amount of labels found
+var label_count = 0 
+# the final number of label in the index that is the one you search for
+var label_target_index = 1
+
+
+# the final label found
+var target_tex: TextureRect = null
+# current amount of labels found
+var tex_count = 0 
+# the final number of label in the index that is the one you search for
+var tex_target_index = 1
+
+var nodes_to_check = [me]
+
+
+# keep searching untill all children are gone through
+while nodes_to_check.size() > 0:
+	#remove the current node from the nodes you should check
+	var current = nodes_to_check.pop_back()
+	
+	# if you found an label
+	if current is Label:
+		#increase label count
+		label_count += 1
+		# if you found the target number of labels
+		if label_count == label_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label = current
+
+	if current is TextureRect:
+		tex_count += 1
+		if tex_count == tex_target_index:
+			target_tex = current
+	
+	# also search all these node's children
+	nodes_to_check.append_array(current.get_children())
+
+
+
+if target_label:
+	target_label.z_index = 1
+	if SaveLoad.save_slot_exists(save_number):
+		target_label.text = str(save_number) + \".\"
+		if target_tex: target_tex.visible = true
+	else:
+		target_label.text = \"                                               Create New\"
+		if target_tex: target_tex.visible = false
+
+if target_tex:
+	var area = SaveLoad.get_slot_value(1, [&\"Location\", &\"Area\"])
+	if area == null:
+		area = SaveLoad.DEFAULT_GAME_SAVE[&\"Location\"][&\"Area\"]
+	
+	target_tex.texture = area_visual[area]
+	
+		
+"
+pressed_function = "# the save slot of this node
+var save_number: int = 4
+
+# get meeeeeeeeeeeee
+var me = ctx[2]
+
+
+# the final label found
+var target_label: Label = null
+# current amount of labels found
+var label_count = 0 
+# the final number of label in the index that is the one you search for
+var label_target_index = 1
+
+
+# the final label found
+var target_tex: TextureRect = null
+# current amount of labels found
+var tex_count = 0 
+# the final number of label in the index that is the one you search for
+var tex_target_index = 1
+
+var nodes_to_check = [me]
+
+
+# keep searching untill all children are gone through
+while nodes_to_check.size() > 0:
+	#remove the current node from the nodes you should check
+	var current = nodes_to_check.pop_back()
+	
+	# if you found an label
+	if current is Label:
+		#increase label count
+		label_count += 1
+		# if you found the target number of labels
+		if label_count == label_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label = current
+
+	if current is TextureRect:
+		tex_count += 1
+		if tex_count == tex_target_index:
+			target_tex = current
+	
+	# also search all these node's children
+	nodes_to_check.append_array(current.get_children())
+
+
+if target_label:
+	if target_label.text == str(save_number) + \".\":
+		# set the current save slot
+		SaveLoad.current_slot = save_number
+		
+		# get a refrence of if the save is done and the transition is done
+		var state := {
+			\"load_done\": false,
+			\"transition_done\": false
+		}
+		
+		# create listeners for when the signals are finished
+		SaveLoad.load_exited.connect(func(_path):
+			state.load_done = true
+		, CONNECT_ONE_SHOT)
+		transition.on_transition_finished.connect(func():
+			state.transition_done = true
+		, CONNECT_ONE_SHOT)
+
+
+		# load the save slot
+		SaveLoad.load_game_slot(save_number)
+		
+		# play the transition
+		transition.play_transition(false, true)
+
+
+		# wait until both signals are done
+		while not state.load_done or not state.transition_done:
+			await me.get_tree().process_frame
+
+
+		me.get_tree().change_scene_to_file(\"res://Game/main_scene/map_holder.tscn\")
+
+		transition.play_transition(false, false)
+
+		return
+
+
+	target_label.text = str(save_number) + \".\"
+	if target_tex: target_tex.visible = true
+"
+_row_group_enabled = true
+sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_j582q"), SubResource("Resource_hoy1g"), SubResource("Resource_5rc7a")])
+row_spacing = 0
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_bnagl"]
+script = ExtResource("2_w13no")
+text = "Clear Save"
+ready_function = "# get meeeeeeeeeeeee
+var me = ctx[2]
+
+me.custom_minimum_size.x = 300"
+pressed_function = "# the save slot of this node
+var save_number: int = 4
+
+# get meeeeeeeeeeeee
+var me = ctx[2]
+
+if me.text == \"Clear Save\":
+	me.text = \"Are You Sure?\"
+	return
+else:
+	me.text = \"Clear Save\"
+	SaveLoad.delete_save_slot(save_number)
+
+
+
+
+# the final label found
+var target_label: Label = null
+# current amount of labels found
+var label_count = 0 
+# the final number of label in the index that is the one you search for
+var label_target_index = 1
+
+# the final label found
+var target_tex: TextureRect = null
+# current amount of labels found
+var tex_count = 0 
+# the final number of label in the index that is the one you search for
+var tex_target_index = 1
+
+var nodes_to_check = [me.get_parent()]
+
+
+
+# keep searching untill all children are gone through
+while nodes_to_check.size() > 0:
+	#remove the current node from the nodes you should check
+	var current = nodes_to_check.pop_back()
+	
+	# if you found an label
+	if current is Label:
+		#increase label count
+		label_count += 1
+		# if you found the target number of labels
+		if label_count == label_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label = current
+
+	if current is TextureRect:
+		tex_count += 1
+		if tex_count == tex_target_index:
+			target_tex = current
+	
+	# also search all these node's children
+	nodes_to_check.append_array(current.get_children())
+
+
+if target_label:
+	if SaveLoad.save_slot_exists(save_number):
+		target_label.text = str(save_number) + \".\"
+		if target_tex: target_tex.visible = true
+	else:
+		target_label.text = \"                                               Create New\"
+		if target_tex: target_tex.visible = false
+		return"
+should_add_vertical_spacer = false
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_un7c6"]
+script = ExtResource("2_w13no")
+mode = 4
+_text_group_enabled = false
+_button_group_enabled = false
+_row_group_enabled = true
+sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_xsqww"), SubResource("Resource_bnagl")])
+row_spacing = 150
+vertical_spacer_size = 120.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_0v2a5"]
@@ -6254,7 +7508,7 @@ button_hover_anim = SubResource("Resource_n2ux7")
 [node name="play_menu" parent="." unique_id=2038750279 instance=ExtResource("1_aw56r")]
 visible = false
 layout_mode = 1
-visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_jeomw"), SubResource("Resource_k4wwd"), SubResource("Resource_wspli"), SubResource("Resource_aasxr"), SubResource("Resource_0v2a5")])
+visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_jeomw"), SubResource("Resource_k4wwd"), SubResource("Resource_wspli"), SubResource("Resource_aasxr"), SubResource("Resource_5qh3i"), SubResource("Resource_tdayq"), SubResource("Resource_un7c6"), SubResource("Resource_0v2a5")])
 button_press_anim = SubResource("Resource_55gc4")
 button_hover_anim = SubResource("Resource_n2ux7")
 

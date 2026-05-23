@@ -180,6 +180,9 @@ func _ready() -> void:
 		if data.transition_path != NodePath():
 			data.transition = get_node(data.transition_path)
 	
+	# load the save slot data
+	load_slot_save()
+	
 	
 	
 	### ----- state chart delays ----- ###
@@ -657,5 +660,20 @@ func _on_player_camera_camera_mode_changed(new_mode: String, old_mode: String) -
 				if new_mode == "1st_person":
 					#makes the player invis
 					knight.change_player_opacity(0.0, 0.2)
+
+#endregion
+
+
+#region loading
+## loads the settings in the current save slot settings
+func load_slot_save() -> void:
+	print(SaveLoad.current_game_contents[&"Location"][&"player_position"])
+	
+	# set the position
+	var start_pos = SaveLoad.current_game_contents[&"Location"][&"player_position"]
+	if start_pos is Vector3:
+		global_position = start_pos
+	else:
+		global_position = str_to_var("Vector3" + start_pos)
 
 #endregion
