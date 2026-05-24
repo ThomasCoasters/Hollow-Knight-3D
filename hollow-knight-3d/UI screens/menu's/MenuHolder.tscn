@@ -222,7 +222,8 @@ mode = 5
 _text_group_enabled = false
 ready_function = "var save_number: int = 1
 
-
+if SaveLoad.save_slot_exists(save_number):
+	SceneLoader.request_scene(SaveLoad.get_slot_value(save_number, [&\"Location\", &\"current_map\"]))
 
 # texture per area name
 var area_visual = {
@@ -557,7 +558,8 @@ mode = 5
 _text_group_enabled = false
 ready_function = "var save_number: int = 2
 
-
+if SaveLoad.save_slot_exists(save_number):
+	SceneLoader.request_scene(SaveLoad.get_slot_value(save_number, [&\"Location\", &\"current_map\"]))
 
 # texture per area name
 var area_visual = {
@@ -892,7 +894,8 @@ mode = 5
 _text_group_enabled = false
 ready_function = "var save_number: int = 3
 
-
+if SaveLoad.save_slot_exists(save_number):
+	SceneLoader.request_scene(SaveLoad.get_slot_value(save_number, [&\"Location\", &\"current_map\"]))
 
 # texture per area name
 var area_visual = {
@@ -1227,7 +1230,8 @@ mode = 5
 _text_group_enabled = false
 ready_function = "var save_number: int = 4
 
-
+if SaveLoad.save_slot_exists(save_number):
+	SceneLoader.request_scene(SaveLoad.get_slot_value(save_number, [&\"Location\", &\"current_map\"]))
 
 # texture per area name
 var area_visual = {
