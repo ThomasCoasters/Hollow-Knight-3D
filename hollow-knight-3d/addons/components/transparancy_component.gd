@@ -23,6 +23,9 @@ signal transparancy_changing_finished()
 func change_opacity(to: float = 0.0, time: float = 0.5) -> void:
 	#change every mesh
 	for mesh: MeshInstance3D in meshes:
+		# stagger the changes
+		await get_tree().process_frame
+		
 		#the ending opacity
 		var ending_opacity: float = to
 		
@@ -36,11 +39,13 @@ func change_opacity(to: float = 0.0, time: float = 0.5) -> void:
 		
 		
 		#get the mesh material
-		var mat: StandardMaterial3D = mesh.get_active_material(0)
+		var mat := mesh.get_active_material(0).duplicate()
+		mesh.set_surface_override_material(0, mat)
 		
 		
 		# Enable transparency
 		mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+		mat.albedo_color.a = mat.albedo_color.a
 		
 		
 		

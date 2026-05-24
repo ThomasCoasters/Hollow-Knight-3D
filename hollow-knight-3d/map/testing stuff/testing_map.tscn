@@ -26,6 +26,7 @@ size = Vector3(40, 0.5, 40)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6otq6"]
 diffuse_mode = 3
 specular_mode = 1
+albedo_color = Color(1.0413129, 1.0413129, 1.0413129, 1)
 albedo_texture = ExtResource("1_jpnhr")
 normal_enabled = true
 normal_scale = 10.0

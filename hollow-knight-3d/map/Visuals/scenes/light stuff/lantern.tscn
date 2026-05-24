@@ -1,0 +1,45 @@
+[gd_scene format=3 uid="uid://btvsqbs3x5wi8"]
+
+[ext_resource type="PackedScene" uid="uid://26g0am2shjeo" path="res://map/Visuals/models/light stuff/lantern.glb" id="1_fhvhm"]
+[ext_resource type="Shader" uid="uid://ds51ubc2dt8js" path="res://Game/general shaders/outline.gdshader" id="2_rbjf5"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ilm0k"]
+render_priority = 0
+shader = ExtResource("2_rbjf5")
+shader_parameter/alpha = 1.0
+shader_parameter/outline_thickness = 0.04
+shader_parameter/color = Color(0, 0, 0, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j146b"]
+next_pass = SubResource("ShaderMaterial_ilm0k")
+albedo_color = Color(0.2509804, 0.27058825, 0.36078432, 1)
+metallic = 0.65
+roughness = 0.8
+stencil_flags = 2
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5lo4k"]
+render_priority = 0
+shader = ExtResource("2_rbjf5")
+shader_parameter/alpha = 1.0
+shader_parameter/outline_thickness = 0.015
+shader_parameter/color = Color(0, 0, 0, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_aqrah"]
+next_pass = SubResource("ShaderMaterial_5lo4k")
+albedo_color = Color(0.2509804, 0.27058825, 0.36078432, 1)
+metallic = 0.65
+roughness = 0.8
+
+[node name="lantern" unique_id=1974975261 instance=ExtResource("1_fhvhm")]
+
+[node name="pole" parent="." index="0" unique_id=1059149357]
+transform = Transform3D(0.064275816, 0, 0, 0, 0.064275816, 0, 0, 0, 0.064275816, 0.14, 2.271, 0)
+surface_material_override/0 = SubResource("StandardMaterial3D_j146b")
+
+[node name="lamp" parent="." index="1" unique_id=349378487]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0.45, 4.051, 0)
+surface_material_override/0 = SubResource("StandardMaterial3D_aqrah")
+
+[node name="lamp_001" parent="." index="2" unique_id=1182000944]
+transform = Transform3D(-1, 0, 0, 0, 0, -1, 0, 1, 0, -0.2, 3.165, 0)
+surface_material_override/0 = SubResource("StandardMaterial3D_aqrah")
