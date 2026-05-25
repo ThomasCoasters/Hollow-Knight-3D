@@ -31,6 +31,9 @@ var bg_tween: Tween
 
 
 func _ready() -> void:
+	# load the map holder
+	SceneLoader.request_scene("res://Game/main_scene/map_holder.tscn")
+	
 	# get the cursor img
 	_og_cursor_img = cursor_img.get_image()
 	# set the cursor img with a new scale

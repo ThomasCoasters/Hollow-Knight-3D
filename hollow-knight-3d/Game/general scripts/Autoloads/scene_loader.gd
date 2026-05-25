@@ -32,8 +32,6 @@ func request_scene(path: String) -> void:
 	
 	# actually ask to threaded load this path
 	ResourceLoader.load_threaded_request(path)
-	
-	print(path)
 
 
 ## update the current states for how far it is in loading

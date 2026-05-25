@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://6b6voddjiw3s" path="res://Environments/Floor/rocks_albedo.png" id="1_jpnhr"]
 [ext_resource type="Texture2D" uid="uid://f7wuhblp3kqw" path="res://Environments/Floor/rocks_AO.png" id="2_mmdmt"]
 [ext_resource type="Texture2D" uid="uid://c4a3xkfq5rqq1" path="res://Environments/Floor/rocks_normal.png" id="3_om8so"]
-[ext_resource type="PackedScene" uid="uid://dgg1smibwiebm" path="res://Environments/scenes/light stuff/lantern_broken.tscn" id="4_mmdmt"]
+[ext_resource type="PackedScene" uid="uid://btvsqbs3x5wi8" path="res://Environments/scenes/light stuff/lantern.tscn" id="5_om8so"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_bn70x"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -38,6 +38,10 @@ uv1_scale = Vector3(0.6, 0.6, 0.6)
 uv1_triplanar = true
 uv2_scale = Vector3(10, 10, 10)
 
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gyd1x"]
+radius = 0.07
+height = 3.7348633
+
 [node name="TestingMap" type="Node3D" unique_id=1518694753]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=336694027]
@@ -60,14 +64,162 @@ shape = SubResource("BoxShape3D_bn70x")
 mesh = SubResource("BoxMesh_7sfmc")
 surface_material_override/0 = SubResource("StandardMaterial3D_6otq6")
 
-[node name="lanternBroken" parent="." unique_id=359740205 instance=ExtResource("4_mmdmt")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.535146, 0.26631826, -6.367504)
+[node name="lantern" parent="." unique_id=1624238617 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.7091124, 0.26631832, 7.7528944)
 
-[node name="lanternBroken2" parent="." unique_id=619107149 instance=ExtResource("4_mmdmt")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2567043, 0.2663179, 9.329569)
+[node name="GeneratedDetectorArea" type="Area3D" parent="lantern" unique_id=676396656]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14384615, 1.8629501, 0)
+monitorable = false
 
-[node name="lanternBroken3" parent="." unique_id=116192141 instance=ExtResource("4_mmdmt")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.9456644, 0.2663185, -4.7012534)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="lantern/GeneratedDetectorArea" unique_id=1675756748]
+shape = SubResource("CapsuleShape3D_gyd1x")
 
-[node name="lanternBroken4" parent="." unique_id=1759600106 instance=ExtResource("4_mmdmt")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.8145885, 0.4195335, 9.395958)
+[node name="lantern2" parent="." unique_id=1942819374 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.456389, 0.26631808, 4.13284)
+
+[node name="GeneratedDetectorArea" type="Area3D" parent="lantern2" unique_id=1310014987]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14384615, 1.8629501, 0)
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="lantern2/GeneratedDetectorArea" unique_id=980614181]
+shape = SubResource("CapsuleShape3D_gyd1x")
+
+[node name="lantern3" parent="." unique_id=1276051812 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6020963, 0.26631832, 4.931209)
+
+[node name="GeneratedDetectorArea" type="Area3D" parent="lantern3" unique_id=1613868249]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14384615, 1.8629501, 0)
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="lantern3/GeneratedDetectorArea" unique_id=432954712]
+shape = SubResource("CapsuleShape3D_gyd1x")
+
+[node name="lantern4" parent="." unique_id=229727031 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5070605, 0.26631808, 5.212801)
+
+[node name="GeneratedDetectorArea" type="Area3D" parent="lantern4" unique_id=539625933]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14384615, 1.8629501, 0)
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="lantern4/GeneratedDetectorArea" unique_id=1755304534]
+shape = SubResource("CapsuleShape3D_gyd1x")
+
+[node name="lantern5" parent="." unique_id=952045891 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.04272, 0.26631832, 3.158238)
+
+[node name="GeneratedDetectorArea" type="Area3D" parent="lantern5" unique_id=1348992409]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14384615, 1.8629501, 0)
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="lantern5/GeneratedDetectorArea" unique_id=283371167]
+shape = SubResource("CapsuleShape3D_gyd1x")
+
+[node name="lantern6" parent="." unique_id=2029111860 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.399858, 0.26631832, 3.541956)
+
+[node name="GeneratedDetectorArea" type="Area3D" parent="lantern6" unique_id=1983874044]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14384615, 1.8629501, 0)
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="lantern6/GeneratedDetectorArea" unique_id=360834788]
+shape = SubResource("CapsuleShape3D_gyd1x")
+
+[node name="lantern7" parent="." unique_id=134564549 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.0452657, 0.26631832, 6.7948933)
+
+[node name="GeneratedDetectorArea" type="Area3D" parent="lantern7" unique_id=693756323]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14384615, 1.8629501, 0)
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="lantern7/GeneratedDetectorArea" unique_id=1046744400]
+shape = SubResource("CapsuleShape3D_gyd1x")
+
+[node name="lantern8" parent="." unique_id=467180170 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.249113, 0.26631856, 4.2870617)
+
+[node name="GeneratedDetectorArea" type="Area3D" parent="lantern8" unique_id=472029124]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14384615, 1.8629501, 0)
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="lantern8/GeneratedDetectorArea" unique_id=1603553292]
+shape = SubResource("CapsuleShape3D_gyd1x")
+
+[node name="lantern9" parent="." unique_id=979463134 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.17668533, 0.26631832, 7.028082)
+
+[node name="GeneratedDetectorArea" type="Area3D" parent="lantern9" unique_id=650253133]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14384615, 1.8629501, 0)
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="lantern9/GeneratedDetectorArea" unique_id=838134416]
+shape = SubResource("CapsuleShape3D_gyd1x")
+
+[node name="lantern10" parent="." unique_id=1412802947 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.0669417, 0.26631832, 6.2522254)
+
+[node name="GeneratedDetectorArea" type="Area3D" parent="lantern10" unique_id=1772352728]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14384615, 1.8629501, 0)
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="lantern10/GeneratedDetectorArea" unique_id=35054791]
+shape = SubResource("CapsuleShape3D_gyd1x")
+
+[node name="lantern11" parent="." unique_id=526334114 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.86188793, 0.26631832, 3.2761436)
+
+[node name="GeneratedDetectorArea" type="Area3D" parent="lantern11" unique_id=1756584095]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14384615, 1.8629501, 0)
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="lantern11/GeneratedDetectorArea" unique_id=1490167111]
+shape = SubResource("CapsuleShape3D_gyd1x")
+
+[node name="lantern12" parent="." unique_id=1055863273 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.3557076, 0.26631856, 7.131957)
+
+[node name="GeneratedDetectorArea" type="Area3D" parent="lantern12" unique_id=1019824769]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14384615, 1.8629501, 0)
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="lantern12/GeneratedDetectorArea" unique_id=734016050]
+shape = SubResource("CapsuleShape3D_gyd1x")
+
+[node name="lantern13" parent="." unique_id=1879589094 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2812223, 0.26631832, 7.618585)
+
+[node name="GeneratedDetectorArea" type="Area3D" parent="lantern13" unique_id=1008241936]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14384615, 1.8629501, 0)
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="lantern13/GeneratedDetectorArea" unique_id=338575660]
+shape = SubResource("CapsuleShape3D_gyd1x")
+
+[node name="lantern14" parent="." unique_id=372240330 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.7055781, 0.26631808, 7.2272434)
+
+[node name="GeneratedDetectorArea" type="Area3D" parent="lantern14" unique_id=1864370175]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14384615, 1.8629501, 0)
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="lantern14/GeneratedDetectorArea" unique_id=1140180793]
+shape = SubResource("CapsuleShape3D_gyd1x")
+
+[node name="lantern15" parent="." unique_id=1322089880 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.48839188, 0.26631808, 6.50686)
+
+[node name="GeneratedDetectorArea" type="Area3D" parent="lantern15" unique_id=1436112885]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14384615, 1.8629501, 0)
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="lantern15/GeneratedDetectorArea" unique_id=1093292272]
+shape = SubResource("CapsuleShape3D_gyd1x")
+
+[node name="lantern16" parent="." unique_id=1970014158 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1817095, 0.26631832, 6.2715826)
+
+[node name="GeneratedDetectorArea" type="Area3D" parent="lantern16" unique_id=65927606]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14384615, 1.8629501, 0)
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="lantern16/GeneratedDetectorArea" unique_id=475898910]
+shape = SubResource("CapsuleShape3D_gyd1x")

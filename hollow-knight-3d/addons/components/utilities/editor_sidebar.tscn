@@ -190,6 +190,39 @@ tooltip_text = "RandomAudioComponent"
 icon = ExtResource("7_khnh2")
 icon_alignment = 1
 
+[node name="AreaSection" type="VBoxContainer" parent="VBoxContainer/AddSection" unique_id=636398832]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/AddSection/AreaSection" unique_id=1920341173]
+custom_minimum_size = Vector2(60, 10)
+layout_mode = 2
+text = "Area Components"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="AddGridContainer" type="HFlowContainer" parent="VBoxContainer/AddSection/AreaSection" unique_id=1545123122]
+layout_mode = 2
+theme_override_constants/h_separation = 5
+theme_override_constants/v_separation = 5
+alignment = 1
+
+[node name="HitboxComponent" type="Button" parent="VBoxContainer/AddSection/AreaSection/AddGridContainer" unique_id=2007308635 groups=["componentbutton"]]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+tooltip_text = "HitboxComponent"
+icon = ExtResource("2_4bt41")
+icon_alignment = 1
+
+[node name="DetectorComponent" type="Button" parent="VBoxContainer/AddSection/AreaSection/AddGridContainer" unique_id=194199061 groups=["componentbutton"]]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+tooltip_text = "DetectorComponent"
+icon = ExtResource("3_iak3e")
+icon_alignment = 1
+
 [node name="Spacer" type="Control" parent="VBoxContainer" unique_id=761526453]
 layout_mode = 2
 size_flags_vertical = 3
@@ -208,4 +241,6 @@ icon = ExtResource("9_dqcj0")
 [connection signal="pressed" from="VBoxContainer/AddSection/AddGridContainer/HP_DMG_Section/AddGridContainer/HealthComponent" to="." method="_on_health_component_pressed"]
 [connection signal="pressed" from="VBoxContainer/AddSection/AddGridContainer/Spawners_Section/AddGridContainer/SpawnPooledComponent" to="." method="_on_spawn_pooled_component_pressed"]
 [connection signal="pressed" from="VBoxContainer/AddSection/AddGridContainer/Audio_Section/AddGridContainer/SpawnRandomAudioComponent" to="." method="_on_spawn_random_audio_component_pressed"]
+[connection signal="pressed" from="VBoxContainer/AddSection/AreaSection/AddGridContainer/HitboxComponent" to="." method="_on_hitbox_component_pressed"]
+[connection signal="pressed" from="VBoxContainer/AddSection/AreaSection/AddGridContainer/DetectorComponent" to="." method="_on_detector_component_pressed"]
 [connection signal="pressed" from="VBoxContainer/ToggleSidebarButton" to="." method="_on_toggle_sidebar_button_pressed"]

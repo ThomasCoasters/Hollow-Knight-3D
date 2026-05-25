@@ -172,7 +172,7 @@ polygon_depth = 0.2
 node_3D_parent = NodePath("../..")
 collider_type = 2
 
-[node name="GeneratedHitboxArea" type="Area3D" parent="." unique_id=1063904915]
+[node name="GeneratedHitboxArea" type="Area3D" parent="Component_holder/HitboxComponent" unique_id=1454600598]
 transform = Transform3D(0.785, 0, 0, 0, -3.431344e-08, -0.785, 0, 0.785, -3.431344e-08, 0, 0, 0)
 monitoring = false
 metadata/hitbox_component = Object(Node,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","script":ExtResource("8_kjdjq"),"collider_type":2,"position":Vector3(0, 0, 0),"rotation":Vector3(90, 0, 0),"scale":Vector3(0.785, 0.785, 0.785),"collision_shape":null,"polygon_points":PackedVector2Array(1.3068953, -0.26622063, 1.1385293, 0.10824551, 0.7350442, 0.5332422, 0.16563211, 0.8021535, -0.29764348, 0.70598453, -0.6917365, 0.39134443, -1.0339664, -0.09669853, -1.7234688, 0.37618744, -0.9352865, 1.0204505, -0.40511382, 1.2292674, 0.27410895, 1.1619027, 0.7976856, 0.7920154, 1.216662, 0.16102505),"polygon_depth":0.2,"node_3D_parent":Object(Node3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(0.9999999, 0, 0, 0, 0.9999999, 0, 0, 0, 1, 0, 0, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"script":ExtResource("1_nt6qb"),"animation_player":Object(AnimationPlayer,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","active":true,"deterministic":false,"reset_on_save":true,"root_node":NodePath(".."),"root_motion_track":NodePath(""),"root_motion_local":false,"audio_max_polyphony":32,"callback_mode_process":1,"callback_mode_method":0,"callback_mode_discrete":1,"libraries/":SubResource("AnimationLibrary_8wgun"),"autoplay":&"","playback_auto_capture":true,"playback_auto_capture_duration":-1.0,"playback_auto_capture_transition_type":0,"playback_auto_capture_ease_type":0,"playback_default_blend_time":0.0,"speed_scale":1.0,"movie_quit_on_finish":false,"blend_times":[],"script":null)
@@ -180,7 +180,7 @@ metadata/hitbox_component = Object(Node,"unique_name_in_owner":false,"process_mo
 ,"collider_type":2)
 
 
-[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="GeneratedHitboxArea" unique_id=1184208672]
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Component_holder/HitboxComponent/GeneratedHitboxArea" unique_id=1526744880]
 depth = 0.2
 polygon = PackedVector2Array(1.3068953, -0.26622063, 1.1385293, 0.10824551, 0.7350442, 0.5332422, 0.16563211, 0.8021535, -0.29764348, 0.70598453, -0.6917365, 0.39134443, -1.0339664, -0.09669853, -1.7234688, 0.37618744, -0.9352865, 1.0204505, -0.40511382, 1.2292674, 0.27410895, 1.1619027, 0.7976856, 0.7920154, 1.216662, 0.16102505)
 

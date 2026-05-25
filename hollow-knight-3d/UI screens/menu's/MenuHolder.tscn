@@ -378,7 +378,7 @@ if target_label:
 			await me.get_tree().process_frame
 
 
-		me.get_tree().change_scene_to_file(\"res://Game/main_scene/map_holder.tscn\")
+		me.get_tree().change_scene_to_packed(SceneLoader.force_get_scene(\"res://Game/main_scene/map_holder.tscn\"))
 
 		transition.play_transition(false, false)
 
@@ -714,7 +714,7 @@ if target_label:
 			await me.get_tree().process_frame
 
 
-		me.get_tree().change_scene_to_file(\"res://Game/main_scene/map_holder.tscn\")
+		me.get_tree().change_scene_to_packed(SceneLoader.force_get_scene(\"res://Game/main_scene/map_holder.tscn\"))
 
 		transition.play_transition(false, false)
 
@@ -1050,7 +1050,7 @@ if target_label:
 			await me.get_tree().process_frame
 
 
-		me.get_tree().change_scene_to_file(\"res://Game/main_scene/map_holder.tscn\")
+		me.get_tree().change_scene_to_packed(SceneLoader.force_get_scene(\"res://Game/main_scene/map_holder.tscn\"))
 
 		transition.play_transition(false, false)
 
@@ -1386,7 +1386,7 @@ if target_label:
 			await me.get_tree().process_frame
 
 
-		me.get_tree().change_scene_to_file(\"res://Game/main_scene/map_holder.tscn\")
+		me.get_tree().change_scene_to_packed(SceneLoader.force_get_scene(\"res://Game/main_scene/map_holder.tscn\"))
 
 		transition.play_transition(false, false)
 

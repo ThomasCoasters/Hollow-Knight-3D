@@ -108,3 +108,11 @@ func _on_spawn_random_audio_component_pressed() -> void:
 
 func _on_rigid_creator_component_pressed() -> void:
 	_create_node(rigid_body_creator_component, "RigidBodyCreatorComponent")
+
+
+func _on_hitbox_component_pressed() -> void:
+	_create_node(hitbox_component, "HitboxComponent")
+
+
+func _on_detector_component_pressed() -> void:
+	_create_node(detector_component, "DetectorComponent")

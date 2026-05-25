@@ -1,7 +1,10 @@
 [gd_scene format=3 uid="uid://btvsqbs3x5wi8"]
 
 [ext_resource type="PackedScene" uid="uid://26g0am2shjeo" path="res://Environments/models/light stuff/lantern.glb" id="1_fhvhm"]
+[ext_resource type="Script" uid="uid://drgwp3odxehn4" path="res://Environments/breakable_obj.gd" id="2_gyd1x"]
 [ext_resource type="Shader" uid="uid://ds51ubc2dt8js" path="res://Game/general shaders/outline.gdshader" id="2_rbjf5"]
+[ext_resource type="Script" uid="uid://1qi0tlwofusy" path="res://addons/components/Component_holder.gd" id="3_del6m"]
+[ext_resource type="Script" uid="uid://cncoe7sgy4431" path="res://addons/components/detector_component.gd" id="4_del6m"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ilm0k"]
 render_priority = 0
@@ -31,10 +34,17 @@ metallic = 0.65
 roughness = 0.8
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_vy2yq"]
-radius = 0.14111328
+radius = 0.07
 height = 3.7348633
 
-[node name="lantern" unique_id=1624238617 instance=ExtResource("1_fhvhm")]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gyd1x"]
+radius = 0.07
+height = 3.7348633
+
+[node name="lantern" unique_id=1624238617 node_paths=PackedStringArray("detect_comp") instance=ExtResource("1_fhvhm")]
+script = ExtResource("2_gyd1x")
+broken_scene = "res://Environments/scenes/light stuff/lantern_broken.tscn"
+detect_comp = NodePath("Component_holder/DetectorComponent")
 
 [node name="pole" parent="." index="0" unique_id=236630014]
 transform = Transform3D(0.064275816, 0, 0, 0, 0.064275816, 0, 0, 0, 0.064275816, 0.14, 2.271, 0)
@@ -54,3 +64,21 @@ collision_mask = 0
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" index="0" unique_id=1288151984]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14384615, 1.8629501, 0)
 shape = SubResource("CapsuleShape3D_vy2yq")
+
+[node name="Component_holder" type="Node" parent="." index="4" unique_id=960756470]
+script = ExtResource("3_del6m")
+metadata/_custom_type_script = "uid://1qi0tlwofusy"
+
+[node name="DetectorComponent" type="Node" parent="Component_holder" index="0" unique_id=508668339 node_paths=PackedStringArray("node_3D_parent")]
+script = ExtResource("4_del6m")
+position = Vector3(0.14384615, 1.8629501, 0)
+detection_shape = SubResource("CapsuleShape3D_gyd1x")
+node_3D_parent = NodePath("../..")
+detection_mask = 2
+
+[node name="GeneratedDetectorArea" type="Area3D" parent="." index="5" unique_id=959578787]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14384615, 1.8629501, 0)
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GeneratedDetectorArea" index="0" unique_id=317792180]
+shape = SubResource("CapsuleShape3D_gyd1x")

@@ -41,9 +41,10 @@ func _ready() -> void:
 			# if it is a MeshInstance3D add to the transparancy_comps meshes var
 			if mesh is MeshInstance3D: transparancy_comp.meshes.append(mesh)
 	
-	
+	# wait untill the activated time is expired
 	var actual_activated_time: float = randf_range(activated_time - activated_time_range, activated_time + activated_time_range)
 	await get_tree().create_timer(actual_activated_time).timeout
+	# freeze all rigid bodies
 	for rigid in rigid_bodies:
 		if rigid is RigidBody3D:
 			rigid.freeze = true
