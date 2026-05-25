@@ -30,16 +30,27 @@ albedo_color = Color(0.2509804, 0.27058825, 0.36078432, 1)
 metallic = 0.65
 roughness = 0.8
 
-[node name="lantern" unique_id=1974975261 instance=ExtResource("1_fhvhm")]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_vy2yq"]
+radius = 0.14111328
+height = 3.7348633
 
-[node name="pole" parent="." index="0" unique_id=1059149357]
+[node name="lantern" unique_id=1624238617 instance=ExtResource("1_fhvhm")]
+
+[node name="pole" parent="." index="0" unique_id=236630014]
 transform = Transform3D(0.064275816, 0, 0, 0, 0.064275816, 0, 0, 0, 0.064275816, 0.14, 2.271, 0)
 surface_material_override/0 = SubResource("StandardMaterial3D_j146b")
 
-[node name="lamp" parent="." index="1" unique_id=349378487]
+[node name="lamp" parent="." index="1" unique_id=1195422166]
 transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0.45, 4.051, 0)
 surface_material_override/0 = SubResource("StandardMaterial3D_aqrah")
 
-[node name="lamp_001" parent="." index="2" unique_id=1182000944]
+[node name="lamp_001" parent="." index="2" unique_id=642644191]
 transform = Transform3D(-1, 0, 0, 0, 0, -1, 0, 1, 0, -0.2, 3.165, 0)
 surface_material_override/0 = SubResource("StandardMaterial3D_aqrah")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." index="3" unique_id=410207871]
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" index="0" unique_id=1288151984]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14384615, 1.8629501, 0)
+shape = SubResource("CapsuleShape3D_vy2yq")

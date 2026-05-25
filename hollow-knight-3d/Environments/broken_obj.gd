@@ -13,6 +13,11 @@ extends Node3D
 ## time the rigid bodies will fade out for
 @export_range(0.0, 20.0) var fade_time: float = 0.8
 
+## time the rigid bodies will be animated for before changing to static bodies
+@export_range(0.0, 100.0) var activated_time: float = 2.5
+## range of time the rigid bodies will be animated for before changing to static bodies
+@export_range(0.0, 100.0) var activated_time_range: float = 0.5
+
 
 ## refrence to all the rigid bodies
 var rigid_bodies: Array[Node] = []
@@ -36,28 +41,29 @@ func _ready() -> void:
 			# if it is a MeshInstance3D add to the transparancy_comps meshes var
 			if mesh is MeshInstance3D: transparancy_comp.meshes.append(mesh)
 	
-	# freeze rigid bodies after 1 second (reduce lag)
-	await get_tree().create_timer(min(3.0, lifetime/3)).timeout
-	for body in rigid_bodies:
-		if body is RigidBody3D:
-			body.freeze = true
+	
+	var actual_activated_time: float = randf_range(activated_time - activated_time_range, activated_time + activated_time_range)
+	await get_tree().create_timer(actual_activated_time).timeout
+	for rigid in rigid_bodies:
+		if rigid is RigidBody3D:
+			rigid.freeze = true
 	
 	
 	# wait until the lifetime is exipired
-	var actual_lifetime: float = randf_range(lifetime - lifetime_range, lifetime + lifetime_range)
+	var actual_lifetime: float = randf_range(lifetime - lifetime_range, lifetime + lifetime_range) - activated_time
 	await get_tree().create_timer(actual_lifetime).timeout
 	
 	# fade if there is a transparancy_comp
-	if transparancy_comp: transparancy_comp.change_opacity(0.0, fade_time)
-	
-	await transparancy_comp.transparancy_changing_finished
+	if transparancy_comp:
+		transparancy_comp.change_opacity(0.0, fade_time)
+		await transparancy_comp.transparancy_changing_finished
 	
 	queue_free()
 
 
 
 
-
+## gets all the rigid bodies this node has
 func _get_all_rigid_bodies() -> Array[Node]:
 	# go through every child of the given node
 	rigid_bodies = find_children("*", "RigidBody3D", true, false)

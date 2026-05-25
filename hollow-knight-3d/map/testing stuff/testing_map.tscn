@@ -3,6 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://6b6voddjiw3s" path="res://Environments/Floor/rocks_albedo.png" id="1_jpnhr"]
 [ext_resource type="Texture2D" uid="uid://f7wuhblp3kqw" path="res://Environments/Floor/rocks_AO.png" id="2_mmdmt"]
 [ext_resource type="Texture2D" uid="uid://c4a3xkfq5rqq1" path="res://Environments/Floor/rocks_normal.png" id="3_om8so"]
+[ext_resource type="PackedScene" uid="uid://dgg1smibwiebm" path="res://Environments/scenes/light stuff/lantern_broken.tscn" id="4_mmdmt"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_bn70x"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -43,7 +44,8 @@ uv2_scale = Vector3(10, 10, 10)
 environment = SubResource("Environment_yeoaq")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1400290419]
-transform = Transform3D(-0.9523593, -0.060728133, 0.29887092, 0.1758208, 0.6914065, 0.70074534, -0.24919632, 0.7199091, -0.6477902, 0, 0, 0)
+transform = Transform3D(-0.9788115, -0.122295156, 0.16423176, 0.08756337, 0.47502905, 0.8756027, -0.18509679, 0.87143064, -0.45425525, 0, 0, 0)
+shadow_enabled = true
 
 [node name="Enviroment" type="Node3D" parent="." unique_id=1149370456]
 
@@ -57,3 +59,15 @@ shape = SubResource("BoxShape3D_bn70x")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Enviroment/StaticBody3D" unique_id=1093207700]
 mesh = SubResource("BoxMesh_7sfmc")
 surface_material_override/0 = SubResource("StandardMaterial3D_6otq6")
+
+[node name="lanternBroken" parent="." unique_id=359740205 instance=ExtResource("4_mmdmt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.535146, 0.26631826, -6.367504)
+
+[node name="lanternBroken2" parent="." unique_id=619107149 instance=ExtResource("4_mmdmt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2567043, 0.2663179, 9.329569)
+
+[node name="lanternBroken3" parent="." unique_id=116192141 instance=ExtResource("4_mmdmt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.9456644, 0.2663185, -4.7012534)
+
+[node name="lanternBroken4" parent="." unique_id=1759600106 instance=ExtResource("4_mmdmt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.8145885, 0.4195335, 9.395958)
