@@ -330,6 +330,8 @@ func _load_video() -> void:
 					DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_ENABLED)
 				else:
 					DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
+			&"MaxFPS":
+				Engine.max_fps = general_contents[&"Video"][&"MaxFPS"]
 
 
 ## deeply meges the saved and the existing dict

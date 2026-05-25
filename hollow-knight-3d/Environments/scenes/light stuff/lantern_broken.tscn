@@ -1,9 +1,9 @@
 [gd_scene format=4 uid="uid://dgg1smibwiebm"]
 
-[ext_resource type="Script" uid="uid://dxklswsphooqd" path="res://map/Visuals/broken_obj.gd" id="1_k3qtr"]
+[ext_resource type="Script" uid="uid://dxklswsphooqd" path="res://Environments/broken_obj.gd" id="1_k3qtr"]
 [ext_resource type="Shader" uid="uid://ds51ubc2dt8js" path="res://Game/general shaders/outline.gdshader" id="1_l53q1"]
 [ext_resource type="Script" uid="uid://1qi0tlwofusy" path="res://addons/components/Component_holder.gd" id="2_5cfhv"]
-[ext_resource type="Script" uid="uid://dxxd3ncv768ql" path="res://addons/components/rigid_body_creator.gd" id="2_8vwk2"]
+[ext_resource type="Script" uid="uid://dxxd3ncv768ql" path="res://addons/components/rigid_body_creator_component.gd" id="2_8vwk2"]
 [ext_resource type="Script" uid="uid://dgxjuqsw3is00" path="res://addons/components/transparancy_component.gd" id="3_552xh"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wths4"]
@@ -1977,10 +1977,9 @@ metadata/_custom_type_script = "uid://1qi0tlwofusy"
 [node name="TransparancyComponent" type="Node" parent="Component_holder" unique_id=1710065249]
 script = ExtResource("3_552xh")
 
-[node name="rigid_body_creator" type="Node" parent="Component_holder" unique_id=1930149223 node_paths=PackedStringArray("chosen_node")]
+[node name="RigidBodyCreatorComponent" type="Node" parent="Component_holder" unique_id=909465763 node_paths=PackedStringArray("chosen_node")]
 script = ExtResource("2_8vwk2")
-chosen_node = NodePath("../../lantern_broken")
-metadata/_custom_type_script = "uid://dxxd3ncv768ql"
+chosen_node = NodePath("../..")
 
 [node name="lantern_broken" type="Node3D" parent="." unique_id=1247661364]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.271, 0)

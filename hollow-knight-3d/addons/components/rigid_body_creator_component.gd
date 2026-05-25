@@ -1,8 +1,8 @@
-@icon("transparancy_component.svg")
+@icon("rigid_body_creator_component.svg")
 @tool
 
 ## creates rigid bodies for every node that has "cell" in it's name
-class_name rigid_body_creator
+class_name rigid_body_creator_component
 extends component
 
 ## the node that holds all of the nodes

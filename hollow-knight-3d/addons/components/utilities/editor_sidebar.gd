@@ -104,3 +104,7 @@ func _on_component_holder_pressed() -> void:
 
 func _on_spawn_random_audio_component_pressed() -> void:
 	_create_node(random_audio_component, "RandomAudioComponent")
+
+
+func _on_rigid_creator_component_pressed() -> void:
+	_create_node(rigid_body_creator_component, "RigidBodyCreatorComponent")

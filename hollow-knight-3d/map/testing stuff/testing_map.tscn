@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://67die22qqpu7"]
 
-[ext_resource type="Texture2D" uid="uid://6b6voddjiw3s" path="res://map/Visuals/Floor/rocks_albedo.png" id="1_jpnhr"]
-[ext_resource type="Texture2D" uid="uid://f7wuhblp3kqw" path="res://map/Visuals/Floor/rocks_AO.png" id="2_mmdmt"]
-[ext_resource type="Texture2D" uid="uid://c4a3xkfq5rqq1" path="res://map/Visuals/Floor/rocks_normal.png" id="3_om8so"]
+[ext_resource type="Texture2D" uid="uid://6b6voddjiw3s" path="res://Environments/Floor/rocks_albedo.png" id="1_jpnhr"]
+[ext_resource type="Texture2D" uid="uid://f7wuhblp3kqw" path="res://Environments/Floor/rocks_AO.png" id="2_mmdmt"]
+[ext_resource type="Texture2D" uid="uid://c4a3xkfq5rqq1" path="res://Environments/Floor/rocks_normal.png" id="3_om8so"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_bn70x"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)

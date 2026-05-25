@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://x3l8b0aqohs6"
-path="res://.godot/imported/lantern_broken.blend-ac291356c07afc18f6f4ee5a71bf3302.scn"
+uid="uid://cbankhlh5wiae"
+path="res://.godot/imported/lantern.blend-16e4ba172b9b79251b84ffa6e294fe6f.scn"
 
 [deps]
 
-source_file="res://map/Visuals/models/light stuff/lantern_broken.blend"
-dest_files=["res://.godot/imported/lantern_broken.blend-ac291356c07afc18f6f4ee5a71bf3302.scn"]
+source_file="res://Environments/models/light stuff/lantern.blend"
+dest_files=["res://.godot/imported/lantern.blend-16e4ba172b9b79251b84ffa6e294fe6f.scn"]
 
 [params]
 

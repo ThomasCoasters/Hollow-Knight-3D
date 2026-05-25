@@ -2222,9 +2222,6 @@ var options ={
 # get this node
 var me = ctx[2]
 
-# get the startscreen
-var root = ctx[0].get_tree().root
-var screen = root.get_node_or_null(\"startscreen\")
 
 # set this node as the initial node you should check
 var nodes_to_check = [me]
@@ -2262,12 +2259,12 @@ while nodes_to_check.size() > 0:
 
 # get the next options index
 var keys_array = options.keys()
-keys_array.sort()
 var idx = keys_array.find(target_label.text)
 var next_idx = (idx + 1) % keys_array.size()
 var next_option = keys_array[next_idx]
 
 SaveLoad.general_contents[main_setting_type][change_setting] = options[next_option]
+SaveLoad._load_video()
 
 
 # set the input name
@@ -2296,7 +2293,7 @@ var change_setting = &\"MaxFPS\"
 
 
 
-# get array of the bgs
+# get array of the options
 var options ={
 	\"Unlimited\": 0,
 	\"30\": 30,
@@ -2358,7 +2355,7 @@ while nodes_to_check.size() > 0:
 # set the input name
 if target_label:
 	target_label.custom_minimum_size.x = 350
-	target_label.text = str(options.find_key(SaveLoad.general_contents[main_setting_type][change_setting]))"
+	target_label.text = str(options.find_key(int(SaveLoad.general_contents[main_setting_type][change_setting])))"
 pressed_function = "# the setting that would change
 var main_setting_type = &\"Video\"
 var change_setting = &\"MaxFPS\"
@@ -2377,10 +2374,6 @@ var options ={
 
 # get this node
 var me = ctx[2]
-
-# get the startscreen
-var root = ctx[0].get_tree().root
-var screen = root.get_node_or_null(\"startscreen\")
 
 # set this node as the initial node you should check
 var nodes_to_check = [me]
@@ -2418,13 +2411,12 @@ while nodes_to_check.size() > 0:
 
 # get the next options index
 var keys_array = options.keys()
-keys_array.sort()
 var idx = keys_array.find(target_label.text)
 var next_idx = (idx + 1) % keys_array.size()
 var next_option = keys_array[next_idx]
 
 SaveLoad.general_contents[main_setting_type][change_setting] = options[next_option]
-
+SaveLoad._load_video()
 
 # set the input name
 if target_label:

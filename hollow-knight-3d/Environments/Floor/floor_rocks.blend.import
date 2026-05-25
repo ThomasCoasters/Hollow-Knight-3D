@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://mf51yej7tej"
-path="res://.godot/imported/floor_rocks.blend-a7b2cee3b6a046ace817453463541eb7.scn"
+path="res://.godot/imported/floor_rocks.blend-7178761a7984b39dd684bd9627a32783.scn"
 
 [deps]
 
-source_file="res://map/Visuals/Floor/floor_rocks.blend"
-dest_files=["res://.godot/imported/floor_rocks.blend-a7b2cee3b6a046ace817453463541eb7.scn"]
+source_file="res://Environments/Floor/floor_rocks.blend"
+dest_files=["res://.godot/imported/floor_rocks.blend-7178761a7984b39dd684bd9627a32783.scn"]
 
 [params]
 

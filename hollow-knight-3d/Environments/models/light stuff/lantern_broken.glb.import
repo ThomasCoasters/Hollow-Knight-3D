@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://ykvs4rx44nlp"
-path="res://.godot/imported/lantern_broken.glb-0ba61009c68df9c973c3a53632004e81.scn"
+path="res://.godot/imported/lantern_broken.glb-3e775ae76ad9a0244785bb8092af4050.scn"
 
 [deps]
 
-source_file="res://map/Visuals/models/light stuff/lantern_broken.glb"
-dest_files=["res://.godot/imported/lantern_broken.glb-0ba61009c68df9c973c3a53632004e81.scn"]
+source_file="res://Environments/models/light stuff/lantern_broken.glb"
+dest_files=["res://.godot/imported/lantern_broken.glb-3e775ae76ad9a0244785bb8092af4050.scn"]
 
 [params]
 

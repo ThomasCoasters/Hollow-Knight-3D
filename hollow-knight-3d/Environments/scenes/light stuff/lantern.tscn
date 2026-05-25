@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://btvsqbs3x5wi8"]
 
-[ext_resource type="PackedScene" uid="uid://26g0am2shjeo" path="res://map/Visuals/models/light stuff/lantern.glb" id="1_fhvhm"]
+[ext_resource type="PackedScene" uid="uid://26g0am2shjeo" path="res://Environments/models/light stuff/lantern.glb" id="1_fhvhm"]
 [ext_resource type="Shader" uid="uid://ds51ubc2dt8js" path="res://Game/general shaders/outline.gdshader" id="2_rbjf5"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ilm0k"]

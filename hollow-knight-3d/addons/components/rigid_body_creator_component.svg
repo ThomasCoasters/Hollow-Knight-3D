@@ -1,0 +1,16 @@
+<svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" data-name="Слой 1">
+ <g id="Layer_1">
+  <title>Layer 1</title>
+  <g>
+   <path d="m8,1l7,3l0,8l-7,3l-7,-3l0,-8l7,-3z" stroke-width="2" stroke-opacity="0.8" stroke-linejoin="round" stroke="#000" fill="none"/>
+   <path d="m8,1l-7,3l0,8l7,3l7,-3l0,-8l-7,-3z" fill="#d6d6d6"/>
+   <path d="m1,4l7,3l7,-3l-7,-3l-7,3z" fill="#f9f9f9"/>
+   <path d="m8,15l-7,-3l0,-8l7,3l0,8z" fill="#e0e0e0"/>
+  </g>
+  <line transform="rotate(-3.19225 5.46269 3.57214)" stroke-width="2" stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_5" y2="5.16418" x2="6.35821" y1="1.9801" x1="4.56717" stroke="#000" fill="none"/>
+  <line stroke-width="2" stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_6" y2="6.75622" x2="13.12438" y1="4.86567" x1="5.8607" stroke="#000" fill="none"/>
+  <line stroke="#000" stroke-width="2" stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_7" y2="10.23881" x2="4.16916" y1="6.55721" x1="12.02985" fill="none"/>
+  <line stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_8" y2="9.74129" x2="4.16916" y1="13.52239" x1="12.72637" stroke-width="2" stroke="#000" fill="none"/>
+ </g>
+
+</svg>
