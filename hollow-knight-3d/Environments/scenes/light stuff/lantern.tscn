@@ -46,15 +46,15 @@ script = ExtResource("2_gyd1x")
 broken_scene = "res://Environments/scenes/light stuff/lantern_broken.tscn"
 detect_comp = NodePath("Component_holder/DetectorComponent")
 
-[node name="pole" parent="." index="0" unique_id=236630014]
+[node name="pole" parent="." index="0" unique_id=63391480]
 transform = Transform3D(0.064275816, 0, 0, 0, 0.064275816, 0, 0, 0, 0.064275816, 0.14, 2.271, 0)
 surface_material_override/0 = SubResource("StandardMaterial3D_j146b")
 
-[node name="lamp" parent="." index="1" unique_id=1195422166]
+[node name="lamp" parent="." index="1" unique_id=1974081313]
 transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0.45, 4.051, 0)
 surface_material_override/0 = SubResource("StandardMaterial3D_aqrah")
 
-[node name="lamp_001" parent="." index="2" unique_id=642644191]
+[node name="lamp_001" parent="." index="2" unique_id=1076956958]
 transform = Transform3D(-1, 0, 0, 0, 0, -1, 0, 1, 0, -0.2, 3.165, 0)
 surface_material_override/0 = SubResource("StandardMaterial3D_aqrah")
 
@@ -73,12 +73,6 @@ metadata/_custom_type_script = "uid://1qi0tlwofusy"
 script = ExtResource("4_del6m")
 position = Vector3(0.14384615, 1.8629501, 0)
 detection_shape = SubResource("CapsuleShape3D_gyd1x")
+view_in_editor = false
 node_3D_parent = NodePath("../..")
 detection_mask = 2
-
-[node name="GeneratedDetectorArea" type="Area3D" parent="." index="5" unique_id=959578787]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14384615, 1.8629501, 0)
-monitorable = false
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="GeneratedDetectorArea" index="0" unique_id=317792180]
-shape = SubResource("CapsuleShape3D_gyd1x")

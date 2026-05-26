@@ -17,6 +17,8 @@ extends Node3D
 @export_range(0.0, 100.0) var activated_time: float = 2.5
 ## range of time the rigid bodies will be animated for before changing to static bodies
 @export_range(0.0, 100.0) var activated_time_range: float = 0.5
+## applies a random value between - and + of the given value
+@export var random_starting_force: Vector3 = Vector3(100, 0, 100)
 
 
 ## refrence to all the rigid bodies
@@ -31,6 +33,22 @@ var rigid_bodies: Array[Node] = []
 func _ready() -> void:
 	# get all rigid bodies
 	_get_all_rigid_bodies()
+	
+	# add a random velocity to all rigid bodies
+	for rigid: RigidBody3D in rigid_bodies:
+		if rigid is RigidBody3D:
+			# apply a random force
+			rigid.apply_force(
+				Vector3(
+					randf_range(-random_starting_force.x, random_starting_force.x),
+					randf_range(-random_starting_force.y, random_starting_force.y),
+					randf_range(-random_starting_force.z, random_starting_force.z),
+				)
+			)
+			# wait one frame for staggering these things
+			await get_tree().process_frame
+			
+	
 	
 	# if there is a transparancy component add all the meshes to it
 	if transparancy_comp:

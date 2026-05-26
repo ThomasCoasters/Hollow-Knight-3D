@@ -69,6 +69,15 @@ var detection_mask: int = 0
 
 @export_group("")
 
+## if you can view the changes in the editor
+@export var view_in_editor: bool = true:
+	set(value):
+		# set to the new value
+		view_in_editor = value
+		# update the visuals
+		_update_detection_geometry()
+
+
 ## a Node3D that has the global position
 @export var node_3D_parent: Node3D
 
@@ -120,6 +129,12 @@ func _update_detection_geometry() -> void:
 			current_parent.remove_child(old_area)
 		# then delete it
 		old_area.free()
+	
+	
+	# if in editor and not view in editor
+	if Engine.is_editor_hint() and not view_in_editor:
+		return
+	
 	
 	# if there is no collision shape or collision polygon return
 	if not detection_shape and polygon_points.size() <= 2:
