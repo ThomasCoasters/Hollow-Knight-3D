@@ -1982,7 +1982,7 @@ metadata/_custom_type_script = "uid://1qi0tlwofusy"
 [node name="TransparancyComponent" type="Node" parent="Component_holder" unique_id=1710065249]
 script = ExtResource("3_552xh")
 
-[node name="RigidBodyCreatorComponent" type="Node" parent="Component_holder" unique_id=909465763 node_paths=PackedStringArray("chosen_node")]
+[node name="ModelSetupComponent" type="Node" parent="Component_holder" unique_id=909465763 node_paths=PackedStringArray("chosen_node")]
 script = ExtResource("2_8vwk2")
 chosen_node = NodePath("../../lantern_broken")
 
