@@ -39,7 +39,7 @@ func change_opacity(to: float = 0.0, time: float = 0.5) -> void:
 		
 		
 		#get the mesh material
-		var mat := mesh.get_active_material(0).duplicate()
+		var mat := mesh.get_active_material(0).duplicate(true)
 		mesh.set_surface_override_material(0, mat)
 		
 		

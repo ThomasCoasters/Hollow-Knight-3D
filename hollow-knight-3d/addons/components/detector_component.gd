@@ -20,7 +20,8 @@ var detection_mask: int = 0
 		# set to the new value
 		position = value
 		# update the visuals
-		_update_detection_geometry()
+		if is_node_ready():
+			_update_detection_geometry()
 
 ## see details in a normal node's rotation property
 @export var rotation: Vector3 = Vector3.ZERO:
@@ -28,7 +29,8 @@ var detection_mask: int = 0
 		# set to the new
 		rotation = value
 		# update the visuals
-		_update_detection_geometry()
+		if is_node_ready():
+			_update_detection_geometry()
 
 ## see details in a normal node's scale property
 @export var scale: Vector3 = Vector3.ONE:
@@ -36,7 +38,8 @@ var detection_mask: int = 0
 		# set to the new value
 		scale = value
 		# update the visuals
-		_update_detection_geometry()
+		if is_node_ready():
+			_update_detection_geometry()
 
 
 ## settings for a simple shape as the collision shape
@@ -47,7 +50,8 @@ var detection_mask: int = 0
 		# set to the new value
 		detection_shape = value
 		# update the visuals
-		_update_detection_geometry()
+		if is_node_ready():
+			_update_detection_geometry()
 
 
 ## settings for a more complex as the collision shape
@@ -58,14 +62,16 @@ var detection_mask: int = 0
 		# set to the new value
 		polygon_points = value
 		# update the visuals
-		_update_detection_geometry()
+		if is_node_ready():
+			_update_detection_geometry()
 ## the depth of the polygon
 @export var polygon_depth: float = 1.0:
 	set(value):
 		# set to the new value
 		polygon_depth = value
 		# update the visuals
-		_update_detection_geometry()
+		if is_node_ready():
+			_update_detection_geometry()
 
 @export_group("")
 
@@ -75,7 +81,8 @@ var detection_mask: int = 0
 		# set to the new value
 		view_in_editor = value
 		# update the visuals
-		_update_detection_geometry()
+		if is_node_ready():
+			_update_detection_geometry()
 
 
 ## a Node3D that has the global position

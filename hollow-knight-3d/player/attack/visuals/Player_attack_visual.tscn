@@ -144,12 +144,13 @@ _data = {
 &"slash": SubResource("Animation_nt6qb")
 }
 
-[node name="PlayerAttackVisual" type="Node3D" unique_id=1545064378 node_paths=PackedStringArray("animation_player")]
+[node name="PlayerAttackVisual" type="Node3D" unique_id=1545064378 node_paths=PackedStringArray("animation_player", "hitbox_comp")]
 transform = Transform3D(0.9999999, 0, 0, 0, 0.9999999, 0, 0, 0, 1, 0, 0, 0)
 script = ExtResource("1_nt6qb")
 animation_player = NodePath("AnimationPlayer")
 random_rotation_angle = Vector2(5, 15)
 offset = Vector3(0, 0.2, 0)
+hitbox_comp = NodePath("Component_holder/HitboxComponent")
 
 [node name="AttackSlash" type="MeshInstance3D" parent="." unique_id=616704347]
 transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0.13536602)

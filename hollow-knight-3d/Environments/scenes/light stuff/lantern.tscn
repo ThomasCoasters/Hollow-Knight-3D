@@ -10,7 +10,7 @@
 render_priority = 0
 shader = ExtResource("2_rbjf5")
 shader_parameter/alpha = 1.0
-shader_parameter/outline_thickness = 0.04
+shader_parameter/outline_thickness = 0.2
 shader_parameter/color = Color(0, 0, 0, 0)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j146b"]
@@ -46,15 +46,15 @@ script = ExtResource("2_gyd1x")
 broken_scene = "res://Environments/scenes/light stuff/lantern_broken.tscn"
 detect_comp = NodePath("Component_holder/DetectorComponent")
 
-[node name="pole" parent="." index="0" unique_id=63391480]
+[node name="pole" parent="." index="0" unique_id=236630014]
 transform = Transform3D(0.064275816, 0, 0, 0, 0.064275816, 0, 0, 0, 0.064275816, 0.14, 2.271, 0)
 surface_material_override/0 = SubResource("StandardMaterial3D_j146b")
 
-[node name="lamp" parent="." index="1" unique_id=1974081313]
+[node name="lamp" parent="." index="1" unique_id=1195422166]
 transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0.45, 4.051, 0)
 surface_material_override/0 = SubResource("StandardMaterial3D_aqrah")
 
-[node name="lamp_001" parent="." index="2" unique_id=1076956958]
+[node name="lamp_001" parent="." index="2" unique_id=642644191]
 transform = Transform3D(-1, 0, 0, 0, 0, -1, 0, 1, 0, -0.2, 3.165, 0)
 surface_material_override/0 = SubResource("StandardMaterial3D_aqrah")
 

@@ -8,6 +8,9 @@ extends component
 ## select what kind of collision this object is
 var collider_type: int = CollisionTypes.Type.PLAYER_BODY
 
+## refrence for the generated area
+var Area_Made: Area3D
+
 
 @export_group("Transform")
 ## see details in a normal node's position property
@@ -16,7 +19,8 @@ var collider_type: int = CollisionTypes.Type.PLAYER_BODY
 		# set to the new value
 		position = value
 		# update the visuals
-		_update_collision_geometry()
+		if is_node_ready():
+			_update_collision_geometry()
 
 ## see details in a normal node's rotation property
 @export var rotation: Vector3 = Vector3.ZERO:
@@ -24,7 +28,8 @@ var collider_type: int = CollisionTypes.Type.PLAYER_BODY
 		# set to the new
 		rotation = value
 		# update the visuals
-		_update_collision_geometry()
+		if is_node_ready():
+			_update_collision_geometry()
 
 ## see details in a normal node's scale property
 @export var scale: Vector3 = Vector3.ONE:
@@ -32,7 +37,8 @@ var collider_type: int = CollisionTypes.Type.PLAYER_BODY
 		# set to the new value
 		scale = value
 		# update the visuals
-		_update_collision_geometry()
+		if is_node_ready():
+			_update_collision_geometry()
 
 
 ## settings for a simple shape as the collision shape
@@ -43,7 +49,8 @@ var collider_type: int = CollisionTypes.Type.PLAYER_BODY
 		# set to the new value
 		collision_shape = value
 		# update the visuals
-		_update_collision_geometry()
+		if is_node_ready():
+			_update_collision_geometry()
 
 
 ## settings for a more complex as the collision shape
@@ -54,14 +61,16 @@ var collider_type: int = CollisionTypes.Type.PLAYER_BODY
 		# set to the new value
 		polygon_points = value
 		# update the visuals
-		_update_collision_geometry()
+		if is_node_ready():
+			_update_collision_geometry()
 ## the depth of the polygon
 @export var polygon_depth: float = 1.0:
 	set(value):
 		# set to the new value
 		polygon_depth = value
 		# update the visuals
-		_update_collision_geometry()
+		if is_node_ready():
+			_update_collision_geometry()
 
 @export_group("")
 
@@ -71,7 +80,8 @@ var collider_type: int = CollisionTypes.Type.PLAYER_BODY
 		# set to the new value
 		view_in_editor = value
 		# update the visuals
-		_update_collision_geometry()
+		if is_node_ready():
+			_update_collision_geometry()
 
 ## a Node3D that has the global position
 @export var node_3D_parent: Node3D
@@ -128,6 +138,7 @@ func _update_collision_geometry() -> void:
 	new_area.name = "GeneratedHitboxArea"
 	new_area.monitoring = false
 	new_area.monitorable = true
+	Area_Made = new_area
 	
 	new_area.position = position
 	new_area.rotation_degrees = rotation

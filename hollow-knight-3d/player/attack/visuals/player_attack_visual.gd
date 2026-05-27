@@ -29,6 +29,12 @@ var alternated: bool = false
 signal animation_finished()
 
 
+## the hitbox component
+@export var hitbox_comp: hitbox_component
+
+## the hitbox area
+var HitboxArea: Area3D
+
 
 
 
@@ -43,6 +49,11 @@ func _physics_process(_delta: float) -> void:
 ## is the disabling code for the node.
 ## overwrite the base code to not make the visual invis
 func _on_pool_disable() -> void:
+	# if there is a hitbox area
+	if hitbox_comp and hitbox_comp.Area_Made:
+		# de-activate it
+		hitbox_comp.Area_Made.get_child(0).disabled = true
+	
 	# enabled var is false now
 	enabled = false
 
@@ -59,6 +70,12 @@ func _on_pool_enable() -> void:
 
 ## plays when the pool gets this node
 func _on_pool_get() -> void:
+	# if there is a hitbox area
+	if hitbox_comp and hitbox_comp.Area_Made:
+		# activate it
+		hitbox_comp.Area_Made.get_child(0).disabled = false
+	
+	
 	# get a variable for the new rotation random rotation
 	var random_rotation: float = deg_to_rad(randf_range(random_rotation_angle.x, random_rotation_angle.y))
 	

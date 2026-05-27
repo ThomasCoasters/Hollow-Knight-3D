@@ -96,6 +96,7 @@ inputs_to_buffer = Dictionary[StringName, ExtResource("2_yllr7")]({
 &"Dash": SubResource("Resource_tqiix"),
 &"Jump": SubResource("Resource_wodsf")
 })
+max_speed = 2.0
 pogo_angle = -0.5235987755982988
 health_comp = NodePath("Component_holder/HealthComponent")
 pooled_attack_comp = NodePath("Component_holder/pooled_attack")
