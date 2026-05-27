@@ -9,19 +9,28 @@ extends Node3D
 ## the detector component that will check if the given thing enters this node
 @export var detect_comp: detector_component
 
+## if the obj is already broken
+var broken: bool = false
+
 func _ready() -> void:
 	# load the broken scene
 	SceneLoader.request_scene(broken_scene)
 	
 	# check if there is a detector component given
 	if detect_comp:
-		# switch to the broken obj when the detector comp is entered
-		detect_comp.detected_collider.connect(break_object)
+		# if the broken func is not already connected
+		if not detect_comp.detected_collider.is_connected(break_object):
+			# switch to the broken obj when the detector comp is entered
+			detect_comp.detected_collider.connect(break_object)
 
 
 
 ## breaks the object
 func break_object(_hitbox: hitbox_component) -> void:
+	# if it already is broken return
+	if broken: return
+	
+	
 	# get the broken scene
 	var break_packed_scene: PackedScene = SceneLoader.force_get_scene(broken_scene)
 	
@@ -33,11 +42,14 @@ func break_object(_hitbox: hitbox_component) -> void:
 		push_error("the scene given is not a valid scene")
 		return
 	
+	# make it broken
+	broken = true
+	
 	# set the location of the broken scene to this one
 	break_scene.global_transform = global_transform
 	
 	# add the break scene to the map
-	Global.map_holder.map_container.get_child(0).add_child(break_scene)
+	Global.map_holder.current_map_node.add_child(break_scene)
 	
 	# remove this one
 	queue_free()

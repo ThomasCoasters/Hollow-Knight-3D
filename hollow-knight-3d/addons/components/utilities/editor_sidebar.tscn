@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://c0l31g8uaeku6" path="res://addons/components/Component_holder.svg" id="2_xr380"]
 [ext_resource type="Texture2D" uid="uid://bm83cmlcld3h1" path="res://addons/components/transparancy_component.svg" id="3_iak3e"]
 [ext_resource type="Texture2D" uid="uid://dqe0r2regfabe" path="res://addons/components/health_component.svg" id="4_70jva"]
-[ext_resource type="Texture2D" uid="uid://beohcj3u88emu" path="res://addons/components/rigid_body_creator_component.svg" id="5_don3p"]
+[ext_resource type="Texture2D" uid="uid://beohcj3u88emu" path="res://addons/components/model_setup_component.svg" id="5_don3p"]
 [ext_resource type="Texture2D" uid="uid://c0j4jsd8aawjn" path="res://addons/components/spawn_pooled_component.svg" id="5_dpq78"]
 [ext_resource type="Texture2D" uid="uid://bk0tslv3c4t38" path="res://addons/components/random_audio_component.svg" id="7_khnh2"]
 [ext_resource type="Texture2D" uid="uid://vga3avpb4gyh" path="res://addons/godot_state_charts/toggle_sidebar.svg" id="9_dqcj0"]
@@ -107,11 +107,11 @@ tooltip_text = "TransparancyComponent"
 icon = ExtResource("3_iak3e")
 icon_alignment = 1
 
-[node name="RigidCreatorComponent" type="Button" parent="VBoxContainer/AddSection/AddGridContainer/3DModelSection/AddGridContainer" unique_id=322200329 groups=["componentbutton"]]
+[node name="ModelSetupComponent" type="Button" parent="VBoxContainer/AddSection/AddGridContainer/3DModelSection/AddGridContainer" unique_id=322200329 groups=["componentbutton"]]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
-tooltip_text = "RigidBodyCreatorComponent"
+tooltip_text = "ModelSetupComponent"
 icon = ExtResource("5_don3p")
 icon_alignment = 1
 
@@ -237,7 +237,7 @@ icon = ExtResource("9_dqcj0")
 [connection signal="pressed" from="VBoxContainer/AddSection/AddGridContainer/SortingSection/AddGridContainer/ComponentHolder" to="." method="_on_component_holder_pressed"]
 [connection signal="pressed" from="VBoxContainer/AddSection/AddGridContainer/3DModelSection/AddGridContainer/AnimationComponent" to="." method="_on_animation_component_pressed"]
 [connection signal="pressed" from="VBoxContainer/AddSection/AddGridContainer/3DModelSection/AddGridContainer/TransparancyComponent" to="." method="_on_transparancy_component_pressed"]
-[connection signal="pressed" from="VBoxContainer/AddSection/AddGridContainer/3DModelSection/AddGridContainer/RigidCreatorComponent" to="." method="_on_rigid_creator_component_pressed"]
+[connection signal="pressed" from="VBoxContainer/AddSection/AddGridContainer/3DModelSection/AddGridContainer/ModelSetupComponent" to="." method="_on_rigid_creator_component_pressed"]
 [connection signal="pressed" from="VBoxContainer/AddSection/AddGridContainer/HP_DMG_Section/AddGridContainer/HealthComponent" to="." method="_on_health_component_pressed"]
 [connection signal="pressed" from="VBoxContainer/AddSection/AddGridContainer/Spawners_Section/AddGridContainer/SpawnPooledComponent" to="." method="_on_spawn_pooled_component_pressed"]
 [connection signal="pressed" from="VBoxContainer/AddSection/AddGridContainer/Audio_Section/AddGridContainer/SpawnRandomAudioComponent" to="." method="_on_spawn_random_audio_component_pressed"]
