@@ -148,7 +148,7 @@ _data = {
 transform = Transform3D(0.9999999, 0, 0, 0, 0.9999999, 0, 0, 0, 1, 0, 0, 0)
 script = ExtResource("1_nt6qb")
 animation_player = NodePath("AnimationPlayer")
-random_rotation_angle = Vector2(5, 15)
+random_rotation_angle = Vector2(10, 20)
 offset = Vector3(0, 0.2, 0)
 hitbox_comp = NodePath("Component_holder/HitboxComponent")
 

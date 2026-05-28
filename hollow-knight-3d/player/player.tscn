@@ -156,8 +156,9 @@ current = true
 
 [node name="Locator" type="Decal" parent="." unique_id=136416775]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.881437, 0)
-size = Vector3(0.2, 7.7292423, 0.2)
+size = Vector3(0.3, 7.729, 0.3)
 texture_albedo = ExtResource("9_hg6s5")
+upper_fade = 0.1
 
 [node name="camera_detector" type="Area3D" parent="." unique_id=2043606115]
 collision_layer = 4
