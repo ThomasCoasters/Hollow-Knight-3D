@@ -1565,7 +1565,16 @@ in_start_delay = 0.17
 out_start_delay = 0.17
 text = "Keyboard"
 send_to = NodePath("../keyboard_input_menu")
-vertical_spacer_size = 400.0
+vertical_spacer_size = 55.0
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_ceho6"]
+script = ExtResource("2_w13no")
+in_start_delay = 0.17
+out_start_delay = 0.17
+text = "QoL"
+send_to = NodePath("../QoL_menu")
+vertical_spacer_size = 310.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_nssm8"]
@@ -7257,7 +7266,169 @@ send_to = NodePath("../start_Menu")
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_oghqo"), SubResource("Resource_62oxb")])
 row_spacing = 264
-vertical_spacer_size = 285.0
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_kxba6"]
+script = ExtResource("2_w13no")
+mode = 1
+text = "QoL"
+font_size = 48
+_button_group_enabled = false
+send_to = NodePath("../start_Menu")
+should_add_vertical_spacer = false
+vertical_spacer_size = 0.0
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_7eb4q"]
+script = ExtResource("2_w13no")
+mode = 1
+text = "Inputs Use:"
+_button_group_enabled = false
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_e0hlu"]
+script = ExtResource("2_w13no")
+mode = 1
+text = "Classic"
+_button_group_enabled = false
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_eo4d0"]
+script = ExtResource("2_w13no")
+mode = 5
+_text_group_enabled = false
+hover_offset = Array[Vector2]([Vector2(-100, -4), Vector2(140, -4)])
+ready_function = "# the setting that would change
+var main_setting_type = &\"QoL\"
+var change_setting = &\"RotationUseCamera\"
+
+
+# get array of the bgs
+var options ={
+	\"Camera Rotation\": true,
+	\"Player Rotation\": false,
+}
+
+
+
+
+# wait
+await ctx[0].get_tree().process_frame
+await ctx[0].get_tree().create_timer(1).timeout
+await ctx[0].get_tree().process_frame
+
+
+
+
+
+
+# get this node
+var me = ctx[2]
+# set this node as the initial node you should check
+var nodes_to_check = [me]
+
+
+
+# the final label found
+var target_label: Label = null
+# current amount of labels found
+var label_count = 0 
+# the final number of label in the index that is the one you search for
+var label_target_index = 1
+
+
+
+# keep searching untill all children are gone through
+while nodes_to_check.size() > 0:
+	#remove the current node from the nodes you should check
+	var current = nodes_to_check.pop_back()
+	
+	# if you found an label
+	if current is Label:
+		#increase label count
+		label_count += 1
+		# if you found the target number of labels
+		if label_count == label_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label = current
+	
+	# also search all these node's children
+	nodes_to_check.append_array(current.get_children())
+
+
+
+
+
+# set the input name
+if target_label:
+	target_label.custom_minimum_size.x = 400
+	target_label.text = options.find_key(SaveLoad.general_contents[main_setting_type][change_setting])"
+pressed_function = "# the setting that would change
+var main_setting_type = &\"QoL\"
+var change_setting = &\"RotationUseCamera\"
+
+
+
+# get array of the bgs
+var options ={
+	\"Camera Rotation\": true,
+	\"Player Rotation\": false,
+}
+
+
+# get this node
+var me = ctx[2]
+
+
+# set this node as the initial node you should check
+var nodes_to_check = [me]
+
+
+
+# the final label found
+var target_label: Label = null
+# current amount of labels found
+var label_count = 0 
+# the final number of label in the index that is the one you search for
+var label_target_index = 1
+
+
+
+# keep searching untill all children are gone through
+while nodes_to_check.size() > 0:
+	#remove the current node from the nodes you should check
+	var current = nodes_to_check.pop_back()
+	
+	# if you found an label
+	if current is Label:
+		#increase label count
+		label_count += 1
+		# if you found the target number of labels
+		if label_count == label_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label = current
+	
+	# also search all these node's children
+	nodes_to_check.append_array(current.get_children())
+
+
+
+
+# get the next options index
+var keys_array = options.keys()
+var idx = keys_array.find(target_label.text)
+var next_idx = (idx + 1) % keys_array.size()
+var next_option = keys_array[next_idx]
+
+SaveLoad.general_contents[main_setting_type][change_setting] = options[next_option]
+
+
+# set the input name
+if target_label:
+	target_label.text = next_option"
+_row_group_enabled = true
+sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_7eb4q"), SubResource("Resource_e0hlu")])
+row_spacing = 250
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_uqghw"]
@@ -7511,7 +7682,7 @@ button_hover_anim = SubResource("Resource_n2ux7")
 [node name="options_menu" parent="." unique_id=1146284057 instance=ExtResource("1_aw56r")]
 visible = false
 layout_mode = 1
-visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_5pew3"), SubResource("Resource_5pjdf"), SubResource("Resource_34fmv"), SubResource("Resource_8lixl"), SubResource("Resource_x3cxq"), SubResource("Resource_kossj"), SubResource("Resource_nssm8")])
+visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_5pew3"), SubResource("Resource_5pjdf"), SubResource("Resource_34fmv"), SubResource("Resource_8lixl"), SubResource("Resource_x3cxq"), SubResource("Resource_kossj"), SubResource("Resource_ceho6"), SubResource("Resource_nssm8")])
 button_press_anim = SubResource("Resource_55gc4")
 button_hover_anim = SubResource("Resource_n2ux7")
 
@@ -7533,6 +7704,13 @@ button_hover_anim = SubResource("Resource_n2ux7")
 visible = false
 layout_mode = 1
 visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_62inh"), SubResource("Resource_vllhe"), SubResource("Resource_om5fx"), SubResource("Resource_6pcm4"), SubResource("Resource_bs0jo"), SubResource("Resource_yhgsf"), SubResource("Resource_sqlye"), SubResource("Resource_obp4u"), SubResource("Resource_hqo3k")])
+button_press_anim = SubResource("Resource_55gc4")
+button_hover_anim = SubResource("Resource_n2ux7")
+
+[node name="QoL_menu" parent="." unique_id=731191671 instance=ExtResource("1_aw56r")]
+visible = false
+layout_mode = 1
+visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_rr8xp"), SubResource("Resource_kxba6"), SubResource("Resource_om5fx"), SubResource("Resource_eo4d0"), SubResource("Resource_uqghw")])
 button_press_anim = SubResource("Resource_55gc4")
 button_hover_anim = SubResource("Resource_n2ux7")
 

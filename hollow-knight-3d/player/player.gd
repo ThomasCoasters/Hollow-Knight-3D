@@ -182,6 +182,8 @@ func _ready() -> void:
 	
 	# load the save slot data
 	load_slot_save()
+	# load the general save data
+	load_general_save()
 	
 	
 	
@@ -650,16 +652,34 @@ func _on_camera_detector_area_exited(area: Area3D) -> void:
 	knight.change_player_opacity(1.0, 0.2)
 
 
-func _on_player_camera_camera_mode_changed(new_mode: String, old_mode: String) -> void:
+func _on_player_camera_camera_mode_changed(new_mode: String, _old_mode: String) -> void:
 	# easily add / change settings without big if elif else loop
-	match old_mode:
+	match new_mode:
+		# if the new mode is 3rd person
 		"3rd_person":
-			# check if you are in the camera_detector
-			if camera_currently_detected:
-				#check if the new mode is 1st person
-				if new_mode == "1st_person":
-					#makes the player invis
-					knight.change_player_opacity(0.0, 0.2)
+			# set the use camera rotation based on the saved option
+			rotation_use_camera = SaveLoad.general_contents[&"QoL"][&"RotationUseCamera"]
+		
+		# if the new mode is 1st person
+		"1st_person":
+			#makes the player invis
+			knight.change_player_opacity(0.0, 0.2)
+			rotation_use_camera = true
+		
+		# if the new mode is 3rd person
+		"side_view":
+			# set the use camera rotation based on the saved option
+			rotation_use_camera = false
+		
+		# if the new mode is 3rd person
+		"free":
+			# set the use camera rotation based on the saved option
+			rotation_use_camera = SaveLoad.general_contents[&"QoL"][&"RotationUseCamera"]
+		
+		# if the new mode is 3rd person
+		"locked":
+			# set the use camera rotation based on the saved option
+			rotation_use_camera = false
 
 #endregion
 
@@ -667,13 +687,17 @@ func _on_player_camera_camera_mode_changed(new_mode: String, old_mode: String) -
 #region loading
 ## loads the settings in the current save slot settings
 func load_slot_save() -> void:
-	print(SaveLoad.current_game_contents[&"Location"][&"player_position"])
-	
 	# set the position
 	var start_pos = SaveLoad.current_game_contents[&"Location"][&"player_position"]
 	if start_pos is Vector3:
 		global_position = start_pos
 	else:
 		global_position = str_to_var("Vector3" + start_pos)
+
+
+## loads the settings in the current general save settings
+func load_general_save() -> void:
+	# set the use camera rotation based on the saved option
+	rotation_use_camera = SaveLoad.general_contents[&"QoL"][&"RotationUseCamera"]
 
 #endregion

@@ -49,6 +49,10 @@ var DEFAULT_GENERAL_SAVE: Dictionary = {
 		&"Music" : 10,
 	},
 	
+	&"QoL": {
+		&"RotationUseCamera": false,
+	},
+	
 	&"Extras": {
 		&"Background": &"Classic",
 	},
