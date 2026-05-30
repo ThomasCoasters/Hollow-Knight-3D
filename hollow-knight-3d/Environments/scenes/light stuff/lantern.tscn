@@ -5,6 +5,7 @@
 [ext_resource type="Shader" uid="uid://ds51ubc2dt8js" path="res://Game/general shaders/outline.gdshader" id="2_rbjf5"]
 [ext_resource type="Script" uid="uid://1qi0tlwofusy" path="res://addons/components/Component_holder.gd" id="3_del6m"]
 [ext_resource type="Script" uid="uid://cncoe7sgy4431" path="res://addons/components/detector_component.gd" id="4_del6m"]
+[ext_resource type="PackedScene" uid="uid://cvs7ackyhvsvt" path="res://Environments/scenes/light stuff/light_ball.tscn" id="6_13m0q"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ilm0k"]
 render_priority = 0
@@ -46,15 +47,15 @@ script = ExtResource("2_gyd1x")
 broken_scene = "res://Environments/scenes/light stuff/lantern_broken.tscn"
 detect_comp = NodePath("Component_holder/DetectorComponent")
 
-[node name="pole" parent="." index="0" unique_id=63391480]
+[node name="pole" parent="." index="0" unique_id=236630014]
 transform = Transform3D(0.064275816, 0, 0, 0, 0.064275816, 0, 0, 0, 0.064275816, 0.14, 2.271, 0)
 surface_material_override/0 = SubResource("StandardMaterial3D_j146b")
 
-[node name="lamp" parent="." index="1" unique_id=1974081313]
+[node name="lamp" parent="." index="1" unique_id=1195422166]
 transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0.45, 4.051, 0)
 surface_material_override/0 = SubResource("StandardMaterial3D_aqrah")
 
-[node name="lamp_001" parent="." index="2" unique_id=1076956958]
+[node name="lamp_001" parent="." index="2" unique_id=642644191]
 transform = Transform3D(-1, 0, 0, 0, 0, -1, 0, 1, 0, -0.2, 3.165, 0)
 surface_material_override/0 = SubResource("StandardMaterial3D_aqrah")
 
@@ -77,16 +78,8 @@ view_in_editor = false
 node_3D_parent = NodePath("../..")
 detection_mask = 2
 
-[node name="OmniLight3D" type="OmniLight3D" parent="." index="5" unique_id=416241313]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9051491, 3.4100885, 0)
-light_energy = 2.0
-light_indirect_energy = 5.0
-light_volumetric_fog_energy = 1.5
-omni_range = 5.679
+[node name="LightBall" parent="." index="5" unique_id=200644432 instance=ExtResource("6_13m0q")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6364752, 2.8255363, 0)
 
-[node name="OmniLight3D2" type="OmniLight3D" parent="." index="6" unique_id=827464149]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5957717, 2.6439571, 0)
-light_energy = 2.0
-light_indirect_energy = 5.0
-light_volumetric_fog_energy = 1.5
-omni_range = 5.679
+[node name="LightBall2" parent="." index="6" unique_id=875423668 instance=ExtResource("6_13m0q")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.88248885, 3.7173417, 0)

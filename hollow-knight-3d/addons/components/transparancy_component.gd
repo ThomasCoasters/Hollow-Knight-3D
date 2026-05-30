@@ -18,9 +18,12 @@ extends component
 signal transparancy_changing_finished()
 
 
-
 ##changes the opacity
 func change_opacity(to: float = 0.0, time: float = 0.5) -> void:
+	# refrence to all the tweens
+	var tweens: Array[Tween] = []
+	
+	
 	#change every mesh
 	for mesh: MeshInstance3D in meshes:
 		# stagger the changes
@@ -54,6 +57,9 @@ func change_opacity(to: float = 0.0, time: float = 0.5) -> void:
 		var tween := create_tween()
 		tween.tween_property(mat, "albedo_color:a", ending_opacity, time)
 		
+		# add to the tweens array
+		tweens.append(tween)
+		
 		
 		#check if the outline exists
 		if mat and mat.next_pass:
@@ -71,11 +77,14 @@ func change_opacity(to: float = 0.0, time: float = 0.5) -> void:
 		
 		#when finished make the material transparant if needed else make it normal
 		tween.finished.connect(func():
-			#emit the finished signal
-			transparancy_changing_finished.emit()
-			
 			if to < 1.0:
 				mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 			else:
 				mat.transparency = BaseMaterial3D.TRANSPARENCY_DISABLED
 			)
+	
+	
+	for tween in tweens:
+		await tween.finished
+	
+	transparancy_changing_finished.emit()

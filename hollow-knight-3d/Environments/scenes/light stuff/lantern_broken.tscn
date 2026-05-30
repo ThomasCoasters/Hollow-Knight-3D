@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://1qi0tlwofusy" path="res://addons/components/Component_holder.gd" id="2_5cfhv"]
 [ext_resource type="Script" uid="uid://dxxd3ncv768ql" path="res://addons/components/model_setup_component.gd" id="2_8vwk2"]
 [ext_resource type="Script" uid="uid://dgxjuqsw3is00" path="res://addons/components/transparancy_component.gd" id="3_552xh"]
+[ext_resource type="PackedScene" uid="uid://dlwcatvqul035" path="res://Environments/scenes/light stuff/light_ball_broken.tscn" id="6_ybu3p"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ko0mq"]
 
@@ -2514,3 +2515,9 @@ surface_material_override/0 = SubResource("StandardMaterial3D_aqrah")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="lantern_broken/pole_cell_052_Rigid" unique_id=1350094885]
 shape = SubResource("ConvexPolygonShape3D_kykob")
+
+[node name="broken_light_ball" parent="." unique_id=187349000 instance=ExtResource("6_ybu3p")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.88248885, 3.7173417, 0)
+
+[node name="broken_light_ball2" parent="." unique_id=995611367 instance=ExtResource("6_ybu3p")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6364752, 2.8255363, 0)

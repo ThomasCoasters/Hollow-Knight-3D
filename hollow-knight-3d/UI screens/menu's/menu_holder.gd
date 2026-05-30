@@ -24,6 +24,8 @@ var hidden_mouse_distance: float = 0.0
 ## if the input is locked currently
 var is_input_locked: bool = false
 
+## if there is currently a fade happening
+var fading: bool = false
 
 
 func _ready() -> void:
@@ -38,6 +40,10 @@ func _ready() -> void:
 
 ## hides all menus and shows the selected menu after
 func open_menu(new_menu: Menu, fade_in_out: bool = true) -> void:
+	# make sure only one fade at a time
+	if fading: return
+	fading = true
+	
 	# get the current menu
 	var current_menu: Menu = _get_current_menu()
 	
@@ -66,6 +72,8 @@ func open_menu(new_menu: Menu, fade_in_out: bool = true) -> void:
 		await get_tree().process_frame
 		# give focus to the first input
 		new_menu.focus_first_input()
+	
+	fading = false
 
 
 
@@ -340,3 +348,22 @@ func _input(event: InputEvent) -> void:
 			
 			# stop godot from navigating to the next button
 			get_viewport().set_input_as_handled()
+	
+	
+	# if you want to go back
+	if event.is_action_pressed(&"ui_cancel"):
+		# if fading do nothing
+		if fading: return
+		
+		# get the current menu
+		var current_menu: Menu = _get_current_menu()
+		
+		# save (if selected)
+		if current_menu.save_on_back_button:
+			# save the contents
+			SaveLoad.save_general()
+		
+		
+		# fade to the new menu (if possible)
+		if current_menu.back_button_menu: open_menu(current_menu.back_button_menu)
+		

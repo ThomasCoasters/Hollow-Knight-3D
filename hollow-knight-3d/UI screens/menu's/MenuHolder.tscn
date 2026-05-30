@@ -7266,6 +7266,7 @@ send_to = NodePath("../start_Menu")
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_oghqo"), SubResource("Resource_62oxb")])
 row_spacing = 264
+vertical_spacer_size = 280.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_kxba6"]
@@ -7429,6 +7430,23 @@ if target_label:
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_7eb4q"), SubResource("Resource_e0hlu")])
 row_spacing = 250
+vertical_spacer_size = 610.0
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_eqbts"]
+script = ExtResource("2_w13no")
+in_fade_duration = 0.5
+out_fade_duration = 0.5
+text = "Back"
+send_to = NodePath("../options_menu")
+pressed_function = "# save the contents
+SaveLoad.save_general()
+
+# wait untill the save is done
+await SaveLoad.save_exited
+
+# load the saved inputs
+SaveLoad.load_general()"
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_uqghw"]
@@ -7595,6 +7613,7 @@ SaveLoad._load_video()"
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_1pen8"), SubResource("Resource_g46vr")])
 row_spacing = 300
+vertical_spacer_size = 610.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_ye08n"]
@@ -7632,13 +7651,13 @@ font_size = 37
 _button_group_enabled = false
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
-[sub_resource type="Resource" id="Resource_vxt2s"]
+[sub_resource type="Resource" id="Resource_gesrj"]
 script = ExtResource("2_w13no")
 in_start_delay = 0.17
 out_start_delay = 0.17
 text = "Yes"
 pressed_function = "# get this node
-var me = ctx[2]
+var _me = ctx[2]
 
 # dissable all the buttons
 ctx[0].toggle_buttons(false)
@@ -7666,71 +7685,82 @@ size_flags_vertical = 3
 script = ExtResource("1_okqb8")
 initial_menu = NodePath("start_Menu")
 
-[node name="start_Menu" parent="." unique_id=726592690 instance=ExtResource("1_aw56r")]
+[node name="start_Menu" parent="." unique_id=726592690 node_paths=PackedStringArray("back_button_menu") instance=ExtResource("1_aw56r")]
 layout_mode = 1
 visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_ayfdy"), SubResource("Resource_5puos"), SubResource("Resource_vxmfm"), SubResource("Resource_gge7p"), SubResource("Resource_mxu3d"), SubResource("Resource_4cth6"), SubResource("Resource_7s2bj")])
 button_press_anim = SubResource("Resource_55gc4")
 button_hover_anim = SubResource("Resource_n2ux7")
+back_button_menu = NodePath("../quit_menu")
 
-[node name="play_menu" parent="." unique_id=2038750279 instance=ExtResource("1_aw56r")]
+[node name="play_menu" parent="." unique_id=2038750279 node_paths=PackedStringArray("back_button_menu") instance=ExtResource("1_aw56r")]
 visible = false
 layout_mode = 1
 visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_jeomw"), SubResource("Resource_k4wwd"), SubResource("Resource_wspli"), SubResource("Resource_aasxr"), SubResource("Resource_5qh3i"), SubResource("Resource_tdayq"), SubResource("Resource_un7c6"), SubResource("Resource_0v2a5")])
 button_press_anim = SubResource("Resource_55gc4")
 button_hover_anim = SubResource("Resource_n2ux7")
+back_button_menu = NodePath("../start_Menu")
 
-[node name="options_menu" parent="." unique_id=1146284057 instance=ExtResource("1_aw56r")]
+[node name="options_menu" parent="." unique_id=1146284057 node_paths=PackedStringArray("back_button_menu") instance=ExtResource("1_aw56r")]
 visible = false
 layout_mode = 1
 visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_5pew3"), SubResource("Resource_5pjdf"), SubResource("Resource_34fmv"), SubResource("Resource_8lixl"), SubResource("Resource_x3cxq"), SubResource("Resource_kossj"), SubResource("Resource_ceho6"), SubResource("Resource_nssm8")])
 button_press_anim = SubResource("Resource_55gc4")
 button_hover_anim = SubResource("Resource_n2ux7")
+back_button_menu = NodePath("../start_Menu")
+save_on_back_button = false
 
-[node name="audio_option_menu" parent="." unique_id=1720989228 instance=ExtResource("1_aw56r")]
+[node name="audio_option_menu" parent="." unique_id=1720989228 node_paths=PackedStringArray("back_button_menu") instance=ExtResource("1_aw56r")]
 visible = false
 layout_mode = 1
 visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_rr8xp"), SubResource("Resource_su4du"), SubResource("Resource_xujg8"), SubResource("Resource_7qefg"), SubResource("Resource_hab3u"), SubResource("Resource_mv06r"), SubResource("Resource_hqo3k")])
 button_press_anim = SubResource("Resource_55gc4")
 button_hover_anim = SubResource("Resource_n2ux7")
+back_button_menu = NodePath("../options_menu")
 
-[node name="video_option_menu" parent="." unique_id=577510484 instance=ExtResource("1_aw56r")]
+[node name="video_option_menu" parent="." unique_id=577510484 node_paths=PackedStringArray("back_button_menu") instance=ExtResource("1_aw56r")]
 visible = false
 layout_mode = 1
 visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_rr8xp"), SubResource("Resource_4gulv"), SubResource("Resource_om5fx"), SubResource("Resource_50pfd"), SubResource("Resource_f5sey"), SubResource("Resource_n0cm6")])
 button_press_anim = SubResource("Resource_55gc4")
 button_hover_anim = SubResource("Resource_n2ux7")
+back_button_menu = NodePath("../options_menu")
 
-[node name="keyboard_input_menu" parent="." unique_id=156141385 instance=ExtResource("1_aw56r")]
+[node name="keyboard_input_menu" parent="." unique_id=156141385 node_paths=PackedStringArray("back_button_menu") instance=ExtResource("1_aw56r")]
 visible = false
 layout_mode = 1
 visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_62inh"), SubResource("Resource_vllhe"), SubResource("Resource_om5fx"), SubResource("Resource_6pcm4"), SubResource("Resource_bs0jo"), SubResource("Resource_yhgsf"), SubResource("Resource_sqlye"), SubResource("Resource_obp4u"), SubResource("Resource_hqo3k")])
 button_press_anim = SubResource("Resource_55gc4")
 button_hover_anim = SubResource("Resource_n2ux7")
+back_button_menu = NodePath("../options_menu")
 
-[node name="QoL_menu" parent="." unique_id=731191671 instance=ExtResource("1_aw56r")]
+[node name="QoL_menu" parent="." unique_id=731191671 node_paths=PackedStringArray("back_button_menu") instance=ExtResource("1_aw56r")]
 visible = false
 layout_mode = 1
-visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_rr8xp"), SubResource("Resource_kxba6"), SubResource("Resource_om5fx"), SubResource("Resource_eo4d0"), SubResource("Resource_uqghw")])
+visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_rr8xp"), SubResource("Resource_kxba6"), SubResource("Resource_om5fx"), SubResource("Resource_eo4d0"), SubResource("Resource_eqbts")])
 button_press_anim = SubResource("Resource_55gc4")
 button_hover_anim = SubResource("Resource_n2ux7")
+back_button_menu = NodePath("../options_menu")
 
-[node name="achievement_menu" parent="." unique_id=1311632692 instance=ExtResource("1_aw56r")]
+[node name="achievement_menu" parent="." unique_id=1311632692 node_paths=PackedStringArray("back_button_menu") instance=ExtResource("1_aw56r")]
 visible = false
 layout_mode = 1
 visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_uqghw")])
 button_press_anim = SubResource("Resource_55gc4")
 button_hover_anim = SubResource("Resource_n2ux7")
+back_button_menu = NodePath("../start_Menu")
 
-[node name="extra_menu" parent="." unique_id=2036755983 instance=ExtResource("1_aw56r")]
+[node name="extra_menu" parent="." unique_id=2036755983 node_paths=PackedStringArray("back_button_menu") instance=ExtResource("1_aw56r")]
 visible = false
 layout_mode = 1
 visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_rr8xp"), SubResource("Resource_4vc23"), SubResource("Resource_om5fx"), SubResource("Resource_rl7yl"), SubResource("Resource_uqghw")])
 button_press_anim = SubResource("Resource_55gc4")
 button_hover_anim = SubResource("Resource_n2ux7")
+back_button_menu = NodePath("../start_Menu")
 
-[node name="quit_menu" parent="." unique_id=301975963 instance=ExtResource("1_aw56r")]
+[node name="quit_menu" parent="." unique_id=301975963 node_paths=PackedStringArray("back_button_menu") instance=ExtResource("1_aw56r")]
 visible = false
 layout_mode = 1
-visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_ye08n"), SubResource("Resource_2jqgy"), SubResource("Resource_0j5pn"), SubResource("Resource_vxt2s"), SubResource("Resource_rmu4f")])
+visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_ye08n"), SubResource("Resource_2jqgy"), SubResource("Resource_0j5pn"), SubResource("Resource_gesrj"), SubResource("Resource_rmu4f")])
 button_press_anim = SubResource("Resource_55gc4")
 button_hover_anim = SubResource("Resource_n2ux7")
+back_button_menu = NodePath("../start_Menu")

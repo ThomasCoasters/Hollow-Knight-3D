@@ -25,6 +25,11 @@ signal menu_button_pressed(config: MenuConfigRecource, menu: Menu)
 ## the max amount of columns this node can have
 @export var max_columns: int = 1
 
+## the menu that should open when the back button is pressed
+@export var back_button_menu: Menu
+## if you should save on going back
+@export var save_on_back_button: bool = true
+
 ## the input nodes this menu has
 var menu_inputs: Array[Array] = []
 
