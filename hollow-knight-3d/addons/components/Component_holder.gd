@@ -1,4 +1,4 @@
-@icon("Component_holder.svg")
+@icon("res://addons/at-icons/node/cog.svg")
 @tool
 ## this is the holder for all the components
 class_name Component_holder

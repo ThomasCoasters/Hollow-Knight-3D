@@ -1,4 +1,4 @@
-@icon("transparancy_component.svg")
+@icon("res://addons/at-icons/node/area.svg")
 @tool
 
 ##component used to change the transparancy of objects

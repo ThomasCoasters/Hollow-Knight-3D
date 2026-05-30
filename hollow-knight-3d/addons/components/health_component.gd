@@ -1,4 +1,4 @@
-@icon("health_component.svg")
+@icon("res://addons/at-icons/node3d/heart.svg")
 @tool
 
 ##component used to act as an health system

@@ -1,4 +1,4 @@
-@icon("Component_holder.svg")
+@icon("res://addons/at-icons/node3d/archive.svg")
 @tool
 ## component that detects when hitbox components hit it with customisable settings
 class_name detector_component

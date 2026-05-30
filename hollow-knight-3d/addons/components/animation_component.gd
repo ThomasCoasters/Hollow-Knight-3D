@@ -1,4 +1,4 @@
-@icon("animation_component.svg")
+@icon("res://addons/at-icons/node3d/clapperboard.svg")
 @tool
 
 ##component used to apply made animations to 3D models

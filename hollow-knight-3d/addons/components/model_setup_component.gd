@@ -1,4 +1,4 @@
-@icon("model_setup_component.svg")
+@icon("res://addons/at-icons/node/bulldozer.svg")
 @tool
 
 ## creates rigid bodies for every node that has "cell" in it's name

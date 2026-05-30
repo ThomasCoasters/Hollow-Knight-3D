@@ -1,4 +1,4 @@
-@icon("spawn_pooled_component.svg")
+@icon("res://addons/at-icons/node/server.svg")
 @tool
 
 ##component used to spawn objects and pool them for future use
