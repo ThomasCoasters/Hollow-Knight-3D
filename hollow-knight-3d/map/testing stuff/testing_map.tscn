@@ -5,23 +5,55 @@
 [ext_resource type="Texture2D" uid="uid://c4a3xkfq5rqq1" path="res://Environments/Floor/rocks_normal.png" id="3_om8so"]
 [ext_resource type="PackedScene" uid="uid://btvsqbs3x5wi8" path="res://Environments/scenes/light stuff/lantern.tscn" id="4_mmdmt"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_bn70x"]
-sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
-ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
-ground_energy_multiplier = 0.0
+[sub_resource type="Gradient" id="Gradient_mmdmt"]
+offsets = PackedFloat32Array(0, 0.19469027, 0.820059, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.1197, 0.14313334, 0.19, 1, 0.83137256, 0.78431374, 0.74509805, 1, 1, 1, 1, 1)
 
-[sub_resource type="Sky" id="Sky_re2a8"]
-sky_material = SubResource("ProceduralSkyMaterial_bn70x")
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_om8so"]
+gradient = SubResource("Gradient_mmdmt")
 
-[sub_resource type="Environment" id="Environment_yeoaq"]
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_mmdmt"]
+sky_top_color = Color(0.28397426, 0.46887124, 0.61586636, 1)
+
+[sub_resource type="Sky" id="Sky_mmdmt"]
+sky_material = SubResource("ProceduralSkyMaterial_mmdmt")
+
+[sub_resource type="Environment" id="Environment_mmdmt"]
 background_mode = 2
-sky = SubResource("Sky_re2a8")
-tonemap_mode = 4
+sky = SubResource("Sky_mmdmt")
+ambient_light_sky_contribution = 0.74
+ambient_light_energy = 0.0
+tonemap_mode = 2
+tonemap_exposure = 1.44
+tonemap_white = 2.05
+ssao_enabled = true
+ssao_light_affect = 1.0
+glow_enabled = true
+glow_levels/1 = 1.0
+glow_levels/2 = 1.0
+glow_levels/3 = 1.0
+glow_levels/4 = 1.0
+glow_levels/5 = 1.0
+glow_levels/6 = 1.0
+glow_levels/7 = 1.0
+glow_normalized = true
+glow_intensity = 0.1
+glow_bloom = 1.0
+glow_blend_mode = 0
+fog_enabled = true
+fog_light_energy = 0.42
+fog_sun_scatter = 1.0
+fog_sky_affect = 0.471
+fog_depth_curve = 1.3195084
+fog_depth_begin = 0.0
+fog_depth_end = 31.5
 volumetric_fog_enabled = true
-volumetric_fog_density = 0.15
-volumetric_fog_albedo = Color(0.7882353, 0.7647059, 1, 1)
-volumetric_fog_emission = Color(0.11820447, 0.11823169, 0.30767173, 1)
-volumetric_fog_detail_spread = 6.0
+volumetric_fog_density = 0.1077
+volumetric_fog_albedo = Color(0.5411765, 0.61960787, 1, 1)
+volumetric_fog_emission = Color(0, 0, 0.07058824, 1)
+volumetric_fog_sky_affect = 0.812
+adjustment_enabled = true
+adjustment_color_correction = SubResource("GradientTexture1D_om8so")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_bn70x"]
 size = Vector3(40, 0.5, 40)
@@ -35,13 +67,15 @@ specular_mode = 1
 albedo_color = Color(1.0413129, 1.0413129, 1.0413129, 1)
 albedo_texture = ExtResource("1_jpnhr")
 normal_enabled = true
-normal_scale = 10.0
+normal_scale = 5.0
 normal_texture = ExtResource("3_om8so")
 ao_enabled = true
 ao_texture = ExtResource("2_mmdmt")
 uv1_scale = Vector3(0.6, 0.6, 0.6)
 uv1_triplanar = true
 uv2_scale = Vector3(10, 10, 10)
+proximity_fade_distance = 2458.59
+stencil_flags = 2
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_jpnhr"]
 size = Vector3(10, 5, 10)
@@ -49,14 +83,22 @@ size = Vector3(10, 5, 10)
 [sub_resource type="BoxMesh" id="BoxMesh_mmdmt"]
 size = Vector3(10, 5, 10)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_mmdmt"]
+size = Vector3(40, 3, 40)
+
+[sub_resource type="BoxMesh" id="BoxMesh_om8so"]
+size = Vector3(40, 3, 40)
+
 [node name="TestingMap" type="Node3D" unique_id=1518694753]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=336694027]
-environment = SubResource("Environment_yeoaq")
+environment = SubResource("Environment_mmdmt")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1400290419]
-transform = Transform3D(-0.9788115, -0.122295156, 0.16423176, 0.08756337, 0.47502905, 0.8756027, -0.18509679, 0.87143064, -0.45425525, 0, 0, 0)
+transform = Transform3D(0.6051218, 0.4859711, -0.6306027, 0.055169187, 0.7645817, 0.64216137, 0.79421914, -0.42337567, 0.43585438, 0, 0, 0)
 light_color = Color(0.8862745, 0.8627451, 1, 1)
+light_energy = 2.6
+light_volumetric_fog_energy = 4.158
 shadow_enabled = true
 directional_shadow_mode = 1
 
@@ -75,6 +117,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_6otq6")
 
 [node name="CollisionShape3D2" type="CollisionShape3D" parent="Enviroment/StaticBody3D" unique_id=870804919]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.865569, 1.2269545, -8.150119)
+visible = false
 shape = SubResource("BoxShape3D_jpnhr")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="Enviroment/StaticBody3D" unique_id=864808952]
@@ -84,6 +127,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_6otq6")
 
 [node name="CollisionShape3D3" type="CollisionShape3D" parent="Enviroment/StaticBody3D" unique_id=863873896]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.4847164, -0.9269943, -1.5722399)
+visible = false
 shape = SubResource("BoxShape3D_jpnhr")
 
 [node name="MeshInstance3D3" type="MeshInstance3D" parent="Enviroment/StaticBody3D" unique_id=325185065]
@@ -91,5 +135,28 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.4847164, -0.9269943, -1.572
 mesh = SubResource("BoxMesh_mmdmt")
 surface_material_override/0 = SubResource("StandardMaterial3D_6otq6")
 
-[node name="lantern" parent="." unique_id=1624238617 instance=ExtResource("4_mmdmt")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 10.490992, 1.5865371, 1.9368525)
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="Enviroment/StaticBody3D" unique_id=950670774]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -6.7933226, 15.342146, 15.936695)
+visible = false
+shape = SubResource("BoxShape3D_mmdmt")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="Enviroment/StaticBody3D" unique_id=1115109327]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -6.7933226, 15.342146, 15.936695)
+mesh = SubResource("BoxMesh_om8so")
+surface_material_override/0 = SubResource("StandardMaterial3D_6otq6")
+
+[node name="objects" type="Node3D" parent="." unique_id=1590142869]
+
+[node name="lanterns" type="Node3D" parent="objects" unique_id=1877779741]
+
+[node name="lantern" parent="objects/lanterns" unique_id=1624238617 instance=ExtResource("4_mmdmt")]
+transform = Transform3D(-0.999976, 0, -0.006928953, 0, 1, 0, 0.006928953, 0, -0.999976, 10.490992, 1.5865371, 1.9368525)
+
+[node name="lantern2" parent="objects/lanterns" unique_id=1617135321 instance=ExtResource("4_mmdmt")]
+transform = Transform3D(0.84554154, 0, 0.53390974, 0, 1, 0, -0.53390974, 0, 0.84554154, 4.942151, 1.5865371, -2.2567987)
+
+[node name="lantern3" parent="objects/lanterns" unique_id=1747705617 instance=ExtResource("4_mmdmt")]
+transform = Transform3D(-0.8689426, 0, 0.49491277, 0, 1, 0, -0.49491277, 0, -0.8689426, -2.032, 0.25, 4.85)
+
+[node name="lantern4" parent="objects/lanterns" unique_id=1674448776 instance=ExtResource("4_mmdmt")]
+transform = Transform3D(0.38667873, 0, 0.92221445, 0, 1, 0, -0.92221445, 0, 0.38667873, -9.649, 0.25, 1.555)

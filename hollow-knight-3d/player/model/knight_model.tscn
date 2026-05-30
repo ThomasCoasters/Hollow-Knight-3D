@@ -24,11 +24,13 @@ shader_parameter/color = Color(0, 0, 0, 0)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6cebr"]
 next_pass = SubResource("ShaderMaterial_awyfk")
 albedo_color = Color(0, 0, 0, 1)
+stencil_flags = 2
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jbdqp"]
 next_pass = SubResource("ShaderMaterial_awyfk")
 albedo_texture = ExtResource("3_hrbeg")
 roughness_texture = ExtResource("4_awyfk")
+stencil_flags = 2
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_flgo1"]
 next_pass = SubResource("ShaderMaterial_awyfk")
@@ -37,11 +39,13 @@ metallic = 1.0
 roughness_texture = ExtResource("7_62uqp")
 normal_enabled = true
 normal_texture = ExtResource("6_6cebr")
+stencil_flags = 2
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_p3dbf"]
 next_pass = SubResource("ShaderMaterial_awyfk")
 albedo_texture = ExtResource("8_fr5qo")
 roughness_texture = ExtResource("9_jrrs2")
+stencil_flags = 2
 
 [node name="knight_model" unique_id=2040427555 node_paths=PackedStringArray("animation_comp", "transparancy_comp") instance=ExtResource("1_tx3tu")]
 script = ExtResource("2_u5ohn")

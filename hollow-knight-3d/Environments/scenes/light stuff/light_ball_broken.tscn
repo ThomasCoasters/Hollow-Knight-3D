@@ -310,6 +310,11 @@ surface_material_override/0 = SubResource("StandardMaterial3D_l87sn")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="broken_light_ball/fractured_sphere_cell_001_Rigid" unique_id=1641025007]
 shape = SubResource("ConvexPolygonShape3D_ug7ud")
 
+[node name="OmniLight3D" type="OmniLight3D" parent="broken_light_ball/fractured_sphere_cell_001_Rigid" unique_id=1097884790]
+light_energy = 0.7
+omni_range = 0.5
+omni_shadow_mode = 0
+
 [node name="fractured_sphere_cell_002_Rigid" type="RigidBody3D" parent="broken_light_ball" unique_id=1817061982]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.72034043, 0.48560533, -0.28528124)
 
@@ -332,7 +337,7 @@ shape = SubResource("ConvexPolygonShape3D_l87sn")
 
 [node name="OmniLight3D" type="OmniLight3D" parent="broken_light_ball/fractured_sphere_cell_004_Rigid" unique_id=77375687]
 light_energy = 0.7
-omni_range = 1.0
+omni_range = 0.5
 omni_shadow_mode = 0
 
 [node name="fractured_sphere_cell_005_Rigid" type="RigidBody3D" parent="broken_light_ball" unique_id=1098712230]
@@ -354,6 +359,11 @@ surface_material_override/0 = SubResource("StandardMaterial3D_l87sn")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="broken_light_ball/fractured_sphere_cell_007_Rigid" unique_id=1978397973]
 shape = SubResource("ConvexPolygonShape3D_fwl08")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="broken_light_ball/fractured_sphere_cell_007_Rigid" unique_id=312163326]
+light_energy = 0.7
+omni_range = 0.5
+omni_shadow_mode = 0
 
 [node name="fractured_sphere_cell_008_Rigid" type="RigidBody3D" parent="broken_light_ball" unique_id=1712182508]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.17886892, -0.36297065, 0.45407072)
