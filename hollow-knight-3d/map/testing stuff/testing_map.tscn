@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://f7wuhblp3kqw" path="res://Environments/Floor/rocks_AO.png" id="2_mmdmt"]
 [ext_resource type="Texture2D" uid="uid://c4a3xkfq5rqq1" path="res://Environments/Floor/rocks_normal.png" id="3_om8so"]
 [ext_resource type="PackedScene" uid="uid://btvsqbs3x5wi8" path="res://Environments/scenes/light stuff/lantern.tscn" id="4_mmdmt"]
+[ext_resource type="PackedScene" uid="uid://bvrpkvlt1oahp" path="res://Geo/geo.tscn" id="5_om8so"]
 
 [sub_resource type="Gradient" id="Gradient_mmdmt"]
 offsets = PackedFloat32Array(0, 0.19469027, 0.820059, 1)
@@ -160,3 +161,147 @@ transform = Transform3D(-0.8689426, 0, 0.49491277, 0, 1, 0, -0.49491277, 0, -0.8
 
 [node name="lantern4" parent="objects/lanterns" unique_id=1674448776 instance=ExtResource("4_mmdmt")]
 transform = Transform3D(0.38667873, 0, 0.92221445, 0, 1, 0, -0.92221445, 0, 0.38667873, -9.649, 0.25, 1.555)
+
+[node name="Geo" parent="." unique_id=1098906034 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.110785, 0.67354614, 11.866686)
+
+[node name="Geo2" parent="." unique_id=1255543839 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.063472, 1.1594813, 12.166985)
+
+[node name="Geo3" parent="." unique_id=854125587 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.30423, 1.3043995, 11.944439)
+
+[node name="Geo4" parent="." unique_id=1545372987 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.110785, 1.0075171, 11.586183)
+
+[node name="Geo5" parent="." unique_id=493432741 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.063472, 1.4934522, 11.886481)
+
+[node name="Geo6" parent="." unique_id=17019618 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.30423, 1.6383704, 11.663936)
+
+[node name="Geo7" parent="." unique_id=1175132931 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.110785, 0.8091312, 12.070258)
+
+[node name="Geo8" parent="." unique_id=562194445 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.063472, 1.2950664, 12.370557)
+
+[node name="Geo9" parent="." unique_id=1804563288 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.30423, 1.4399846, 12.148011)
+
+[node name="Geo10" parent="." unique_id=1656752626 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.110785, 1.1431022, 11.789755)
+
+[node name="Geo11" parent="." unique_id=1882823089 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.063472, 1.6290373, 12.090054)
+
+[node name="Geo12" parent="." unique_id=1089323113 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.30423, 1.7739555, 11.867508)
+
+[node name="Geo13" parent="." unique_id=1146990253 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.756761, 0.7564189, 11.866686)
+
+[node name="Geo14" parent="." unique_id=1197168344 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.709448, 1.242354, 12.166985)
+
+[node name="Geo15" parent="." unique_id=1163433521 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.950206, 1.3872722, 11.944439)
+
+[node name="Geo16" parent="." unique_id=925112145 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.756761, 1.0903898, 11.586183)
+
+[node name="Geo17" parent="." unique_id=1374325411 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.709448, 1.5763249, 11.886481)
+
+[node name="Geo18" parent="." unique_id=1305724733 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.950206, 1.7212431, 11.663936)
+
+[node name="Geo19" parent="." unique_id=2050021836 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.756761, 0.89200395, 12.070258)
+
+[node name="Geo20" parent="." unique_id=1805244043 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.709448, 1.3779391, 12.370557)
+
+[node name="Geo21" parent="." unique_id=1181077533 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.950206, 1.5228573, 12.148011)
+
+[node name="Geo22" parent="." unique_id=1930790919 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.756761, 1.2259749, 11.789755)
+
+[node name="Geo23" parent="." unique_id=443954895 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.709448, 1.71191, 12.090054)
+
+[node name="Geo24" parent="." unique_id=1134859264 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.950206, 1.8568282, 11.867508)
+
+[node name="Geo25" parent="." unique_id=565398683 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.110785, 1.0888183, 11.786336)
+
+[node name="Geo26" parent="." unique_id=156011035 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.063472, 1.5747534, 12.086635)
+
+[node name="Geo27" parent="." unique_id=1135598097 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.30423, 1.7196716, 11.864089)
+
+[node name="Geo28" parent="." unique_id=1073442779 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.110785, 1.4227892, 11.505833)
+
+[node name="Geo29" parent="." unique_id=2099097646 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.063472, 1.9087243, 11.806131)
+
+[node name="Geo30" parent="." unique_id=1425581033 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.30423, 2.0536425, 11.583586)
+
+[node name="Geo31" parent="." unique_id=500778450 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.110785, 1.2244034, 11.989908)
+
+[node name="Geo32" parent="." unique_id=1790154098 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.063472, 1.7103385, 12.290207)
+
+[node name="Geo33" parent="." unique_id=1525385789 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.30423, 1.8552567, 12.067661)
+
+[node name="Geo34" parent="." unique_id=437682409 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.110785, 1.5583743, 11.709405)
+
+[node name="Geo35" parent="." unique_id=340458805 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.063472, 2.0443094, 12.009704)
+
+[node name="Geo36" parent="." unique_id=858752350 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.30423, 2.1892276, 11.787158)
+
+[node name="Geo37" parent="." unique_id=1637056281 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.756761, 1.171691, 11.786336)
+
+[node name="Geo38" parent="." unique_id=1574111601 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.709448, 1.6576262, 12.086635)
+
+[node name="Geo39" parent="." unique_id=1870803511 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.950206, 1.8025444, 11.864089)
+
+[node name="Geo40" parent="." unique_id=302959420 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.756761, 1.505662, 11.505833)
+
+[node name="Geo41" parent="." unique_id=331178265 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.709448, 1.991597, 11.806131)
+
+[node name="Geo42" parent="." unique_id=1276472254 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.950206, 2.1365151, 11.583586)
+
+[node name="Geo43" parent="." unique_id=752303380 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.756761, 1.307276, 11.989908)
+
+[node name="Geo44" parent="." unique_id=1737642411 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.709448, 1.7932112, 12.290207)
+
+[node name="Geo45" parent="." unique_id=396753141 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.950206, 1.9381294, 12.067661)
+
+[node name="Geo46" parent="." unique_id=1912478122 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.756761, 1.641247, 11.709405)
+
+[node name="Geo47" parent="." unique_id=12016603 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.709448, 2.127182, 12.009704)
+
+[node name="Geo48" parent="." unique_id=1083414375 instance=ExtResource("5_om8so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.950206, 2.2721004, 11.787158)

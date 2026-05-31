@@ -27,7 +27,7 @@ extends component
 
 
 
-## creates rigid bodies on every MeshInstance3D that has "cell" in the name
+## creates rigid bodies on every MeshInstance3D
 func _create_rigids() -> void:
 	# do not continue if this is running in-game
 	if !Engine.is_editor_hint():
@@ -44,7 +44,7 @@ func _create_rigids() -> void:
 	# go through every node
 	for node: Node in children:
 		# check if the name has "cell"
-		if node.name.contains("cell") and node is MeshInstance3D:
+		if node is MeshInstance3D:
 			# the mesh
 			var cell: MeshInstance3D = node
 			

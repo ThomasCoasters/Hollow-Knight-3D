@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://bq050tvb8e6of" path="res://player/camera/Player_camera.tscn" id="2_rkbax"]
 [ext_resource type="Script" uid="uid://6woskccgomag" path="res://Game/recource scripts/InputBufferData.gd" id="2_yllr7"]
 [ext_resource type="Script" uid="uid://1qi0tlwofusy" path="res://addons/components/Component_holder.gd" id="3_wodsf"]
+[ext_resource type="Script" uid="uid://cncoe7sgy4431" path="res://addons/components/detector_component.gd" id="4_7pqkx"]
 [ext_resource type="Script" uid="uid://brro60y7o03e2" path="res://addons/components/health_component.gd" id="4_32hag"]
 [ext_resource type="Script" uid="uid://couw105c3bde4" path="res://addons/godot_state_charts/state_chart.gd" id="4_rgyib"]
 [ext_resource type="Script" uid="uid://c1vp0ojjvaby1" path="res://addons/godot_state_charts/parallel_state.gd" id="5_hg6s5"]
@@ -42,6 +43,10 @@ metadata/_custom_type_script = "uid://6woskccgomag"
 script = ExtResource("2_yllr7")
 max_input_buffer_frames = 8
 metadata/_custom_type_script = "uid://6woskccgomag"
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_uw77l"]
+radius = 0.25
+height = 0.804
 
 [sub_resource type="Resource" id="Resource_uw77l"]
 script = ExtResource("8_s7qer")
@@ -85,7 +90,7 @@ script = ExtResource("11_ebec5")
 guard = SubResource("Resource_yllr7")
 metadata/_custom_type_script = "uid://dgd4i8hrrxfvm"
 
-[node name="Player" type="CharacterBody3D" unique_id=2083664876 node_paths=PackedStringArray("knight", "camera", "health_comp", "pooled_attack_comp", "random_audio_comp")]
+[node name="Player" type="CharacterBody3D" unique_id=2083664876 node_paths=PackedStringArray("knight", "camera", "health_comp", "pooled_attack_comp", "random_audio_comp", "geo_detect_comp")]
 collision_layer = 2
 script = ExtResource("1_g1dw6")
 knight = NodePath("knight_model")
@@ -108,10 +113,22 @@ pogo_angle = -0.5235987755982988
 health_comp = NodePath("Component_holder/HealthComponent")
 pooled_attack_comp = NodePath("Component_holder/pooled_attack")
 random_audio_comp = NodePath("Component_holder/RandomAudioComponent")
+geo_detect_comp = NodePath("Component_holder/Detectors/GeoDetector")
 
 [node name="Component_holder" type="Node" parent="." unique_id=1835810022]
 script = ExtResource("3_wodsf")
 metadata/_custom_type_script = "uid://1qi0tlwofusy"
+
+[node name="Detectors" type="Node" parent="Component_holder" unique_id=1595714416]
+script = ExtResource("3_wodsf")
+
+[node name="GeoDetector" type="Node" parent="Component_holder/Detectors" unique_id=1000757993 node_paths=PackedStringArray("node_3D_parent")]
+script = ExtResource("4_7pqkx")
+position = Vector3(0, 0.384, 0)
+detection_shape = SubResource("CapsuleShape3D_uw77l")
+view_in_editor = false
+node_3D_parent = NodePath("../../..")
+detection_mask = 32
 
 [node name="HealthComponent" type="Node" parent="Component_holder" unique_id=1696518874]
 script = ExtResource("4_32hag")
@@ -324,6 +341,7 @@ one_shot = true
 
 [node name="HudMain" parent="." unique_id=543680684 instance=ExtResource("17_tqiix")]
 
+[connection signal="detected_collider" from="Component_holder/Detectors/GeoDetector" to="." method="_on_geo_detector_detected_collider"]
 [connection signal="camera_mode_changed" from="PlayerCamera" to="." method="_on_player_camera_camera_mode_changed"]
 [connection signal="area_entered" from="camera_detector" to="." method="_on_camera_detector_area_entered"]
 [connection signal="area_exited" from="camera_detector" to="." method="_on_camera_detector_area_exited"]

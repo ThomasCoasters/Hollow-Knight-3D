@@ -8,9 +8,10 @@ enum Type {
 	PLAYER_ATTACK = 1 << 1,
 	ENEMY_BODY    = 1 << 2,
 	ENEMY_ATTACK  = 1 << 3,
-	ENVIRONMENT   = 1 << 4
+	ENVIRONMENT   = 1 << 4,
+	GEO           = 1 << 5,
 }
 
 
 ## string that makes the inspector dropdowns looking nicer
-const FLAGS_STRING: String = "Player Body,Player Attack,Enemy Body,Enemy Attack,Environment"
+const FLAGS_STRING: String = "Player Body,Player Attack,Enemy Body,Enemy Attack,Environment,Geo"

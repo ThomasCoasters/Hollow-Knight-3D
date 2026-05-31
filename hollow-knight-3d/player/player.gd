@@ -152,6 +152,8 @@ var camera_currently_detected: bool = false
 @export var pooled_attack_comp: spawn_pooled_component
 ## the component for playing random audios
 @export var random_audio_comp: random_audio_component
+## the detector that check when geo is collected
+@export var geo_detect_comp: detector_component
 
 #endregion
 
@@ -700,4 +702,18 @@ func load_general_save() -> void:
 	# set the use camera rotation based on the saved option
 	rotation_use_camera = SaveLoad.general_contents[&"QoL"][&"RotationUseCamera"]
 
+#endregion
+
+#region UI/detection stuff
+
+func _on_geo_detector_detected_collider(hitbox: hitbox_component) -> void:
+	var geo_node: Node3D = hitbox.owner
+	var trans_comp: transparancy_component = geo_node.find_child("TransparancyComponent")
+	
+	trans_comp.change_opacity(0.0, 0.4)
+	
+	await trans_comp.transparancy_changing_finished
+	
+	geo_node.queue_free()
+	
 #endregion
