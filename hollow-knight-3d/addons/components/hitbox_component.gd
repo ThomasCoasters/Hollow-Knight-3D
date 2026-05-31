@@ -73,6 +73,22 @@ var Area_Made: Area3D
 			_update_collision_geometry()
 
 @export_group("")
+## if this area is enabled or not
+@export var enabled: bool = true:
+	set(value):
+		# set the value to the new one
+		enabled = value
+		
+		# get the current area
+		var area = null
+		if is_instance_valid(node_3D_parent):
+			area = node_3D_parent.get_node_or_null("GeneratedHitboxArea")
+		else:
+			area = get_node_or_null("GeneratedHitboxArea")
+		
+		# set the area to be dissabled
+		if area: area.set_deferred("monitorable", value)
+
 
 ## if you can view the changes in the editor
 @export var view_in_editor: bool = true:
@@ -137,7 +153,7 @@ func _update_collision_geometry() -> void:
 	var new_area = Area3D.new()
 	new_area.name = "GeneratedHitboxArea"
 	new_area.monitoring = false
-	new_area.monitorable = true
+	new_area.monitorable = enabled
 	Area_Made = new_area
 	
 	new_area.position = position

@@ -8,6 +8,8 @@ extends CharacterBody3D
 @export var knight: Player_Model
 ##player camera
 @export var camera: Player_Camera
+## the HUD
+@export var HUD: HUDMain
 
 
 ## settings for QOL
@@ -707,13 +709,22 @@ func load_general_save() -> void:
 #region UI/detection stuff
 
 func _on_geo_detector_detected_collider(hitbox: hitbox_component) -> void:
+	# increase the geo amount
+	HUD.increase_geo(1)
+	
+	
+	
+	# dissable the geo
+	hitbox.enabled = false
+	
+	# get the root and the transparancy component
 	var geo_node: Node3D = hitbox.owner
 	var trans_comp: transparancy_component = geo_node.find_child("TransparancyComponent")
-	
+	# fade the geo out
 	trans_comp.change_opacity(0.0, 0.4)
-	
+	# wait untill the fade has finished
 	await trans_comp.transparancy_changing_finished
-	
+	# delete the geo node
 	geo_node.queue_free()
-	
+
 #endregion

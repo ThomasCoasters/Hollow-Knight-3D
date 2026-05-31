@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://cfy6ewd8t76kk" path="res://player/HUD/hud_main.gd" id="1_2nrls"]
 [ext_resource type="Texture2D" uid="uid://bo4fs32ov01jd" path="res://player/HUD/HUD main.png" id="1_c64v1"]
 [ext_resource type="PackedScene" uid="uid://drboyx4o62ua7" path="res://player/HUD/mana/HUD_mana.tscn" id="2_6xmvw"]
+[ext_resource type="PackedScene" uid="uid://cbs0lat55ush7" path="res://player/HUD/geo/HUD_Geo.tscn" id="4_332af"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_c64v1"]
 atlas = ExtResource("1_c64v1")
@@ -73,11 +74,12 @@ animations = [{
 "speed": 10.0
 }]
 
-[node name="HudMain" type="Control" unique_id=543680684 node_paths=PackedStringArray("Mana_HUD")]
+[node name="HudMain" type="Control" unique_id=543680684 node_paths=PackedStringArray("Mana_HUD", "Geo_HUD")]
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_2nrls")
 Mana_HUD = NodePath("Player_info/HudMana")
+Geo_HUD = NodePath("Player_info/HudGeo")
 
 [node name="Player_info" type="Control" parent="." unique_id=86257308]
 layout_mode = 1
@@ -104,3 +106,11 @@ offset_top = 30.0
 offset_right = -24.0
 offset_bottom = -10.0
 scale_parent = NodePath("..")
+
+[node name="HudGeo" parent="Player_info" unique_id=952960397 instance=ExtResource("4_332af")]
+layout_mode = 0
+offset_left = 265.0
+offset_top = 162.50002
+offset_right = 265.0
+offset_bottom = 162.50002
+scale = Vector2(1.6, 1.6)

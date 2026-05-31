@@ -19,6 +19,8 @@ var mana: int = 0:
 
 ## the visual of the mana
 @export var Mana_HUD: mana_ball
+## the visuals of the geo
+@export var Geo_HUD: GeoCounter
 
 
 
@@ -44,3 +46,9 @@ func _input(_event: InputEvent) -> void:
 	
 	if Input.is_action_just_pressed("Dash"):
 		remove_mana(11)
+
+
+
+## increases the geo amount
+func increase_geo(amount: int) -> void:
+	Geo_HUD.increase_geo(amount)

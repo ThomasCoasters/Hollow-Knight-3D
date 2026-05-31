@@ -90,11 +90,12 @@ script = ExtResource("11_ebec5")
 guard = SubResource("Resource_yllr7")
 metadata/_custom_type_script = "uid://dgd4i8hrrxfvm"
 
-[node name="Player" type="CharacterBody3D" unique_id=2083664876 node_paths=PackedStringArray("knight", "camera", "health_comp", "pooled_attack_comp", "random_audio_comp", "geo_detect_comp")]
+[node name="Player" type="CharacterBody3D" unique_id=2083664876 node_paths=PackedStringArray("knight", "camera", "HUD", "health_comp", "pooled_attack_comp", "random_audio_comp", "geo_detect_comp")]
 collision_layer = 2
 script = ExtResource("1_g1dw6")
 knight = NodePath("knight_model")
 camera = NodePath("PlayerCamera")
+HUD = NodePath("HudMain")
 rotation_use_camera = false
 inputs_to_buffer = Dictionary[StringName, ExtResource("2_yllr7")]({
 &"Attack": SubResource("Resource_32hag"),

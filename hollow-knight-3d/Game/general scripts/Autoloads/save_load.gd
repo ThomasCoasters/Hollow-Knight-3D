@@ -71,6 +71,10 @@ var DEFAULT_GAME_SAVE: Dictionary = {
 		&"current_map": "res://map/testing stuff/testing_map.tscn",
 		&"player_position": Vector3.ZERO,
 	},
+	
+	&"UI": {
+		&"GeoAmount": 0,
+	}
 }
 
 

@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://f7wuhblp3kqw" path="res://Environments/Floor/rocks_AO.png" id="2_mmdmt"]
 [ext_resource type="Texture2D" uid="uid://c4a3xkfq5rqq1" path="res://Environments/Floor/rocks_normal.png" id="3_om8so"]
 [ext_resource type="PackedScene" uid="uid://btvsqbs3x5wi8" path="res://Environments/scenes/light stuff/lantern.tscn" id="4_mmdmt"]
-[ext_resource type="PackedScene" uid="uid://bvrpkvlt1oahp" path="res://Geo/geo.tscn" id="5_om8so"]
+[ext_resource type="PackedScene" uid="uid://bvrpkvlt1oahp" path="res://Environments/Geo/geo.tscn" id="5_om8so"]
 
 [sub_resource type="Gradient" id="Gradient_mmdmt"]
 offsets = PackedFloat32Array(0, 0.19469027, 0.820059, 1)

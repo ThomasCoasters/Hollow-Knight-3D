@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://c14svevvdow82"
-path="res://.godot/imported/Geo.blend-74132f7bc13eed2126df6354a7ec7b66.scn"
+path="res://.godot/imported/Geo.blend-c548e01f71c782be8ff2243073a196b0.scn"
 
 [deps]
 
-source_file="res://Geo/Model/Geo.blend"
-dest_files=["res://.godot/imported/Geo.blend-74132f7bc13eed2126df6354a7ec7b66.scn"]
+source_file="res://Environments/Geo/Model/Geo.blend"
+dest_files=["res://.godot/imported/Geo.blend-c548e01f71c782be8ff2243073a196b0.scn"]
 
 [params]
 
