@@ -9,6 +9,8 @@ extends Node3D
 ## the detector component that will check if the given thing enters this node
 @export var detect_comp: detector_component
 
+const GEO_SCENE = preload("uid://bvrpkvlt1oahp")
+
 ## if the obj is already broken
 var broken: bool = false
 

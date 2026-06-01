@@ -72,6 +72,9 @@ func increase_geo(amount: int) -> void:
 	
 	# show the increase label
 	_show_increase_label()
+	
+	# change the saved geo amount
+	SaveLoad.current_game_contents[&"UI"][&"GeoAmount"] = current_geo_amount
 
 
 
@@ -84,6 +87,10 @@ func _show_increase_label() -> void:
 		# set the position
 		increase_txt.global_position = current_txt.global_position + Vector2(current_txt.size.x + 40.0, 0.0)
 	
+	# make all other visuals visible
+	if not geo_visual.visible:  geo_visual.visible  = true
+	if not current_txt.visible: current_txt.visible = true
+	
 	
 	
 	# create the tween
@@ -95,10 +102,10 @@ func _show_increase_label() -> void:
 	increase_tween.tween_method(
 		func(value):
 			displayed_increase_amount = roundi(value)
-			increase_txt.text = "+" + str(displayed_increase_amount),
+			increase_txt.text = "+" + str(displayed_increase_amount) if displayed_increase_amount >= 0 else str(displayed_increase_amount),
 		displayed_increase_amount,
 		increasing_geo_amount,
-		increase_wait_time/2
+		0.5
 	)
 
 
@@ -121,11 +128,11 @@ func _visual_increase_geo() -> void:
 			displayed_geo_amount = roundi(start_displayed_amount + start_increase_amount - value)
 			displayed_increase_amount = increasing_geo_amount
 			current_txt.text = str(displayed_geo_amount)
-			increase_txt.text = "+" + str(increasing_geo_amount),
+			increase_txt.text = "+" + str(increasing_geo_amount) if increasing_geo_amount >= 0 else str(increasing_geo_amount),
 			
 		increasing_geo_amount,
 		0.0,
-		0.5
+		0.75
 	)
 	
 	increase_tween.finished.connect(func(): increase_txt.visible = false)

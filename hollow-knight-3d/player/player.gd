@@ -718,13 +718,13 @@ func _on_geo_detector_detected_collider(hitbox: hitbox_component) -> void:
 	hitbox.enabled = false
 	
 	# get the root and the transparancy component
-	var geo_node: Node3D = hitbox.owner
-	var trans_comp: transparancy_component = geo_node.find_child("TransparancyComponent")
+	var geo_node: GeoNode3D = hitbox.owner
+	var trans_comp: transparancy_component = geo_node.trans_comp
 	# fade the geo out
 	trans_comp.change_opacity(0.0, 0.4)
 	# wait untill the fade has finished
 	await trans_comp.transparancy_changing_finished
 	# delete the geo node
-	geo_node.queue_free()
+	geo_node.return_to_pool()
 
 #endregion

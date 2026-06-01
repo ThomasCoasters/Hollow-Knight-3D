@@ -486,14 +486,20 @@ func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
 		# get a refrence of if the save is done and the transition is done
 		var state := {
-			"save_done": false,
+			"saves_done": 0,
+			"saves_needed": 1,
 			"transition_done": false
 		}
 		
+		# if there is a save slot loaded increase the amount of saves needed
+		if current_slot >= 0:
+			state.saves_needed += 1
+		
+		
 		# create listeners for when the signals are finished
 		save_exited.connect(func(_path):
-			state.save_done = true
-		, CONNECT_ONE_SHOT)
+			state.saves_done += 1
+		)
 		transition.on_transition_finished.connect(func():
 			state.transition_done = true
 		, CONNECT_ONE_SHOT)
@@ -502,16 +508,20 @@ func _notification(what: int) -> void:
 		# save the general settings
 		SaveLoad.save_general()
 		
+		# also save the slot if that is loaded
+		if current_slot >= 0:
+			SaveLoad.save_game_slot(current_slot)
+		
 		# play the transition
 		transition.play_transition(false, true)
 		
 		
 		# wait until both signals are done
-		while not state.save_done or not state.transition_done:
+		while state.saves_done < state.saves_needed or not state.transition_done:
 			await get_tree().process_frame
 		
 		# wait a small extra amount to let the save animation finish
-		await get_tree().create_timer(0.7).timeout
+		await get_tree().create_timer(0.5).timeout
 		
 		
 		# quit the game

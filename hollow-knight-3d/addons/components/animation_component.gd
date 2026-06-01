@@ -51,7 +51,7 @@ func _process(_delta):
 		return
 	
 	#do not run when no animation is playing
-	if current_anim == "":
+	if current_anim == "" or current_anim == "RESET":
 		return
 	
 	#if the animation has been playing to long reset it to the starting time
@@ -125,8 +125,6 @@ func set_animation_segment(anim_name: String, one_time: bool = false, play_if_cu
 					if saved_segment != current_segment: # check if the current animation is not a one time
 						#get the current saved animation
 						var saved_anim = animation_to_times.find_key(saved_segment) if not null else "null"
-						
-						print(saved_anim)
 						
 						if animation_priority[saved_anim] < animation_priority[anim_name] || saved_anim == "RESET" || saved_anim == "null": # change the saved segment when the saved anim is a lower priority
 							saved_segment = segment # set the saved segment to the new one

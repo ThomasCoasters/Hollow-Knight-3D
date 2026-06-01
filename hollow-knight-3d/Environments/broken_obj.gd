@@ -28,17 +28,22 @@ var rigid_bodies: Array[Node] = []
 ## (optional) transparancy component to make all the meshes fade out
 @export var transparancy_comp: transparancy_component
 
-
-
 func _ready() -> void:
 	# get all rigid bodies
 	_get_all_rigid_bodies()
+	
+	
+	GlobalSpawnPool.register_pool("Geo", preload("uid://bvrpkvlt1oahp"), 10)
+	var a = GlobalSpawnPool.request_objects("Geo", 50)
+	
+	for i in a:
+		i.global_position = global_position + Vector3(0, 1, 0)
 	
 	# add a random velocity to all rigid bodies
 	for rigid: RigidBody3D in rigid_bodies:
 		if rigid is RigidBody3D:
 			# apply a random force
-			rigid.apply_force(
+			rigid.apply_central_impulse(
 				Vector3(
 					randf_range(-random_starting_force.x, random_starting_force.x),
 					randf_range(-random_starting_force.y, random_starting_force.y),

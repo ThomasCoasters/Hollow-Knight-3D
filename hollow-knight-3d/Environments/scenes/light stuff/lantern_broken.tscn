@@ -1969,7 +1969,7 @@ points = PackedVector3Array(-0.051226385, 0.031777777, 0.0013748845, -0.05122638
 
 [node name="lanternBroken" type="Node3D" unique_id=359740205 node_paths=PackedStringArray("transparancy_comp")]
 script = ExtResource("1_k3qtr")
-random_starting_force = Vector3(150, 50, 150)
+random_starting_force = Vector3(2, 1, 2)
 transparancy_comp = NodePath("Component_holder/TransparancyComponent")
 
 [node name="Component_holder" type="Node" parent="." unique_id=922794201]
