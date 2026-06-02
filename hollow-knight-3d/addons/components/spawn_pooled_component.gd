@@ -1,4 +1,4 @@
-@icon("res://addons/at-icons/node/server.svg")
+@icon("spawn_pooled_component.svg")
 @tool
 
 ##component used to spawn objects and pool them for future use
@@ -12,7 +12,7 @@ extends component
 ##amount of objects it spawns at the start (can still create more when needed)
 @export var initial_object_count: int = 1 
 
-
+## settings for a singular pooled object (node)
 class pooled_object_settings:
 	var node: Node
 	var is_used: bool = false

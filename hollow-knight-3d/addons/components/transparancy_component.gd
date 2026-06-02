@@ -1,4 +1,4 @@
-@icon("res://addons/at-icons/node/area.svg")
+@icon("transparancy_component.svg")
 @tool
 
 ##component used to change the transparancy of objects
@@ -12,6 +12,9 @@ extends component
 
 ##mesh that should either be fully invisible or fully visible at all times
 @export var hidden_mesh: Array[MeshInstance3D]
+
+## a exposed opacity value for a multimesh member component to read
+var multimesh_current_opacity: float = 1.0
 
 
 ## called when the mesh transparancy changing process is finished
@@ -87,4 +90,20 @@ func change_opacity(to: float = 0.0, time: float = 0.5) -> void:
 	for tween in tweens:
 		await tween.finished
 	
+	transparancy_changing_finished.emit()
+
+
+
+## changes opacity for a multimesh member component
+func change_multimesh_opacity(to: float = 0.0, time: float = 0.5) -> void:
+	# do not run in editor
+	if Engine.is_editor_hint(): return
+	
+	# change the multimesh_current_opacity using a tween
+	var tween := create_tween()
+	tween.tween_property(self, "multimesh_current_opacity", to, time)
+	
+	# wait untill the tween is done
+	await tween.finished
+	# emit the finished signal
 	transparancy_changing_finished.emit()

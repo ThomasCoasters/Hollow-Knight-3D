@@ -27,10 +27,10 @@ void fragment() {
 	//sets the visible color
 	ALBEDO = color.rgb;
 	//sets the transparancy (alpha)
-	ALPHA = alpha;
+	ALPHA = alpha * COLOR.a;
 	
 	
-	if (alpha <= 0.01) {
+	if (alpha <= 0.01 || COLOR.a <= 0.01) {
 		//discards removes it
 		discard;
 	}

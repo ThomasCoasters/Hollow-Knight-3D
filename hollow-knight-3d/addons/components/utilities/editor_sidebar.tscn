@@ -1,18 +1,16 @@
 [gd_scene format=3 uid="uid://bo63f6sjklvg2"]
 
 [ext_resource type="Script" uid="uid://dglibsayi1w7q" path="res://addons/components/utilities/editor_sidebar.gd" id="1_4bt41"]
-[ext_resource type="Texture2D" uid="uid://daika5br8vibl" path="res://addons/at-icons/node/area.svg" id="3_70jva"]
-[ext_resource type="Texture2D" uid="uid://xiogdm1g0g02" path="res://addons/at-icons/node3d/clapperboard.svg" id="3_xr380"]
-[ext_resource type="Texture2D" uid="uid://btdf433smtfa" path="res://addons/at-icons/node/bulldozer.svg" id="4_dpq78"]
-[ext_resource type="Texture2D" uid="uid://d31a5ksum63dg" path="res://addons/at-icons/node3d/heart.svg" id="6_xr380"]
-[ext_resource type="Texture2D" uid="uid://cbrc6nruckpqs" path="res://addons/at-icons/node/server.svg" id="7_khnh2"]
-[ext_resource type="Texture2D" uid="uid://bqq5h3ho2qxb3" path="res://addons/at-icons/control/speaker_low.svg" id="8_don3p"]
-[ext_resource type="Texture2D" uid="uid://s4fo3fyimt6w" path="res://addons/at-icons/node3d/arrow_down_to_bracket.svg" id="8_dr364"]
+[ext_resource type="Texture2D" uid="uid://bycsblt2nt2xh" path="res://addons/components/cog.svg" id="2_xh01w"]
+[ext_resource type="Texture2D" uid="uid://daika5br8vibl" path="res://addons/components/transparancy_component.svg" id="3_70jva"]
+[ext_resource type="Texture2D" uid="uid://xiogdm1g0g02" path="res://addons/components/animation_component.svg" id="3_xr380"]
+[ext_resource type="Texture2D" uid="uid://btdf433smtfa" path="res://addons/components/model_setup_component.svg" id="4_dpq78"]
+[ext_resource type="Texture2D" uid="uid://d31a5ksum63dg" path="res://addons/components/health_component.svg" id="6_xr380"]
+[ext_resource type="Texture2D" uid="uid://blos3fbppe84o" path="res://addons/components/spawn_pooled_component.svg" id="7_yvq5k"]
+[ext_resource type="Texture2D" uid="uid://bqq5h3ho2qxb3" path="res://addons/components/random_audio_component.svg" id="8_don3p"]
+[ext_resource type="Texture2D" uid="uid://s4fo3fyimt6w" path="res://addons/components/hitbox_component.svg" id="8_dr364"]
 [ext_resource type="Texture2D" uid="uid://vga3avpb4gyh" path="res://addons/godot_state_charts/toggle_sidebar.svg" id="9_dqcj0"]
-[ext_resource type="Texture2D" uid="uid://b4qxyuf8d7t2o" path="res://addons/at-icons/node3d/archive.svg" id="9_dr364"]
-
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_khnh2"]
-load_path = "res://.godot/imported/cog.svg-72f7065242f105ef48695a2967c87017.editor.ctex"
+[ext_resource type="Texture2D" uid="uid://b4qxyuf8d7t2o" path="res://addons/components/detector_component.svg" id="9_dr364"]
 
 [node name="EditorSidebar" type="MarginContainer" unique_id=1536614234]
 anchors_preset = 15
@@ -75,7 +73,7 @@ layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 tooltip_text = "ComponentHolder"
-icon = SubResource("CompressedTexture2D_khnh2")
+icon = ExtResource("2_xh01w")
 icon_alignment = 1
 
 [node name="3DModelSection" type="VBoxContainer" parent="VBoxContainer/AddSection/AddGridContainer" unique_id=1745078646]
@@ -166,7 +164,7 @@ layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 tooltip_text = "SpawnPooledComponent"
-icon = ExtResource("7_khnh2")
+icon = ExtResource("7_yvq5k")
 icon_alignment = 1
 
 [node name="Audio_Section" type="VBoxContainer" parent="VBoxContainer/AddSection/AddGridContainer" unique_id=1139868481]

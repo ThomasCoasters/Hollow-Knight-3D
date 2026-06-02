@@ -2,7 +2,7 @@
 class_name global_spawn_pooler
 extends Node
 
-## settings for a pooled object
+## settings for a singular pooled object (node)
 class pooled_object_settings:
 	var node: Node
 	var is_used: bool = false

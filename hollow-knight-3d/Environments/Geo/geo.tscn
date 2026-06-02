@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://dxxd3ncv768ql" path="res://addons/components/model_setup_component.gd" id="2_1ctx0"]
 [ext_resource type="Script" uid="uid://cveopkocrno8h" path="res://addons/components/hitbox_component.gd" id="3_1ctx0"]
 [ext_resource type="Script" uid="uid://dgxjuqsw3is00" path="res://addons/components/transparancy_component.gd" id="4_ge7g4"]
-[ext_resource type="Shader" uid="uid://ds51ubc2dt8js" path="res://Game/general shaders/outline.gdshader" id="6_72efp"]
+[ext_resource type="Script" uid="uid://gag7ecndeowc" path="res://addons/components/multi_mesh_member_component.gd" id="6_0weeb"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_1ctx0"]
 radius = 3.5
@@ -43,15 +43,9 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_qqg84")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_0weeb"]
-render_priority = 0
-shader = ExtResource("6_72efp")
-shader_parameter/alpha = 1.0
-shader_parameter/outline_thickness = 0.2
-shader_parameter/color = Color(0, 0, 0, 0)
-
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i8jom"]
-next_pass = SubResource("ShaderMaterial_0weeb")
+transparency = 4
+vertex_color_use_as_albedo = true
 albedo_color = Color(0.84699124, 0.7122631, 0.45299727, 1)
 metallic = 1.0
 roughness = 0.5
@@ -62,7 +56,7 @@ points = PackedVector3Array(2.0359037, 0.30104962, 0.2521624, -0.54019713, -1.61
 [node name="Geo" type="Node3D" unique_id=994437059 node_paths=PackedStringArray("rigid_body", "light", "hitbox_comp", "trans_comp")]
 script = ExtResource("1_gbdrv")
 rigid_body = NodePath("Geo/detail_Rigid")
-light = NodePath("Geo/detail_Rigid/OmniLight3D")
+light = NodePath("")
 hitbox_comp = NodePath("Component_holder/HitboxComponent")
 trans_comp = NodePath("Component_holder/TransparancyComponent")
 random_starting_force = Vector3(5, 5, 5)
@@ -81,12 +75,20 @@ chosen_node = NodePath("../../Geo")
 script = ExtResource("3_1ctx0")
 collision_shape = SubResource("SphereShape3D_1ctx0")
 view_in_editor = false
-node_3D_parent = NodePath("../../Geo/detail_Rigid/CollisionShape3D")
+node_3D_parent = NodePath("../../Geo/detail_Rigid")
 collider_type = 32
 
 [node name="TransparancyComponent" type="Node" parent="Component_holder" unique_id=46907090 node_paths=PackedStringArray("meshes")]
 script = ExtResource("4_ge7g4")
 meshes = [NodePath("../../Geo/detail_Rigid/detail")]
+
+[node name="multi_mesh_member_component" type="Node" parent="Component_holder" unique_id=1295952870 node_paths=PackedStringArray("mesh_instance", "transform_node", "transparency_component")]
+script = ExtResource("6_0weeb")
+multimesh_id = "Geo"
+mesh_instance = NodePath("../../Geo/detail_Rigid/detail")
+transform_node = NodePath("../../Geo/detail_Rigid")
+transparency_component = NodePath("../TransparancyComponent")
+metadata/_custom_type_script = "uid://gag7ecndeowc"
 
 [node name="Geo" type="Node3D" parent="." unique_id=1856924119]
 transform = Transform3D(0.07, 0, 0, 0, 0.07, 0, 0, 0, 0.07, 0, 0, 0)
@@ -101,7 +103,4 @@ surface_material_override/0 = SubResource("StandardMaterial3D_i8jom")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Geo/detail_Rigid" unique_id=1888450738]
 shape = SubResource("ConvexPolygonShape3D_i8jom")
 
-[node name="OmniLight3D" type="OmniLight3D" parent="Geo/detail_Rigid" unique_id=1819156218]
-light_energy = 0.7
-omni_range = 0.7
-omni_shadow_mode = 0
+[connection signal="sleeping_state_changed" from="Geo/detail_Rigid" to="." method="_on_detail_rigid_sleeping_state_changed"]

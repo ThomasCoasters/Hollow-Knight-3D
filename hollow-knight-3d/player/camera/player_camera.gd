@@ -74,10 +74,17 @@ var wanted_rotation: Vector3 = Vector3.ZERO
 
 ##the speed the mouse turns the camera
 @export var mouse_sensibility: float = 0.005
-##minimal vertical angle for the camera
-@export_range(-90, 0.0, 0.1, "radians_as_degrees") var min_vertical_angle: float = -PI/2.5
-##maximal vertical angle for the camera
-@export_range(0.0, 90.0, 0.1, "radians_as_degrees") var max_vertical_angle: float = PI/4
+## how many degrees the camera can go
+@export var camera_limits: Dictionary[String, Vector2] = {
+	"3rd_person": Vector2(-72, 45),
+	"1st_person": Vector2(-60, 60),
+	"free": Vector2(-90, 90)
+}
+
+## the current minimum angle for the camera
+var current_min_angle: float = -PI/2.5
+## the current max angle for the camera
+var current_max_angle: float = PI/4
 
 
 ##variables that require the scrollwheel or looks like it does
@@ -238,13 +245,13 @@ func _validate_property(property: Dictionary) -> void:
 		return
 	
 	# Always show camera_mode
-	if property.name == "camera_mode" || property.name == "CAMERA_MODES" || property.name == "camera_mode_to_lerp":
+	if property.name == "camera_mode" or property.name == "CAMERA_MODES" or property.name == "camera_mode_to_lerp" or property.name == "camera_limits":
 		return
 	
 	#list of vars shown per mode
 	var allowed := {
-		"3rd_person": ["mouse_sensibility", "min_vertical_angle", "max_vertical_angle", "max_distance", "min_distance", "starting_distance", "zoom_speed", "rotation_lerp_power"],
-		"1st_person": ["mouse_sensibility", "min_vertical_angle", "max_vertical_angle", "rotation_lerp_power"],
+		"3rd_person": ["mouse_sensibility", "third_person_min_angle", "third_person_max_angle", "max_distance", "min_distance", "starting_distance", "zoom_speed", "rotation_lerp_power"],
+		"1st_person": ["mouse_sensibility", "first_person_min_angle", "first_person_max_angle", "rotation_lerp_power"],
 		"free": ["mouse_sensibility", "speed", "rotation_lerp_power", "max_speed", "min_speed", "scroll_speed"],
 		"side_view": ["side_view_distance", "side_view_rotation_x", "side_view_rotation_y", "rotation_lerp_power"],
 		"locked": ["location", "locked_rotation_x", "locked_rotation_y", "cam_move_tween_time"]
@@ -266,8 +273,16 @@ func _validate_property(property: Dictionary) -> void:
 #region all camera states
 ##starting settings for all camera states
 func _on_camera_mode_child_state_entered() -> void:
+	# get the current camera mode
+	var current_mode: String = get_camera_mode_state()
 	#set the lerp power to the correct value per mode
-	rotation_lerp_power = camera_mode_to_lerp[get_camera_mode_state()]
+	rotation_lerp_power = camera_mode_to_lerp[current_mode]
+	
+	# if the new current camera mode has limits given, update them to the new values
+	if camera_limits.has(current_mode):
+		# set the min and max angle
+		current_min_angle = deg_to_rad(camera_limits[current_mode].x)
+		current_max_angle = deg_to_rad(camera_limits[current_mode].y)
 #endregion
 
 
@@ -387,7 +402,7 @@ func _rotate_camera_by_mouse(event: InputEvent) -> void:
 		#X camera rotation
 		wanted_rotation.x -= event.relative.y * mouse_sensibility
 		#not make the camera be able to go too far
-		wanted_rotation.x = clamp(wanted_rotation.x, min_vertical_angle, max_vertical_angle)
+		wanted_rotation.x = clamp(wanted_rotation.x, current_min_angle, current_max_angle)
 
 
 ##used for rotating the camera by moving the mouse without restrictions

@@ -25,7 +25,7 @@ func _on_pool_enable() -> void:
 	# enable the rigid body
 	rigid_body.freeze = false
 	# make the light visible
-	light.visible = true
+	if is_instance_valid(light): light.visible = true
 	# make the hitbox work
 	hitbox_comp.enabled = true
 	# set the collision to work
@@ -40,7 +40,7 @@ func _on_pool_enable() -> void:
 	await get_tree().physics_frame
 	
 	# make the geo visible
-	trans_comp.change_opacity(1.0, 0.2)
+	trans_comp.change_multimesh_opacity(1.0, 0.2)
 	
 	
 	# wait untill the rigid body is inside the tree
@@ -61,7 +61,7 @@ func _on_pool_disable() -> void:
 	# disable the rigid body
 	rigid_body.freeze = true
 	# make the light invisible
-	light.visible = false
+	if is_instance_valid(light): light.visible = false
 	# make the hitbox no longer work
 	hitbox_comp.enabled = false
 	# set the collision no longer to work
@@ -69,3 +69,9 @@ func _on_pool_disable() -> void:
 	
 	# do the normal stuff
 	super()
+
+
+
+func _on_detail_rigid_sleeping_state_changed() -> void:
+	# when the sleeping state is entered freeze the rigid body to save calculations
+	rigid_body.freeze = true

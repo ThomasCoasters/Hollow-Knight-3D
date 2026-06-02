@@ -26,6 +26,7 @@ transition="*uid://c8sotovabwdkk"
 SaveLoad="*uid://chfmxffksq2ds"
 SceneLoader="*uid://civm45g6l6b2x"
 GlobalSpawnPool="*uid://joecqjjrldnl"
+GlobalMultiMeshManager="*uid://dpijl0lhnmilg"
 
 [display]
 
@@ -127,5 +128,6 @@ ambient_bus=&"RaytracedAmbient"
 
 rendering_device/driver.windows="d3d12"
 lights_and_shadows/directional_shadow/size=2048
+occlusion_culling/use_occlusion_culling=true
 mesh_lod/lod_change/threshold_pixels=4.0
 lights_and_shadows/positional_shadow/atlas_size=2048

@@ -89,6 +89,12 @@ size = Vector3(40, 3, 40)
 [sub_resource type="BoxMesh" id="BoxMesh_om8so"]
 size = Vector3(40, 3, 40)
 
+[sub_resource type="BoxOccluder3D" id="BoxOccluder3D_om8so"]
+size = Vector3(40, 0.5, 40)
+
+[sub_resource type="BoxOccluder3D" id="BoxOccluder3D_7sfmc"]
+size = Vector3(40, 3, 40)
+
 [node name="TestingMap" type="Node3D" unique_id=1518694753]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=336694027]
@@ -145,6 +151,13 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -6.7
 mesh = SubResource("BoxMesh_om8so")
 surface_material_override/0 = SubResource("StandardMaterial3D_6otq6")
 
+[node name="OccluderInstance3D" type="OccluderInstance3D" parent="Enviroment/StaticBody3D" unique_id=1702406031]
+occluder = SubResource("BoxOccluder3D_om8so")
+
+[node name="OccluderInstance3D2" type="OccluderInstance3D" parent="Enviroment/StaticBody3D" unique_id=2085075909]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -6.7933226, 15.342146, 15.936695)
+occluder = SubResource("BoxOccluder3D_7sfmc")
+
 [node name="objects" type="Node3D" parent="." unique_id=1590142869]
 
 [node name="lanterns" type="Node3D" parent="objects" unique_id=1877779741]
@@ -160,3 +173,9 @@ transform = Transform3D(-0.8689426, 0, 0.49491277, 0, 1, 0, -0.49491277, 0, -0.8
 
 [node name="lantern4" parent="objects/lanterns" unique_id=1674448776 instance=ExtResource("4_mmdmt")]
 transform = Transform3D(0.38667873, 0, 0.92221445, 0, 1, 0, -0.92221445, 0, 0.38667873, -9.649, 0.25, 1.555)
+
+[node name="test radiance trigger" type="VisibleOnScreenNotifier3D" parent="." unique_id=492804334]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -61.912, 93, 94.939)
+visible = false
+
+[connection signal="screen_entered" from="test radiance trigger" to="test radiance trigger" method="_on_screen_entered"]

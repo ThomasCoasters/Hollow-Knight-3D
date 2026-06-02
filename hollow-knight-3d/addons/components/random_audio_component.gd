@@ -1,4 +1,4 @@
-@icon("res://addons/at-icons/control/speaker_low.svg")
+@icon("random_audio_component.svg")
 @tool
 
 ## component used to Play a random audio with a random pitch / speed.

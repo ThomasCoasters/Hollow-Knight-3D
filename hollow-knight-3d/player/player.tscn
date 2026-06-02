@@ -9,9 +9,11 @@
 [ext_resource type="Script" uid="uid://brro60y7o03e2" path="res://addons/components/health_component.gd" id="4_32hag"]
 [ext_resource type="Script" uid="uid://couw105c3bde4" path="res://addons/godot_state_charts/state_chart.gd" id="4_rgyib"]
 [ext_resource type="Script" uid="uid://c1vp0ojjvaby1" path="res://addons/godot_state_charts/parallel_state.gd" id="5_hg6s5"]
+[ext_resource type="Script" uid="uid://csnnxp58qhyg8" path="res://addons/components/global_spawn_pooled_component.gd" id="5_rptt4"]
 [ext_resource type="Script" uid="uid://dxiqcx0ei8njy" path="res://addons/components/spawn_pooled_component.gd" id="5_wodsf"]
 [ext_resource type="Script" uid="uid://jk2jm1g6q853" path="res://addons/godot_state_charts/compound_state.gd" id="6_8t03j"]
 [ext_resource type="PackedScene" uid="uid://bu18au0hc04e3" path="res://player/attack/visuals/Player_attack_visual.tscn" id="6_32hag"]
+[ext_resource type="PackedScene" uid="uid://bvrpkvlt1oahp" path="res://Environments/Geo/geo.tscn" id="6_r7pn3"]
 [ext_resource type="Script" uid="uid://cytafq8i1y8qm" path="res://addons/godot_state_charts/atomic_state.gd" id="7_2ieo8"]
 [ext_resource type="Script" uid="uid://cumt6ucl7ynyt" path="res://addons/components/random_audio_component.gd" id="7_e7oew"]
 [ext_resource type="Script" uid="uid://cf1nsco3w0mf6" path="res://addons/godot_state_charts/transition.gd" id="8_ebec5"]
@@ -149,6 +151,17 @@ random_audios = Dictionary[StringName, ExtResource("8_s7qer")]({
 })
 following_node = NodePath("../..")
 
+[node name="global_spawn_pooled_component" type="Node" parent="Component_holder" unique_id=1460194937 node_paths=PackedStringArray("position_node")]
+script = ExtResource("5_rptt4")
+object_scene = ExtResource("6_r7pn3")
+pool_id = "Geo"
+initial_object_count = 1200
+spawn_method = 1
+position_node = NodePath("../..")
+position = Vector3(0, 10, 0)
+automatic_spawn_amount = 1200
+metadata/_custom_type_script = "uid://csnnxp58qhyg8"
+
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2092652524]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.38431954, 0)
 shape = SubResource("CapsuleShape3D_oul6g")
@@ -174,6 +187,13 @@ free_state = Object(Node,"unique_name_in_owner":false,"process_mode":0,"process_
 
 locked_state = Object(Node,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","script":ExtResource("7_2ieo8"),"_state_active":false,"active":false,"_pending_transition":null,"_pending_transition_remaining_delay":0.0,"_pending_transition_initial_delay":0.0,"_transitions":Array[ExtResource("8_ebec5")]([]),"_chart":null)
 
+camera_limits = Dictionary[String, Vector2]({
+"1st_person": Vector2(-65, 85),
+"3rd_person": Vector2(-72, 45),
+"free": Vector2(-90, 90)
+})
+current_min_angle = null
+current_max_angle = null
 
 [node name="AudioListener3D" type="AudioListener3D" parent="PlayerCamera/Camera3D" parent_id_path=PackedInt32Array(1536589263, 1964754616) index="1" unique_id=415108323]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.45235673, 0)

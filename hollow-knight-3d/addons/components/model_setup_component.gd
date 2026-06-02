@@ -1,4 +1,4 @@
-@icon("res://addons/at-icons/node/bulldozer.svg")
+@icon("model_setup_component.svg")
 @tool
 
 ## creates rigid bodies for every node that has "cell" in it's name
@@ -10,9 +10,6 @@ extends component
 
 ## create rigid bodies on all the cell nodes
 @export_tool_button("Create rigid body's") var create_rigid_body = _create_rigids
-
-## make all the shaders unique
-@export_tool_button("Create unique shaders") var create_unique_shaders = _create_unique_shaders
 
 
 
@@ -118,135 +115,3 @@ func _create_rigids() -> void:
 	
 	# make the undo redo do stuff
 	undo_redo.commit_action()
-
-
-
-
-
-
-
-
-
-
-## makes every shader in the given node's childeren unique
-func _create_unique_shaders() -> void:
-	# give error if there was no node chosen
-	if not chosen_node:
-		push_warning("forgot to assign a node to work from")
-		return
-	
-	# create a refrence for the godot undo redo
-	var undo_redo := EditorInterface.get_editor_undo_redo()
-	undo_redo.create_action("Make Shaders Unique")
-	
-	
-	# duplicate array cuz children will change
-	var children := chosen_node.get_children()
-	
-	# go through every node
-	for node: Node in children:
-		# check if it is has a material override
-		if "material_override" in node and node.get("material_override") is Material:
-			# get the material
-			var mat = node.get("material_override")
-			# process the undo redo of the material
-			_process_material_undo_redo(undo_redo, node, "material_override", mat)
-		
-		# same as last one but now normal materials
-		if "material" in node and node.get("material") is Material:
-			# get the material
-			var mat = node.get("material")
-			# process the undo redo of the material
-			_process_material_undo_redo(undo_redo, node, "material", mat)
-		
-		# now for surface material overrides
-		if node.has_method("get_surface_override_material") and node.get("mesh") != null:
-			# get the mesh
-			var mesh = node.get("mesh")
-			# go through every surface count
-			for i in range(mesh.get_surface_count()):
-				# get the current surface material
-				var surf_mat = node.call("get_surface_override_material", i)
-				# check if it is a material
-				if surf_mat is Material:
-					# process it in the undo redo
-					_process_surface_material_undo_redo(undo_redo, node, i, surf_mat)
-	
-	
-	# make the undo redo do stuff
-	undo_redo.commit_action()
-
-
-
-
-
-
-
-## helper for setting material's properties in the undo redo
-func _process_material_undo_redo(undo_redo: EditorUndoRedoManager, target_node: Node, property_path: String, old_material: Material) -> void:
-	# get a refrence to the new material
-	var new_material: Material = old_material.duplicate()
-	
-	# if it is a shader
-	if new_material is ShaderMaterial and new_material.shader:
-		# set the material's shader also to a new one
-		new_material.shader = new_material.shader.duplicate()
-	
-	# get the old mat and new mat
-	var current_new_mat = new_material
-	var current_old_mat = old_material
-	
-	# go through every pass
-	while current_old_mat.next_pass != null:
-		# get the new pass and old pass refrences
-		var old_next_pass: Material = current_old_mat.next_pass
-		var new_next_pass: Material = old_next_pass.duplicate()
-		
-		# if the new pass is a shader
-		if new_next_pass is ShaderMaterial and new_next_pass.shader:
-			# set the new pass shader to the new one
-			new_next_pass.shader = new_next_pass.shader.duplicate()
-		
-		# set the new and old values
-		current_new_mat.next_pass = new_next_pass
-		current_new_mat = new_next_pass
-		current_old_mat = old_next_pass
-	
-	# add all these settings to the undo redo
-	undo_redo.add_do_property(target_node, property_path, new_material)
-	undo_redo.add_undo_property(target_node, property_path, old_material)
-
-
-## helper for setting surface material's properties in the undo redo
-func _process_surface_material_undo_redo(undo_redo: EditorUndoRedoManager, target_node: Node, surface_idx: int, old_material: Material) -> void:
-	# get a refrence to the new material
-	var new_material: Material = old_material.duplicate()
-	
-	# if it is a shader
-	if new_material is ShaderMaterial and new_material.shader:
-		# set the material's shader also to a new one
-		new_material.shader = new_material.shader.duplicate()
-	
-	# get the old mat and new mat
-	var current_new_mat = new_material
-	var current_old_mat = old_material
-	
-	# go through every pass
-	while current_old_mat.next_pass != null:
-		# get the new pass and old pass refrences
-		var old_next_pass: Material = current_old_mat.next_pass
-		var new_next_pass: Material = old_next_pass.duplicate()
-		
-		# if the new material is a shader
-		if new_next_pass is ShaderMaterial and new_next_pass.shader:
-			# set the new pass shader to the new one
-			new_next_pass.shader = new_next_pass.shader.duplicate()
-		
-		# set the new and old values
-		current_new_mat.next_pass = new_next_pass
-		current_new_mat = new_next_pass
-		current_old_mat = old_next_pass
-	
-	# add all these settings to the undo redo
-	undo_redo.add_do_method(target_node, "set_surface_override_material", surface_idx, new_material)
-	undo_redo.add_undo_method(target_node, "set_surface_override_material", surface_idx, old_material)

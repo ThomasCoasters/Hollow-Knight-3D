@@ -721,7 +721,7 @@ func _on_geo_detector_detected_collider(hitbox: hitbox_component) -> void:
 	var geo_node: GeoNode3D = hitbox.owner
 	var trans_comp: transparancy_component = geo_node.trans_comp
 	# fade the geo out
-	trans_comp.change_opacity(0.0, 0.4)
+	trans_comp.change_multimesh_opacity(0.0, 0.4)
 	# wait untill the fade has finished
 	await trans_comp.transparancy_changing_finished
 	# delete the geo node

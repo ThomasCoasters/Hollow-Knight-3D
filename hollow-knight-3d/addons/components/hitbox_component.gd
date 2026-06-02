@@ -1,4 +1,4 @@
-@icon("res://addons/at-icons/node3d/arrow_down_to_bracket.svg")
+@icon("hitbox_component.svg")
 @tool
 ## component that hits a detector_component with customisable settings
 class_name hitbox_component
