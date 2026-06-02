@@ -80,8 +80,8 @@ func _ready() -> void:
 	# fade if there is a transparancy_comp
 	if transparancy_comp:
 		transparancy_comp.change_opacity(0.0, fade_time)
-		await transparancy_comp.transparancy_changing_finished
-		#await get_tree().create_timer(fade_time).timeout
+		await get_tree().create_timer(fade_time * 1.5).timeout
+	
 	
 	queue_free()
 
