@@ -53,10 +53,9 @@ roughness = 0.5
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_i8jom"]
 points = PackedVector3Array(2.0359037, 0.30104962, 0.2521624, -0.54019713, -1.6175154, 1.0166651, 1.072, -1.579, -0.794, -0.606565, -2.0741696, -0.26178718, -1.7055529, 1.2027072, 0.5740453, 1.1961435, -1.699591, 0.57478577, 0.6765491, 1.7750323, -0.7110486, 0.034543037, 1.7646706, 0.9519961)
 
-[node name="Geo" type="Node3D" unique_id=994437059 node_paths=PackedStringArray("rigid_body", "light", "hitbox_comp", "trans_comp")]
+[node name="Geo" type="Node3D" unique_id=994437059 node_paths=PackedStringArray("rigid_body", "hitbox_comp", "trans_comp")]
 script = ExtResource("1_gbdrv")
 rigid_body = NodePath("Geo/detail_Rigid")
-light = NodePath("")
 hitbox_comp = NodePath("Component_holder/HitboxComponent")
 trans_comp = NodePath("Component_holder/TransparancyComponent")
 random_starting_force = Vector3(5, 5, 5)
@@ -94,6 +93,7 @@ metadata/_custom_type_script = "uid://gag7ecndeowc"
 transform = Transform3D(0.07, 0, 0, 0, 0.07, 0, 0, 0, 0.07, 0, 0, 0)
 
 [node name="detail_Rigid" type="RigidBody3D" parent="Geo" unique_id=1153569170]
+mass = 2.0
 
 [node name="detail" type="MeshInstance3D" parent="Geo/detail_Rigid" unique_id=125552821]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.6, 0, 0, 0)

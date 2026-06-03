@@ -10,6 +10,8 @@ extends CharacterBody3D
 @export var camera: Player_Camera
 ## the HUD
 @export var HUD: HUDMain
+## the timer that controlls the random extra idle animations
+@export var extra_idle_timer: Timer
 
 
 ## settings for QOL
@@ -95,7 +97,18 @@ var jump_max_held: bool = false
 ##the timer for the dash
 var dash_timer: float = 0.0
 
+## settings for idle stuff
+@export_subgroup("idle")
+## minimum time in seconds the wait will be before starting a extra random idle animation
+@export_range(0, 60, 0.1, "or_greater") var min_extra_idle_wait: float = 20.0
+## maximum time in seconds the wait will be before starting a extra random idle animation
+@export_range(0, 60, 0.1, "or_greater") var max_extra_idle_wait: float = 80.0
 
+## all the random extra idle animations names
+@export var extra_idle_names: Array[String] = ["IdleLook"]
+
+
+## settings for attacking
 @export_group("attacking")
 ##the time the dash takes
 @export var ATTACK_TIME: float = 0.33
@@ -103,6 +116,9 @@ var dash_timer: float = 0.0
 @export_range(-90, 0.0, 0.1, "radians_as_degrees") var pogo_angle: float = -PI/3
 ## the minimum angle the player can attack at when on the ground
 @export_range(-90, 0.0, 0.1, "radians_as_degrees") var min_floored_attack_angle: float = deg_to_rad(-10)
+
+
+
 
 
 
@@ -170,6 +186,12 @@ func _ready() -> void:
 	
 	#dissables or enables the inputs depending on the starting state of can_input
 	set_process_input(can_input)
+	
+	
+	# start the random extra idle timer at a random correct wait time
+	extra_idle_timer.wait_time = randf_range(min_extra_idle_wait, max_extra_idle_wait)
+	# make the random extra idle anim timer play the correct func on finishing
+	extra_idle_timer.timeout.connect(_on_random_idle_anim_timeout)
 	
 	
 	#input buffering setup
@@ -300,8 +322,8 @@ func _input_state_chart() -> void:
 			#set the state chart to the non moving state
 			state_chart.send_event(&"stop_moving")
 			
-			#stop the walk anim
-			knight.set_animation_segment("RESET", false, "Walk")
+			# play the idle anim
+			knight.set_animation_segment("Idle", false, "Walk")
 	
 	
 	#when the player currently is jumping
@@ -426,6 +448,10 @@ func _handle_physics(delta: float) -> void:
 func _on_idle_state_entered() -> void:
 	#reset the jumps amount
 	jumps_amount = max_jumps_amount
+	
+	# play the idle anim
+	if idle_moving_state.active:
+		knight.set_animation_segment("Idle")
 
 
 ##adds gravity to the velocity
@@ -726,5 +752,20 @@ func _on_geo_detector_detected_collider(hitbox: hitbox_component) -> void:
 	await trans_comp.transparancy_changing_finished
 	# delete the geo node
 	geo_node.return_to_pool()
+
+#endregion
+
+
+#region juice
+## plays a random bonus idle animation
+func _on_random_idle_anim_timeout() -> void:
+	# give a new random wait time
+	extra_idle_timer.wait_time = randf_range(min_extra_idle_wait, max_extra_idle_wait)
+	
+	# get a random extra idle anim
+	var extra_idle: String = extra_idle_names.pick_random()
+	
+	# play the animation
+	knight.set_animation_segment(extra_idle, true, "Idle")
 
 #endregion

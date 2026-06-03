@@ -40,12 +40,9 @@ func _on_pool_enable() -> void:
 	await get_tree().physics_frame
 	
 	# make the geo visible
-	trans_comp.change_multimesh_opacity(1.0, 0.2)
+	trans_comp.change_multimesh_opacity(1.0, 0.0)
 	
 	
-	# wait untill the rigid body is inside the tree
-	for i in range(5):
-		await get_tree().physics_frame
 	# expolde outwards
 	rigid_body.apply_central_impulse(
 		Vector3(

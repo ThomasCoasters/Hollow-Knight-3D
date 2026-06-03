@@ -115,22 +115,27 @@ func set_animation_segment(anim_name: String, one_time: bool = false, play_if_cu
 	
 	#only check if this anim has higher priority if the previous anim is in the dictionairy
 	if animation_priority.has(current_anim):
-		#if the new animation has a lower priority than the current do not play it
-		if animation_priority[current_anim] >= animation_priority[anim_name]:
-			# do not play the animation
-			if current_anim != "RESET": # still play it when the last animation was the reset
-				
-				# DO change the saved segment if this is not a one_time and the old one IS a one time
-				if !one_time: # check if this is not a one time animation
-					if saved_segment != current_segment: # check if the current animation is not a one time
-						#get the current saved animation
-						var saved_anim = animation_to_times.find_key(saved_segment) if not null else "null"
-						
-						if animation_priority[saved_anim] < animation_priority[anim_name] || saved_anim == "RESET" || saved_anim == "null": # change the saved segment when the saved anim is a lower priority
-							saved_segment = segment # set the saved segment to the new one
-				
-				#stop the animation from playing
-				return
+		# check if the current animation is not the play if current anim
+		if current_anim != play_if_current_anim:
+			
+			# if the new animation has a lower priority than the current, do not play it
+			if animation_priority[current_anim] >= animation_priority[anim_name]:
+				# still play anim when last anim was reset
+				if current_anim != "RESET":
+					
+					# change the saved segment if not one time and old one was
+					if !one_time:
+						if saved_segment != current_segment:
+							# get current saved anim
+							var saved_anim = animation_to_times.find_key(saved_segment) if not null else "null"
+							
+							# change saved segment if the saved anim is lower priority
+							if animation_priority[saved_anim] < animation_priority[anim_name] || saved_anim == "RESET" || saved_anim == "null": 
+								# set saved segment
+								saved_segment = segment
+					
+					#stop the animation from playing
+					return
 	
 	#set the segment to the new segment
 	current_segment = segment

@@ -92,12 +92,13 @@ script = ExtResource("11_ebec5")
 guard = SubResource("Resource_yllr7")
 metadata/_custom_type_script = "uid://dgd4i8hrrxfvm"
 
-[node name="Player" type="CharacterBody3D" unique_id=2083664876 node_paths=PackedStringArray("knight", "camera", "HUD", "health_comp", "pooled_attack_comp", "random_audio_comp", "geo_detect_comp")]
+[node name="Player" type="CharacterBody3D" unique_id=2083664876 node_paths=PackedStringArray("knight", "camera", "HUD", "extra_idle_timer", "health_comp", "pooled_attack_comp", "random_audio_comp", "geo_detect_comp")]
 collision_layer = 2
 script = ExtResource("1_g1dw6")
 knight = NodePath("knight_model")
 camera = NodePath("PlayerCamera")
 HUD = NodePath("HudMain")
+extra_idle_timer = NodePath("random_idle_anim")
 rotation_use_camera = false
 inputs_to_buffer = Dictionary[StringName, ExtResource("2_yllr7")]({
 &"Attack": SubResource("Resource_32hag"),
@@ -112,6 +113,8 @@ gravity_mult_per_state = Dictionary[String, float]({
 })
 max_fall_speed = -20.0
 jump_speed = 4.0
+min_extra_idle_wait = 10.0
+max_extra_idle_wait = 30.0
 pogo_angle = -0.5235987755982988
 health_comp = NodePath("Component_holder/HealthComponent")
 pooled_attack_comp = NodePath("Component_holder/pooled_attack")
@@ -155,11 +158,11 @@ following_node = NodePath("../..")
 script = ExtResource("5_rptt4")
 object_scene = ExtResource("6_r7pn3")
 pool_id = "Geo"
-initial_object_count = 1200
-spawn_method = 1
+initial_object_count = 300
+spawn_method = 2
 position_node = NodePath("../..")
 position = Vector3(0, 10, 0)
-automatic_spawn_amount = 1200
+spawn_interval = 1.0
 metadata/_custom_type_script = "uid://csnnxp58qhyg8"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2092652524]
@@ -192,8 +195,8 @@ camera_limits = Dictionary[String, Vector2]({
 "3rd_person": Vector2(-72, 45),
 "free": Vector2(-90, 90)
 })
-current_min_angle = null
-current_max_angle = null
+current_min_angle = -1.2566370614359172
+current_max_angle = 0.7853981633974483
 
 [node name="AudioListener3D" type="AudioListener3D" parent="PlayerCamera/Camera3D" parent_id_path=PackedInt32Array(1536589263, 1964754616) index="1" unique_id=415108323]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.45235673, 0)
@@ -356,6 +359,9 @@ delay_in_seconds = "0.2"
 script = ExtResource("8_ebec5")
 to = NodePath("../../Idle")
 delay_in_seconds = "0.9"
+
+[node name="random_idle_anim" type="Timer" parent="." unique_id=813782146]
+autostart = true
 
 [node name="max_jump_time" type="Timer" parent="." unique_id=1228798069]
 one_shot = true
