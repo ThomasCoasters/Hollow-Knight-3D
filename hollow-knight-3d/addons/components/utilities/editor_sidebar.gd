@@ -116,3 +116,11 @@ func _on_hitbox_component_pressed() -> void:
 
 func _on_detector_component_pressed() -> void:
 	_create_node(detector_component, "DetectorComponent")
+
+
+func _on_global_spawn_pooled_component_2_pressed() -> void:
+	_create_node(global_spawn_pooled_component, "GlobalSpawnPooledComponent")
+
+
+func _on_multi_mesh_member_component_pressed() -> void:
+	_create_node(multi_mesh_member_component, "MultiMeshMemberComponent")

@@ -705,11 +705,15 @@ func _on_player_camera_camera_mode_changed(new_mode: String, _old_mode: String) 
 		"free":
 			# set the use camera rotation based on the saved option
 			rotation_use_camera = SaveLoad.general_contents[&"QoL"][&"RotationUseCamera"]
+			
+			can_input = false
 		
 		# if the new mode is 3rd person
 		"locked":
 			# set the use camera rotation based on the saved option
 			rotation_use_camera = false
+			
+			can_input = true
 
 #endregion
 

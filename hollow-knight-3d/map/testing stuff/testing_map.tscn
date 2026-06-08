@@ -9,18 +9,18 @@
 offsets = PackedFloat32Array(0, 0.19469027, 0.820059, 1)
 colors = PackedColorArray(0, 0, 0, 1, 0.1197, 0.14313334, 0.19, 1, 0.83137256, 0.78431374, 0.74509805, 1, 1, 1, 1, 1)
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_om8so"]
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_mmdmt"]
 gradient = SubResource("Gradient_mmdmt")
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_mmdmt"]
 sky_top_color = Color(0.28397426, 0.46887124, 0.61586636, 1)
 
-[sub_resource type="Sky" id="Sky_mmdmt"]
+[sub_resource type="Sky" id="Sky_om8so"]
 sky_material = SubResource("ProceduralSkyMaterial_mmdmt")
 
 [sub_resource type="Environment" id="Environment_mmdmt"]
 background_mode = 2
-sky = SubResource("Sky_mmdmt")
+sky = SubResource("Sky_om8so")
 ambient_light_sky_contribution = 0.74
 ambient_light_energy = 0.0
 tonemap_mode = 2
@@ -53,7 +53,7 @@ volumetric_fog_albedo = Color(0.5411765, 0.61960787, 1, 1)
 volumetric_fog_emission = Color(0, 0, 0.07058824, 1)
 volumetric_fog_sky_affect = 0.812
 adjustment_enabled = true
-adjustment_color_correction = SubResource("GradientTexture1D_om8so")
+adjustment_color_correction = SubResource("GradientTexture1D_mmdmt")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_bn70x"]
 size = Vector3(40, 0.5, 40)

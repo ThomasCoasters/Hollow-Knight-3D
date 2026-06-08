@@ -3,7 +3,7 @@
 
 ## a component that tells the game this scene should be in a multimesh
 class_name multi_mesh_member_component
-extends Node
+extends component
 
 
 ## ID that tells the game what mesh this is

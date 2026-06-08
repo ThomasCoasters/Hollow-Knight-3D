@@ -5,18 +5,18 @@ extends Node3D
 
 
 ## time the rigid bodies will exist for
-@export_range(1.0, 100.0) var lifetime: float = 10
+@export_range(1.0, 100.0, 0.1, "or_greater") var lifetime: float = 10
 
 ## the range this fade will be at (lifetime - this to lifetime + this)
-@export_range(0.0, 10) var lifetime_range: float = 1.0
+@export_range(0.0, 10, 0.1, "or_greater") var lifetime_range: float = 1.0
 
 ## time the rigid bodies will fade out for
-@export_range(0.0, 20.0) var fade_time: float = 0.8
+@export_range(0.0, 20.0, 0.1, "or_greater") var fade_time: float = 0.8
 
 ## time the rigid bodies will be animated for before changing to static bodies
-@export_range(0.0, 100.0) var activated_time: float = 2.5
+@export_range(0.0, 100.0, 0.1, "or_greater") var activated_time: float = 2.5
 ## range of time the rigid bodies will be animated for before changing to static bodies
-@export_range(0.0, 100.0) var activated_time_range: float = 0.5
+@export_range(0.0, 100.0, 0.1, "or_greater") var activated_time_range: float = 0.5
 ## applies a random value between - and + of the given value
 @export var random_starting_force: Vector3 = Vector3(100, 0, 100)
 
@@ -32,12 +32,6 @@ func _ready() -> void:
 	# get all rigid bodies
 	_get_all_rigid_bodies()
 	
-	
-	GlobalSpawnPool.register_pool("Geo", preload("uid://bvrpkvlt1oahp"), 10)
-	var a = GlobalSpawnPool.request_objects("Geo", 50)
-	
-	for i in a:
-		i.global_position = global_position + Vector3(0, 1, 0)
 	
 	# add a random velocity to all rigid bodies
 	for rigid: RigidBody3D in rigid_bodies:

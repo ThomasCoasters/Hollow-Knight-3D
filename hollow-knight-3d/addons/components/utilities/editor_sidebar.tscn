@@ -5,10 +5,12 @@
 [ext_resource type="Texture2D" uid="uid://daika5br8vibl" path="res://addons/components/transparancy_component.svg" id="3_70jva"]
 [ext_resource type="Texture2D" uid="uid://xiogdm1g0g02" path="res://addons/components/animation_component.svg" id="3_xr380"]
 [ext_resource type="Texture2D" uid="uid://btdf433smtfa" path="res://addons/components/model_setup_component.svg" id="4_dpq78"]
+[ext_resource type="Texture2D" uid="uid://d37d4yg13bol8" path="res://addons/components/multi_mesh_member_component.svg" id="6_jhgx4"]
 [ext_resource type="Texture2D" uid="uid://d31a5ksum63dg" path="res://addons/components/health_component.svg" id="6_xr380"]
 [ext_resource type="Texture2D" uid="uid://blos3fbppe84o" path="res://addons/components/spawn_pooled_component.svg" id="7_yvq5k"]
 [ext_resource type="Texture2D" uid="uid://bqq5h3ho2qxb3" path="res://addons/components/random_audio_component.svg" id="8_don3p"]
 [ext_resource type="Texture2D" uid="uid://s4fo3fyimt6w" path="res://addons/components/hitbox_component.svg" id="8_dr364"]
+[ext_resource type="Texture2D" uid="uid://cbrc6nruckpqs" path="res://addons/components/global_spawn_pooled_component.svg" id="8_yvq5k"]
 [ext_resource type="Texture2D" uid="uid://vga3avpb4gyh" path="res://addons/godot_state_charts/toggle_sidebar.svg" id="9_dqcj0"]
 [ext_resource type="Texture2D" uid="uid://b4qxyuf8d7t2o" path="res://addons/components/detector_component.svg" id="9_dr364"]
 
@@ -117,6 +119,14 @@ tooltip_text = "ModelSetupComponent"
 icon = ExtResource("4_dpq78")
 icon_alignment = 1
 
+[node name="MultiMeshMemberComponent" type="Button" parent="VBoxContainer/AddSection/AddGridContainer/3DModelSection/AddGridContainer" unique_id=759103668 groups=["componentbutton"]]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+tooltip_text = "MultiMeshMemberComponent"
+icon = ExtResource("6_jhgx4")
+icon_alignment = 1
+
 [node name="HP_DMG_Section" type="VBoxContainer" parent="VBoxContainer/AddSection/AddGridContainer" unique_id=963464559]
 layout_mode = 2
 
@@ -165,6 +175,14 @@ size_flags_horizontal = 0
 size_flags_vertical = 0
 tooltip_text = "SpawnPooledComponent"
 icon = ExtResource("7_yvq5k")
+icon_alignment = 1
+
+[node name="GlobalSpawnPooledComponent" type="Button" parent="VBoxContainer/AddSection/AddGridContainer/Spawners_Section/AddGridContainer" unique_id=668679107 groups=["componentbutton"]]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+tooltip_text = "GlobalSpawnPooledComponent2"
+icon = ExtResource("8_yvq5k")
 icon_alignment = 1
 
 [node name="Audio_Section" type="VBoxContainer" parent="VBoxContainer/AddSection/AddGridContainer" unique_id=1139868481]
@@ -240,8 +258,10 @@ icon = ExtResource("9_dqcj0")
 [connection signal="pressed" from="VBoxContainer/AddSection/AddGridContainer/3DModelSection/AddGridContainer/AnimationComponent" to="." method="_on_animation_component_pressed"]
 [connection signal="pressed" from="VBoxContainer/AddSection/AddGridContainer/3DModelSection/AddGridContainer/TransparancyComponent" to="." method="_on_transparancy_component_pressed"]
 [connection signal="pressed" from="VBoxContainer/AddSection/AddGridContainer/3DModelSection/AddGridContainer/ModelSetupComponent" to="." method="_on_rigid_creator_component_pressed"]
+[connection signal="pressed" from="VBoxContainer/AddSection/AddGridContainer/3DModelSection/AddGridContainer/MultiMeshMemberComponent" to="." method="_on_multi_mesh_member_component_pressed"]
 [connection signal="pressed" from="VBoxContainer/AddSection/AddGridContainer/HP_DMG_Section/AddGridContainer/HealthComponent" to="." method="_on_health_component_pressed"]
 [connection signal="pressed" from="VBoxContainer/AddSection/AddGridContainer/Spawners_Section/AddGridContainer/SpawnPooledComponent" to="." method="_on_spawn_pooled_component_pressed"]
+[connection signal="pressed" from="VBoxContainer/AddSection/AddGridContainer/Spawners_Section/AddGridContainer/GlobalSpawnPooledComponent" to="." method="_on_global_spawn_pooled_component_2_pressed"]
 [connection signal="pressed" from="VBoxContainer/AddSection/AddGridContainer/Audio_Section/AddGridContainer/SpawnRandomAudioComponent" to="." method="_on_spawn_random_audio_component_pressed"]
 [connection signal="pressed" from="VBoxContainer/AddSection/AreaSection/AddGridContainer/HitboxComponent" to="." method="_on_hitbox_component_pressed"]
 [connection signal="pressed" from="VBoxContainer/AddSection/AreaSection/AddGridContainer/DetectorComponent" to="." method="_on_detector_component_pressed"]
