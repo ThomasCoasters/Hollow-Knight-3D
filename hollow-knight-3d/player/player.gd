@@ -651,11 +651,10 @@ func _clamp_attack_y_dir(dir) -> Vector3:
 
 
 #region camera stuff
+
+
 ##runs when the camera enters the camera detector
-func _on_camera_detector_area_entered(area: Area3D) -> void:
-	if !area.is_in_group("camera_area"):
-		return
-	
+func _on_camera_detector_detected_collider(_hitbox: hitbox_component) -> void:
 	# set the camera detected to true
 	camera_currently_detected = true
 	
@@ -671,10 +670,7 @@ func _on_camera_detector_area_entered(area: Area3D) -> void:
 			knight.change_player_opacity(0.4, 0.2)
 
 ##runs when the camera leaves the camera detector
-func _on_camera_detector_area_exited(area: Area3D) -> void:
-	if !area.is_in_group("camera_area"):
-		return
-	
+func _on_camera_detector_lost_collider(_hitbox: hitbox_component) -> void:
 	# set the camera detected to false
 	camera_currently_detected = false
 	

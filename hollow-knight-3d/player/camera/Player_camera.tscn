@@ -5,12 +5,14 @@
 [ext_resource type="Script" uid="uid://jk2jm1g6q853" path="res://addons/godot_state_charts/compound_state.gd" id="3_yqmq6"]
 [ext_resource type="Script" uid="uid://cytafq8i1y8qm" path="res://addons/godot_state_charts/atomic_state.gd" id="4_yqmq6"]
 [ext_resource type="Script" uid="uid://bajrwgoencm3i" path="res://player/camera/cam.gd" id="5_2jts0"]
+[ext_resource type="Script" uid="uid://1qi0tlwofusy" path="res://addons/components/Component_holder.gd" id="6_8g2qi"]
+[ext_resource type="Script" uid="uid://cveopkocrno8h" path="res://addons/components/hitbox_component.gd" id="7_b7mfk"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_2jts0"]
 radius = 0.4
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_yqmq6"]
-radius = 0.10204538
+radius = 0.1
 
 [node name="Player_Camera" type="Node3D" unique_id=707306477]
 script = ExtResource("1_b1fii")
@@ -37,6 +39,8 @@ old_camera_position = Vector3(0, 0, 0)
 wanted_rotation = Vector3(0, 0, 0)
 side_view_rotation_x = -0.3141592653589793
 side_view_rotation_y = -1.2566370614359172
+current_min_angle = -1.2566370614359172
+current_max_angle = 0.7853981633974483
 zoom_speed = 0.3
 cam_moving_tween = null
 
@@ -49,14 +53,6 @@ shape = SubResource("SphereShape3D_2jts0")
 script = ExtResource("5_2jts0")
 wanted_position = NodePath("../SpringArm3D/spring_position")
 position_lerp_power = 6.0
-
-[node name="camera_area" type="Area3D" parent="Camera3D" unique_id=1064282906 groups=["camera_area"]]
-collision_layer = 4
-collision_mask = 4
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Camera3D/camera_area" unique_id=380314298]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0027229488, 0)
-shape = SubResource("SphereShape3D_yqmq6")
 
 [node name="StateChart" type="Node" parent="." unique_id=642433328]
 script = ExtResource("2_06wur")
@@ -80,6 +76,17 @@ script = ExtResource("4_yqmq6")
 
 [node name="locked" type="Node" parent="StateChart/Camera_mode" unique_id=1605306092]
 script = ExtResource("4_yqmq6")
+
+[node name="Component_holder" type="Node" parent="." unique_id=842801326]
+script = ExtResource("6_8g2qi")
+metadata/_custom_type_script = "uid://1qi0tlwofusy"
+
+[node name="Camera_detection" type="Node" parent="Component_holder" unique_id=770610589 node_paths=PackedStringArray("node_3D_parent")]
+script = ExtResource("7_b7mfk")
+collision_shape = SubResource("SphereShape3D_yqmq6")
+view_in_editor = false
+node_3D_parent = NodePath("../../Camera3D")
+collider_type = 64
 
 [connection signal="child_state_entered" from="StateChart/Camera_mode" to="." method="_on_camera_mode_child_state_entered"]
 [connection signal="state_entered" from="StateChart/Camera_mode/3rd_person" to="." method="_on_rd_person_state_entered"]

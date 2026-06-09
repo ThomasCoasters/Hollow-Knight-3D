@@ -68,7 +68,7 @@ var DEFAULT_GENERAL_SAVE: Dictionary = {
 var DEFAULT_GAME_SAVE: Dictionary = {
 	&"Location": {
 		&"Area": &"KingsPass",
-		&"current_map": "res://map/testing stuff/NL_opdr_map.tscn",
+		&"current_map": "res://map/testing stuff/visual_test_map.tscn",
 		&"player_position": Vector3.ZERO,
 	},
 	

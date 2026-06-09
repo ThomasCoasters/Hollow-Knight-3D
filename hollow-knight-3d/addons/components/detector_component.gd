@@ -123,9 +123,9 @@ func _update_detection_geometry() -> void:
 	# get the old area to delete it
 	var old_area = null
 	if is_instance_valid(node_3D_parent):
-		old_area = node_3D_parent.get_node_or_null("GeneratedDetectorArea")
+		old_area = node_3D_parent.get_node_or_null("GeneratedDetectorArea," + self.name)
 	else:
-		old_area = get_node_or_null("GeneratedDetectorArea")
+		old_area = get_node_or_null("GeneratedDetectorArea," + self.name)
 	
 	# if it exists
 	if old_area:
@@ -149,7 +149,7 @@ func _update_detection_geometry() -> void:
 	
 	# create a new Area and set basic settings
 	var new_area = Area3D.new()
-	new_area.name = "GeneratedDetectorArea"
+	new_area.name = "GeneratedDetectorArea," + self.name
 	new_area.monitoring = true
 	new_area.monitorable = false
 	
@@ -168,7 +168,7 @@ func _update_detection_geometry() -> void:
 		# get a new internal polygon
 		var internal_poly := CollisionPolygon3D.new()
 		# set name and settings, then add it
-		internal_poly.name = "CollisionPolygon3D"
+		internal_poly.name = "CollisionPolygon3D," + self.name
 		internal_poly.polygon = polygon_points
 		internal_poly.depth = polygon_depth
 		new_area.add_child(internal_poly)
@@ -179,7 +179,7 @@ func _update_detection_geometry() -> void:
 		# get a new internal collision shape
 		var internal_shape := CollisionShape3D.new()
 		# set name and settings, then add it
-		internal_shape.name = "CollisionShape3D"
+		internal_shape.name = "CollisionShape3D," + self.name
 		internal_shape.shape = detection_shape
 		new_area.add_child(internal_shape)
 	

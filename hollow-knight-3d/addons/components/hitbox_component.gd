@@ -128,9 +128,9 @@ func _ready() -> void:
 func _update_collision_geometry() -> void:
 	var old_area = null
 	if is_instance_valid(node_3D_parent):
-		old_area = node_3D_parent.get_node_or_null("GeneratedHitboxArea")
+		old_area = node_3D_parent.get_node_or_null("GeneratedHitboxArea," + self.name)
 	else:
-		old_area = get_node_or_null("GeneratedHitboxArea")
+		old_area = get_node_or_null("GeneratedHitboxArea," + self.name)
 	
 	if old_area:
 		# get the parent of the area
@@ -151,7 +151,7 @@ func _update_collision_geometry() -> void:
 		return
 	
 	var new_area = Area3D.new()
-	new_area.name = "GeneratedHitboxArea"
+	new_area.name = "GeneratedHitboxArea," + self.name
 	new_area.monitoring = false
 	new_area.monitorable = enabled
 	Area_Made = new_area
@@ -167,13 +167,13 @@ func _update_collision_geometry() -> void:
 	
 	if polygon_points.size() > 2:
 		var internal_poly := CollisionPolygon3D.new()
-		internal_poly.name = "CollisionPolygon3D"
+		internal_poly.name = "CollisionPolygon3D," + self.name
 		internal_poly.polygon = polygon_points
 		internal_poly.depth = polygon_depth
 		new_area.add_child(internal_poly)
 	elif collision_shape:
 		var internal_shape := CollisionShape3D.new()
-		internal_shape.name = "CollisionShape3D"
+		internal_shape.name = "CollisionShape3D," + self.name
 		internal_shape.shape = collision_shape
 		new_area.add_child(internal_shape)
 	
