@@ -5,9 +5,16 @@ extends Node
 
 ## the node that holds the maps
 @onready var map_container: Node = %MapContainer
+@onready var player_holder: Node = %PlayerHolder
 
 ## the root node of the currently loaded map
 var current_map_node: Node
+
+
+## the normal player scene
+@export var normal_player_scene: PackedScene
+## the multiplayer player scene
+@export var multiplayer_player_scene: PackedScene
 
 
 func _ready() -> void:

@@ -5,8 +5,10 @@
 
 [node name="MapHolder" type="Node" unique_id=440683381]
 script = ExtResource("1_2n2lt")
+normal_player_scene = ExtResource("1_vnr7s")
 
 [node name="PlayerHolder" type="Node" parent="." unique_id=840974669]
+unique_name_in_owner = true
 
 [node name="Player" parent="PlayerHolder" unique_id=2083664876 instance=ExtResource("1_vnr7s")]
 
