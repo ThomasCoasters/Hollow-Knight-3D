@@ -93,6 +93,14 @@ script = ExtResource("11_ebec5")
 guard = SubResource("Resource_yllr7")
 metadata/_custom_type_script = "uid://dgd4i8hrrxfvm"
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_7pqkx"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
 [node name="Player" type="CharacterBody3D" unique_id=2083664876 node_paths=PackedStringArray("knight", "camera", "HUD", "extra_idle_timer", "health_comp", "pooled_attack_comp", "random_audio_comp", "geo_detect_comp")]
 collision_layer = 2
 script = ExtResource("1_g1dw6")
@@ -373,6 +381,9 @@ autostart = true
 one_shot = true
 
 [node name="HudMain" parent="." unique_id=543680684 instance=ExtResource("17_tqiix")]
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=104832802]
+replication_config = SubResource("SceneReplicationConfig_7pqkx")
 
 [connection signal="detected_collider" from="Component_holder/Detectors/GeoDetector" to="." method="_on_geo_detector_detected_collider"]
 [connection signal="detected_collider" from="Component_holder/Detectors/Camera_detector" to="." method="_on_camera_detector_detected_collider"]
