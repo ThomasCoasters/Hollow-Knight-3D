@@ -1780,7 +1780,7 @@ metadata/_custom_type_script = "uid://54ijfc61lomj"
 [sub_resource type="Resource" id="Resource_mjqis"]
 script = ExtResource("2_w13no")
 mode = 1
-text = "Master Volume: "
+text = "Sound Volume: "
 font_size = 30
 _button_group_enabled = false
 should_add_horizontal_spacer = true
@@ -1935,7 +1935,7 @@ metadata/_custom_type_script = "uid://54ijfc61lomj"
 [sub_resource type="Resource" id="Resource_6fskk"]
 script = ExtResource("2_w13no")
 mode = 1
-text = "Master Volume: "
+text = "Music Volume: "
 font_size = 30
 _button_group_enabled = false
 should_add_horizontal_spacer = true

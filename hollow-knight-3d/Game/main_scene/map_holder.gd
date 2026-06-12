@@ -11,8 +11,10 @@ var peer: ENetMultiplayerPeer = ENetMultiplayerPeer.new()
 @onready var map_container: Node = %MapContainer
 ## the node that holds the player scenes
 @onready var player_holder: Node = %PlayerHolder
-# the node that spawns multiplayer players
+## the node that spawns multiplayer players
 @onready var player_spawner: MultiplayerSpawner = %MultiplayerPlayerSpawner
+## the timer that check how long the connection is taking
+@onready var connection_timeout: Timer = %ConnectionTimeout
 
 ## the root node of the currently loaded map
 var current_map_node: Node
@@ -20,6 +22,7 @@ var current_map_node: Node
 
 ## the normal player scene
 @export var player_scene: PackedScene
+
 
 
 func _ready() -> void:
@@ -34,6 +37,9 @@ func _ready() -> void:
 	
 	# add the packed map to the scene
 	add_packed_map(packed)
+	
+	# when the connection is taking to long, just go to solo
+	connection_timeout.timeout.connect(_on_connection_failed)
 
 
 
@@ -78,7 +84,7 @@ func add_packed_map(packed_map: PackedScene) -> void:
 ## creates the host
 func _create_host() -> void:
 	# add a server to the multiplayer peer
-	peer.create_server(135)
+	peer.create_server(27015)
 	# add the peer to the multiplayer peer
 	multiplayer.multiplayer_peer = peer
 	# add the player when a new peer is connected
@@ -90,22 +96,43 @@ func _create_host() -> void:
 
 ## join the host
 func _join_host() -> void:
+	# when the connection fails, run the connection failed
+	multiplayer.connection_failed.connect(_on_connection_failed)
+	
 	# add a server to the multiplayer peer
-	var ERROR: Error = peer.create_client("localhost", 135)
+	var ERROR: Error = peer.create_client("localhost", 27015)
 	
 	# check if there is a error
-	match ERROR:
-		# if the peer is already in use close it
-		ERR_ALREADY_IN_USE:
-			peer.close()
-		
-		# if it could not be created, just do like it is a solo game
-		ERR_CANT_CREATE:
-			_add_player(peer.get_unique_id())
-			return
+	if not ERROR == OK:
+		# act like it is just a solo game
+		_add_player()
+		return
 	
 	# add the peer to the multiplayer peer
 	multiplayer.multiplayer_peer = peer
+	
+	
+	# start the connection timeout
+	connection_timeout.start()
+
+
+
+## runs when the connection is timed out
+func _on_connection_failed() -> void:
+	# check if not already connected
+	if not peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED:
+		# exit the server
+		peer.close()
+		multiplayer.multiplayer_peer = null
+		
+		# just add the player
+		_add_player()
+		
+		# send a notification about the problem
+		NotificationManager.notify(
+			"Connecting Failed",
+			"The Server Could Not Be Reached. Starting Solo Game."
+		)
 
 
 

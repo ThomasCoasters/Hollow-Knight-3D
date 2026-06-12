@@ -65,6 +65,31 @@ var DEFAULT_GENERAL_SAVE: Dictionary = {
 	&"Online": {
 		&"MultiplayerMode": "Solo",
 	},
+	
+	
+	&"Achievements": {
+		&"LookAtSun": {
+			&"unlocked": false,
+			&"title": "Are We Gonna Fight The Sun?",
+			&"description": "Look at the sun.",
+		},
+		
+		&"PlayedMultiplayer": {
+			&"unlocked": false,
+			&"title": "Together",
+			&"description": "Join a multiplayer game.",
+		},
+		
+		
+		
+		
+		### ----- notifications (not Achievements) ----- ###
+		&"ConnectionFailed": {
+			&"unlocked": false,
+			&"title": "Together",
+			&"description": "Join a multiplayer game.",
+		},
+	},
 }
 
 ## the save that you have when there are no given new values (the backup) [br]

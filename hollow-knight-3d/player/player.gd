@@ -179,7 +179,7 @@ var camera_currently_detected: bool = false
 func _ready() -> void:
 	### ----- setup ----- ###
 	#sets the global player to the player
-	if is_multiplayer_authority():
+	if not multiplayer.has_multiplayer_peer() or is_multiplayer_authority():
 		Global.player = self
 	
 	#time for the max jump time
@@ -238,7 +238,7 @@ func _enter_tree() -> void:
 ## deletes the not needed nodes from the local copy of the other players
 func _delete_exess_multiplayer_nodes() -> void:
 	# if multiplayer authority do nothing
-	if is_multiplayer_authority(): return
+	if not multiplayer.has_multiplayer_peer() or is_multiplayer_authority(): return
 	
 	
 	# delete the camera
@@ -255,7 +255,7 @@ func _delete_exess_multiplayer_nodes() -> void:
 #region loops
 func _input(event: InputEvent) -> void:
 	# ignore when not multiplayer authority
-	if not is_multiplayer_authority(): return
+	if multiplayer.has_multiplayer_peer() and not is_multiplayer_authority(): return
 	
 	
 	### ----- input buffering ----- ###
@@ -264,8 +264,7 @@ func _input(event: InputEvent) -> void:
 
 func _process(_delta: float) -> void:
 	# ignore process when not multiplayer authority
-	if not is_multiplayer_authority():
-		return
+	if multiplayer.has_multiplayer_peer() and not is_multiplayer_authority(): return
 	
 	### ----- state chart stuff ----- ###
 	_input_state_chart()
@@ -273,8 +272,7 @@ func _process(_delta: float) -> void:
 
 func _physics_process(delta: float) -> void:
 	# ignore physics process when not multiplayer authority
-	if not is_multiplayer_authority():
-		return
+	if multiplayer.has_multiplayer_peer() and not is_multiplayer_authority(): return
 	
 	### ----- input buffering ----- ###
 	_reduce_input_buffer()
@@ -774,7 +772,7 @@ func load_general_save() -> void:
 
 func _on_geo_detector_detected_collider(hitbox: hitbox_component) -> void:
 	# ignore when not multiplayer authority
-	if not is_multiplayer_authority(): return
+	if multiplayer.has_multiplayer_peer() and not is_multiplayer_authority(): return
 	
 	# increase the geo amount
 	HUD.increase_geo(1)
@@ -808,7 +806,5 @@ func _on_random_idle_anim_timeout() -> void:
 	
 	# play the animation
 	knight.set_animation_segment(extra_idle, true, "Idle")
-	
-	is_multiplayer_authority()
 
 #endregion

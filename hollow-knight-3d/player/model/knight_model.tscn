@@ -18,6 +18,7 @@
 render_priority = 0
 shader = ExtResource("3_awyfk")
 shader_parameter/alpha = 1.0
+shader_parameter/outline_thickness = 0.01
 shader_parameter/color = Color(0, 0, 0, 0)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6cebr"]
@@ -84,20 +85,16 @@ hidden_mesh = [NodePath("../../rig/Skeleton3D/Body")]
 
 [node name="Body" parent="rig/Skeleton3D" parent_id_path=PackedInt32Array(35820642) index="0" unique_id=493518307]
 cast_shadow = 0
-instance_shader_parameters/outline_thickness = 0.015
 surface_material_override/0 = SubResource("StandardMaterial3D_6cebr")
 
 [node name="Head" parent="rig/Skeleton3D" parent_id_path=PackedInt32Array(35820642) index="1" unique_id=906010318]
 cast_shadow = 0
-instance_shader_parameters/outline_thickness = 0.015
 surface_material_override/0 = SubResource("StandardMaterial3D_jbdqp")
 
 [node name="Weapon" parent="Armature/Skeleton3D/Bone_083" parent_id_path=PackedInt32Array(891540444) index="0" unique_id=776350720]
 cast_shadow = 0
-instance_shader_parameters/outline_thickness = 0.015
 surface_material_override/0 = SubResource("StandardMaterial3D_flgo1")
 
 [node name="Cloak" parent="Armature/Skeleton3D" parent_id_path=PackedInt32Array(1748372060) index="1" unique_id=250348007]
 cast_shadow = 0
-instance_shader_parameters/outline_thickness = 0.015
 surface_material_override/0 = SubResource("StandardMaterial3D_p3dbf")
