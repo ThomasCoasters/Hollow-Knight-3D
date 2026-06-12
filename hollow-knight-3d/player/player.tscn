@@ -373,7 +373,6 @@ autostart = true
 one_shot = true
 
 [node name="HudMain" parent="." unique_id=543680684 instance=ExtResource("17_tqiix")]
-visible = false
 
 [connection signal="detected_collider" from="Component_holder/Detectors/GeoDetector" to="." method="_on_geo_detector_detected_collider"]
 [connection signal="detected_collider" from="Component_holder/Detectors/Camera_detector" to="." method="_on_camera_detector_detected_collider"]

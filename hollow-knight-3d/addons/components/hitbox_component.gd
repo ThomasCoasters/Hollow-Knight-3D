@@ -82,9 +82,9 @@ var Area_Made: Area3D
 		# get the current area
 		var area = null
 		if is_instance_valid(node_3D_parent):
-			area = node_3D_parent.get_node_or_null("GeneratedHitboxArea")
+			area = node_3D_parent.get_node_or_null("GeneratedHitboxArea," + self.name)
 		else:
-			area = get_node_or_null("GeneratedHitboxArea")
+			area = get_node_or_null("GeneratedHitboxArea," + self.name)
 		
 		# set the area to be dissabled
 		if area: area.set_deferred("monitorable", value)
