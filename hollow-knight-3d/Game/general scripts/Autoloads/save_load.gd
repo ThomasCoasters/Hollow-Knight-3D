@@ -61,6 +61,10 @@ var DEFAULT_GENERAL_SAVE: Dictionary = {
 		&"VSyncEnabled": true,
 		&"MaxFPS": 0,
 	},
+	
+	&"Online": {
+		&"MultiplayerMode": "Solo",
+	},
 }
 
 ## the save that you have when there are no given new values (the backup) [br]
