@@ -15,7 +15,7 @@ extends Node3D
 ##starts the animation at a certain time and set variables to the correct time
 ##play_if_current_anim only plays the set if the current anim is that string AND play_if_current_anim is not null
 func set_animation_segment(anim_name: String, one_time: bool = false, play_if_current_anim: String = "null") -> void:
-	animation_comp.set_animation_segment(anim_name, one_time, play_if_current_anim)
+	animation_comp.play_animation(anim_name, one_time, play_if_current_anim)
 
 
 

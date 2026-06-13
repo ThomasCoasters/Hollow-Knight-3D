@@ -19,6 +19,9 @@ extends component
 ##all the animations with their priority
 @export var animation_priority: Dictionary[String, int]
 
+## if this component should be synced with multiplayer
+@export var multiplayer_synced: bool = false
+
 
 
 ##time segment for the animation
@@ -28,6 +31,8 @@ var saved_segment: Vector2 = Vector2.ZERO
 
 ##the current running animation name
 var current_anim: String = ""
+## the saved animation
+var saved_anim: String = ""
 
 
 
@@ -61,11 +66,15 @@ func _process(_delta):
 			#emit the animation finished signal
 			animation_finished.emit(current_anim)
 			
+			print("Finished ", current_anim,
+	" -> restoring ", saved_anim,
+	" segment=", saved_segment)
+			
 			#set the animation back to the looping one
 			current_segment = saved_segment
 			
 			#sets the current anim to the new animation
-			current_anim = animation_to_times.find_key(saved_segment) if not null else "null"
+			current_anim = saved_anim
 		
 		#call the anim loop signal if the animation that is finished is an looping anim
 		else:
@@ -79,11 +88,32 @@ func _process(_delta):
 
 
 
+## plays an given animation
+func play_animation(anim_name: String, one_time: bool = false, play_if_current_anim: String = "null"):
+	# if the animation is not synced in multiplayer or if this is a singleplayer game
+	# play the animation only locally
+	if not multiplayer_synced or not multiplayer.has_multiplayer_peer():
+		_set_animation_segment(anim_name, one_time, play_if_current_anim)
+		return
+	
+	
+	# if it is multiplayer, make only the authority play the animation
+	if is_multiplayer_authority():
+		_play_animation_rpc.rpc(anim_name, one_time, play_if_current_anim)
+
+
+# make only authority nodes call this locally and make sure the other players get it
+@rpc("authority", "call_local", "reliable")
+## plays the given animation on all other clients
+func _play_animation_rpc(anim_name: String, one_time: bool, play_if_current_anim: String):
+	_set_animation_segment(anim_name, one_time, play_if_current_anim)
+
+
 
 
 ##starts the animation at a certain time and set variables to the correct time
 ##play_if_current_anim only plays the set if the current anim is that string AND play_if_current_anim is not null
-func set_animation_segment(anim_name: String, one_time: bool = false, play_if_current_anim: String = "null"):
+func _set_animation_segment(anim_name: String, one_time: bool = false, play_if_current_anim: String = "null"):
 	#throws an error instead of randomly breaking if the animation name does not exist
 	if !animation_to_times.has(anim_name) || !animation_priority.has(anim_name):
 		push_error("Animation does not exist: " + anim_name)
@@ -95,11 +125,13 @@ func set_animation_segment(anim_name: String, one_time: bool = false, play_if_cu
 		# do not play when this is not the wanted anim to override
 		if current_anim != play_if_current_anim:
 			
-			#check if the saved animation needs to be reset
-			var saved_anim = animation_to_times.find_key(saved_segment) if not null else "null"
-			
 			if saved_anim == play_if_current_anim: # check if the saved anim needs to be overridden
-				saved_segment = Vector2.ZERO
+				#get the time segment
+				var segment: Vector2 = animation_to_times[anim_name]
+				
+				# set the saved animation
+				saved_segment = segment
+				saved_anim = anim_name
 			
 			return
 	
@@ -126,13 +158,11 @@ func set_animation_segment(anim_name: String, one_time: bool = false, play_if_cu
 					# change the saved segment if not one time and old one was
 					if !one_time:
 						if saved_segment != current_segment:
-							# get current saved anim
-							var saved_anim = animation_to_times.find_key(saved_segment) if not null else "null"
-							
 							# change saved segment if the saved anim is lower priority
 							if animation_priority[saved_anim] < animation_priority[anim_name] || saved_anim == "RESET" || saved_anim == "null": 
 								# set saved segment
 								saved_segment = segment
+								saved_anim = anim_name
 					
 					#stop the animation from playing
 					return
@@ -143,6 +173,7 @@ func set_animation_segment(anim_name: String, one_time: bool = false, play_if_cu
 	#save the saved segment if this is not a one time animation
 	if !one_time:
 		saved_segment = segment
+		saved_anim = anim_name
 	
 	
 	#set the running animation to the new animation
