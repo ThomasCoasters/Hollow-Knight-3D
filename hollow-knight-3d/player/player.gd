@@ -255,7 +255,9 @@ func _delete_exess_multiplayer_nodes() -> void:
 #region loops
 func _input(event: InputEvent) -> void:
 	# ignore when not multiplayer authority
-	if multiplayer.has_multiplayer_peer() and not is_multiplayer_authority(): return
+	if multiplayer.has_multiplayer_peer():
+		if not is_multiplayer_authority():
+			return
 	
 	
 	### ----- input buffering ----- ###
@@ -264,7 +266,9 @@ func _input(event: InputEvent) -> void:
 
 func _process(_delta: float) -> void:
 	# ignore process when not multiplayer authority
-	if multiplayer.has_multiplayer_peer() and not is_multiplayer_authority(): return
+	if multiplayer.has_multiplayer_peer():
+		if not is_multiplayer_authority():
+			return
 	
 	### ----- state chart stuff ----- ###
 	_input_state_chart()
@@ -272,7 +276,9 @@ func _process(_delta: float) -> void:
 
 func _physics_process(delta: float) -> void:
 	# ignore physics process when not multiplayer authority
-	if multiplayer.has_multiplayer_peer() and not is_multiplayer_authority(): return
+	if multiplayer.has_multiplayer_peer():
+		if not is_multiplayer_authority():
+			return
 	
 	### ----- input buffering ----- ###
 	_reduce_input_buffer()
@@ -641,10 +647,7 @@ func _instant_player_rotation() -> Vector3:
 
 #region attacking
 func _on_attacking_state_entered() -> void:
-	# spawns the attack and gets it
-	var spawned_attack = pooled_attack_comp.create_unused_object(true)
-	
-	#get the direction of the camera or the player model depending on settings 
+	#get the direction of the camera or the player model depending on settings
 	var dir: Vector3
 	if rotation_use_camera:
 		# use camera
@@ -661,16 +664,18 @@ func _on_attacking_state_entered() -> void:
 		# still get the y dir from the camera because that is used for attacking up/down
 		dir.y = -camera.global_transform.basis.z.y
 	
-	#normalize the direction
-	dir = _clamp_attack_y_dir(dir)
-	dir = dir.normalized()
 	
-	#make the attack look at that direction
-	var look_position: Vector3 = global_position - dir
-	spawned_attack.look_at(look_position, Vector3.UP)
 	
-	# play the attacking audio
-	random_audio_comp.play_audio(&"Attack")
+	# if this is a solo game
+	if !multiplayer.has_multiplayer_peer():
+		# spawn the attack and return
+		_spawn_attack(dir)
+		return
+	
+	# if this is the owner of this node in multiplayer
+	if is_multiplayer_authority():
+		# spawn the attack for all players
+		_spawn_attack_rpc.rpc(dir)
 
 
 
@@ -683,6 +688,32 @@ func _clamp_attack_y_dir(dir) -> Vector3:
 	
 	# returns the direction
 	return dir
+
+
+
+@rpc("authority", "call_local", "reliable")
+## an RPC function to spawn the attack on all player's screens
+func _spawn_attack_rpc(dir: Vector3):
+	# spawn the attack
+	_spawn_attack(dir)
+
+
+## spawns the attack
+func _spawn_attack(dir: Vector3):
+	# spawns the attack and gets it
+	var spawned_attack = pooled_attack_comp.create_unused_object(true)
+	
+	#normalize the direction
+	dir = _clamp_attack_y_dir(dir)
+	dir = dir.normalized()
+	
+	#make the attack look at that direction
+	var look_position: Vector3 = global_position - dir
+	spawned_attack.look_at(look_position, Vector3.UP)
+	
+	# play the attacking audio
+	random_audio_comp.play_audio(&"Attack")
+
 #endregion
 
 
@@ -772,7 +803,9 @@ func load_general_save() -> void:
 
 func _on_geo_detector_detected_collider(hitbox: hitbox_component) -> void:
 	# ignore when not multiplayer authority
-	if multiplayer.has_multiplayer_peer() and not is_multiplayer_authority(): return
+	if multiplayer.has_multiplayer_peer():
+		if not is_multiplayer_authority():
+			return
 	
 	# increase the geo amount
 	HUD.increase_geo(1)

@@ -16,6 +16,7 @@ gradient = ExtResource("4_8wd4j")
 gradient = ExtResource("3_34xgh")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_de25w"]
+resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("3_rcup2")
 shader_parameter/tex_frg_11 = SubResource("GradientTexture1D_b0e30")
