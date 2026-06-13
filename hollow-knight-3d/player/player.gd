@@ -675,7 +675,7 @@ func _on_attacking_state_entered() -> void:
 	# if this is the owner of this node in multiplayer
 	if is_multiplayer_authority():
 		# spawn the attack for all players
-		_spawn_attack_rpc.rpc(dir)
+		_spawn_attack_rpc.rpc(dir, multiplayer.get_unique_id())
 
 
 
@@ -693,13 +693,16 @@ func _clamp_attack_y_dir(dir) -> Vector3:
 
 @rpc("authority", "call_local", "reliable")
 ## an RPC function to spawn the attack on all player's screens
-func _spawn_attack_rpc(dir: Vector3):
+func _spawn_attack_rpc(dir: Vector3, attacker_id: int):
 	# spawn the attack
-	_spawn_attack(dir)
+	var spawned_attack: PlayerAttackVisual = _spawn_attack(dir)
+	
+	# set the multiplayer authority
+	spawned_attack.hitbox_comp.set_multiplayer_authority(attacker_id)
 
 
 ## spawns the attack
-func _spawn_attack(dir: Vector3):
+func _spawn_attack(dir: Vector3) -> Node:
 	# spawns the attack and gets it
 	var spawned_attack = pooled_attack_comp.create_unused_object(true)
 	
@@ -713,6 +716,9 @@ func _spawn_attack(dir: Vector3):
 	
 	# play the attacking audio
 	random_audio_comp.play_audio(&"Attack")
+	
+	# return the attack
+	return spawned_attack
 
 #endregion
 
@@ -840,4 +846,23 @@ func _on_random_idle_anim_timeout() -> void:
 	# play the animation
 	knight.set_animation_segment(extra_idle, true, "Idle")
 
+#endregion
+
+#region damage
+func _on_player_attack_detector_detected_collider(hitbox: hitbox_component) -> void:
+	print(
+	"Hit detected on peer ",
+	multiplayer.get_unique_id(),
+	" by ",
+	hitbox.get_multiplayer_authority()
+)
+	
+	# do not get hit by player attacks when not in multiplayer
+	if not multiplayer.has_multiplayer_peer(): return
+	
+	# when you are in multiplayer don't get hit by your own attacks
+	if hitbox.is_multiplayer_authority(): return
+	
+	# take damage when other player attacks you
+	health_comp.damage(1)
 #endregion

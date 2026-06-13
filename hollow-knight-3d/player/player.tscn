@@ -153,6 +153,14 @@ view_in_editor = false
 node_3D_parent = NodePath("../../..")
 detection_mask = 64
 
+[node name="Player_Attack_Detector" type="Node" parent="Component_holder/Detectors" unique_id=524529185 node_paths=PackedStringArray("node_3D_parent")]
+script = ExtResource("4_7pqkx")
+position = Vector3(0, 0.384, 0)
+detection_shape = SubResource("CapsuleShape3D_uw77l")
+view_in_editor = false
+node_3D_parent = NodePath("../../..")
+detection_mask = 2
+
 [node name="HealthComponent" type="Node" parent="Component_holder" unique_id=1696518874]
 script = ExtResource("4_32hag")
 max_health = 5
@@ -388,6 +396,7 @@ replication_config = SubResource("SceneReplicationConfig_7pqkx")
 [connection signal="detected_collider" from="Component_holder/Detectors/GeoDetector" to="." method="_on_geo_detector_detected_collider"]
 [connection signal="detected_collider" from="Component_holder/Detectors/Camera_detector" to="." method="_on_camera_detector_detected_collider"]
 [connection signal="lost_collider" from="Component_holder/Detectors/Camera_detector" to="." method="_on_camera_detector_lost_collider"]
+[connection signal="detected_collider" from="Component_holder/Detectors/Player_Attack_Detector" to="." method="_on_player_attack_detector_detected_collider"]
 [connection signal="camera_mode_changed" from="PlayerCamera" to="." method="_on_player_camera_camera_mode_changed"]
 [connection signal="state_entered" from="StateChart/ParallelState/Jumping_Falling/Idle" to="." method="_on_idle_state_entered"]
 [connection signal="state_entered" from="StateChart/ParallelState/Jumping_Falling/Jumping" to="." method="_on_jumping_state_entered"]

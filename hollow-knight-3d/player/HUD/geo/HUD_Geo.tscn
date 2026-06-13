@@ -17,9 +17,9 @@ texture = ExtResource("1_3bi1d")
 [node name="current_txt" type="Label" parent="." unique_id=1449830281]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 55.0
+offset_left = 75.0
 offset_top = 14.0
-offset_right = 56.0
+offset_right = 76.0
 offset_bottom = 64.0
 theme_override_fonts/font = ExtResource("2_mmo57")
 theme_override_font_sizes/font_size = 50

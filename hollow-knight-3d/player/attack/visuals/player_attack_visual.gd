@@ -32,9 +32,6 @@ signal animation_finished()
 ## the hitbox component
 @export var hitbox_comp: hitbox_component
 
-## the hitbox area
-var HitboxArea: Area3D
-
 
 
 

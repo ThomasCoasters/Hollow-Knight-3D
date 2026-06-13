@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://7cdtgxgfo0wa"]
+
+[ext_resource type="Script" uid="uid://gdc6h3nft7tm" path="res://player/HUD/Health/hp.gd" id="1_y8xt8"]
+
+[node name="HP" type="Control" unique_id=517647910]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1856.0
+offset_bottom = -1016.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 0
+script = ExtResource("1_y8xt8")
+space_between = 125.0

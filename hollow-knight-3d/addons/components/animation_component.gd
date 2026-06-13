@@ -66,10 +66,6 @@ func _process(_delta):
 			#emit the animation finished signal
 			animation_finished.emit(current_anim)
 			
-			print("Finished ", current_anim,
-	" -> restoring ", saved_anim,
-	" segment=", saved_segment)
-			
 			#set the animation back to the looping one
 			current_segment = saved_segment
 			

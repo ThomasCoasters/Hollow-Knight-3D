@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://bo4fs32ov01jd" path="res://player/HUD/HUD main.png" id="1_c64v1"]
 [ext_resource type="PackedScene" uid="uid://drboyx4o62ua7" path="res://player/HUD/mana/HUD_mana.tscn" id="2_6xmvw"]
 [ext_resource type="PackedScene" uid="uid://cbs0lat55ush7" path="res://player/HUD/geo/HUD_Geo.tscn" id="4_332af"]
+[ext_resource type="PackedScene" uid="uid://7cdtgxgfo0wa" path="res://player/HUD/Health/HP.tscn" id="5_jrcpa"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_c64v1"]
 atlas = ExtResource("1_c64v1")
@@ -113,4 +114,12 @@ offset_left = 265.0
 offset_top = 162.50002
 offset_right = 265.0
 offset_bottom = 162.50002
-scale = Vector2(1.6, 1.6)
+scale = Vector2(1.4, 1.4)
+
+[node name="HP" parent="Player_info" unique_id=517647910 instance=ExtResource("5_jrcpa")]
+layout_mode = 1
+offset_left = 287.5
+offset_top = 24.999996
+offset_right = 287.5
+offset_bottom = 25.0
+space_between = 115.0
