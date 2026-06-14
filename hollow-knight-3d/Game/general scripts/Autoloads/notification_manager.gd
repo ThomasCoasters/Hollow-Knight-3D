@@ -26,6 +26,7 @@ func notify(title: String, description: String) -> void:
 	# emit the signal with the given settings
 	notification_sent.emit(title, description)
 
+
 ## unlocks an achievement with the given ID
 func unlock(id: StringName) -> void:
 	# it the given achievement is already unlocked return
@@ -58,3 +59,10 @@ func get_title(id: StringName) -> String:
 ## gets the description of the given achievement ID
 func get_description(id: StringName) -> String:
 	return get_data(id)[&"description"]
+
+
+@rpc("any_peer", "call_local")
+## notifies every player with the given notification
+func global_notification(title: String, description: String) -> void:
+	# This reuses your existing notify logic, but runs on all clients
+	notify(title, description)

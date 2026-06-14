@@ -80,16 +80,6 @@ var DEFAULT_GENERAL_SAVE: Dictionary = {
 			&"title": "Together",
 			&"description": "Join a multiplayer game.",
 		},
-		
-		
-		
-		
-		### ----- notifications (not Achievements) ----- ###
-		&"ConnectionFailed": {
-			&"unlocked": false,
-			&"title": "Together",
-			&"description": "Join a multiplayer game.",
-		},
 	},
 }
 

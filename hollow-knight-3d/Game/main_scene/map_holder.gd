@@ -56,6 +56,10 @@ func _ready() -> void:
 	
 	# when the connection is taking to long, just go to solo
 	connection_timeout.timeout.connect(_on_connection_failed)
+	
+	
+	# load the startscreen for if something happens
+	SceneLoader.request_scene("res://UI screens/startscreen/startscreen.tscn")
 
 
 
@@ -130,18 +134,27 @@ func _create_host() -> void:
 	multiplayer.multiplayer_peer = peer
 	# add the player when a new peer is connected
 	multiplayer.peer_connected.connect(_add_player)
+	# delete the player when they disconnect
+	multiplayer.peer_disconnected.connect(_remove_player)
 	
 	# add the player for the host
 	_add_player(peer.get_unique_id())
 	
 	# start broadcasting this IP
 	_start_broadcasting()
+	
+	# play a server start notification
+	NotificationManager.notify(
+		"Server Made",
+		"You succesfully created a new server!"
+	)
 
 
 ## join the host
 func _join_host() -> void:
 	# when the connection fails, run the connection failed
 	multiplayer.connection_failed.connect(_on_connection_failed)
+	multiplayer.server_disconnected.connect(_on_server_disconnected)
 	
 	# start listening for a host
 	is_listening = true
@@ -244,3 +257,45 @@ func _add_player(id: int = 1) -> void:
 	
 	# add the player to the scene
 	player_holder.call_deferred("add_child", player)
+	
+	
+	if multiplayer.multiplayer_peer != null:
+		if not id == multiplayer.get_unique_id():
+			NotificationManager.global_notification.rpc("Player Joined", "A new player has just entered the game.")
+
+
+## removes a player when they disconnect
+func _remove_player(id: int) -> void:
+	# get the player node by their ID
+	var player_to_remove = player_holder.get_node_or_null(str(id))
+	
+	# if they exist
+	if player_to_remove:
+		# delete them
+		player_to_remove.queue_free()
+		
+		
+		# send a notification about them leaving
+		NotificationManager.global_notification.rpc(
+			"Player Left The Game",
+			"A player has just left the game."
+		)
+
+
+## runs when a joined player disconnects from the server
+func _on_server_disconnected() -> void:
+	# stop the network peer
+	peer.close()
+	multiplayer.multiplayer_peer = null
+	
+	# notify the player
+	NotificationManager.notify(
+		"Disconnected", 
+		"The connection to the host was lost."
+	)
+	
+	#makes the mouse visible again
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	
+	# go back to the startscreen
+	get_tree().change_scene_to_packed(SceneLoader.force_get_scene("res://UI screens/startscreen/startscreen.tscn"))

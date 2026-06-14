@@ -21,6 +21,7 @@ shadow_size = 3
 shadow_offset = Vector2(4, 4)
 
 [node name="NotificationPopup" type="Control" unique_id=497530070]
+z_index = 100
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -28,7 +29,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_5uslq")
-hold_time = 5.0
+hold_time = 3.5
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=165127005]
 unique_name_in_owner = true
