@@ -64,6 +64,7 @@ var DEFAULT_GENERAL_SAVE: Dictionary = {
 	
 	&"Online": {
 		&"MultiplayerMode": "Solo",
+		&"DisplayHP": true
 	},
 	
 	

@@ -249,6 +249,11 @@ func _delete_exess_multiplayer_nodes() -> void:
 		return
 	
 	
+	# if you don't want the health billboards delete them
+	if not SaveLoad.general_contents[&"Online"][&"DisplayHP"]:
+		if multiplayer_hp_billboard:
+			multiplayer_hp_billboard.queue_free()
+	
 	# delete the camera
 	if camera:
 		camera.queue_free()
