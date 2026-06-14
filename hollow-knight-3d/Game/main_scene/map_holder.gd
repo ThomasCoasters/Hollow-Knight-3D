@@ -232,8 +232,9 @@ func _on_connection_failed() -> void:
 ## adds a player
 func _add_player(id: int = 1) -> void:
 	# If a client successfully joined, we can stop the timeout
-	if id == multiplayer.get_unique_id() and id != 1:
-		connection_timeout.stop()
+	if multiplayer.multiplayer_peer != null:
+		if id == multiplayer.get_unique_id() and id != 1:
+			connection_timeout.stop()
 	
 	# instantiate the player
 	var player: Player = player_scene.instantiate()

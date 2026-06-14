@@ -84,9 +84,29 @@ func _show_next():
 	# get the ID of the next in the queue
 	var queue_item: Dictionary = queue.pop_front()
 	
+	# get the x value on how far right this object is
+	var right_x: float = margin_container.position.x + margin_container.size.x
+	
+	
 	# set the text
 	title_label.text = queue_item[&"title"]
 	description_label.text = queue_item[&"description"]
+	
+	# reset the text size
+	title_label.custom_minimum_size = Vector2.ZERO
+	description_label.custom_minimum_size = Vector2.ZERO
+	
+	# reset the container size
+	margin_container.size.x = 0
+	
+	# recalculate every size
+	margin_container.update_minimum_size()
+	margin_container.queue_sort()
+	# wait one frame to have the resized stuff be visible
+	await get_tree().process_frame
+	
+	# set the right position back to where is should be
+	margin_container.position.x = right_x - margin_container.size.x
 	
 	# play anim and wait untill the tween is finished
 	await _play_animation(margin_container)
