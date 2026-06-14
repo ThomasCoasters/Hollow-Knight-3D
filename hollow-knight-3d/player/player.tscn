@@ -26,6 +26,7 @@
 [ext_resource type="AudioStream" uid="uid://chr8tq5itit4w" path="res://player/audio/hero_dash.wav" id="13_knn7v"]
 [ext_resource type="AudioStream" uid="uid://bfk6rqb8b62wt" path="res://player/audio/hero_jump.wav" id="14_7pqkx"]
 [ext_resource type="PackedScene" uid="uid://fo6hwqkx1dyx" path="res://player/HUD/HUD_main.tscn" id="17_tqiix"]
+[ext_resource type="PackedScene" uid="uid://boj1u8lgsmu8v" path="res://player/HUD/Health/multiplayer_HP.tscn" id="27_uw77l"]
 
 [sub_resource type="Resource" id="Resource_32hag"]
 script = ExtResource("2_yllr7")
@@ -100,14 +101,32 @@ properties/0/replication_mode = 1
 properties/1/path = NodePath(".:position")
 properties/1/spawn = true
 properties/1/replication_mode = 1
+properties/2/path = NodePath("Component_holder/HealthComponent:max_health")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+properties/3/path = NodePath("Component_holder/HealthComponent:health")
+properties/3/spawn = true
+properties/3/replication_mode = 1
 
-[node name="Player" type="CharacterBody3D" unique_id=2083664876 node_paths=PackedStringArray("knight", "camera", "HUD", "extra_idle_timer", "health_comp", "pooled_attack_comp", "random_audio_comp", "geo_detect_comp")]
+[sub_resource type="ViewportTexture" id="ViewportTexture_uw77l"]
+viewport_path = NodePath("MultiplayerHpSubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rptt4"]
+resource_local_to_scene = true
+transparency = 1
+no_depth_test = true
+shading_mode = 0
+albedo_texture = SubResource("ViewportTexture_uw77l")
+billboard_mode = 1
+
+[node name="Player" type="CharacterBody3D" unique_id=2083664876 node_paths=PackedStringArray("knight", "camera", "HUD", "extra_idle_timer", "multiplayer_hp_billboard", "health_comp", "pooled_attack_comp", "random_audio_comp", "geo_detect_comp")]
 collision_layer = 2
 script = ExtResource("1_g1dw6")
 knight = NodePath("knight_model")
 camera = NodePath("PlayerCamera")
 HUD = NodePath("HudMain")
 extra_idle_timer = NodePath("random_idle_anim")
+multiplayer_hp_billboard = NodePath("MultiplayerHp")
 rotation_use_camera = false
 inputs_to_buffer = Dictionary[StringName, ExtResource("2_yllr7")]({
 &"Attack": SubResource("Resource_32hag"),
@@ -165,6 +184,7 @@ detection_mask = 2
 script = ExtResource("4_32hag")
 max_health = 5
 heal_on_max_health_gain = true
+health = 0
 
 [node name="pooled_attack" type="Node" parent="Component_holder" unique_id=701043375]
 script = ExtResource("5_wodsf")
@@ -393,6 +413,11 @@ one_shot = true
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=104832802]
 replication_config = SubResource("SceneReplicationConfig_7pqkx")
 
+[node name="MultiplayerHp" parent="." unique_id=1653448725 node_paths=PackedStringArray("health_comp") instance=ExtResource("27_uw77l")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95193505, 0)
+surface_material_override/0 = SubResource("StandardMaterial3D_rptt4")
+health_comp = NodePath("../Component_holder/HealthComponent")
+
 [connection signal="detected_collider" from="Component_holder/Detectors/GeoDetector" to="." method="_on_geo_detector_detected_collider"]
 [connection signal="detected_collider" from="Component_holder/Detectors/Camera_detector" to="." method="_on_camera_detector_detected_collider"]
 [connection signal="lost_collider" from="Component_holder/Detectors/Camera_detector" to="." method="_on_camera_detector_lost_collider"]
@@ -407,3 +432,4 @@ replication_config = SubResource("SceneReplicationConfig_7pqkx")
 [connection signal="timeout" from="max_jump_time" to="." method="_on_max_jump_time_timeout"]
 
 [editable path="PlayerCamera"]
+[editable path="MultiplayerHp"]

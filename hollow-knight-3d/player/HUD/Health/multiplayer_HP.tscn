@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://boj1u8lgsmu8v"]
+
+[ext_resource type="Script" uid="uid://ldu242yn2ybq" path="res://player/HUD/Health/multiplayer_hp.gd" id="1_2ij7i"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_rxnq8"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_2ij7i"]
+viewport_path = NodePath("MultiplayerHpSubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pdsha"]
+resource_local_to_scene = true
+transparency = 1
+no_depth_test = true
+shading_mode = 0
+albedo_texture = SubResource("ViewportTexture_2ij7i")
+billboard_mode = 1
+
+[node name="MultiplayerHp" type="MeshInstance3D" unique_id=1653448725]
+mesh = SubResource("QuadMesh_rxnq8")
+surface_material_override/0 = SubResource("StandardMaterial3D_pdsha")
+script = ExtResource("1_2ij7i")
+space_between = 80.0
+pixel_to_3d_ratio = 0.015
+
+[node name="MultiplayerHpSubViewport" type="SubViewport" parent="." unique_id=699381790]
+unique_name_in_owner = true
+own_world_3d = true
+transparent_bg = true

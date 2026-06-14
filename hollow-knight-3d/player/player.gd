@@ -12,6 +12,8 @@ extends CharacterBody3D
 @export var HUD: HUDMain
 ## the timer that controlls the random extra idle animations
 @export var extra_idle_timer: Timer
+## the node that displays the health of the other players above their heads
+@export var multiplayer_hp_billboard: MeshInstance3D
 
 
 ## settings for QOL
@@ -237,8 +239,14 @@ func _enter_tree() -> void:
 
 ## deletes the not needed nodes from the local copy of the other players
 func _delete_exess_multiplayer_nodes() -> void:
-	# if multiplayer authority do nothing
-	if not multiplayer.has_multiplayer_peer() or is_multiplayer_authority(): return
+	# if multiplayer authority do not delete the nodes after the return
+	if not multiplayer.has_multiplayer_peer() or is_multiplayer_authority():
+		# delete the billboard for yourself
+		if multiplayer_hp_billboard:
+			multiplayer_hp_billboard.queue_free()
+		
+		# do not delete the rest
+		return
 	
 	
 	# delete the camera
@@ -850,13 +858,6 @@ func _on_random_idle_anim_timeout() -> void:
 
 #region damage
 func _on_player_attack_detector_detected_collider(hitbox: hitbox_component) -> void:
-	print(
-	"Hit detected on peer ",
-	multiplayer.get_unique_id(),
-	" by ",
-	hitbox.get_multiplayer_authority()
-)
-	
 	# do not get hit by player attacks when not in multiplayer
 	if not multiplayer.has_multiplayer_peer(): return
 	

@@ -9,6 +9,10 @@ extends component
 ## the max amount of heath the object can have
 @export var max_health: int:
 	set(value):
+		# if nothing changed return
+		if value == max_health:
+			return
+		
 		#emit the signal for changing max health
 		max_health_changed.emit(max_health, value)
 		
@@ -28,7 +32,7 @@ extends component
 
 
 ## the health the object currently has
-var health: int:
+@export var health: int = max_health:
 	set(value):
 		#do not play in the editor
 		if Engine.is_editor_hint():
@@ -36,6 +40,10 @@ var health: int:
 		
 		#make the new health never go above or below limits
 		var new_health = clamp(value, 0, max_health)
+		
+		# if nothing changed return
+		if new_health == health:
+			return
 		
 		#if the new health is 0 emit the depleated signal
 		if new_health == 0 && health > 0:

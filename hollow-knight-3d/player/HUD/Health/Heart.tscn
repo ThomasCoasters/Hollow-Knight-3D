@@ -270,11 +270,9 @@ animations = [{
 
 [node name="heart" type="Control" unique_id=1314549478]
 layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+anchors_preset = 0
+offset_right = 622.2222
+offset_bottom = 1762.9629
 scale = Vector2(0.135, 0.135)
 script = ExtResource("1_ki6s7")
 
@@ -283,8 +281,9 @@ texture_filter = 1
 position = Vector2(273.189, 336.846)
 scale = Vector2(9.75, 9.75)
 sprite_frames = SubResource("SpriteFrames_yh1pf")
-animation = &"full"
+animation = &"empty"
 autoplay = "shine"
+frame = 2
 flip_h = true
 
 [connection signal="animation_finished" from="hearth" to="." method="_on_hearth_animation_finished"]
