@@ -10,10 +10,14 @@
 [ext_resource type="Texture2D" uid="uid://dggd7qhhkcs6r" path="res://Environments/Floor/tiles_normal.png" id="3_tqyhn"]
 [ext_resource type="PackedScene" uid="uid://bvrpkvlt1oahp" path="res://Environments/Geo/geo.tscn" id="3_v3nw1"]
 [ext_resource type="PackedScene" uid="uid://btvsqbs3x5wi8" path="res://Environments/scenes/light stuff/lantern.tscn" id="4_jig8y"]
+[ext_resource type="Script" uid="uid://cveopkocrno8h" path="res://addons/components/hitbox_component.gd" id="4_kfpaq"]
 [ext_resource type="PackedScene" uid="uid://67m386m4itfn" path="res://Environments/scenes/rocks/rock_001.tscn" id="11_v3nw1"]
 [ext_resource type="PackedScene" uid="uid://bjrujb7n8tt7j" path="res://Environments/scenes/rocks/rock_002.tscn" id="12_x3ems"]
 [ext_resource type="PackedScene" uid="uid://bn7kvr7aaft4l" path="res://Environments/scenes/rocks/rock_003.tscn" id="13_6jklt"]
 [ext_resource type="PackedScene" uid="uid://dgg1smibwiebm" path="res://Environments/scenes/light stuff/lantern_broken.tscn" id="14_1j1tn"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_uys1q"]
+size = Vector3(7.7, 18.685, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_v3nw1"]
 size = Vector3(40, 0.5, 40)
@@ -165,6 +169,14 @@ initial_object_count = 400
 spawn_method = 1
 position_node = NodePath("../../objects/geo\'s/Node3D4")
 automatic_spawn_amount = 200
+
+[node name="HitboxComponent" type="Node" parent="Component_holder" unique_id=292251692 node_paths=PackedStringArray("node_3D_parent")]
+script = ExtResource("4_kfpaq")
+position = Vector3(16.56, 8.79, 5.39)
+collision_shape = SubResource("BoxShape3D_uys1q")
+view_in_editor = false
+node_3D_parent = NodePath("../..")
+collider_type = 16
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=164679093]
 transform = Transform3D(0.45868245, 0.58331203, -0.6703414, 0.23432863, 0.6482755, 0.7244507, 0.85714656, -0.48937297, 0.16066591, 0, 0, 0)

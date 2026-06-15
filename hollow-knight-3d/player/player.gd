@@ -163,6 +163,8 @@ var dash_timer: float = 0.0
 ## if the camera detector is currently entered by the camera
 var camera_currently_detected: bool = false
 
+## if you are currently invincible
+var invincible_counter: int = 0
 
 ## settings for components
 @export_group("components")
@@ -865,7 +867,7 @@ func _on_random_idle_anim_timeout() -> void:
 
 #endregion
 
-#region damage
+#region health
 func _on_player_attack_detector_detected_collider(hitbox: hitbox_component) -> void:
 	# do not get hit by player attacks when not in multiplayer
 	if not multiplayer.has_multiplayer_peer(): return
@@ -873,19 +875,67 @@ func _on_player_attack_detector_detected_collider(hitbox: hitbox_component) -> v
 	# when you are in multiplayer don't get hit by your own attacks
 	if hitbox.is_multiplayer_authority(): return
 	
+	# do not take damage when invincible
+	if is_invincible(): return
+	
 	# take damage when other player attacks you
+	damage()
+
+
+## when the normal damage detector detects something
+func _on_damage_detector_detected_collider(_hitbox: hitbox_component) -> void:
+	# do not take damage when invincible
+	if is_invincible(): return
+	
+	# take damage
 	damage()
 
 
 
 ## damages the player and adds juice
-func damage(amount: int = 1, freeze_time: float = 0.4, screen_shake_strength: float = 20) -> void:
+func damage(amount: int = 1, freeze_time: float = 0.4, screen_shake_strength: float = 15) -> void:
 	# make the health take the damage
 	health_comp.damage(amount)
 	
 	# add screenshake
 	camera.camera_3d.add_shake(screen_shake_strength)
 	
+	# make the player invincible
+	set_invincibility(2 + freeze_time)
+	
 	# add a small freeze time
 	Helper.call_deferred("set_time_scale", 0.001, freeze_time)
+
+
+## sets the invincibility of the player to true for a given duration
+func set_invincibility(duration: float = 2.0, animation_times: int = 8) -> void:
+	# increase invincible counter
+	invincible_counter += 1
+	
+	# when you are in multiplayer play the invincibility for all players
+	if multiplayer.has_multiplayer_peer():
+		_play_invincibility_effect.rpc(duration, animation_times)
+	
+	# if not play only locally
+	else:
+		_play_invincibility_effect(duration, animation_times)
+	
+	
+	# wait until the time is done
+	await Helper.wait_real_time(duration)
+	
+	# decrease invincibility counter
+	invincible_counter -= 1
+
+
+@rpc("authority", "call_local", "reliable")
+## plays the invincibility effect
+func _play_invincibility_effect(duration: float, animation_times: int) -> void:
+	knight.fade_in_out(duration, animation_times)
+
+
+
+## retuns if the player is currently invincible
+func is_invincible() -> bool:
+	return invincible_counter > 0
 #endregion

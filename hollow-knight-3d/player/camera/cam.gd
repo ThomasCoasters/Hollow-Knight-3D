@@ -22,6 +22,11 @@ var shake_time: float = 0.0
 var shake_rotation: Vector2 = Vector2.ZERO
 
 
+## last time the process happened (tick)
+var last_ticks: int = Time.get_ticks_usec()
+
+
+
 func _ready():
 	# set the noise seed to a random value
 	noise.seed = randi()
@@ -32,9 +37,15 @@ func add_shake(amount: float) -> void:
 	shake_strength += amount
 
 
-func _process(delta: float) -> void:
-	# get the actual delta time
-	var real_delta: float = delta / Engine.time_scale
+func _process(_delta: float) -> void:
+	# get the current time
+	var now: int = Time.get_ticks_usec()
+	# get the real delta time (uneffected bij time scale)
+	var real_delta: float = (now - last_ticks) / 1000000.0
+	# set the last tick again
+	last_ticks = now
+	
+	
 	
 	#smoothly go to a new position
 	if wanted_position:
@@ -42,7 +53,7 @@ func _process(delta: float) -> void:
 		global_position = lerp(
 			global_position,
 			wanted_position.global_position,
-			delta * position_lerp_power
+			real_delta * position_lerp_power
 		)
 
 	
@@ -68,7 +79,7 @@ func _process(delta: float) -> void:
 		# lerp smoothly to the wanted rotation
 		shake_rotation = shake_rotation.lerp(
 			target_shake,
-			real_delta * 20.0
+			real_delta * 35.0
 		)
 		
 		# set the rotation
