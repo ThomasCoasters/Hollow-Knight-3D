@@ -7431,7 +7431,160 @@ if target_label:
 _row_group_enabled = true
 sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_7eb4q"), SubResource("Resource_e0hlu")])
 row_spacing = 250
-vertical_spacer_size = 610.0
+vertical_spacer_size = 100.0
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_gcrmy"]
+script = ExtResource("2_w13no")
+mode = 1
+text = "Display Health Above Head:"
+_button_group_enabled = false
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_jtbeu"]
+script = ExtResource("2_w13no")
+mode = 1
+text = "Classic"
+_button_group_enabled = false
+metadata/_custom_type_script = "uid://54ijfc61lomj"
+
+[sub_resource type="Resource" id="Resource_tpgn8"]
+script = ExtResource("2_w13no")
+mode = 5
+_text_group_enabled = false
+hover_offset = Array[Vector2]([Vector2(-100, -4), Vector2(140, -4)])
+ready_function = "# the setting that would change
+var main_setting_type = &\"QoL\"
+var change_setting = &\"DisplayOwnHealthBillboard\"
+
+
+# get array of the bgs
+var options ={
+	\"On\": true,
+	\"Off\": false,
+}
+
+
+
+
+# wait
+await ctx[0].get_tree().process_frame
+await ctx[0].get_tree().create_timer(1).timeout
+await ctx[0].get_tree().process_frame
+
+
+
+
+
+
+# get this node
+var me = ctx[2]
+# set this node as the initial node you should check
+var nodes_to_check = [me]
+
+
+
+# the final label found
+var target_label: Label = null
+# current amount of labels found
+var label_count = 0 
+# the final number of label in the index that is the one you search for
+var label_target_index = 1
+
+
+
+# keep searching untill all children are gone through
+while nodes_to_check.size() > 0:
+	#remove the current node from the nodes you should check
+	var current = nodes_to_check.pop_back()
+	
+	# if you found an label
+	if current is Label:
+		#increase label count
+		label_count += 1
+		# if you found the target number of labels
+		if label_count == label_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label = current
+	
+	# also search all these node's children
+	nodes_to_check.append_array(current.get_children())
+
+
+
+
+
+# set the input name
+if target_label:
+	target_label.custom_minimum_size.x = 100
+	target_label.text = options.find_key(SaveLoad.general_contents[main_setting_type][change_setting])"
+pressed_function = "# the setting that would change
+var main_setting_type = &\"QoL\"
+var change_setting = &\"DisplayOwnHealthBillboard\"
+
+
+
+# get array of the bgs
+var options ={
+	\"On\": true,
+	\"Off\": false,
+}
+
+
+# get this node
+var me = ctx[2]
+
+
+# set this node as the initial node you should check
+var nodes_to_check = [me]
+
+
+
+# the final label found
+var target_label: Label = null
+# current amount of labels found
+var label_count = 0 
+# the final number of label in the index that is the one you search for
+var label_target_index = 1
+
+
+
+# keep searching untill all children are gone through
+while nodes_to_check.size() > 0:
+	#remove the current node from the nodes you should check
+	var current = nodes_to_check.pop_back()
+	
+	# if you found an label
+	if current is Label:
+		#increase label count
+		label_count += 1
+		# if you found the target number of labels
+		if label_count == label_target_index:
+			# THIS IS THE GOOD LABEL
+			target_label = current
+	
+	# also search all these node's children
+	nodes_to_check.append_array(current.get_children())
+
+
+
+
+# get the next options index
+var keys_array = options.keys()
+var idx = keys_array.find(target_label.text)
+var next_idx = (idx + 1) % keys_array.size()
+var next_option = keys_array[next_idx]
+
+SaveLoad.general_contents[main_setting_type][change_setting] = options[next_option]
+
+
+# set the input name
+if target_label:
+	target_label.text = next_option"
+_row_group_enabled = true
+sub_configs = Array[ExtResource("2_w13no")]([SubResource("Resource_gcrmy"), SubResource("Resource_jtbeu")])
+row_spacing = 250
+vertical_spacer_size = 460.0
 metadata/_custom_type_script = "uid://54ijfc61lomj"
 
 [sub_resource type="Resource" id="Resource_eqbts"]
@@ -8069,7 +8222,7 @@ back_button_menu = NodePath("../options_menu")
 [node name="QoL_menu" parent="." unique_id=731191671 node_paths=PackedStringArray("back_button_menu") instance=ExtResource("1_aw56r")]
 visible = false
 layout_mode = 1
-visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_rr8xp"), SubResource("Resource_kxba6"), SubResource("Resource_om5fx"), SubResource("Resource_eo4d0"), SubResource("Resource_eqbts")])
+visuals = Array[ExtResource("2_w13no")]([SubResource("Resource_rr8xp"), SubResource("Resource_kxba6"), SubResource("Resource_om5fx"), SubResource("Resource_eo4d0"), SubResource("Resource_tpgn8"), SubResource("Resource_eqbts")])
 button_press_anim = SubResource("Resource_55gc4")
 button_hover_anim = SubResource("Resource_n2ux7")
 back_button_menu = NodePath("../options_menu")

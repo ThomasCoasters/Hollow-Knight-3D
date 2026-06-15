@@ -241,9 +241,10 @@ func _enter_tree() -> void:
 func _delete_exess_multiplayer_nodes() -> void:
 	# if multiplayer authority do not delete the nodes after the return
 	if not multiplayer.has_multiplayer_peer() or is_multiplayer_authority():
-		# delete the billboard for yourself
-		if multiplayer_hp_billboard:
-			multiplayer_hp_billboard.queue_free()
+		# delete the billboard for yourself (if you do not want displayed)
+		if not SaveLoad.general_contents[&"QoL"][&"DisplayOwnHealthBillboard"]:
+			if multiplayer_hp_billboard:
+				multiplayer_hp_billboard.queue_free()
 		
 		# do not delete the rest
 		return
@@ -858,6 +859,9 @@ func _on_random_idle_anim_timeout() -> void:
 	
 	# play the animation
 	knight.set_animation_segment(extra_idle, true, "Idle")
+	
+	damage()
+
 
 #endregion
 
@@ -871,4 +875,18 @@ func _on_player_attack_detector_detected_collider(hitbox: hitbox_component) -> v
 	
 	# take damage when other player attacks you
 	health_comp.damage(1)
+
+
+
+## damages the player and adds juice
+func damage(amount: int = 1, freeze_time: float = 0.1, screen_shake_strength: float = 0.1) -> void:
+	# make the health take the damage
+	health_comp.damage(amount)
+	
+	# add a small freeze time
+	Helper.set_time_scale(0.001, freeze_time)
+	
+	# add screenshake
+	camera.camera_3d.add_shake(screen_shake_strength)
+	
 #endregion

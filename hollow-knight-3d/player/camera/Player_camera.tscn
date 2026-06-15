@@ -16,6 +16,7 @@ radius = 0.1
 
 [node name="Player_Camera" type="Node3D" unique_id=707306477]
 script = ExtResource("1_b1fii")
+camera_3d = null
 spring_arm_3d = Object(SpringArm3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"collision_mask":1,"shape":SubResource("SphereShape3D_2jts0"),"spring_length":1.0,"margin":0.01,"script":null)
 
 state_chart = Object(Node,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","script":ExtResource("2_06wur"),"track_in_editor":false,"warn_on_sending_unknown_events":true,"initial_expression_properties":{},"_state":null,"_expression_properties":{},"_queued_events":Array[StringName]([]),"_property_change_pending":false,"_state_change_pending":false,"_locked_down":false,"_frozen":false,"_queued_transitions":Array[Dictionary]([]),"_transitions_processing_active":false,"_debugger_remote":null,"_valid_event_names":Array[StringName]([]),"metadata/_custom_type_script":"uid://couw105c3bde4")

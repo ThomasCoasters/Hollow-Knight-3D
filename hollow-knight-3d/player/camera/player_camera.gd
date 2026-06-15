@@ -3,6 +3,8 @@
 class_name Player_Camera
 extends Node3D
 
+## the camera itself
+@onready var camera_3d: Camera = $Camera3D
 #springarm
 @onready var spring_arm_3d: SpringArm3D = $SpringArm3D
 

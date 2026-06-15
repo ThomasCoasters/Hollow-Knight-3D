@@ -28,6 +28,7 @@ SceneLoader="*uid://civm45g6l6b2x"
 GlobalSpawnPool="*uid://joecqjjrldnl"
 GlobalMultiMeshManager="*uid://dpijl0lhnmilg"
 NotificationManager="*uid://u3inbxay4tk8"
+Helper="*uid://8gey667gpg5h"
 
 [display]
 

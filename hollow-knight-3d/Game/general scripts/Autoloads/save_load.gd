@@ -51,6 +51,7 @@ var DEFAULT_GENERAL_SAVE: Dictionary = {
 	
 	&"QoL": {
 		&"RotationUseCamera": false,
+		&"DisplayOwnHealthBillboard": false
 	},
 	
 	&"Extras": {
