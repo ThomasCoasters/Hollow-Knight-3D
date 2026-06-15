@@ -174,6 +174,8 @@ var camera_currently_detected: bool = false
 @export var random_audio_comp: random_audio_component
 ## the detector that check when geo is collected
 @export var geo_detect_comp: detector_component
+## all components that detect damage
+@export var damage_detectors: Array[detector_component]
 
 #endregion
 
@@ -859,8 +861,6 @@ func _on_random_idle_anim_timeout() -> void:
 	
 	# play the animation
 	knight.set_animation_segment(extra_idle, true, "Idle")
-	
-	damage()
 
 
 #endregion
@@ -874,19 +874,18 @@ func _on_player_attack_detector_detected_collider(hitbox: hitbox_component) -> v
 	if hitbox.is_multiplayer_authority(): return
 	
 	# take damage when other player attacks you
-	health_comp.damage(1)
+	damage()
 
 
 
 ## damages the player and adds juice
-func damage(amount: int = 1, freeze_time: float = 0.1, screen_shake_strength: float = 0.1) -> void:
+func damage(amount: int = 1, freeze_time: float = 0.4, screen_shake_strength: float = 20) -> void:
 	# make the health take the damage
 	health_comp.damage(amount)
-	
-	# add a small freeze time
-	Helper.set_time_scale(0.001, freeze_time)
 	
 	# add screenshake
 	camera.camera_3d.add_shake(screen_shake_strength)
 	
+	# add a small freeze time
+	Helper.call_deferred("set_time_scale", 0.001, freeze_time)
 #endregion

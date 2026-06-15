@@ -119,7 +119,7 @@ shading_mode = 0
 albedo_texture = SubResource("ViewportTexture_uw77l")
 billboard_mode = 1
 
-[node name="Player" type="CharacterBody3D" unique_id=2083664876 node_paths=PackedStringArray("knight", "camera", "HUD", "extra_idle_timer", "multiplayer_hp_billboard", "health_comp", "pooled_attack_comp", "random_audio_comp", "geo_detect_comp")]
+[node name="Player" type="CharacterBody3D" unique_id=2083664876 node_paths=PackedStringArray("knight", "camera", "HUD", "extra_idle_timer", "multiplayer_hp_billboard", "health_comp", "pooled_attack_comp", "random_audio_comp", "geo_detect_comp", "damage_detectors")]
 collision_layer = 2
 script = ExtResource("1_g1dw6")
 knight = NodePath("knight_model")
@@ -148,6 +148,7 @@ health_comp = NodePath("Component_holder/HealthComponent")
 pooled_attack_comp = NodePath("Component_holder/pooled_attack")
 random_audio_comp = NodePath("Component_holder/RandomAudioComponent")
 geo_detect_comp = NodePath("Component_holder/Detectors/GeoDetector")
+damage_detectors = [NodePath("Component_holder/Detectors/Player_Attack_Detector")]
 
 [node name="Component_holder" type="Node" parent="." unique_id=1835810022]
 script = ExtResource("3_wodsf")
@@ -208,7 +209,7 @@ shape = SubResource("CapsuleShape3D_oul6g")
 [node name="PlayerCamera" parent="." unique_id=1536589263 instance=ExtResource("2_rkbax")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6185907, 0)
 camera_3d = Object(Camera3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"keep_aspect":1,"cull_mask":1048575,"environment":null,"attributes":null,"compositor":null,"h_offset":0.0,"v_offset":0.0,"doppler_tracking":0,"projection":0,"current":false,"fov":75.0,"size":1.0,"frustum_offset":Vector2(0, 0),"near":0.05,"far":4000.0,"script":Resource("res://player/camera/cam.gd"),"wanted_position":Object(Marker3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"gizmo_extents":0.25,"script":null)
-,"position_lerp_power":6.0,"shake_decay":0.01)
+,"position_lerp_power":6.0,"shake_decay":20.0)
 
 spring_arm_3d = Object(SpringArm3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"collision_mask":1,"shape":null,"spring_length":1.0,"margin":0.01,"script":null)
 
