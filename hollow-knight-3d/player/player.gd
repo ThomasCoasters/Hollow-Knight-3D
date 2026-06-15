@@ -402,6 +402,10 @@ func _input_state_chart() -> void:
 			if is_action_buffered(&"Jump"):
 				#set the state chart to the jumping state
 				state_chart.send_event(&"start_jumping")
+				
+				# start the jumping animations
+				knight.set_animation_segment("JumpStart", true)
+				knight.set_animation_segment("JumpLoop")
 	
 	#check if the player is in the attacking idle state
 	if idle_attacking_state.active:
@@ -434,6 +438,9 @@ func _state_chart_physics_process(_delta: float) -> void:
 		if is_on_floor():
 			#stop falling and go to the idle state
 			state_chart.send_event(&"stop_falling")
+			
+			# play walking anim if walking, else play the idle anim
+			knight.set_animation_segment("Walk" if moving_state.active else "Idle", false, "JumpLoop")
 	
 	
 	#when you are not jumping nor falling
